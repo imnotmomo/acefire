@@ -1,0 +1,311 @@
+{
+  "case_id": "backerkit-2025-offering",
+  "company_brand": "BackerKit",
+  "legal_entity": "Diaspora, Inc. (dba BackerKit)",
+  "historical_case_cutoff": null,
+  "sources": [
+    {
+      "id": "backerkit-offering-page",
+      "filename": "backerkit-offering-details.html",
+      "kind": "html",
+      "role": "company offering narrative, financial highlights, risks, capital structure, document index",
+      "url": "https://wefunder.com/backerkit/details",
+      "status": "failed_no_retry"
+    },
+    {
+      "id": "backerkit-fy2025-financials",
+      "filename": "Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "kind": "pdf",
+      "role": "FY2025 unaudited financial statements and notes",
+      "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "status": "failed_no_retry"
+    },
+    {
+      "id": "backerkit-fy2023-2024-audited",
+      "filename": "Backerkit_2023_2024_Audited_Financials.pdf",
+      "kind": "pdf",
+      "role": "FY2023 and FY2024 audited financial statements",
+      "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/3789513-bzFvPSyWCPFFYkStg4tgDFcm/Backerkit_2023_2024_Audited_Financials.pdf",
+      "status": "failed_no_retry"
+    },
+    {
+      "id": "backerkit-safe-template",
+      "filename": "backerkit-safe-offering-template.pdf",
+      "kind": "pdf",
+      "role": "public offering SAFE form; unsigned template, not an executed investor agreement",
+      "url": "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+      "status": "failed_no_retry"
+    },
+    {
+      "id": "backerkit-spv-subscription-template",
+      "filename": "backerkit-spv-subscription-offering-template.pdf",
+      "kind": "pdf",
+      "role": "public offering SPV subscription form; unsigned template, not an executed investor agreement",
+      "url": "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+      "status": "failed_no_retry"
+    }
+  ],
+  "providers": {
+    "pitchbook": {
+      "sources": [
+        {
+          "source_id": "PB-BACKERKIT-PROFILE-104907-52",
+          "source_kind": "derived_manual_UI_capture",
+          "source_url": "https://my.pitchbook.com/profile/104907-52/company/profile#financials",
+          "advisor_profile_url": "https://my.pitchbook.com/profile/104907-52/advisor/profile",
+          "profile_id": "104907-52",
+          "display_name": "BackerKit",
+          "legal_name_as_observed": "Diaspora, Inc",
+          "country": "United States",
+          "location": "San Francisco, CA, US",
+          "full_profile_content_checked": true,
+          "profile_last_updated_date": "2026-08-12",
+          "financial_footer_last_updated_date": "2025-04-28",
+          "raw_unit_header": "Thousands USD",
+          "raw_period_labels": [
+            "2025",
+            "TTM Dec 2025"
+          ],
+          "financial_source_type": "Provider financial cells with unresolved source basis, fiscal end and footer/period dates; quarantined from case analysis",
+          "financial_observation_count": 4,
+          "financing_claim_count": 2,
+          "use_for_case_financial_analysis": false,
+          "identity_matches_official_case": true,
+          "resolves_quarantined_orbis_candidates": false,
+          "local_derived_files": [
+            "pitchbook/backerkit_pitchbook_observations.json"
+          ],
+          "source_original_file_saved": false,
+          "native_export_saved_for_this_capture": false,
+          "related_native_export_source_ids": [
+            "pitchbook_backerkit_income_statement_image_20261024",
+            "pitchbook_backerkit_balance_sheet_image_20261024",
+            "pitchbook_backerkit_employee_count_image_20261024"
+          ]
+        },
+        {
+          "source_id": "pitchbook_backerkit_income_statement_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/104907-52/company/financials/KEY_METRICS",
+          "profile_id": "104907-52",
+          "company_attributed_from_UI_context": "BackerKit / Diaspora, Inc.",
+          "format": "PNG",
+          "title": "Income Statement",
+          "native_content_type": "financial_table",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2025"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_BackerKit_Income_StatementData_2026_10_23_11_49_54.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            3840,
+            510
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "quarantined_pending_source_period_and_unit_basis_verification",
+          "use_for_case_financial_analysis": false,
+          "profile_UI_last_updated_date": "2025-04-28",
+          "confirmed_visual_content": {
+            "title": "Income Statement",
+            "unit_label": "Thousands, USD",
+            "visible_period_columns": [
+              "FY 2025"
+            ],
+            "visible_rows": [
+              {
+                "label": "Total Revenue",
+                "raw_value": "23,695"
+              },
+              {
+                "label": "Reported Total Operating Profit/Loss",
+                "raw_value": null,
+                "cell_state": "blank"
+              },
+              {
+                "label": "Operating Margin",
+                "raw_value": "375.43%"
+              }
+            ],
+            "quality_scope": "The blank operating profit/loss cell is missing data, not zero. No profit is inferred from the displayed margin. The margin is retained as displayed without validating its basis."
+          },
+          "UI_fields_not_printed_on_image": [
+            "profile identity",
+            "5 Fiscal Years selector",
+            "Last Updated 28-Apr-2025"
+          ],
+          "identity_match_does_not_resolve_Orbis_candidates": true
+        },
+        {
+          "source_id": "pitchbook_backerkit_balance_sheet_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/104907-52/company/financials/KEY_METRICS",
+          "profile_id": "104907-52",
+          "company_attributed_from_UI_context": "BackerKit / Diaspora, Inc.",
+          "format": "PNG",
+          "title": "Balance Sheet",
+          "native_content_type": "financial_table",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2025"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_BackerKit_Balance_SheetData_2026_10_23_11_49_59.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            388
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "quarantined_pending_source_period_and_unit_basis_verification",
+          "use_for_case_financial_analysis": false,
+          "profile_UI_last_updated_date": "2025-04-28",
+          "confirmed_visual_content": {
+            "title": "Balance Sheet",
+            "unit_label": "Thousands, USD",
+            "visible_period_columns": [
+              "FY 2025"
+            ],
+            "visible_rows": [
+              {
+                "label": "Total Assets",
+                "raw_value": "3,689,284"
+              }
+            ],
+            "quality_scope": "The asset value and displayed thousands unit are retained exactly. No unit correction or normalized amount is inferred."
+          },
+          "UI_fields_not_printed_on_image": [
+            "profile identity",
+            "5 Fiscal Years selector",
+            "Last Updated 28-Apr-2025"
+          ],
+          "identity_match_does_not_resolve_Orbis_candidates": true
+        },
+        {
+          "source_id": "pitchbook_backerkit_employee_count_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/104907-52/company/financials/KEY_METRICS",
+          "profile_id": "104907-52",
+          "company_attributed_from_UI_context": "BackerKit / Diaspora, Inc.",
+          "format": "PNG",
+          "title": "Employee Count",
+          "native_content_type": "employee_chart",
+          "raw_unit_header": null,
+          "raw_period_labels": [],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_BackerKit_Employee_CountData_2026_10_23_11_50_07.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            634
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "quarantined_pending_source_period_and_unit_basis_verification",
+          "use_for_case_financial_analysis": false,
+          "profile_UI_last_updated_date": "2025-04-28",
+          "confirmed_visual_content": {
+            "title": "Employee Count",
+            "visible_x_axis_year_labels": [
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "visible_fields": {
+              "Last Capture": "06-Oct-2025",
+              "Employees": "44",
+              "Progressive Growth": "0.00%"
+            },
+            "visible_legend": [
+              "Captured Employee Count",
+              "Est. Employee Growth"
+            ],
+            "quality_scope": "This is later employee context as of the displayed last-capture date. Historical plot points were not digitized or interpreted as audited headcount."
+          },
+          "UI_fields_not_printed_on_image": [
+            "profile identity",
+            "5 Fiscal Years selector",
+            "Last Updated 28-Apr-2025"
+          ],
+          "identity_match_does_not_resolve_Orbis_candidates": true,
+          "employee_count_is_later_context_not_a_new_financial_observation": true
+        }
+      ],
+      "historical_case_limits": {
+        "financial_observations_excluded_from_case_analysis": 4,
+        "financing_claims_not_independently_verified": 2,
+        "native_export_note": "Native financial images are FY2025 only, with operating profit/loss blank and margin unverified. Employee44 is dated06-Oct-2025 later context; none added to financial observation count."
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "extracted-evidence/fy2025-financial-note-facts.json",
+      "bytes": 1935,
+      "sha256": "55a8f2af225c7779afd327e2d07ae452e7abde32e0e2fc537c11ca47210bf459"
+    },
+    {
+      "path": "extracted-evidence/offering-page-facts.json",
+      "bytes": 1770,
+      "sha256": "2045fed561f3ef4b527f538bfc84563b576507828a34f6e61420120f4244c4b7"
+    },
+    {
+      "path": "extracted-evidence/safe-template-term-facts.json",
+      "bytes": 1646,
+      "sha256": "dd516f07e01690d0880929c65b115092e2837826de8b43682c5e719ed2270011"
+    },
+    {
+      "path": "extracted-evidence/spv-template-identity-facts.json",
+      "bytes": 1623,
+      "sha256": "72a2e853b1bfaf5087da9079bccb9f8310bc74a166d89ff240559435743e1da3"
+    },
+    {
+      "path": "pitchbook/backerkit_pitchbook_observations.json",
+      "bytes": 8083,
+      "sha256": "204f1fb47a74d459728c242c537331acf1475c37e83c0c5e073436042e65e165"
+    },
+    {
+      "path": "pitchbook/PitchBook_BackerKit_Balance_SheetData_2026_10_23_11_49_59.png",
+      "bytes": 29725,
+      "sha256": "0ef913d958628dac3ce2e9d93fde41f5434395dcba57509553a47a5ad6417d32"
+    },
+    {
+      "path": "pitchbook/PitchBook_BackerKit_Employee_CountData_2026_10_23_11_50_07.png",
+      "bytes": 59619,
+      "sha256": "fd00216a71e52b0bc7d779e01f4e113aae2c0e50d9a2333fb68d3ba37ed1d476"
+    },
+    {
+      "path": "pitchbook/PitchBook_BackerKit_Income_StatementData_2026_10_23_11_49_54.png",
+      "bytes": 53464,
+      "sha256": "bc89365b3becce46d59354da316284cafcd459eae58265c11142a13ba5274273"
+    }
+  ],
+  "scope_notes": [
+    "Partial company data; no complete internal data room or independent ledger audit is implied.",
+    "Publication dates, financial periods and later retrieval dates remain separate.",
+    "Provider exports are current-view supplements; earlier fiscal labels do not establish information known at the historical case cutoff.",
+    "Manually extracted observations retain their original limits and do not become original source documents.",
+    "Original offering HTML/PDF files were not saved; the four offering fact files contain selected derivative evidence.",
+    "BackerKit operating entity Diaspora, Inc. and the offering SPV remain separate.",
+    "Unresolved Orbis identity candidates are excluded from this company data.",
+    "PitchBook financial observations and native images remain quarantined pending period, source and unit-basis verification; blanks are missing data, not zero."
+  ]
+}

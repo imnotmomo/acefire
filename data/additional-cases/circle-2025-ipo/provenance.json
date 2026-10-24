@@ -1,0 +1,573 @@
+{
+  "case_id": "circle-2025-ipo",
+  "company_brand": "Circle",
+  "legal_entity": "Circle Internet Group, Inc.",
+  "historical_case_cutoff": "2025-05-27",
+  "sources": [
+    {
+      "id": "circle_s1a_20250527",
+      "title": "Circle May 2025 amended IPO registration statement",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525126208/d737521ds1a.htm",
+      "filing_accession": "0001193125-25-126208",
+      "publication_date": "2025-05-27",
+      "document_type": "S-1/A Amendment No. 3",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521ds1a.htm",
+      "original_saved": true,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7",
+      "redaction_status": "No redaction assertion made for the entire filing; linked exhibits have redactions",
+      "financial_unit_note": "Selected statements are reported in USD thousands; other summary tables use USD millions. Units are per table, not per file.",
+      "relative_path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "bytes": 6116627,
+      "saved_file_source_url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/5b9b06a4-e3e9-4884-a5bd-14850b18e68d.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18497671",
+      "saved_format": "PDF",
+      "page_count": 455,
+      "publisher_distribution": "Circle IR/Q4-hosted PDF conversion of filing",
+      "byte_equivalent_to_SEC_HTML_claimed": false,
+      "http_request_started_at_utc": "2026-10-24T12:25:40.491076+00:00",
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00"
+    },
+    {
+      "id": "circle_coinbase_collaboration_20230818",
+      "title": "Circle and Coinbase collaboration contract, Exhibit 10.1",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525070481/d737521dex101.htm",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "effective_date": "2023-08-18",
+      "document_type": "EX-10.1",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521dex101.htm",
+      "original_saved": false,
+      "sha256": null,
+      "redacted": true,
+      "omissions": "Published[*****]redactions retained; final attachment page lists headings without underlying contents. Printed/s/signature representations are present, not verified cryptographic signatures.",
+      "publication_date_basis": "Exhibit included in locally verified initial S-1 accession0001193125-25-070481 filedApril1,2025.",
+      "standalone_raw_HTML_saved": false,
+      "public_contract_body_available_locally": true,
+      "included_in_saved_original_pdf": {
+        "source_id": "circle_s1_20250401_with_exhibits",
+        "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+        "physical_page_range_1based": [
+          350,
+          392
+        ],
+        "signature_representation_page_1based": 391,
+        "attachment_heading_only_page_1based": 392,
+        "effective_date": "2023-08-18",
+        "count_as_separate_original_file": false
+      }
+    },
+    {
+      "id": "circle_coinbase_ecosystem_20241114",
+      "title": "Circle and Coinbase stablecoin ecosystem contract, Exhibit 10.2",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525070481/d737521dex102.htm",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "effective_date": "2024-11-14",
+      "document_type": "EX-10.2",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521dex102.htm",
+      "original_saved": false,
+      "sha256": null,
+      "redacted": true,
+      "omissions": "Published[*****]redactions retained; final attachment page lists headings without underlying contents. Printed/s/signature representations are present, not verified cryptographic signatures.",
+      "publication_date_basis": "Exhibit included in locally verified initial S-1 accession0001193125-25-070481 filedApril1,2025.",
+      "standalone_raw_HTML_saved": false,
+      "public_contract_body_available_locally": true,
+      "included_in_saved_original_pdf": {
+        "source_id": "circle_s1_20250401_with_exhibits",
+        "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+        "physical_page_range_1based": [
+          393,
+          408
+        ],
+        "signature_representation_page_1based": 407,
+        "attachment_heading_only_page_1based": 408,
+        "effective_date": "2024-11-14",
+        "count_as_separate_original_file": false
+      }
+    },
+    {
+      "id": "circle_ipo_launch_20250527",
+      "title": "Circle's own IPO launch announcement",
+      "source_url": "https://www.circle.com/pressroom/circle-launches-initial-public-offering",
+      "publication_date": "2025-05-27",
+      "document_type": "company_press_release",
+      "web_reader_access": "verified",
+      "expected_original_filename": "circle-launches-initial-public-offering.html",
+      "original_saved": false,
+      "sha256": null,
+      "source_relationship": "Company announcement corroborates proposed offering terms in the same-day S-1/A; it is not an independent audit."
+    },
+    {
+      "id": "circle_s1_20250401_with_exhibits",
+      "title": "Circle initial April1,2025S-1 with public contract exhibits",
+      "source_url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/90d133fe-9b86-4570-81b2-dc260ff1a06a.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18334897",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "document_type": "Initial S-1",
+      "original_saved": true,
+      "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743",
+      "bytes": 7200799,
+      "saved_format": "PDF",
+      "page_count": 682,
+      "web_reader_access": "verified",
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00",
+      "exact_download_completion_at_utc": null,
+      "publisher_distribution": "Circle IR/Q4-hosted EDGAR filing HTML-to-PDF conversion",
+      "contains_source_ids": [
+        "circle_coinbase_collaboration_20230818",
+        "circle_coinbase_ecosystem_20241114"
+      ],
+      "version_note": "Initial April1S-1, not May27Amendment3. Retained as a distinct source, not substituted for the later filing.",
+      "redaction_status": "Public contract exhibits retain[*****]omissions; attachment pages are headings only."
+    }
+  ],
+  "providers": {
+    "orbis": {
+      "sources": [
+        {
+          "source_id": "ORBIS-CIRCLE-UI-20261024",
+          "source_kind": "derived_manual_UI_capture",
+          "source_url": "http://120.79.81.87:8834/version-20260316-10-15/Orbis/1/Companies/Report",
+          "capture_date_utc": "2026-10-24",
+          "profile_orbis_id": "674047230",
+          "profile_bvd_id": "US992840247",
+          "legal_entity": "Circle Internet Group, Inc.",
+          "country": "United States",
+          "city": "New York",
+          "state": "New York",
+          "company_status_label": "Public company",
+          "identity_status": "verified_on_visible_UI_by_parent",
+          "observation_count": 48,
+          "metric_count": 12,
+          "missing_value_count": 9,
+          "period_ends": [
+            "2025-12-31",
+            "2024-12-31",
+            "2023-12-31",
+            "2022-12-31"
+          ],
+          "table_context": {
+            "consolidation_label": "Consolidated",
+            "report_type_label": "Annual report",
+            "years_in_display_order": [
+              2025,
+              2024,
+              2023,
+              2022
+            ],
+            "period_end_label": "31 Dec",
+            "duration_months": 12,
+            "audit_opinion_label": "unqualified",
+            "record_version_label": "Original",
+            "record_version_note": "Original is the provider table's record-version label; it does not mean an original source document was downloaded.",
+            "accounting_standard_label": "US GAAP",
+            "source_reference_by_year": {
+              "2025": "10-K",
+              "2024": "PROSP",
+              "2023": "PROSP",
+              "2022": "PROSP"
+            },
+            "source_document_urls": null,
+            "column_currency_labels_reported": [
+              "USD",
+              "美元"
+            ],
+            "global_unit_control_reported": "千 USD",
+            "default_currency_control_reported": "Default currency (USD)"
+          },
+          "unit_resolution": {
+            "status": "unresolved",
+            "reason": "Column currency labels and a separate global thousand-USD control were both reported. Effective numeric scaling has not been confirmed.",
+            "normalization_performed": false,
+            "scale_multiplier": null
+          },
+          "cash_flow_definition_status": "Only the visible label 现金流量 was supplied. The source's cash-flow definition has not been verified or mapped to an operating, investing or financing measure.",
+          "temporal_relationship": {
+            "reference_case": "circle-2025-ipo",
+            "reference_case_cutoff": "2025-05-27",
+            "role": "later_supplemental_provider_snapshot",
+            "includes_post_cutoff_fy2025_information": true,
+            "replace_historical_ipo_evidence": false
+          },
+          "data_files": [
+            "orbis/circle_orbis_observations.csv",
+            "orbis/circle_orbis_observations.json"
+          ],
+          "is_original_saved": false,
+          "original_file_relative_path": null,
+          "native_export_requested": false
+        },
+        {
+          "source_id": "ORBIS-CIRCLE-SAFARI-NATIVE-SUMMARY-20261023",
+          "source_kind": "native_provider_export_xlsx",
+          "source_url": "https://orbis-r1-bvdinfo-com.ezproxy.cul.columbia.edu/version-20260316-10-15/Orbis/1/Companies/Search",
+          "source_url_kind": "Previously verified institutional access entrypoint; exact Safari report/export URL not supplied",
+          "source_origin": "https://orbis-r1-bvdinfo-com.ezproxy.cul.columbia.edu",
+          "reported_source_report_route": "Orbis/1/Companies/Report",
+          "exact_report_or_download_url_recorded": false,
+          "legal_entity": "Circle Internet Group, Inc.",
+          "country": "United States",
+          "profile_bvd_id": "US992840247",
+          "profile_orbis_id": "674047230",
+          "browser_context": "Existing authenticated Safari Columbia session",
+          "format": "XLSX",
+          "report_type": "Summary/current company",
+          "native_export_relative_path": "orbis/Circle_US_Orbis_Summary_Safari_20261023.xlsx",
+          "is_native_provider_export": true,
+          "is_original_saved": false,
+          "is_original_company_filing": false,
+          "original_bytes_preserved": true,
+          "bytes": 22476,
+          "sha256": "b575f805baa86fa2eef2e2b3406fd60961be7b886853dc128f893e57a81f6d60",
+          "sheet_names": [
+            "CIRCLE_INTERNET_GROUP__INC"
+          ],
+          "native_period_ends": [
+            "2025-12-31",
+            "2024-12-31",
+            "2023-12-31",
+            "2022-12-31"
+          ],
+          "source_reference_by_period": {
+            "2025-12-31": "10-K",
+            "2024-12-31": "PROSP.",
+            "2023-12-31": "PROSP.",
+            "2022-12-31": "PROSP."
+          },
+          "monetary_unit_label": "th USD",
+          "consolidation_label": "Consolidated",
+          "statement_type_label": "Annual report",
+          "duration_months": 12,
+          "cash_flow_native_label": " ∟ Cash flow [Net Income before D&A]",
+          "raw_manual_observations_modified": false,
+          "new_financial_observation_count": 0,
+          "retrieval_date_utc": "2026-10-24",
+          "exact_download_time_utc": null,
+          "verified_at_utc": "2026-10-24T04:15:02.365865+00:00"
+        }
+      ],
+      "native_monetary_unit": "th USD",
+      "native_cash_flow_label": "Cash flow [Net Income before D&A]",
+      "native_cash_flow_is_operating_cash_flow": false,
+      "prior_manual_UI_scale_remains_unresolved": true
+    },
+    "pitchbook": {
+      "sources": [
+        {
+          "source_id": "PB-CIRCLE-PROFILE-60145-57",
+          "source_kind": "derived_manual_UI_capture",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/profile",
+          "financials_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "display_name": "Circle Internet Group",
+          "legal_name_as_observed": "Circle Internet Group Inc",
+          "country": "United States",
+          "location": "New York, New York, United States",
+          "industry_label": "Financial Software",
+          "public_listing_as_displayed": "NYS:CRCL",
+          "full_profile_content_checked": true,
+          "provider_last_updated_date": "2026-09-18",
+          "raw_unit_and_basis_header": "Thousands, USD. All numbers are reported under US GAAP unless otherwise stated.",
+          "financial_source_type": "Provider income statement and cash-flow financial tables; underlying filing reference and consolidation scope not visible",
+          "raw_income_statement_trend_header": "5 TTM",
+          "income_statement_period_labels": [
+            "Jun 2025",
+            "Sep 2025",
+            "Dec 2025",
+            "Mar 2026",
+            "Jun 2026"
+          ],
+          "cash_flow_and_balance_sheet_period_labels": [
+            "TTM Dec 2025",
+            "TTM Mar 2026",
+            "TTM Jun 2026"
+          ],
+          "period_basis": "TTM labels preserved; income/cash-flow values are not treated as quarterly flows; balance-sheet amounts remain stocks",
+          "ui_capture_source_ids": [
+            "PB-CIRCLE-TTM-FINANCIALS-UI-20261024"
+          ],
+          "local_derived_files": [
+            "pitchbook/circle_ttm_financial_observations.json"
+          ],
+          "related_native_export_source_id": "pitchbook_circle_balance_sheet_image_20261024",
+          "source_original_file_saved": false,
+          "financial_observation_count_from_UI": 80,
+          "alignment_verification": "Native TH/TD text and visible positions resolved two leading empty Revenue Growth cells; final JSON independently reviewed.",
+          "related_native_export_source_ids": [
+            "pitchbook_circle_balance_sheet_image_20261024",
+            "pitchbook_circle_cash_flow_image_20261024",
+            "pitchbook_circle_annual_income_statement_image_20261024",
+            "pitchbook_circle_annual_balance_sheet_image_20261024",
+            "pitchbook_circle_annual_cash_flow_image_20261024"
+          ],
+          "annual_native_exports_are_distinct_new_configuration": true
+        },
+        {
+          "source_id": "pitchbook_circle_balance_sheet_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "format": "PNG",
+          "title": "Balance Sheet",
+          "country_from_UI_context": "United States",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "TTM Dec 2025",
+            "TTM Mar 2026",
+            "TTM Jun 2026"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "download_filename_preserved": true,
+          "filename_date_note": "Filename contains 2026_10_23 while image Created on date is 24-Oct-2026; no timezone explanation assumed.",
+          "native_export_relative_path": "pitchbook/PitchBook_Circle_Internet_Group_Balance_SheetData_2026_10_23_10_59_46.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "attribution_limitation": "PNG has no company name or ID. Filename plus root-verified authenticated Circle financials UI/download context establish attribution; the image alone does not.",
+          "financial_observation_count": 15,
+          "local_derived_files": [
+            "pitchbook/circle_balance_sheet_observations.json"
+          ]
+        },
+        {
+          "source_id": "pitchbook_circle_cash_flow_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "format": "PNG",
+          "title": "Cash Flow",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "TTM Dec 2025",
+            "TTM Mar 2026",
+            "TTM Jun 2026"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "download_filename_preserved": true,
+          "filename_date_note": "Filename contains 2026_10_23 while image Created on date is 24-Oct-2026; displayed dates preserved without assuming timezone explanation. Metadata timestamps are UTC.",
+          "native_export_relative_path": "pitchbook/PitchBook_Circle_Internet_Group_Cash_FlowData_2026_10_23_11_31_03.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "attribution_limitation": "PNG contains no company name or profile ID; attribution comes from root-verified Circle financials UI/download context and filename. Several row labels are visibly truncated; complete row labels come from the saved UI capture.",
+          "local_derived_files": [
+            "pitchbook/circle_ttm_financial_observations.json"
+          ],
+          "corroborated_existing_observation_count": 15,
+          "new_financial_observation_count": 0,
+          "verification": "Child viewed PNG and compared all 15 displayed values and three TTM headers to the existing JSON cash-flow rows; exact match. This is corroboration within one provider, not an independent issuer source."
+        },
+        {
+          "source_id": "pitchbook_circle_annual_income_statement_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "company_attributed_from_UI_context": "Circle Internet Group, Inc.",
+          "format": "PNG",
+          "title": "Income Statement",
+          "native_content_type": "financial_table",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2021",
+            "FY 2022",
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_Circle_Internet_Group_Income_StatementData_2026_10_24_12_04_17.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            3840,
+            1162
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "current_2026_historical_view_not_point_in_time_archive",
+          "profile_UI_last_updated_date": "2026-09-18",
+          "accounting_basis_from_root_UI": "US GAAP unless otherwise stated; analyst-normalized labels remain separate.",
+          "root_UI_configuration": "5 Fiscal Years",
+          "distinct_target_from_prior_TTM_downloads": true,
+          "historical_case_cutoff": "2025-05-27",
+          "FY2025_excluded_from_IPO_case": true,
+          "earlier_FY_columns_not_point_in_time_archive": true,
+          "metric_row_count": 13,
+          "missing_cell_guard": "EBIT, EBITDA, Net Income and EPS rows labeled Analyst Normalized are blank for FY2021–FY2023, not zero. No implied amounts or shared margin basis inferred.",
+          "prior_TTM_income_download_was_retried": false
+        },
+        {
+          "source_id": "pitchbook_circle_annual_balance_sheet_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "company_attributed_from_UI_context": "Circle Internet Group, Inc.",
+          "format": "PNG",
+          "title": "Balance Sheet",
+          "native_content_type": "financial_table",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_Circle_Internet_Group_Balance_SheetData_2026_10_24_12_04_30.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            634
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "current_2026_historical_view_not_point_in_time_archive",
+          "profile_UI_last_updated_date": "2026-09-18",
+          "accounting_basis_from_root_UI": "US GAAP unless otherwise stated; analyst-normalized labels remain separate.",
+          "root_UI_configuration": "5 Fiscal Years",
+          "distinct_target_from_prior_TTM_downloads": true,
+          "historical_case_cutoff": "2025-05-27",
+          "FY2025_excluded_from_IPO_case": true,
+          "earlier_FY_columns_not_point_in_time_archive": true,
+          "metric_row_count": 5
+        },
+        {
+          "source_id": "pitchbook_circle_annual_cash_flow_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/60145-57/company/financials/KEY_METRICS",
+          "profile_id": "60145-57",
+          "company_attributed_from_UI_context": "Circle Internet Group, Inc.",
+          "format": "PNG",
+          "title": "Cash Flow",
+          "native_content_type": "financial_table",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "native_export_relative_path": "pitchbook/PitchBook_Circle_Internet_Group_Cash_FlowData_2026_10_24_12_04_36.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            634
+          ],
+          "PNG_signature_all_chunk_CRCs_and_SHA256_verified": true,
+          "attribution_limitation": "Image contains no company name, profile ID or source URL. Attribution relies on root-verified company financials UI/download context and filename.",
+          "new_JSON_financial_observation_count": 0,
+          "quality_status": "current_2026_historical_view_not_point_in_time_archive",
+          "profile_UI_last_updated_date": "2026-09-18",
+          "accounting_basis_from_root_UI": "US GAAP unless otherwise stated; analyst-normalized labels remain separate.",
+          "root_UI_configuration": "5 Fiscal Years",
+          "distinct_target_from_prior_TTM_downloads": true,
+          "historical_case_cutoff": "2025-05-27",
+          "FY2025_excluded_from_IPO_case": true,
+          "earlier_FY_columns_not_point_in_time_archive": true,
+          "metric_row_count": 5,
+          "row_label_limit": "First three cash-flow labels are visibly ellipsized; complete labels rely on the verified UI context."
+        }
+      ],
+      "historical_case_limits": {
+        "historical_case_cutoff": "2025-05-27",
+        "all_95_observations_post_cutoff": true,
+        "post_cutoff_observations_excluded_from_IPO_case": 95,
+        "annual_native_images_note": "Annual images include FY2021–FY2025 income and FY2023–FY2025 balance sheet/cash flow. FY2025 is excluded at the 27-May-2025 IPO cutoff; earlier annual cells are still a current 2026 view, not verified as a point-in-time source. The existing 95 structured observations are all later TTM periods and remain excluded."
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "extracted_evidence.json",
+      "bytes": 8442,
+      "sha256": "2cc8a4fd5f9f767c3ac8fc5a6b7659080d9d279480e4c3ea979e02d60b003f89"
+    },
+    {
+      "path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "bytes": 7200799,
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743"
+    },
+    {
+      "path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "bytes": 6116627,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7"
+    },
+    {
+      "path": "orbis/circle_orbis_observations.csv",
+      "bytes": 21824,
+      "sha256": "b3af4ccd42bc7ea0fb22f76e0916f20c24166bd390d2eebb862f414f6045708a"
+    },
+    {
+      "path": "orbis/circle_orbis_observations.json",
+      "bytes": 67077,
+      "sha256": "3172420e3f2a4c8c130698f785603c16c360eba8ae80470de5aff063420e4e3b"
+    },
+    {
+      "path": "orbis/Circle_US_Orbis_Summary_Safari_20261023.xlsx",
+      "bytes": 22476,
+      "sha256": "b575f805baa86fa2eef2e2b3406fd60961be7b886853dc128f893e57a81f6d60"
+    },
+    {
+      "path": "pitchbook/circle_balance_sheet_observations.json",
+      "bytes": 16939,
+      "sha256": "4de377fa65a2f2cdc2176b75ab26022cdbcd210087fd480c6696909cd450ea9c"
+    },
+    {
+      "path": "pitchbook/circle_ttm_financial_observations.json",
+      "bytes": 98364,
+      "sha256": "7b24b8a8ce96e40cae68708a903a1c57f6e5d19be702fd3b81e551edc240b67e"
+    },
+    {
+      "path": "pitchbook/PitchBook_Circle_Internet_Group_Balance_SheetData_2026_10_23_10_59_46.png",
+      "bytes": 67346,
+      "sha256": "f28eb6b5a0922ebf64a98c159022121024dd04f959e576a784697c9cd1304ac7"
+    },
+    {
+      "path": "pitchbook/PitchBook_Circle_Internet_Group_Balance_SheetData_2026_10_24_12_04_30.png",
+      "bytes": 67702,
+      "sha256": "5d77e0bef511cb782215662073345fc24d5e756aa047b7935a1d3127613e79dc"
+    },
+    {
+      "path": "pitchbook/PitchBook_Circle_Internet_Group_Cash_FlowData_2026_10_23_11_31_03.png",
+      "bytes": 80831,
+      "sha256": "ac7283084e1f43f9f27ed7e2eb2d20ccb2ced65b8121da1853dc739c9edbb858"
+    },
+    {
+      "path": "pitchbook/PitchBook_Circle_Internet_Group_Cash_FlowData_2026_10_24_12_04_36.png",
+      "bytes": 81093,
+      "sha256": "db293a40251999ff3a89f03d7428e38d728bb54822230cdca107489e36caf4be"
+    },
+    {
+      "path": "pitchbook/PitchBook_Circle_Internet_Group_Income_StatementData_2026_10_24_12_04_17.png",
+      "bytes": 207330,
+      "sha256": "4ffcaac97efdf41e70ebf7a7a4561f0776e7213964b7581beda7bbdef4ea3208"
+    }
+  ],
+  "scope_notes": [
+    "Partial company data; no complete internal data room or independent ledger audit is implied.",
+    "Publication dates, financial periods and later retrieval dates remain separate.",
+    "Provider exports are current-view supplements; earlier fiscal labels do not establish information known at the historical case cutoff.",
+    "Manually extracted observations retain their original limits and do not become original source documents."
+  ]
+}

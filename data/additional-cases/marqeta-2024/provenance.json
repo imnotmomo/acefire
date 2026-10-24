@@ -1,0 +1,624 @@
+{
+  "case_id": "marqeta-2024",
+  "company_brand": "Marqeta",
+  "legal_entity": "Marqeta, Inc.",
+  "historical_case_cutoff": "2025-02-26",
+  "sources": [
+    {
+      "source_id": "MQ24-10K",
+      "filename": "marqeta_fy2024_10k.pdf",
+      "url": "https://investors.marqeta.com/static-files/1358c8a7-341d-4cd8-98f2-680d1a3048ea",
+      "title": "Marqeta FY2024 Form 10-K",
+      "publisher": "Marqeta, Inc. investor relations",
+      "publication_date": "2025-02-26",
+      "financial_period": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "type": "duration",
+        "label": "FY2024"
+      },
+      "filing_id": "0001628280-25-008232",
+      "source_role": "Audited annual financial statements, business and risk disclosures, revenue presentation and contract context",
+      "expected_format": "pdf",
+      "expected_pages": 145,
+      "landing_url": "https://investors.marqeta.com/financial-filings/quarterly-results",
+      "redactions": "Full financial statement report; contracts incorporated by reference may be redacted; financial statement scopes must be read from report.",
+      "is_original_saved": false,
+      "relative_path": null,
+      "current_source_need_covered_by": "MQ24-10K-ISSUER-PDF"
+    },
+    {
+      "source_id": "MQ24-RELEASE",
+      "filename": "marqeta_q4_fy2024_earnings_release.pdf",
+      "url": "https://investors.marqeta.com/static-files/05e01c2a-3a69-44d3-ad3f-0e387754b4d6",
+      "title": "Marqeta Q4 and FY2024 earnings release",
+      "publisher": "Marqeta, Inc. investor relations",
+      "publication_date": "2025-02-26",
+      "financial_period": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "type": "duration",
+        "label": "FY2024 and Q4 2024; comparative FY2023 and Q4 2023"
+      },
+      "filing_id": "0001628280-25-008133 (related 8-K)",
+      "source_role": "Management narrative, quarterly and annual financial tables and non-GAAP reconciliation",
+      "expected_format": "pdf",
+      "expected_pages": 10,
+      "landing_url": "https://investors.marqeta.com/news-releases/news-release-details/marqeta-reports-fourth-quarter-and-full-year-2024-financial",
+      "redactions": "No redactions noted in inspected pages; summary financial tables are marked unaudited.",
+      "is_original_saved": false,
+      "relative_path": null,
+      "current_source_need_covered_by": "MQ24-RELEASE-ISSUER-RENDERING"
+    },
+    {
+      "source_id": "MQ24-SUPPLEMENT",
+      "filename": "marqeta_q4_fy2024_earnings_supplement.pdf",
+      "url": "https://investors.marqeta.com/static-files/78b8821c-e252-4a46-a629-3ece42717901",
+      "title": "Marqeta Earnings Supplement December 31, 2024",
+      "publisher": "Marqeta, Inc. investor relations",
+      "publication_date": "2025-02-26",
+      "publication_date_basis": "Published alongside Q4/FY2024 earnings release on issuer quarterly-results page; PDF cover reports period December 31, 2024",
+      "financial_period": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "type": "duration",
+        "label": "Q4 and FY2024; historical quarterly comparatives"
+      },
+      "filing_id": null,
+      "source_role": "Investor presentation with operating metrics, financial trends and management explanations",
+      "expected_format": "pdf",
+      "expected_pages": 10,
+      "landing_url": "https://investors.marqeta.com/financial-filings/quarterly-results",
+      "redactions": "Not a complete original ledger or financial model; figures are presentation-level summaries.",
+      "is_original_saved": false,
+      "relative_path": null
+    },
+    {
+      "source_id": "MQ24-BLOCK-AM17",
+      "filename": "block_marqeta_msa_amendment17_20230701.htm",
+      "url": "https://www.sec.gov/Archives/edgar/data/1522540/000152254023000027/exhibit101-8xka81123.htm",
+      "title": "Amendment No. 17 to Master Services Agreement, Block and Marqeta",
+      "publisher": "SEC EDGAR / Marqeta, Inc.",
+      "publication_date": null,
+      "effective_date": "2023-07-01",
+      "financial_period": {
+        "type": "contract",
+        "label": "Contract amendment effective 2023-07-01, relevant to FY2024 Cash App revenue presentation"
+      },
+      "filing_id": "0001522540-23-000027",
+      "source_role": "Contract evidence for Cash App renewal, program term and net-revenue presentation context",
+      "expected_format": "html",
+      "landing_url": "https://www.sec.gov/Archives/edgar/data/1522540/000152254023000027/0001522540-23-000027-index.htm",
+      "redactions": "Explicit [***] omissions of confidential terms; cannot recover redacted price/rebate details or claim complete contract.",
+      "is_original_saved": false,
+      "relative_path": null,
+      "publication_date_basis": "Filing-index date was not verified; only effective date was read from original exhibit text.",
+      "current_source_need_covered_by": "MQ24-BLOCK-AM17-ISSUER-8KA"
+    },
+    {
+      "source_id": "MQ24-10K-ISSUER-PDF",
+      "filename": "marqeta_fy2024_10k_issuer.pdf",
+      "relative_path": "originals/marqeta_fy2024_10k_issuer.pdf",
+      "url": "https://investors.marqeta.com/static-files/f18f47ee-c7d2-452a-95bd-03f83f764abe",
+      "final_url": "https://investors.marqeta.com/static-files/f18f47ee-c7d2-452a-95bd-03f83f764abe",
+      "title": "Marqeta FY2024 Form 10-K, issuer-distributed PDF",
+      "publisher": "Marqeta, Inc. investor relations",
+      "source_kind": "issuer_distributed_filing_pdf",
+      "source_role": "Audited consolidated financial statements, business/risk disclosures and revenue presentation",
+      "publication_date": "2025-02-26",
+      "financial_period": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "type": "duration",
+        "label": "FY2024"
+      },
+      "filing_id": "0001628280-25-008232",
+      "filing_id_basis": "Earlier read-only public filing-index research; accession is not inferred from UUID and not required to be printed inside PDF.",
+      "content_type": "application/pdf",
+      "fetched_at_utc": "2026-10-24T12:24:32.900058+00:00",
+      "validated_at_utc": "2026-10-24T12:30:30.764790+00:00",
+      "byte_size": 1871671,
+      "sha256": "16e28e7dfc3719a15afb01b758177f7a05e73292947dcd2e52dc976e76dc9769",
+      "page_count": 113,
+      "is_original_saved": true,
+      "is_original": true,
+      "is_issuer_distributed_document": true,
+      "is_issuer_filing_pdf": true,
+      "original_downloaded_bytes_preserved": true,
+      "supersedes_or_covers_source_need": "MQ24-10K",
+      "does_not_establish_identical_bytes_to_denied_source": true,
+      "version_and_scope_note": "113-page issuer-distributed rendering, not the historical expected145-page URL. Do not assert byte identity with SEC HTML or the denied file.",
+      "locators_pdf_pages_1_based": {
+        "cover": 1,
+        "audit_report_start": 66,
+        "audit_signature_date": 68,
+        "consolidated_balance_sheets": 70,
+        "consolidated_operations": 71,
+        "cash_flows": 73,
+        "notes_start": 75,
+        "filing_signatures": 113
+      },
+      "pdf_metadata": {
+        "/Author": "Kaleidoscope - kscope.io",
+        "/CreationDate": "D:20250226222512Z",
+        "/Creator": "Chromium",
+        "/Keywords": "Marqeta INC 10-K",
+        "/ModDate": "D:20250430160225-04'00'",
+        "/Producer": "KS - PDF Engine v1.2",
+        "/Subject": "10-K filed 02/26/2025",
+        "/Title": "Form 10-K for Marqeta INC filed 02/26/2025"
+      },
+      "point_in_time_byte_archive_verified": false,
+      "redactions": "No redaction assessment beyond inspected financial/report pages; incorporated contracts may remain redacted or absent."
+    },
+    {
+      "source_id": "MQ24-RELEASE-ISSUER-RENDERING",
+      "filename": "marqeta_q4_fy2024_earnings_release_issuer_rendering.pdf",
+      "relative_path": "originals/marqeta_q4_fy2024_earnings_release_issuer_rendering.pdf",
+      "url": "https://investors.marqeta.com/node/9781/pdf",
+      "final_url": "https://investors.marqeta.com/node/9781/pdf",
+      "title": "Marqeta Q4/FY2024 earnings release, issuer-generated PDF rendering",
+      "publisher": "Marqeta, Inc. investor relations",
+      "source_kind": "issuer_generated_release_pdf_rendering",
+      "source_role": "Quarterly/annual unaudited financial tables, management discussion and GAAP-to-non-GAAP reconciliations",
+      "publication_date": "2025-02-26",
+      "financial_period": {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "type": "duration",
+        "label": "FY2024"
+      },
+      "filing_id": "0001628280-25-008133 (related earnings 8-K)",
+      "filing_id_basis": "Earlier read-only public filing-index research; accession is not inferred from UUID and not required to be printed inside PDF.",
+      "content_type": "application/pdf",
+      "fetched_at_utc": "2026-10-24T12:24:32.900272+00:00",
+      "validated_at_utc": "2026-10-24T12:30:30.764790+00:00",
+      "byte_size": 81231,
+      "sha256": "2c0cf066de71d2330f8554f98c9e15331e19f99bedc74bde2b258d7c1d82875f",
+      "page_count": 7,
+      "is_original_saved": true,
+      "is_original": true,
+      "is_issuer_distributed_document": true,
+      "is_issuer_filing_pdf": false,
+      "original_downloaded_bytes_preserved": true,
+      "supersedes_or_covers_source_need": "MQ24-RELEASE",
+      "does_not_establish_identical_bytes_to_denied_source": true,
+      "version_and_scope_note": "Seven-page node/9781/pdf rendering, distinct from denied10-page static PDF. PDF CreationDate is2026-06-06; publication date remains2025-02-26. Do not assert historical cutoff-day byte identity.",
+      "locators_pdf_pages_1_based": {
+        "headline_and_operating_highlights": 1,
+        "operations_start": 3,
+        "operations_continuation_and_balance_sheet": 4,
+        "cash_flows_start": 4,
+        "quarterly_highlights": 5,
+        "non_GAAP_reconciliation": 7
+      },
+      "pdf_metadata": {
+        "/CreationDate": "D:20260606032501Z",
+        "/Producer": "West Corporation using ABCpdf",
+        "/Title": "Marqeta Reports Fourth Quarter and Full Year 2024 Financial Results"
+      },
+      "point_in_time_byte_archive_verified": false,
+      "redactions": "No redaction assessment beyond inspected financial/report pages; incorporated contracts may remain redacted or absent."
+    },
+    {
+      "source_id": "MQ24-BLOCK-AM17-ISSUER-8KA",
+      "filename": "marqeta_8ka_20230811_block_amendment17.pdf",
+      "relative_path": "originals/marqeta_8ka_20230811_block_amendment17.pdf",
+      "url": "https://investors.marqeta.com/static-files/cc65d0a9-97b2-4100-9386-11097971d439",
+      "final_url": "https://investors.marqeta.com/static-files/cc65d0a9-97b2-4100-9386-11097971d439",
+      "title": "Marqeta 11-Aug-2023 Form 8-K/A including Block MSA Amendment17",
+      "publisher": "Marqeta, Inc. investor relations",
+      "source_kind": "issuer_distributed_filing_pdf_with_redacted_contract_exhibit",
+      "source_role": "Public contract exhibit10.1 and filing context; Amendment17 effective2023-07-01",
+      "publication_date": "2023-08-11",
+      "financial_period": {
+        "type": "contract",
+        "effective_date": "2023-07-01",
+        "execution_date": "2023-08-04",
+        "filing_date": "2023-08-11"
+      },
+      "filing_id": "0001522540-23-000027",
+      "filing_id_basis": "Earlier read-only public filing-index research; accession is not inferred from UUID and not required to be printed inside PDF.",
+      "content_type": "application/pdf",
+      "fetched_at_utc": "2026-10-24T12:24:32.900346+00:00",
+      "validated_at_utc": "2026-10-24T12:30:30.764790+00:00",
+      "byte_size": 113723,
+      "sha256": "74ce803185f037bcf6b12b74261a03d29688ee2cdf6c2e0110f87439db3c9a02",
+      "page_count": 10,
+      "is_original_saved": true,
+      "is_original": true,
+      "is_issuer_distributed_document": true,
+      "is_issuer_filing_pdf": true,
+      "original_downloaded_bytes_preserved": true,
+      "supersedes_or_covers_source_need": "MQ24-BLOCK-AM17",
+      "does_not_establish_identical_bytes_to_denied_source": true,
+      "version_and_scope_note": "Full10-page8-K/A, not standalone SEC exhibit HTML. Public[***]confidential omissions remain. This amendment is not the full underlying2016MSA or all amendments.",
+      "locators_pdf_pages_1_based": {
+        "8KA_cover": 1,
+        "explanatory_note_and_exhibit_list": 2,
+        "filing_signature": 3,
+        "Amendment17_start": 4,
+        "contract_signatures": 10
+      },
+      "pdf_metadata": {
+        "/Creator": "Chromium",
+        "/Producer": "KS - PDF Engine v1.2",
+        "/CreationDate": "D:20230811203856+00'00'",
+        "/ModDate": "D:20230811203856Z",
+        "/Title": "Form 8-K/A for Marqeta INC filed 08/11/2023",
+        "/Author": "Kaleidoscope - kscope.io",
+        "/Subject": "8-K/A filed 08/11/2023",
+        "/Keywords": "Marqeta INC 8-K/A"
+      },
+      "point_in_time_byte_archive_verified": false,
+      "redactions": "[***]confidential omissions preserved; no reconstruction"
+    }
+  ],
+  "providers": {
+    "orbis": {
+      "sources": [
+        {
+          "source_id": "ORBIS-MQ-UI-20261024",
+          "source_url": "https://nankai.zhihuiya.ccki.top/version-20260316-10-15/Orbis/1/Companies/Report/InternalId/154157",
+          "source_kind": "derived_manual_UI_capture",
+          "provider": "Orbis",
+          "profile_orbis_id": "146341334",
+          "profile_bvd_id": "US274306690",
+          "exact_ui_entity_name": "Marqeta Inc",
+          "country": "United States",
+          "city": "Oakland",
+          "status_label": "Publicly quoted",
+          "consolidation_label": "Consolidated",
+          "statement_type_label": "Annual report",
+          "column_metadata": {
+            "2025-12-31": {
+              "currency_label": "USD",
+              "months": "12",
+              "audit_opinion_label": "Unqualified",
+              "statement_version_label": "Original",
+              "accounting_standard_label": "US GAAP",
+              "filing_type_label": "10-K"
+            },
+            "2024-12-31": {
+              "currency_label": "USD",
+              "months": "12",
+              "audit_opinion_label": "Unqualified",
+              "statement_version_label": "Original",
+              "accounting_standard_label": "US GAAP",
+              "filing_type_label": "10-K"
+            },
+            "2023-12-31": {
+              "currency_label": "USD",
+              "months": "12",
+              "audit_opinion_label": "Unqualified",
+              "statement_version_label": "Original",
+              "accounting_standard_label": "US GAAP",
+              "filing_type_label": "10-K"
+            },
+            "2022-12-31": {
+              "currency_label": "USD",
+              "months": "12",
+              "audit_opinion_label": "Unqualified",
+              "statement_version_label": "Original",
+              "accounting_standard_label": "US GAAP",
+              "filing_type_label": "10-K"
+            },
+            "2021-12-31": {
+              "currency_label": "USD",
+              "months": "12",
+              "audit_opinion_label": "Unqualified",
+              "statement_version_label": "Original",
+              "accounting_standard_label": "US GAAP",
+              "filing_type_label": "10-K"
+            }
+          },
+          "global_display_control_label": "th USD Default currency (USD)",
+          "is_original_saved": false,
+          "original_file_relative_path": null
+        },
+        {
+          "source_id": "ORBIS-MQ-SAFARI-NATIVE-SUMMARY-20261023",
+          "source_kind": "native_provider_export_xlsx",
+          "source_url": "https://orbis-r1-bvdinfo-com.ezproxy.cul.columbia.edu/version-20260316-10-15/Orbis/1/Companies/Search",
+          "source_url_kind": "Previously verified institutional access entrypoint; exact Safari report/export URL not supplied",
+          "source_origin": "https://orbis-r1-bvdinfo-com.ezproxy.cul.columbia.edu",
+          "reported_source_report_route": "Orbis/1/Companies/Report",
+          "exact_report_or_download_url_recorded": false,
+          "legal_entity": "Marqeta, Inc.",
+          "country": "United States",
+          "profile_bvd_id": "US274306690",
+          "profile_orbis_id": "146341334",
+          "browser_context": "Existing authenticated Safari Columbia session",
+          "format": "XLSX",
+          "report_type": "Summary/current company",
+          "native_export_relative_path": "orbis/Marqeta_US_Orbis_Summary_Safari_20261023.xlsx",
+          "is_native_provider_export": true,
+          "is_original_saved": false,
+          "is_original_company_filing": false,
+          "original_bytes_preserved": true,
+          "bytes": 25176,
+          "sha256": "028d6889496abf78001ae9fe5d4bbc5e8522b8069a4c3cef86b2ac39be51cd0f",
+          "sheet_names": [
+            "MARQETA__INC"
+          ],
+          "native_period_ends": [
+            "2025-12-31",
+            "2024-12-31",
+            "2023-12-31",
+            "2022-12-31",
+            "2021-12-31",
+            "2020-12-31",
+            "2019-12-31"
+          ],
+          "source_reference_by_period": {
+            "2025-12-31": "10-K",
+            "2024-12-31": "10-K",
+            "2023-12-31": "10-K",
+            "2022-12-31": "10-K",
+            "2021-12-31": "10-K",
+            "2020-12-31": "PROSP.",
+            "2019-12-31": "PROSP."
+          },
+          "monetary_unit_label": "th USD",
+          "consolidation_label": "Consolidated",
+          "statement_type_label": "Annual report",
+          "duration_months": 12,
+          "cash_flow_native_label": " ∟ Cash flow [Net Income before D&A]",
+          "raw_manual_observations_modified": false,
+          "new_financial_observation_count": 0,
+          "retrieval_date_utc": "2026-10-24",
+          "exact_download_time_utc": null,
+          "verified_at_utc": "2026-10-24T04:15:02.365865+00:00"
+        }
+      ],
+      "native_monetary_unit": "th USD",
+      "native_cash_flow_label": "Cash flow [Net Income before D&A]",
+      "native_cash_flow_is_operating_cash_flow": false,
+      "prior_manual_UI_scale_remains_unresolved": true
+    },
+    "pitchbook": {
+      "sources": [
+        {
+          "source_id": "PB-MQ-PROFILE-54330-13",
+          "source_kind": "derived_manual_UI_capture",
+          "source_url": "https://my.pitchbook.com/profile/54330-13/company/profile",
+          "profile_id": "54330-13",
+          "display_name": "Marqeta",
+          "country": "United States",
+          "location": "Oakland, California, United States",
+          "company_status": "Public company",
+          "industry_label": "Other Financial Services",
+          "is_original_saved": false,
+          "original_file_relative_path": null,
+          "observation_surface": "full_company_profile_and_financial_summary",
+          "full_profile_content_checked": true,
+          "legal_name_as_observed": "Marqeta, Inc.",
+          "financial_summary_source_id": "pitchbook_marqeta_profile_financial_summary_20261024",
+          "provider_last_updated_date": "2026-10-24",
+          "raw_unit_header": "Thousands USD",
+          "raw_period_labels": [
+            "2024",
+            "2025",
+            "TTM Jun 2026"
+          ],
+          "financial_source_type": "Provider financial summary; analyst-normalized measures identified separately from GAAP; underlying filing version not visible",
+          "financial_observation_count": 48,
+          "local_derived_files": [
+            "pitchbook/marqeta_financial_observations.json"
+          ],
+          "source_original_file_saved": false,
+          "native_export_saved_for_this_capture": false,
+          "financials_url": "https://my.pitchbook.com/profile/54330-13/company/financials/KEY_METRICS",
+          "related_native_export_source_ids": [
+            "pitchbook_marqeta_income_statement_image_20261024",
+            "pitchbook_marqeta_balance_sheet_image_20261024",
+            "pitchbook_marqeta_cash_flow_image_20261024"
+          ],
+          "new_export_UI_period_control": "5 Fiscal Years"
+        },
+        {
+          "source_id": "pitchbook_marqeta_income_statement_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/54330-13/company/financials/KEY_METRICS",
+          "profile_id": "54330-13",
+          "format": "PNG",
+          "title": "Income Statement",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2021",
+            "FY 2022",
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "metric_row_count": 13,
+          "displayed_financial_cell_count_in_image": 65,
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "provider_last_updated_from_root_UI": "2026-10-24",
+          "accounting_basis_from_root_UI": "All numbers are reported under US GAAP unless otherwise stated; analyst-normalized metric labels preserved. This basis is from the UI, not printed on the image.",
+          "native_export_relative_path": "pitchbook/PitchBook_Marqeta_Income_StatementData_2026_10_23_11_33_27.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            3840,
+            1162
+          ],
+          "PNG_signature_and_all_chunk_CRCs_verified": true,
+          "image_visually_viewed_by_integrator": true,
+          "attribution_limitation": "Image contains no company name or profile ID; root-verified Marqeta financials UI/download context and filename establish attribution. Cash-flow row labels are truncated.",
+          "filename_date_note": "Filename contains 2026_10_23 while image Created on date is 24-Oct-2026; no timezone explanation assumed. Metadata timestamps are UTC.",
+          "local_derived_files": [
+            "pitchbook/marqeta_financial_observations.json"
+          ],
+          "corroborated_existing_observation_count": 16,
+          "new_JSON_financial_observation_count": 0,
+          "JSON_observation_count_note": "The exported image contains additional annual cells. These are available in the native image but have not been added as structured observations; existing 147 count is unchanged."
+        },
+        {
+          "source_id": "pitchbook_marqeta_balance_sheet_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/54330-13/company/financials/KEY_METRICS",
+          "profile_id": "54330-13",
+          "format": "PNG",
+          "title": "Balance Sheet",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "metric_row_count": 5,
+          "displayed_financial_cell_count_in_image": 15,
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "provider_last_updated_from_root_UI": "2026-10-24",
+          "accounting_basis_from_root_UI": "All numbers are reported under US GAAP unless otherwise stated; analyst-normalized metric labels preserved. This basis is from the UI, not printed on the image.",
+          "native_export_relative_path": "pitchbook/PitchBook_Marqeta_Balance_SheetData_2026_10_23_11_33_50.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            634
+          ],
+          "PNG_signature_and_all_chunk_CRCs_verified": true,
+          "image_visually_viewed_by_integrator": true,
+          "attribution_limitation": "Image contains no company name or profile ID; root-verified Marqeta financials UI/download context and filename establish attribution. Cash-flow row labels are truncated.",
+          "filename_date_note": "Filename contains 2026_10_23 while image Created on date is 24-Oct-2026; no timezone explanation assumed. Metadata timestamps are UTC.",
+          "local_derived_files": [
+            "pitchbook/marqeta_financial_observations.json"
+          ],
+          "corroborated_existing_observation_count": 8,
+          "new_JSON_financial_observation_count": 0,
+          "JSON_observation_count_note": "The exported image contains additional annual cells. These are available in the native image but have not been added as structured observations; existing 147 count is unchanged."
+        },
+        {
+          "source_id": "pitchbook_marqeta_cash_flow_image_20261024",
+          "source_kind": "native_provider_export_image",
+          "source_url": "https://my.pitchbook.com/profile/54330-13/company/financials/KEY_METRICS",
+          "profile_id": "54330-13",
+          "format": "PNG",
+          "title": "Cash Flow",
+          "raw_unit_header": "Thousands, USD",
+          "raw_period_labels": [
+            "FY 2023",
+            "FY 2024",
+            "FY 2025"
+          ],
+          "metric_row_count": 5,
+          "displayed_financial_cell_count_in_image": 15,
+          "raw_footer": "Created on: 24-Oct-2026 | Source: PitchBook Data",
+          "document_created_on_date": "2026-10-24",
+          "provider_last_updated_from_root_UI": "2026-10-24",
+          "accounting_basis_from_root_UI": "All numbers are reported under US GAAP unless otherwise stated; analyst-normalized metric labels preserved. This basis is from the UI, not printed on the image.",
+          "native_export_relative_path": "pitchbook/PitchBook_Marqeta_Cash_FlowData_2026_10_23_11_33_56.png",
+          "is_native_provider_export": true,
+          "original_bytes_preserved": true,
+          "is_original_company_filing": false,
+          "is_native_spreadsheet": false,
+          "image_dimensions": [
+            1000,
+            634
+          ],
+          "PNG_signature_and_all_chunk_CRCs_verified": true,
+          "image_visually_viewed_by_integrator": true,
+          "attribution_limitation": "Image contains no company name or profile ID; root-verified Marqeta financials UI/download context and filename establish attribution. Cash-flow row labels are truncated.",
+          "filename_date_note": "Filename contains 2026_10_23 while image Created on date is 24-Oct-2026; no timezone explanation assumed. Metadata timestamps are UTC.",
+          "local_derived_files": [
+            "pitchbook/marqeta_financial_observations.json"
+          ],
+          "corroborated_existing_observation_count": 8,
+          "new_JSON_financial_observation_count": 0,
+          "JSON_observation_count_note": "The exported image contains additional annual cells. These are available in the native image but have not been added as structured observations; existing 147 count is unchanged."
+        }
+      ],
+      "historical_case_limits": {
+        "historical_case_cutoff": "2025-02-26",
+        "later_period_observations_excluded": 32,
+        "annual_2024_current_view_observations": 16,
+        "current_view_is_point_in_time_archive": false
+      },
+      "metric_basis_quality_flags": [
+        {
+          "subject": "Marqeta",
+          "source_id": "pitchbook_marqeta_income_statement_image_20261024",
+          "flag": "adjacent_margin_basis_not_equivalent_to_analyst_normalized_amounts",
+          "example": "FY2025 EBIT (Analyst Normalized) is 8,245 while displayed EBIT Margin is -2.13%. Several adjacent EBITDA/net income margins also do not correspond to the analyst-normalized amounts divided by revenue.",
+          "handling": "Preserve source labels and all original image bytes. Do not treat those margins and analyst-normalized numerators as equivalent definitions or use them as a combined financial ratio without source clarification. No existing JSON values changed."
+        }
+      ]
+    }
+  },
+  "files": [
+    {
+      "path": "evidence.json",
+      "bytes": 5558,
+      "sha256": "ed8ed6ddc3346ba4e4e868f13f711037ed15c6da4022813e2016df7b3fe9a7a3"
+    },
+    {
+      "path": "originals/marqeta_8ka_20230811_block_amendment17.pdf",
+      "bytes": 113723,
+      "sha256": "74ce803185f037bcf6b12b74261a03d29688ee2cdf6c2e0110f87439db3c9a02"
+    },
+    {
+      "path": "originals/marqeta_fy2024_10k_issuer.pdf",
+      "bytes": 1871671,
+      "sha256": "16e28e7dfc3719a15afb01b758177f7a05e73292947dcd2e52dc976e76dc9769"
+    },
+    {
+      "path": "originals/marqeta_q4_fy2024_earnings_release_issuer_rendering.pdf",
+      "bytes": 81231,
+      "sha256": "2c0cf066de71d2330f8554f98c9e15331e19f99bedc74bde2b258d7c1d82875f"
+    },
+    {
+      "path": "web_evidence_excerpt.txt",
+      "bytes": 1620,
+      "sha256": "06f0c178ec711421dac922dcf3905c5e128d53da4f479b6cad077b5a4df25c22"
+    },
+    {
+      "path": "orbis/Marqeta_US_Orbis_Summary_Safari_20261023.xlsx",
+      "bytes": 25176,
+      "sha256": "028d6889496abf78001ae9fe5d4bbc5e8522b8069a4c3cef86b2ac39be51cd0f"
+    },
+    {
+      "path": "orbis/marqeta_orbis_observations.csv",
+      "bytes": 26191,
+      "sha256": "354d55e18ee4bd73a156e724b128c4b8f433240432e01a87e526e2ecf49ccb66"
+    },
+    {
+      "path": "orbis/marqeta_orbis_observations.json",
+      "bytes": 66895,
+      "sha256": "3bdfc7d1cb24f7405276bda9a0486b014537635475620cde6a2fba12d673ab31"
+    },
+    {
+      "path": "pitchbook/PitchBook_Marqeta_Balance_SheetData_2026_10_23_11_33_50.png",
+      "bytes": 65680,
+      "sha256": "7462e4d356150864728ec2c426a47315f863ddfcd894b6dc34ad16ad0d15ba4f"
+    },
+    {
+      "path": "pitchbook/PitchBook_Marqeta_Cash_FlowData_2026_10_23_11_33_56.png",
+      "bytes": 74814,
+      "sha256": "3b02fe2c1dbe82757c8591bc1238d0726b6f7d8428ee72b031ea4cee7d5e8300"
+    },
+    {
+      "path": "pitchbook/PitchBook_Marqeta_Income_StatementData_2026_10_23_11_33_27.png",
+      "bytes": 227393,
+      "sha256": "6188db4e4a3a641e0bc936afc61a90598fc3466f3b7c02af9a86023c6c4beb91"
+    },
+    {
+      "path": "pitchbook/marqeta_financial_observations.json",
+      "bytes": 52335,
+      "sha256": "01a2bf7aa585d9b6d49ccf98c75702b0479d699c9db5db94cf0da7a0e301a3f6"
+    }
+  ],
+  "scope_notes": [
+    "Partial company data; no complete internal data room or independent ledger audit is implied.",
+    "Publication dates, financial periods and later retrieval dates remain separate.",
+    "Provider exports are current-view supplements; earlier fiscal labels do not establish information known at the historical case cutoff.",
+    "Manually extracted observations retain their original limits and do not become original source documents."
+  ]
+}
