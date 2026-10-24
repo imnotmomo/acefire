@@ -1,14 +1,24 @@
 # XINWENGAri
 
 - Role: Frontend — Projects, Dashboard, metric lineage and evidence inspection, Report Builder / Review / Export, Data room, contextual chat, and website framework documentation. Confirmed by this teammate's frontend implementation requests.
-- State: ready_for_review
+- State: in_progress — finishing frontend integration and publication.
 - Updated: 2026-10-24
-- Working on: Delivered Report/Export/Data room copy cleanup and selection-driven Review Findings, with Human revisions and Agent source-review advice in Activity. Product landing source/assets remain unchanged.
-- Active paths: None reserved. Integrated remote main ff0e405, preserving C's Firebase workflows, narrative generation, saved report loading, source quotations, review states and human-edited flags. Updated the Review component/helpers/styles, Data room copy, frontend docs and browser expectations; no backend or API/schema changes.
+- Working on: Delivered three pinned demos (real Enfuce, illustrative HealthTech and Marketplace), supplied scenario photographs, formal Ingenium branding and a single enlarged Create Project action. Connected the local read-only company workflow to the existing Firebase data using the human-supplied private service-account path.
+- Active paths: frontend integration resolutions, .team/status/XINWENGAri.md; publishing the user-approved local frontend. No deploy/ edits. Frontend catalog/scenario/brand components, Report demo-data/export labels, review rail scrolling, supplied public assets, tests/docs and .gitignore changed. No backend implementation or shared API/schema changes. Private runtime configuration is ignored and not published.
 - Shared contracts: No shared API/model/schema changes. Current frontend-local types are `Project`, `Workspace`, `ModuleConfig`, `Section`, `Revision` and `LocalDocument` in `frontend/src/domain.ts`; evidence/module definitions live in `frontend/src/data.ts`.
 - Handoff: Root URL introduces Ingenium; Book a Demo / See the Platform open `#/projects`. Existing `#/project/...` routes and browser data keys remain compatible. Contact/pricing open email drafts; they do not send messages, book meetings or charge subscriptions. C still owns backend calculations and B owns extraction.
-- Validation: After integrating ff0e405: 41 frontend unit tests, production build and all 10 local platform browser flows passed. Five narrative browser flows passed using existing backend test fixtures and mocked narrative responses: exact quote/source/hash disclosure, invalid-generation edit preservation, provenance exports and mobile support. A further targeted mocked-backend flow checked conflict advice, exact decimals, cleared citations and human revisions. The real Firebase/C backend was unavailable locally; no live model/cloud call or backend mutation was performed. Updated real-backend/Firebase browser expectations were not executed against a live service.
-- Blockers: None for the landing page or historical local demo. Circle needs the prepared C backend. New-document extraction, external research, open-ended chat, generic onboarding, enterprise permissions and production hosting remain separate work; no new provider integration or commercial checkout is claimed.
+- Validation: 44 frontend unit tests and production build passed. Browser suites passed: 10 legacy platform, 10 landing, 6 new scenario flows and 3 real Firebase flows (saved-report load, original quote/page/hash inspection, retained edits and Markdown export). Real API read confirmed Enfuce, 1 source file, 19 observations, 144 returned claim/quotation records and 2 stored reports; derived report quotations are not new extraction claims. No live model generation or cloud mutation was performed. Credential paths/config are ignored, and the supplied secret is outside the Git checkout.
+- Blockers: No blocker for the three demos or reading existing Enfuce reports. Fresh model drafting/calculation/chat needs C's separate Nicrron configuration. The original Enfuce PDF is not available in the local source manifest; existing quoted text, page locators and hashes remain inspectable. Clones need their own authorized backend credentials; code publication does not distribute secrets or source databases.
+
+## Three demos and formal branding — 2026-10-24
+
+- Default catalog is Enfuce (`enfuce-documents` → backend `enfuce-2020`), HealthTech / Biotech and Consumer / Marketplace. These map to Numbers → Claims → Narrative and use the supplied Carlos Muza / Accuray / Blake Wisz cover photographs in that order.
+- Both illustrative scenarios have selectable claims, internal/external example evidence, example assessments, traceable demo reports, Human revision history and exports. No external searches, clinical results, DOI/trial/FDA identifiers or file hashes are invented. Simulation labels remain visible in the UI and exports.
+- Catalog migration replaces only prior pinned demo entries. Custom projects, historical workspace keys and IndexedDB bytes are retained; old Enfuce/Circle/BackerKit direct links still work.
+- `Brand.tsx` displays the supplied Ingenium symbol/wordmark. Landing changes are branding only. Shared temporary sparkle/wand/lightning brand icons now render the mark; functional icons retain their meanings. Header now provides one enlarged purple Create Project button; the duplicate Projects-page black action is removed.
+- Local backend runs hidden on 8017 and Vite remains on 5173. `backend/.env` references the original service-account file outside the repo; `frontend/.env.local` points the proxy at 8017. Both are ignored. .gitignore additionally excludes Firebase admin SDK key filenames and common service-account key names. No credential bytes appear in source/docs or frontend assets.
+- Actual Firebase tests read the named acefire database, loaded an existing 12-module report, checked original quotations/page/hash and exported a locally revised report. Live model calls were disabled. The source-file unavailable state is retained rather than fabricating the missing PDF.
+- Detailed module/asset/runtime instructions are in frontend/README.md and the two asset README files. New scenario tests: npm run test:scenarios.
 
 ## Report review workflow — 2026-10-24
 
@@ -63,3 +73,10 @@ C has since implemented the Circle report/lineage connection described below; re
 - The developer's local Windows `Acefire-AutoPush` task stages `frontend/` every five minutes; cloning does not install it. It requires logged-in, awake, online operation and stops for remote divergence or staged changes outside `frontend/`. Coordination files outside that directory require an explicit commit/push.
 - Current limitations: no team authentication/storage; no automatic re-verification of edits; removed modules do not gain a new deletion revision; PDF uses a Latin font (use DOCX/Markdown to preserve Chinese locators); browser-local chat history is discarded when the chat closes.
 - Website delivery commits: `5d02317` (workspace), `6560090` (complete README); subsequent teammate backend work is kept intact. No other teammate's status file is modified by this handoff.
+
+## Publication follow-up — 2026-10-24
+
+- User confirms the current local website is correct and requests matching production. Preserve that local content for this publication; PPT copy integration remains a separate pending follow-up.
+- Integrated latest C workspace creation, source preview, English report and side-chat contracts. After integration, 89 frontend unit tests, production build and six scenario browser flows passed. Earlier browser suite results above describe the prior baseline.
+- Local Vite now proxies the existing deployed API to use its private English translation manifest; ignored runtime configuration is not published.
+- Production release metadata reports e7b3d2df5e41565b648cbdb833c08d7a487a0c1a. GitHub publication alone does not activate the VPS. This Windows profile has no .ssh directory or available SSH agent identity. Deployment access is pending; preserve C-owned release scripts and server configuration.

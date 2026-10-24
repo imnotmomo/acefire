@@ -24,17 +24,17 @@ async function screenshot(name) {
 try {
   await page.goto('http://127.0.0.1:5173/#/projects', { waitUntil: 'networkidle' })
   await check('Projects: reference-inspired layout, search and sector filters', async () => {
-    assert.equal(await page.locator('.project-card').count(), 4)
+    assert.equal(await page.locator('.project-card').count(), 3)
     await screenshot('projects-desktop')
     await page.getByLabel('Search projects').fill('enfuce')
-    assert.equal(await page.locator('.project-card').count(), 2)
+    assert.equal(await page.locator('.project-card').count(), 1)
     await page.getByLabel('Search projects').fill('')
-    await page.getByLabel('Filter projects by sector').selectOption('Crowdfunding')
+    await page.getByLabel('Filter projects by sector').selectOption('HealthTech / Biotech')
     assert.equal(await page.locator('.project-card').count(), 1)
     await page.getByLabel('Filter projects by sector').selectOption('All sectors')
   })
   await check('Dashboard: real monthly figures and source values', async () => {
-    await page.getByRole('link', { name: 'Open Enfuce dashboard', exact: true }).click()
+    await page.goto('http://127.0.0.1:5173/#/project/enfuce/dashboard', { waitUntil: 'networkidle' })
     await page.getByRole('heading', { name: 'Data dashboard' }).waitFor()
     assert.match(await page.locator('.hero-number').innerText(), /3,417,663.76/)
     await page.getByRole('button', { name: 'View data', exact: true }).click()
@@ -157,7 +157,7 @@ try {
     await page.keyboard.press('Escape')
   })
   await check('Project creation and data isolation', async () => {
-    await page.getByRole('button', { name: 'Project', exact: true }).click()
+    await page.getByRole('button', { name: 'Create Project', exact: true }).click()
     await page.getByLabel('Project name', { exact: true }).fill('New test project')
     await page.getByRole('button', { name: 'Create project', exact: true }).click()
     await page.getByRole('button', { name: 'Generate report preview', exact: false }).click()

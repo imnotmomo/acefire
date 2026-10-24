@@ -74,7 +74,7 @@ try {
   await check('Demo reaches the real platform; brand returns home and stored projects survive', async () => {
     await page.getByRole('link', { name: 'Book a Demo', exact: true }).first().click()
     await page.locator('.project-card').first().waitFor()
-    assert.equal(await page.locator('.project-card').count(), 4)
+    assert.equal(await page.locator('.project-card').count(), 3)
     const before = await page.evaluate(() => localStorage.getItem('acefire:projects:v1'))
     assert.equal(await page.locator('html').getAttribute('data-screen'), 'workspace')
     await page.getByRole('link', { name: 'Ingenium home', exact: true }).click()
