@@ -1,0 +1,39 @@
+[Unit]
+Description=Ingenium Firebase and financial analysis API
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=ingenium
+Group=ingenium
+WorkingDirectory=/srv/ingenium/current/backend
+EnvironmentFile=/etc/ingenium/backend.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/srv/ingenium/current/backend/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8017 --workers 1 --root-path /api --proxy-headers --forwarded-allow-ips 127.0.0.1 --limit-concurrency 16 --timeout-keep-alive 5
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=90
+TimeoutStopSec=30
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=yes
+LimitNOFILE=1024
+TasksMax=128
+MemoryMax=2G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

@@ -36,3 +36,5 @@ The first implementation uses the two saved Circle Akta responses in `data/akta/
 The frontend reads Circle's stored company-report and source APIs; Enfuce retains its historical local evidence demo. New-document processing and Akta retrieval remain separate integration work. The marketing homepage and its Demo links preserve these existing platform routes.
 
 The current Firebase schema, safe DuckDB import, local startup and source-cited LLM workflows are documented in [Firebase integration](backend/FIREBASE_INTEGRATION.md).
+
+The hosted VPS configuration, managed backend service, release verification and rollback are documented in [VPS deployment](deploy/README.md).
