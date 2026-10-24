@@ -1,0 +1,324 @@
+{
+  "$defs": {
+    "ExtractedClaim": {
+      "additionalProperties": false,
+      "properties": {
+        "subject_entity_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Subject Entity Id"
+        },
+        "subject_entity_name": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subject Entity Name"
+        },
+        "claim_type": {
+          "enum": [
+            "parties",
+            "effective_date",
+            "scope",
+            "obligation",
+            "term",
+            "renewal",
+            "termination",
+            "redaction",
+            "business",
+            "product",
+            "market",
+            "customer",
+            "team",
+            "compliance",
+            "definition",
+            "other_nonfinancial",
+            "financial",
+            "operating_metric"
+          ],
+          "title": "Claim Type",
+          "type": "string"
+        },
+        "statement": {
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "effective_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "format": "date",
+          "title": "Effective Date"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "numeric": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NumericFact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "subject_entity_id",
+        "claim_type",
+        "statement",
+        "effective_date",
+        "evidence",
+        "limitations"
+      ],
+      "title": "ExtractedClaim",
+      "type": "object"
+    },
+    "NumericFact": {
+      "additionalProperties": false,
+      "description": "Source-reported candidate; C retains ownership of normalization.",
+      "properties": {
+        "metric_key": {
+          "minLength": 1,
+          "title": "Metric Key",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "raw_value": {
+          "minLength": 1,
+          "title": "Raw Value",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z]{3}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Currency"
+        },
+        "scale_multiplier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Scale Multiplier"
+        },
+        "normalization_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Normalization Basis"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Scope"
+        },
+        "accounting_basis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Accounting Basis"
+        },
+        "period_kind": {
+          "enum": [
+            "instant",
+            "duration",
+            "unknown"
+          ],
+          "title": "Period Kind",
+          "type": "string"
+        },
+        "period_start": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period Start"
+        },
+        "period_end": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period End"
+        },
+        "period_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period Label"
+        },
+        "scenario": {
+          "enum": [
+            "actual",
+            "forecast",
+            "unknown"
+          ],
+          "title": "Scenario",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_key",
+        "label",
+        "raw_value",
+        "unit",
+        "currency",
+        "scale_multiplier",
+        "normalization_basis",
+        "scope",
+        "accounting_basis",
+        "period_kind",
+        "period_start",
+        "period_end",
+        "period_label",
+        "scenario"
+      ],
+      "title": "NumericFact",
+      "type": "object"
+    },
+    "Support": {
+      "additionalProperties": false,
+      "properties": {
+        "physical_page": {
+          "minimum": 1,
+          "title": "Physical Page",
+          "type": "integer"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Section"
+        },
+        "quote": {
+          "minLength": 10,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "physical_page",
+        "section",
+        "quote"
+      ],
+      "title": "Support",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/ExtractedClaim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "open_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Open Questions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "claims",
+    "open_questions"
+  ],
+  "title": "Extraction",
+  "type": "object"
+}

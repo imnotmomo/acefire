@@ -13,6 +13,7 @@
 Member B extracts PDF/Akta data. Member C stores structured records in Firebase (with DuckDB imports/offline compatibility), calculates metrics, and returns a source-bound company report to the frontend. Akta is the primary company source; Orbis and PitchBook files simulate private uploaded evidence.
 
 - [Backend setup and API](backend/README.md)
+- [Member B: document extraction, database and sourced report handoff](backend/B_WORKFLOW.md)
 - [Current data schema](database-design/README.md)
 - [DuckDB schema](database-design/schema.sql)
 - [Team agent instructions](AGENTS.md)

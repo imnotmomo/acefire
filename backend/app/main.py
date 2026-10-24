@@ -33,6 +33,7 @@ from app.narrative import NarrativeDraftRequest, NarrativeGenerator, NarrativeEr
 from app.company_chat import CompanyChatRequest, CompanyChat
 from app.evidence_catalog import add_document_claims, build_evidence_catalog
 from app.stored_narratives import source_claims as stored_source_claims, summaries as stored_report_summaries, draft as stored_draft
+from app.document_routes import document_router
 
 
 class CompareRequest(Contract):
@@ -91,6 +92,7 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
 
     app = FastAPI(title='Acefire Data + Financial Engine', version='0.1.0', lifespan=lifespan)
     app.state.store = ledger
+    app.include_router(document_router(ledger))
 
     def company(deal_id):
         value = ledger.company(deal_id)
