@@ -3,12 +3,20 @@
 - Role: Frontend — Projects, Dashboard, metric lineage and evidence inspection, Report Builder / Review / Export, Data room, contextual chat, and website framework documentation. Confirmed by this teammate's frontend implementation requests.
 - State: ready_for_review
 - Updated: 2026-10-24
-- Working on: Delivered the Ingenium landing page with the human's approved slogan, investment-team personas, four-step workflow, core capabilities, SaaS plan positioning and hello@ingenium.ai contact links. Keye informed the visual design. C's Circle frontend integration is preserved; original pending-integration notes below are historical.
-- Active paths: None reserved after this handoff. Landing implementation is in `frontend/src/Landing.tsx`, `landing.css`, `Site.tsx` and `public/images/`; existing workspace edits are branding/navigation only. Setup, tests, metadata, root/frontend docs and this status were updated. Backend and API adapters were not changed.
+- Working on: Delivered the platform Projects refinement: black Ingenium wordmark, removed the requested introductory copy, approved three-line sidebar slogan and company-context photographic covers for Enfuce, Circle and BackerKit. Product landing source and assets are unchanged.
+- Active paths: None reserved after this handoff. Changes are in `frontend/src/App.tsx`, `frontend/src/styles.css`, `frontend/public/images/projects/` and this status file. No API or backend changes.
 - Shared contracts: No shared API/model/schema changes. Current frontend-local types are `Project`, `Workspace`, `ModuleConfig`, `Section`, `Revision` and `LocalDocument` in `frontend/src/domain.ts`; evidence/module definitions live in `frontend/src/data.ts`.
 - Handoff: Root URL introduces Ingenium; Book a Demo / See the Platform open `#/projects`. Existing `#/project/...` routes and browser data keys remain compatible. Contact/pricing open email drafts; they do not send messages, book meetings or charge subscriptions. C still owns backend calculations and B owns extraction.
 - Validation: This landing change passed `npm run build`, all 19 current unit tests, 10 landing browser flows and the original 10 platform browser flows, with no runtime or missing-asset errors. Landing checks cover the exact slogan, real screenshots, role/evidence tabs, workflow/plans/contact, navigation, unchanged project storage and 1440/1024/768/390px layouts. C's separate Circle integration suite was not rerun for branding; its prior validation remains recorded in imnotmomo.md. Local document/anchor links and `git diff --check` also passed.
 - Blockers: None for the landing page or historical local demo. Circle needs the prepared C backend. New-document extraction, external research, open-ended chat, generic onboarding, enterprise permissions and production hosting remain separate work; no new provider integration or commercial checkout is claimed.
+
+## Projects visual refinement — 2026-10-24
+
+- Removed the Projects hero headline/description and All projects subtitle; retained Create project and existing search, filter, grid/list and project navigation.
+- Sidebar wordmark is black; slogan uses the human-requested three lines. These shared platform sidebar changes also appear inside project workspaces.
+- Company-ID-based covers show Enfuce card payments, Circle financial operations and BackerKit board-game creators; filtering cannot swap the company images. New projects use a neutral folder/name cover.
+- Three locally stored PNGs were generated using built-in ImageGen. They are conceptual scenes, not real company office/team photographs. Exact prompts and asset names: `frontend/public/images/projects/README.md`.
+- Validation: production build; targeted Playwright checks at 1440px and 390px for exact copy, computed black wordmark, three decoded covers, stable cover after search, grid/list layout, mobile navigation and Enfuce dashboard navigation, with no runtime errors or horizontal overflow. Desktop/list/mobile screenshots were visually reviewed. No landing source or existing landing-image changes.
 
 ## Ingenium landing page
 
