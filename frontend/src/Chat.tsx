@@ -1,0 +1,26 @@
+import { useState } from 'react'
+import type { Project } from './domain'
+import { EVIDENCE } from './data'
+import { Badge, Dialog, Icon } from './ui'
+
+type Message = { id: string; role: 'user' | 'assistant'; text: string; sources?: string[]; action?: { label: string; path: string } }
+export default function Chat({ project, page, inspect, navigate, onClose }: { project: Project; page: string; inspect: (id: string) => void; navigate: (path: string) => void; onClose: () => void }) {
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState<Message[]>([])
+  function send(question: string) {
+    if (!question.trim()) return
+    const text = question.toLowerCase()
+    let response: Omit<Message, 'id' | 'role'>
+    if (/build|report|module|报告|模块/.test(text)) response = { text: 'Open Report Builder to choose modules, set the scope and generate a preview. This local assistant can guide you through the workspace; it does not execute AI research.', action: { label: 'Open Report Builder', path: `/project/${project.id}/report/build` } }
+    else if (/upload|source|data room|上传|文件/.test(text) && !/revenue|gross|mrr/.test(text)) response = { text: 'The Data room holds source material. Files you add stay in this browser and are marked “Not extracted” until a processing backend is connected.', action: { label: 'Open Data room', path: `/project/${project.id}/data-room` } }
+    else if (project.id !== 'enfuce') response = { text: 'This project has no extracted evidence yet. I cannot supply factual metrics from unprocessed files. Add your documents, then connect extraction through the backend.', action: { label: 'Add source material', path: `/project/${project.id}/data-room` } }
+    else if (/gross|margin|50|毛利/.test(text)) response = { text: 'The saved 2019 gross profit formula is 5,095.50635 − 1,536.17811 + 50 = 3,609.32824 kEUR. The €50k constant has no documented business explanation. Arithmetic is reproduced, while its meaning remains an open question.', sources: ['gross'] }
+    else if (/arr|mrr|recurring|经常/.test(text)) response = { text: 'The Q-column MRR total is €366,559.95. The number format shows it as 367 kEUR. ARR cannot be established from this snapshot: recurring revenue definition, customer scope and as-of date need confirmation.', sources: ['mrr'] }
+    else if (/revenue|income|收入|营收/.test(text)) response = { text: 'H1 2020 group Revenue is €3,417,663.76. Other operating income adds €35,019.05, for total operating income of €3,452,682.81. The summary calls the total “营业收入”; confirm definitions before comparing the two.', sources: ['income', 'definition'] }
+    else if (/customer|客户/.test(text)) response = { text: 'The historical FDD reports 16 customers and identifies ST1 as the largest. Customer-level evidence is not available here, so the count is reported only.', sources: ['customers'] }
+    else response = { text: 'I do not have enough evidence to answer that question from this saved snapshot. Try asking about revenue, gross profit, MRR, or customers. Open-ended AI chat and live external research are not connected.', sources: [] }
+    setMessages(previous => [...previous, { id: crypto.randomUUID(), role: 'user', text: question.trim() }, { id: crypto.randomUUID(), role: 'assistant', ...response }])
+    setInput('')
+  }
+  return <Dialog title="Ask your evidence" subtitle={`${project.name} / ${page} · Contextual workspace assistant`} onClose={onClose} className="chat-dialog"><div className="chat-mode"><Badge tone="blue">Local assistant</Badge><span>Answers from saved extracts. No live model connected.</span></div><div className="chat-messages" role="log" aria-live="polite">{messages.length === 0 && <div className="chat-welcome"><span><Icon name="sparkles" size={26} /></span><h3>Start with a question.<br />Follow it to the evidence.</h3><p>Find a source, understand a number, or move your report forward.</p><div className="quick-prompts">{['Where does the revenue come from?', 'Explain the €50k gross profit adjustment', 'Can we calculate ARR?', 'Help me build a report'].map(prompt => <button key={prompt} onClick={() => send(prompt)}>{prompt}<Icon name="outward" size={14} /></button>)}</div></div>}{messages.map(message => <div key={message.id} className={`chat-message ${message.role}`}><strong>{message.role === 'assistant' ? 'Acefire' : 'You'}</strong><p>{message.text}</p>{message.sources && <div className="message-sources">{message.sources.map(id => <button key={id} className="citation" onClick={() => { onClose(); inspect(id) }}><Icon name="link" size={11} />{EVIDENCE.find(e => e.id === id)!.title}</button>)}</div>}{message.action && <button className="text-button" onClick={() => { navigate(message.action!.path); onClose() }}>{message.action.label}<Icon name="arrow" size={14} /></button>}</div>)}</div><form className="chat-input" onSubmit={e => { e.preventDefault(); send(input) }}><input aria-label="Ask your evidence" placeholder="Ask about a number, a source, a gap…" value={input} onChange={e => setInput(e.target.value)} maxLength={2000} /><button className="icon-button" type="submit" aria-label="Send question" disabled={!input.trim()}><Icon name="send" size={19} /></button></form><p className="chat-footer">Historical evidence only. No investment conclusions.</p></Dialog>
+}

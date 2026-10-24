@@ -1,0 +1,44 @@
+{
+  "source": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+  "sheet": "P&L - Group",
+  "period": "H1 2020",
+  "unit": "EUR",
+  "rows": [
+    {
+      "month": "Jan",
+      "cell": "C4",
+      "raw": "574214.88",
+      "value": 574214.88
+    },
+    {
+      "month": "Feb",
+      "cell": "D4",
+      "raw": "562067.67999999993",
+      "value": 562067.68
+    },
+    {
+      "month": "Mar",
+      "cell": "E4",
+      "raw": "523401.06",
+      "value": 523401.06
+    },
+    {
+      "month": "Apr",
+      "cell": "F4",
+      "raw": "582489.63",
+      "value": 582489.63
+    },
+    {
+      "month": "May",
+      "cell": "G4",
+      "raw": "615642.40999999992",
+      "value": 615642.41
+    },
+    {
+      "month": "Jun",
+      "cell": "H4",
+      "raw": "559848.10000000009",
+      "value": 559848.1
+    }
+  ]
+}
