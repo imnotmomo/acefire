@@ -107,3 +107,8 @@ key. Never change organizational key policies to bypass a denied operation.
 References: [Firestore database IAM conditions](https://firebase.google.com/docs/firestore/manage-databases),
 [Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy),
 [Google service account keys](https://docs.cloud.google.com/iam/docs/keys-create-delete).
+
+## Verified workflow release —2026-10-24
+
+Active application commit:e7b3d2d; release20261024T200013Z-e7b3d2df5e41.
+Server passed423 backend and86 frontendunit/SSRtests, productionbuild,21 live API/artifactchecks and15 live synthetic-company workflowchecks (real model/PDF/OCR/calculation/chat/draft). Login remains deferred. Synthetic cloud fixtures were backed up and cleaned; source-company records were not changed. Browser access was declined in the deployment chat, so no new browser click-through is claimed.

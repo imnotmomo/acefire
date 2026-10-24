@@ -1,7 +1,7 @@
 # imnotmomo
 
 - Role: C — structured storage, normalization, calculations, company reports and source traceability.
-- State: in_progress — validated workflow repair, preparing final deployment.
+- State: ready_for_review — deployed and verified.
 - Updated: 2026-10-24
 - Working on: Full frontend/backend workflow repair and server update. B branch b-document-intake is merged as 9284893, with source chat isolated at /evidence-chat and C whole-company /chat preserved. Human explicitly requests deploying without messaging other chats and defers login.
 - Active paths: Final verification and deploy/. Completed repair paths include workspace upload/store/router, App/company adapters, report/reference/export and both side-chat drawers, source preview and focused tests. Agent edits are frozen for release; preserve the English manifest and existing PRISM drop-in.
@@ -61,4 +61,13 @@
 - Calculations can cite document sentences beyond Akta fields, and optional numeric assumptions reject JavaScript precision loss. Report refresh preserves mounted editors/chat; unchanged retained quotation/hash/locator bindings can be explicitly refreshed without replacing human prose. Foreign/changed/missing refs stay blocked.
 - PDF exports preserve supported Unicode/native locators and exact decimals using a lazy hash-checked licensed font. Four actual PDF round-trip tests and rendered visual inspection passed. No browser access/automation was used in this chat after access was declined.
 - Local validation: 423 backend tests, 86 frontend unit/SSR tests, 11 disabled-Roundtable tests, production TypeScript/Vite build and shell checks passed. Real conversion/OCR tests use mocked model outputs; live provider and production API checks are separate final steps.
-- Runtime: LibreOffice Writer/Impress, Tesseract English/Simplified/Traditional Chinese installed. Managed unit permits private upload writes; Caddy accepts multipart overhead for 50 MiB sources. Final release activation pending.
+- Runtime: LibreOffice Writer/Impress, Tesseract English/Simplified/Traditional Chinese installed. Managed unit permits private upload writes; Caddy accepts multipart overhead for 50 MiB sources. Final release activated and verified below.
+
+## Final live verification — 2026-10-24
+
+- Active release: `20261024T200013Z-e7b3d2df5e41`, commit `e7b3d2d`, at https://ingenium.linearproduct.co. Local backend restarted on8017; dev5173 and preview4173 retained.
+- Linux server:423 backendtests,86 frontendunit/SSRtests and productionbuild passed;11 Roundtable tests passed locally with the adapter disabled. Backend/Caddy healthy, zero restarts, existing PRISM environment drop-in and private English translation manifest preserved.
+-21 live API/artifact checks passed: active commit, exact servedJS/CSS hashes, Unicode font hash, named Firestore, unchangedCircle436 observations/Enfuce39claims19numeric observations2reports, exactI49workbookpreview/download and both English saved drafts.
+-15 real live workflow checks passed on a clearly synthetic QA company: APIcreate/retry, TXT/CSV upload, duplicatejob reuse, Nicrron PDF extraction/quotevalidation, imageOCR+Nicrron extraction, publicmultipartabove2MB, everyoriginal/reading-viewSHA, generatedPython partial-month sum300.580000USD with two CSVrow inputs, calculationlineage, English whole-companychat, Bsource-filechat and cited reportdrafting. The release stayed unchanged. These are live API/modelchecks, distinct from mocked providerconversiontests and frontendSSR.
+- Synthetic QA cloud records were backed up privately and removed using exact IDs/update preconditions; originalCircle/Enfuce records were untouched. Private QA audit artifacts remain outside public files under the release backup directory.
+- Fullnewbrowserclick-through was not run because this chat’s browser access was declined. No cross-chat messages were sent. Login remains deferred. Live Akta retrieval and the absent originalEnfucePDF remain explicitly unavailable; no replacement evidence was fabricated.
