@@ -10,7 +10,7 @@ $lock = $null
 function Invoke-Git {
     param([string[]]$GitArgs, [int[]]$AllowedExitCodes = @(0))
     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $startInfo.FileName = (Get-Command git -CommandType Application).Source
+    $startInfo.FileName = (Get-Command git -CommandType Application | Select-Object -First 1).Source
     $startInfo.WorkingDirectory = $projectRoot
     $startInfo.UseShellExecute = $false
     $startInfo.CreateNoWindow = $true
