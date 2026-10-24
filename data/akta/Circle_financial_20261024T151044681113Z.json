@@ -1,0 +1,20 @@
+{
+  "provider": "akta.pro",
+  "fetched_at": "2026-10-24T15:10:44.681113+00:00",
+  "request_parameters": {
+    "company": "https://www.circle.com",
+    "sections": "financial_estimate"
+  },
+  "response": {
+    "data": {
+      "uuid": "000004j",
+      "financial_estimate": {
+        "valuation_estimate": {
+          "code": "over_25b",
+          "label": "$25B+"
+        }
+      }
+    },
+    "credits_consumed": 0.5
+  }
+}

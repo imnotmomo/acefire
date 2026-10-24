@@ -1,0 +1,434 @@
+{
+  "provider": "akta.pro",
+  "fetched_at": "2026-10-24T15:07:45.890470+00:00",
+  "request_parameters": {
+    "company": "Circle",
+    "sections": "firmographic,location,product_offering,industry"
+  },
+  "response": {
+    "data": {
+      "uuid": "000004j",
+      "firmographic": {
+        "name": "Circle",
+        "legal_name": "Circle Internet Group, Inc.",
+        "website": "circle.com",
+        "company_type": {
+          "code": "public",
+          "label": "Public"
+        },
+        "ticker": "NYSE:CRCL",
+        "founded_year": 2013,
+        "company_description": "Circle Internet Group, Inc. is a publicly traded (NYSE: CRCL) financial technology company founded in 2013 by Jeremy Allaire and Sean Neville, headquartered in Boston with offices in New York, San Francisco, Seattle, Boston, Washington D.C., Miami, London, Dublin, Paris, Frankfurt, Amsterdam, Bengaluru, Singapore, Tokyo, Seoul, Hong Kong, Manila, and São Paulo. The company operates a stablecoin and programmable money platform serving banks, payment networks, fintechs, developers, asset managers, exchanges, and corporate treasuries across more than 185 countries.\n\nCore products and infrastructure include USDC and EURC stablecoins, the USYC tokenized money market fund, cirBTC (wrapped Bitcoin), Circle Mint for institutional issuance and redemption, StableFX for FX, the Circle Payments Network (CPN) for cross-border settlement, the Arc enterprise Layer-1 blockchain (testnet October 2025), Cross-Chain Transfer Protocol (CCTP), Wallets-as-a-Service, and developer APIs. The Agent Stack and the USDC Machine Payments Protocol position USDC as settlement infrastructure for AI-agent transactions.\n\nThe business model is overwhelmingly driven by reserve income: approximately 94% of revenue comes from interest earned on cash and short-dated U.S. Treasuries backing USDC and EURC reserves. Secondary revenue streams include CPN platform fees, USYC management and distribution fees, StableFX spreads, transaction-based fees on wallets and developer services, and enterprise platform subscriptions. Circle monetizes through direct enterprise contracts, exchange and wallet distribution partnerships, and DeFi protocol integrations.",
+        "company_description_short": "Circle Internet Group is a publicly traded (NYSE: CRCL) stablecoin and programmable money platform best known for USDC and EURC, serving banks, payment networks, fintechs, developers, and asset managers across more than 185 countries. Reserve income on stablecoin reserves drives the majority of revenue, supplemented by transaction fees and platform services.",
+        "operating_status": {
+          "code": "operating",
+          "label": "Operating"
+        },
+        "ownership_category": {
+          "code": "public",
+          "label": "Public"
+        },
+        "headcount_range": "1001-5000",
+        "logo_url": "https://files.akta.pro/logos/00/00/04/7536b80e-6cde-5d7d-b9ba-ba0a26c678fd.png",
+        "akta_rank": 225
+      },
+      "location": {
+        "hq": {
+          "city": "New York",
+          "country": "USA",
+          "region": "North America"
+        },
+        "market_served": {
+          "is_global": true
+        },
+        "offices": [
+          {
+            "city": "Boston",
+            "country": "USA",
+            "description": "Stated U.S. business address listed on Circle's regulatory correspondence (class-action complaint). Functions as primary U.S. registered office.",
+            "street_address": "1 Lincoln Street, Suite 31-113, Boston, MA 02111",
+            "type": {
+              "code": "headquarters",
+              "label": "Headquarters"
+            }
+          },
+          {
+            "city": "New York",
+            "country": "USA",
+            "description": "Registered agent address (CT Corporation System) for Circle Internet Group, Inc. in New York.",
+            "street_address": "28 Liberty Street, New York, NY 10005",
+            "type": {
+              "code": "general_office",
+              "label": "General Office"
+            }
+          },
+          {
+            "city": "Tokyo",
+            "country": "JPN",
+            "description": "Circle Japan KK — Japanese subsidiary supporting USDC distribution and the SBI Holdings and Nomura partnerships under JFSA/E-money registration.",
+            "type": {
+              "code": "regional_hq",
+              "label": "Regional Hq"
+            }
+          },
+          {
+            "city": "Abu Dhabi",
+            "country": "ARE",
+            "description": "Incorporated in ADGM (Abu Dhabi Global Market) — Circle's regional hub for the Middle East, supporting INFINIOS, LuLu Financial and other Gulf partnerships.",
+            "type": {
+              "code": "regional_hq",
+              "label": "Regional Hq"
+            }
+          },
+          {
+            "city": "Singapore",
+            "country": "SGP",
+            "description": "Circle Internet Singapore Pte. Ltd. — APAC regional presence supporting Nium, StraitsX, and other partners.",
+            "type": {
+              "code": "regional_hq",
+              "label": "Regional Hq"
+            }
+          },
+          {
+            "city": "Hamilton",
+            "country": "BMU",
+            "description": "Circle International Bermuda Limited — Bermuda Monetary Authority-regulated entity underpinning international operations.",
+            "type": {
+              "code": "operations_support",
+              "label": "Operations Support"
+            }
+          },
+          {
+            "city": "London",
+            "country": "GBR",
+            "description": "Implied U.K. presence to support Circle's FCA e-money institution registration and EU/UK regulatory operations.",
+            "type": {
+              "code": "regional_hq",
+              "label": "Regional Hq"
+            }
+          }
+        ]
+      },
+      "product_offering": {
+        "brand": [
+          {
+            "description": "World's largest regulated digital dollar stablecoin, fully backed by cash and cash equivalent assets.",
+            "name": "USDC",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "World's largest regulated digital euro stablecoin, fully backed by cash and cash equivalent assets.",
+            "name": "EURC",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Institutional-grade tokenized money market fund with near-instant redeemability to USDC; not available in USA and only to non-US Persons.",
+            "name": "USYC",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Institutional-grade wrapped Bitcoin (BTC) on Ethereum, 1:1 backed with segregated custody and Chainlink Proof of Reserve.",
+            "name": "cirBTC",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Institutional service for minting, redeeming, reserving, and managing USDC directly from Circle at global scale; supports transfers in 185+ countries.",
+            "name": "Circle Mint",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Coordination layer for cross-border stablecoin-powered payments using USDC and EURC, connecting financial institutions globally.",
+            "name": "Circle Payments Network",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Institutional-grade onchain FX service powered by stablecoins, available 24/7.",
+            "name": "StableFX",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Open Layer-1 blockchain built to meet the demands of the global internet economy; public testnet launched October 28, 2025.",
+            "name": "Arc",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Protocol for native USDC transfers between supported blockchains, more secure than traditional bridging.",
+            "name": "CCTP (Cross-Chain Transfer Protocol)",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Product enabling the launch of a USDC-backed stablecoin on a custom blockchain.",
+            "name": "xReserve",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Enables a unified USDC balance for instant crosschain liquidity in under 500ms.",
+            "name": "Gateway",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Developer platform for building AI-native applications on Circle infrastructure.",
+            "name": "Circle Agent Stack",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          },
+          {
+            "description": "Investment arm of Circle for strategic ecosystem investments.",
+            "name": "Circle Ventures",
+            "source": [
+              "https://www.circle.com/"
+            ]
+          }
+        ],
+        "core_offering": "Circle operates a full-stack platform for the internet financial system built on regulated stablecoins (USDC, EURC, USYC) and a suite of programmable money primitives. Its offerings include institutional minting/redemption (Circle Mint), 24/7 onchain FX (StableFX), a Layer-1 blockchain (Arc), a cross-border payments network (Circle Payments Network), developer APIs and SDKs (Wallets, Contracts, CCTP, xReserve, Gateway, Paymaster), and an AI-native agent stack (x402, MPP, Circle Skills/CLI).",
+        "differentiator": "Fully reserved, regulator-licensed stablecoins (USDC, EURC) with the deepest set of regulatory approvals of any stablecoin issuer (NYDFS BitLicense, EU MiCA e-money token authorization, UK FCA e-money institution, Japan JFSA e-money, Bermuda BMA, ADGM FSRA). Native multi-chain issuance via CCTP/xReserve across 34+ blockchains vs. wrapped-token competitors. End-to-end stack — Circle Mint, Wallets, Contracts, StableFX, Paymaster, the Arc L1, USYC tokenized yield, the Agent Stack and x402 — that lets enterprises go from fiat on-ramp to programmable, machine-payable money in one integrated platform. Co-governance with Coinbase for USDC distribution; deep enterprise-grade integration with BlackRock, Visa, Mastercard, Standard Chartered, BTG Pactual, SBI and Nomura.",
+        "functional_benefit": "Settle payments in seconds vs. days on correspondent rails; 24/7/365 availability; transparent 1:1 reserve backed by cash and short-duration Treasuries; near-instant redemption; near-zero per-transfer cost vs. card-network interchange; one integration spans 185+ countries and 34+ blockchains; USDC is natively issued on each chain (no wrapped tokens); built-in compliance (KYC/AML, regulated entity stack).",
+        "problem_solved": "Slow and expensive cross-border settlement and FX; fragmented on-chain liquidity across dozens of blockchains; lack of regulated, dollar- and euro-denominated money programmable for both traditional finance and AI agents; difficulty for enterprises to safely mint, custody, redeem and account for digital dollars; and the absence of always-on programmable collateral for tokenized funds and capital markets.",
+        "quantifiable_outcome": [
+          "USDC market cap reached $73.8B, roughly 25x larger than PYUSD",
+          "USDC DeFi TVL of $11.456B",
+          "Adjusted USDC on-chain transaction volume of $2.2T year-to-date",
+          "2025 full-year revenue $2.64B with 51% LTM growth",
+          "Q1 2026 revenue $694M and net income $55M",
+          "USDC available in 185+ countries and natively issued on 34+ blockchains",
+          "Reserve income accounts for ~94% of total revenue, providing high-quality, recurring economics"
+        ],
+        "product_overview": "Circle is a full-stack platform for the internet financial system built on a platform-plus-modules architecture. Its core stablecoin offerings are USDC (regulated digital dollar) and EURC (regulated digital euro), complemented by USYC (tokenized money market fund) and cirBTC (wrapped Bitcoin). The digital asset services layer includes Circle Mint (institutional minting and redemption), StableFX (onchain FX), and Digital Asset Accounts (branded accounts). Circle Payments Network (CPN) and its Managed Payments service provide global stablecoin-powered cross-border settlement. Arc is Circle's Layer-1 blockchain serving as the Economic OS for the internet. The developer services layer — comprising Wallets, Contracts, CCTP, xReserve, Gateway, and Paymaster — provides the programmable building blocks, while the Circle Agent Stack (with Skills, CLI, Agent Wallets, Agent Marketplace, and the USDC Machine Payments Protocol specification) layers AI-native agentic capabilities on top. Circle operates under 55+ licenses globally, including MiCAR, NYDFS BitLicense, FCA, MAS, DFSA, BMA, and JFSA authorizations, supporting operations in 185+ countries.",
+        "product_and_service": [
+          {
+            "category": "Stablecoin",
+            "description": "The world's largest regulated digital dollar. Fully backed by highly liquid cash and cash equivalent assets, designed for stability, and built for global business use in payments, trading, and onchain finance. Available in 185+ countries.",
+            "name": "USDC",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/usdc"
+          },
+          {
+            "category": "Stablecoin",
+            "description": "The world's largest regulated digital euro. Fully backed, fast, designed for stability, and built for global business with MiCA-compliant availability across the European Union.",
+            "name": "EURC",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/eurc"
+          },
+          {
+            "category": "Tokenized Fund",
+            "description": "An institutional-grade tokenized money market fund with near-instant redeemability to USDC. Issued by Circle International Bermuda Limited, regulated by the BMA, and represents an interest in the Hashnote International Short Duration Fund Ltd. Not available to US Persons.",
+            "name": "USYC",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/usyc"
+          },
+          {
+            "category": "Wrapped Asset",
+            "description": "Institutional-grade wrapped Bitcoin (1:1 BTC-backed) deployed on Ethereum using segregated custody and Chainlink Proof of Reserve for onchain verification. Issued through Circle's Bermuda-regulated subsidiary and positions Circle to compete with WBTC and Coinbase's cbBTC.",
+            "name": "cirBTC",
+            "source": [
+              "https://www.newsbtc.com/news/circle-launches-cirbtc-on-ethereum-as-new-1-1-bitcoin-backed-defi-asset/"
+            ],
+            "url": "https://www.circle.com/cirbtc"
+          },
+          {
+            "category": "Liquidity Service",
+            "description": "Mint, redeem, reserve, and manage USDC directly from Circle at global scale. Supports international wires and domestic bank transfers in more than 185 countries. Available to institutions.",
+            "name": "Circle Mint",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/circle-mint"
+          },
+          {
+            "category": "Liquidity Service",
+            "description": "Institutional-grade onchain FX powered by stablecoins. A collection of APIs and on-chain smart contracts that enable data sharing between counterparties to a transaction without intermediation by CTS, enabling 24/7 stablecoin FX access.",
+            "name": "StableFX",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/stablefx"
+          },
+          {
+            "category": "Digital Asset Service",
+            "description": "Branded digital accounts that enable businesses to launch digital asset accounts for their customers.",
+            "name": "Digital Asset Accounts",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/digital-asset-accounts"
+          },
+          {
+            "category": "Payments Network",
+            "description": "One integration for global stablecoin-powered payments. A coordination layer operated by Circle Technology Services, LLC (CTS) that enables cross-border stablecoin transactions using USDC and EURC, connecting participating financial institutions for real-time settlement.",
+            "name": "Circle Payments Network (CPN)",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/cpn"
+          },
+          {
+            "category": "Payments Service",
+            "description": "CPN Managed Payments offering that enables businesses to fund, manage, and send payouts using stablecoins without directly managing digital assets or blockchain infrastructure, with programmatically created wallets and USDC conversion for treasury purposes.",
+            "name": "CPN Managed Payments",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/cpn/managed-payments"
+          },
+          {
+            "category": "Blockchain (Layer-1)",
+            "description": "An open Layer-1 blockchain built to meet the demands of the global internet economy. Described as \"The Economic OS for the internet\" with planned post-quantum cryptographic protections using NIST-standard lattice-based algorithms including ML-DSA, CRYSTALS-Dilithium, and Falcon.",
+            "name": "Arc",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.arc.io"
+          },
+          {
+            "category": "Developer Service (AI Infrastructure)",
+            "description": "Full-stack AI-native developer platform comprising Circle Skills, Circle CLI, Agent Wallets, Nanopayments, and the Agent Marketplace to build AI-powered applications and enable AI agents to hold value, discover services, and transact programmatically.",
+            "name": "Circle Agent Stack",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/agent-stack"
+          },
+          {
+            "category": "Developer Service",
+            "description": "Embed secure wallets in any application. Developer-facing service for integrating digital asset storage, payments, and transactions into apps with defined guardrails for applications and agents.",
+            "name": "Circle Wallets",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/wallets"
+          },
+          {
+            "category": "Developer Service",
+            "description": "A curated library of customizable smart contract templates for tokenization and workflow automation, enabling developers to build and manage smart contracts on Circle's platform.",
+            "name": "Circle Contracts",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/contracts"
+          },
+          {
+            "category": "Developer Service",
+            "description": "Transfer USDC natively between supported chains in seconds, more securely than traditional bridging. Circle's core cross-chain infrastructure enabling native USDC movement across 34+ blockchain networks.",
+            "name": "CCTP (Cross-Chain Transfer Protocol)",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/cross-chain-transfer-protocol"
+          },
+          {
+            "category": "Developer Service",
+            "description": "Launch a USDC-backed stablecoin on any blockchain. Enables chains and partners to issue their own stablecoins backed 1:1 by USDC locked in Circle's xReserve on Ethereum.",
+            "name": "xReserve",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/xreserve"
+          },
+          {
+            "category": "Developer Service",
+            "description": "Enable a unified USDC balance for instant crosschain liquidity in under 500 ms. Allows applications to access USDC liquidity across multiple chains through a single integration.",
+            "name": "Gateway",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/gateway"
+          },
+          {
+            "category": "Developer Service",
+            "description": "Enable seamless transaction experiences by allowing users to pay gas fees in USDC, abstracting native gas token requirements for end users.",
+            "name": "Paymaster",
+            "source": [
+              "https://www.circle.com/"
+            ],
+            "url": "https://www.circle.com/paymaster"
+          }
+        ]
+      },
+      "industry": {
+        "keyword": [
+          "stablecoin issuance platform",
+          "blockchain developer APIs",
+          "cross-border payments infrastructure",
+          "tokenized money market funds",
+          "regulatory crypto infrastructure"
+        ],
+        "industry": [
+          {
+            "code": "FSADADAA",
+            "is_primary": true,
+            "label": "Stablecoin Issuers (Fiat-Backed)"
+          },
+          {
+            "code": "BPAMAFAL",
+            "is_primary": false,
+            "label": "Crypto Payments & Stablecoin Settlement Platforms"
+          },
+          {
+            "code": "FSADAIAA",
+            "is_primary": false,
+            "label": "Crypto Payment Gateways & Checkout APIs"
+          }
+        ],
+        "naics": [
+          {
+            "code": "525",
+            "label": "Funds, Trusts, and Other Financial Vehicles"
+          },
+          {
+            "code": "52232",
+            "label": "Financial Transactions Processing, Reserve, and Clearinghouse Activities"
+          },
+          {
+            "code": "522320",
+            "label": "Financial Transactions Processing, Reserve, and Clearinghouse Activities"
+          },
+          {
+            "code": "5221",
+            "label": "Depository Credit Intermediation"
+          }
+        ],
+        "sic": [
+          {
+            "code": "6200",
+            "label": "SECURITY & COMMODITY BROKERS, DEALERS, EXCHANGES & SERVICES"
+          },
+          {
+            "code": "6199",
+            "label": "FINANCE SERVICES"
+          }
+        ],
+        "product_category": "Stablecoin and Blockchain Infrastructure"
+      }
+    },
+    "credits_consumed": 5.0
+  }
+}

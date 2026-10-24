@@ -1,110 +1,96 @@
-# Enfuce 数据怎么接入、数据库怎么设计
+# Akta 公司主档与私有上传证据：DuckDB Schema
 
-建议先做 **一个 Enfuce Deal、一套 PostgreSQL、四份核心资料的证据闭环**。文件继续作为原件保存；数据库保存文件身份、证据位置、提取结果、指标口径、计算依赖和比较结果。
+**Akta 是主要公司资料源；Orbis、PitchBook 等文件是模拟用户网页上传的补充证据。** `provider` 保存原始出处，`ingestion_channel` 和 `data_role` 表达产品中两条通道，避免把上传供应商报表误称为实时集成。
 
-这份设计基于当前本地数据。已完成文件登记、重点资料检查和五项数字回放检查；还没有创建 PostgreSQL 实例、执行迁移或批量提取全部 PDF。
+数据库是本地 DuckDB 文件，默认 `backend/.cache/acefire.duckdb`，可通过 `DUCKDB_PATH` 指定位置。表结构以 `backend/app/db_schema.py` 中的 `SCHEMA_SQL` 为准，`schema.sql` 由它生成原生 DuckDB DDL；`backend/app/store.py` 使用 DuckDB Python API，共享 Pydantic 合约位于 `backend/app/schemas.py`。运行 `python -m app.cli init-db` 创建数据库文件及表。
 
-## 现有数据能做什么
+## 团队交接与 C 的职责
 
-[文件清单](data_inventory.json) 已登记 366 个文件：339 PDF、13 XLSX、11 DOCX、3 PPTX，共约 317 MiB。13 个 XLSX 中有一个 `~$` Excel 临时锁文件，应跳过，因此有 365 个可接入原件。发现一组不同路径、相同 SHA-256 的文件；保留两条来源记录，不能仅靠文件名推断法人身份，也不能仅按 hash 删除来源。
+**B 读取 PDF、获取 Akta/其他补充资料并提取 Claim；C 维护数据库、规范化、财务计算和完整结构化公司报告；前端展示报告与来源。** 现有 Akta 保存文件加载器和本地 Orbis/PitchBook 读取器是演示/契约适配器，不把实时取数、PDF 识别列为 C 的生产职责。
 
-| 数据层 | 当前资料 | 第一版用途 |
+原文件先登记为来源快照；B 通过 `POST /deals/{id}/claims/batch` 提交 `{"claims": [...]}`，每条 `ExtractedClaim` 引用当前 Deal 已存在的来源。C 保存 B 的原值和 page/line/cell/JSON locator，并按明确倍率确定性规范化；未知的定义、期间、行号仍为空，不补造定位。
+
+`GET /deals/{id}/report` 统一返回可用公司主档、指标、全部已保存计算、比较、覆盖、缺口及来源图。报告完整性体现在“已有事实与缺口都交付”，不表示所有指标都有已验证数值。
+
+报告的 `data_period_coverage` 按实际来源列出月度、季度、年度及其他期间、重叠、缺口和未知日期，不强制固定年度窗口。`POST /deals/{id}/calculate/revenue-dynamic` 可按真实覆盖计算收入，也可接受成对的目标起止日；只使用已审核收入定义和可比输入，避免把重叠的年度/月度/季度金额重复加总。
+
+明确请求全年而来源只覆盖部分期间时，计算最终 `value=NULL`；`parameters.coverage.observed_total` 单独标记为部分已观察期间总额，缺失区间保留，不年化或补造。计算后可比数字存在差异时，报告返回 `conflict_numbers: true`、冲突值、差额与来源；不覆盖原值，也不增加前端审批流程。尚未确定可比性的问题单独标记为需要核对。
+
+## 身份与两条来源通道
+
+Company 保存 `primary_provider=akta`，`primary_company_id` 在 Akta 法律名称、域名与 UUID 验证后才填入。`entity_identifiers` 另存 CIK、BvD、Orbis、PitchBook 等来源标识；同名品牌、子公司、SPV 不自动合并。
+
+| 字段 | Akta 主档 | 上传补充证据 |
 | --- | --- | --- |
-| 叙述和汇总 | FDD PPTX、Investment Memo DOCX | 提取 reported claim、原文、页/段定位、报告精度 |
-| 结构化财务 | P&L/MRR、June 2020 Financials | 映射指标、读取原值/公式/缓存、确定性重算 |
-| 支持资料 | 财报 PDF、合同、公司/合规/人事资料 | 先做文件登记；按具体 claim 的缺口再检索和提取 |
+| `provider` | `akta` | `orbis` / `pitchbook` / `uploaded` |
+| `ingestion_channel` | `provider_api` | `user_upload` |
+| `data_role` | `primary_company_data` | `supplemental_evidence` |
+| `visibility` | `deal_private` | `deal_private` |
+| `original_filename` | 已保存响应的文件名 | 用户文件名 |
+| `uploaded_at` | 离线 API 响应通常为空 | 上传取得时点 |
 
-第一批使用以下四份文件，不必一开始处理全部 365 份：
+本版是单用户 localhost 原型；`deal_private` 是数据分类，不能代替尚未实现的生产鉴权或租户隔离。上传文件不能覆盖 Akta 公司主档。
 
-1. [FDD 报告](../data/Enfuce/Enfuce_FDD_0910_v4.pptx)：报告数字及来源定位。
-2. [Investment Memo](<../data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx>)：叙述中的数字和定义。
-3. [历史/预测 P&L 与 MRR](<../data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx>)：实际 2017–2019、预测 2020–2022 及 MRR 明细。
-4. [June 2020 Financials](<../data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx>)：集团半年财务及中文汇总。
-
-本次检查读取了 12 个真实工作簿的结构，对其中 7 个财务工作簿取了相关样本，并检查了上述两个叙述报告。339 个 PDF 尚未逐份提取；Memo 内嵌图片中的财务表也未在本次文本检查中识别。
-
-## 数据流
+## 核心关系
 
 ```mermaid
 flowchart LR
-  F[原始文件与版本] --> E[证据定位<br/>页、段、单元格]
-  E --> C[Claims<br/>数字、实体、期间、口径]
-  C --> N[单位与定义确认]
-  N --> R[Python Decimal 重算]
-  C --> P[可比性检查与对比]
-  R --> P
-  P --> UI[数字对比、证据链、待确认问题]
+  D[deals] --> E[entities]
+  E --> I[entity_identifiers]
+  E --> S[source_snapshots]
+  S --> O[source_observations]
+  S --> P[company_profiles / Akta]
+  O --> CI[calculation_inputs]
+  CI --> C[calculations]
+  O --> X[comparisons]
 ```
 
-原件放在 `data/` 或以后选定的对象存储；不要把文件二进制塞进普通业务表。结构化字段用于筛选和关联，`JSONB` 用于不同证据的定位信息。金额使用精确 `NUMERIC`，Python 侧用 `Decimal`，保留原值及规范化过程。[PostgreSQL 数字类型](https://www.postgresql.org/docs/current/datatype-numeric.html)、[JSON 类型](https://www.postgresql.org/docs/current/datatype-json.html)
+| 表 | 用途 |
+| --- | --- |
+| `deals`、`entities` | 项目、法律实体、主资料源及历史截止日。 |
+| `entity_identifiers` | 经核对的跨来源公司标识。 |
+| `source_snapshots` | 文件/API 响应版本、通道、用途、hash、取得时间和上下文。 |
+| `source_observations` | 来源原值、规范化值、单位、期间、口径、scenario、locator、隔离状态。 |
+| `company_profiles` | 按来源快照分别保存 Akta JSON profile，不用财务 section 覆盖完整主档。 |
+| `calculations`、`calculation_inputs` | 白名单函数、版本、参数、输入 observation、公式与结果或缺失原因。 |
+| `comparisons` | 两条 observation 的可比性、明确容差、差额及原因；不可比时无差额。 |
+| `schema_versions` | 新库 Schema 基线版本。 |
 
-## 表怎么分
+金额原值、规范化值和计算结果使用精确十进制字符串，保存在 JSON payload 和 DuckDB `VARCHAR` 字段；Python `Decimal` 执行财务运算，不先转换为浮点数。不同来源、内容 hash 和版本独立留存；相同快照稳定 ID 支持重复导入不新增。
 
-[schema.sql](schema.sql) 是对应的 PostgreSQL DDL 草案。下面八张主表表达业务对象，另三张表保存关联和处理记录。
+`locator` 使用带 `kind` 的 JSON 定位合约。例如 Orbis 保存 sheet/cell 和期间表头；保存的 Akta envelope 使用：
 
-| 表 | 保存什么 | Enfuce 例子 |
-| --- | --- | --- |
-| `deals` | 一个尽调项目 | Enfuce |
-| `entities` | 被描述的法人或集团范围 | Group、EFS、ELS、EPS、Sweden；Group 不是一个子公司的别名 |
-| `files` | 每个原件版本的路径、SHA-256、类型 | 同名新版本另存；同内容不同来源保留独立记录 |
-| `evidence` | 原文位置、引文、单元格原值/公式/格式 | `P&L - Group!I6`、FDD slide 11、Memo 正文段落 8 |
-| `metric_definitions` | 版本化指标定义与单位 | `revenue_net_sales` 与 `total_operating_income` 分开 |
-| `claims` | 来源声称/呈现的事实，及映射后的上下文 | 2020H1、Group、EUR、actual 的收入数字；不代表已经判断真实 |
-| `calculations` | 确定性计算、版本、结果、状态 | 六个月收入加总，或源毛利公式的重算 |
-| `comparisons` | 两个来源或来源与重算结果的对比 | matched / value_mismatch / not_comparable / insufficient_evidence |
-| `claim_evidence` | 一个 claim 对应多处证据 | 数字单元格 + 期间表头 + 单位表头 |
-| `calculation_inputs` | 一次计算使用的具体 claim IDs 与输入角色 | 6 个月收入、6 个月其他收入；避免把总额再重复加一次 |
-| `processing_runs` | 哪个版本的提取器处理过哪个文件，成功或失败 | 模型/代码版本、配置、处理时间和错误 |
-
-不要对 `(metric_key, period)` 设唯一约束：同一个指标必须允许来自多个资料、不同版本甚至互相冲突的 claim。各张表使用独立 ID；关联需属于同一个 Deal，外键负责引用完整性。[PostgreSQL 约束](https://www.postgresql.org/docs/current/ddl-constraints.html)
-
-## 这些字段必须从第一天就有
-
-每条数字 claim 至少区分：
-
-```text
-deal + entity/group scope + metric definition/version
-+ period start/end + period kind + actual/forecast + scenario
-+ currency + stored unit/scale + display unit/format + source version
+```json
+{"kind":"json_pointer","pointer":"/response/data/financial_estimate/valuation_estimate"}
 ```
 
-- **实体**：集团汇总不能直接与 EFS/ELS 单体相比较；ELS/EPS 与 Sweden 的币种也不同。
-- **期间与性质**：2019 actual、2020F、2020H1 不能合并。收入等期间流量与现金余额等时点数要分开；文档日期也不是数字对应的报告期间。
-- **定义**：净销售收入、包含其他收入的 Income total、MRR、ARR、LTM revenue 各自定义，不能只用同一个 `revenue` 标签。
-- **原值与显示值**：必须保存 `raw_value`、number format、stored unit/scale、display unit/divisor。单位不能按整本 Excel 一刀切。
-- **来源和版本**：精确到文件 hash + sheet/cell、slide/table cell 或 DOCX 段索引；不能只存“来自财务文件”。
-- **空缺**：未知是 `NULL` 和缺口原因，不是零。某个已确认 SUM 范围里的空白行可按该公式规则跳过，但不能把未知的必需输入统一补零。
-- **精度**：原缓存值原样留存；规范化到 EUR 分或相应 kEUR 精度时，记录 rounding rule 和容差。
+`kind` 表达定位类型，本身不等于任意输入已通过原件核验。B 提供的 PDF 页码、文本行号或单元格定位按原来源保存；原文件没有行号时不编造。Lineage 从主档或 observation 回到快照、原文件和字段位置；财务计算再关联具体输入。
 
-Excel 的公式字符串、缓存值和外部工作簿依赖都要存。读取缓存不等于已重新计算 Excel，也不等于已核验原始底账。LLM 不执行任意 SQL 或 Excel 公式；计算服务调用白名单函数，例如 `sum_period_values_v1`，保存输入 IDs、参数和公式说明。
+UI 所需的文件来源图由 `/calculations/{id}/lineage` 返回：文件名、hash、预览链接、原值/规范化值、sheet/cell 或 JSON pointer、输入顺序、公式与结果，同时提供 `nodes` / `edges`。`calculation_inputs` 保存具体数字的依赖关系，不用一段 AI 解释代替来源链。
 
-## 用真实数据跑三个核心 Demo
+## 当前接入与已保存事实
 
-**1. 收入口径，而非单纯的“数字错误”。** June 工作簿 `P&L - Group!C4:H4` 的纯 Revenue 合计 €3,417,663.76，其他营业收入合计 €35,019.05，二者之和为 `I6` 的 €3,452,682.81。中文汇总 `近五年财务情况!F4` 虽叫“营业收入”，数值对应的是 Income total。前端应让用户看到组成和原单元格，并提出“报告收入是否包含其他营业收入？”；定义未统一时不输出数值冲突结论。
+当前公司适配器仅支持 **Circle**（`circle-2025-ipo`）。
 
-**2. 点击毛利润，看到计算依据和未解释调整。** `PL!F9` 的源公式为 `F7+F8+50`：5,095.50635 − 1,536.17811 + 50 = 3,609.32824 kEUR。源公式确实包含 50kEUR 常数，但未说明业务含义。系统能重现公式并显示这个待确认项，不能自行把它命名为其他收入。
+1. **Akta 主资料**优先读取 `data/akta/` 的两份真实保存响应。Envelope 包含 `provider`、`fetched_at`、`request_parameters`、`response.data`。验证 Circle Internet Group, Inc.、`circle.com` 和 UUID `000004j` 后，将财务响应关联到同一主档实体。每份文件单独保存原始字节 hash 和 profile 绑定；`akta://` URI 表达逻辑来源，不冒充已观察的 HTTP 请求 URL。
+2. 主资料响应包含 firmographic、location、product_offering、industry。财务响应只有 **valuation_estimate / `$25B+`**，没有收入估计。该区间保留为 unresolved 的来源观察，`value=NULL`；不从叙述中的效果数字生成已验证财务指标。
+3. **Orbis/PitchBook 上传演示**来自 `data/additional-cases/circle-2025-ipo/`。Orbis 原生 Summary XLSX 可读取已知结构与单位；PitchBook 使用已有 observation JSON，并将 PNG 作为原生证据登记。二者均是 `user_upload + supplemental_evidence`，不是应用的实时供应商连接。
+4. `POST /deals/{id}/files` 登记真实网页上传文件；已知 Orbis 工作簿可解析。通用 PDF、图片及其他未知表结构目前只登记快照，不宣称已完成 OCR、PDF Claim 提取或通用字段映射。
 
-**3. 避免 1,000 倍误报。** `MRR!Q5:Q13` 的非空输入合计 €366,559.95，与 `Q14` 一致。数字格式 `#,##0,` 会除以 1,000 展示，四舍五入显示为 367 kEUR。应同时展示“原值 EUR / 显示值 kEUR / 格式规则”。本例只核对 MRR 加总；ARR 定义没有确认前不自动乘 12。
+原件不改写。取得时间、供应商更新时间和财务期间分别存储；Circle 历史截止日为 **2025-05-27**，2026 年供应商视图及之后 FY2025/TTM 数据保留为后续补充，不回填为截止日已知事实。
 
-补充：FDD 的 2019 收入 5,096 kEUR 与工作簿 5,095.50635 kEUR 在报告精度下数值一致。但报告的集团/母公司范围仍待确认，所以暂存为“舍入后一致的候选”，不能仅凭接近就落成完整 `matched`。
+## 比较与计算
 
-精确定位、原值和公式在 [工作簿证据](evidence/workbooks.json) 与 [报告证据](evidence/reports.json)。[demo_results.json](demo_results.json) 已保存五项回放结果，包括上述三个场景、口径检查和舍入候选。
+接入时 `definition_key` 保持未确认。必须先审核指标定义、实体范围、会计基础、actual/forecast、期间与单位，才能做最终数字比较。Orbis 的 `Net Income before D&A` 不等于经营现金流；Sales 与 Operating revenue 不重复加总；PitchBook 的分析师调整口径与相邻 margin 不自动视为等价。
 
-## B/C 怎么一起用
+ARR 需要已确认 active MRR；Revenue 需要连续、完整、不重叠的收入期间；Burn 需要同一完整月份的经营现金流入/流出；Runway 需要同日非受限现金和正的月度净现金消耗。当前资料缺少必要的已审核输入时返回 `insufficient_data`，不能由估计区间、年度收入或净利润代替。
 
-**C 维护共享数据库基础、文件登记、指标定义和结构化映射**，产出计算结果及 comparison。**B 提取 PDF/报告中的 claim 和 evidence**，同样写入共享表，再用查询 Router 读取证据和 C 的结果。B/C 一起定字段和定义，通过迁移变更；不要各建一套库。
+B/C 共用数据库与合约：B 提交提取结果和来源定位，C 核对引用归属并负责存储、规范化、计算与比较，再把完整报告交付前端。`GET /claims` 是 observation 查询别名；`POST /claims/batch` 是 B 的结构化交接入口，后端自身不因此具备 PDF 提取能力。前端及 LLM 绑定 C 返回的结构化字段。
 
-前端只读统一 API：`GET /deals/{id}/claims`、`GET /claims/{id}/evidence`、`GET /calculations/{id}/lineage`、`GET /deals/{id}/comparisons`；自然语言查询入口后接。向前端返回数值、单位、期间、来源、可比性及待确认问题，数字绑定结构化字段。
+## 运行状态与旧资料
 
-写 comparison 前由 Python 服务检查实体、期间、性质/scenario、定义、币种与单位，未知项阻止最终数值判定；只有可比时才计算 delta，并记录容差。DDL 的外键/检查约束保护基本结构，**跨行的业务可比性仍需计算服务校验**，不能只靠数据库列的存在就宣称已实现。
+当前演示使用真实保存的 Akta 响应，**不依赖实时连接**。此前 MCP/REST 和新密钥 REST 检查受到 Cloudflare 403 阻断；新密钥 MCP 检查因自动权限审查超时未执行，不能判定密钥无效或声称已测试成功。没有继续实时重试或绕过拒绝。
 
-先完成四文件闭环，再扩展合同/财报检索。向量检索、图数据库、复杂多 Agent、任意公式执行、通用权限产品和全量合同解析都不需要成为这次 Demo 的前置条件。来源图可从这几张关系表生成，不需要再建 Neo4j。
+`database-design/evidence/`、`demo_checks.py`、`demo_results.json`、`data_inventory.json` 与旧 verification 文件是 Enfuce 留存检查，不是当前公司主档、上传数据或迁移的事实来源。启动、上传和 API 见 `backend/README.md`。
 
-## 当前可交付范围与验证
-
-- `data_inventory.json`：文件身份与重复记录，原件未改动。
-- `schema.sql`：待执行的 PostgreSQL DDL，**未在 PostgreSQL 服务中运行**；本环境没有 PostgreSQL 服务/客户端，未安装或部署。
-- `demo_checks.py`：仅读取本次检查证据，先验证原件 SHA-256，再使用 Decimal 回放五项确定性检查。命令：`python3 database-design/demo_checks.py`。
-- `demo_results.json`：已运行通过的结果。回放依赖已保存的源数值，不能替代底账审计、跨版本口径确认或完整 Excel 引擎重算。
-
-接入实现时还需完成 PDF/图片提取、统一 Pydantic API 模型、数据库迁移实跑和比较服务；这些尚未在本次设计中声称已实现。
+Akta 官方契约：[MCP 工具](https://docs.akta.pro/docs/developer-tools/mcp/tools)、[公司搜索](https://docs.akta.pro/docs/supporting-apis/company-search)、[JSON 公司资料](https://docs.akta.pro/docs/company-data/quick-start)。

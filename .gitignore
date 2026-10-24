@@ -9,3 +9,12 @@ dist/
 build/
 test-results/
 *.tsbuildinfo
+
+# Provider credentials and local runtime outputs
+backend/.venv/
+backend/.cache/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+*.duckdb
+*.duckdb.wal
