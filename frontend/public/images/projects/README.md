@@ -1,5 +1,19 @@
 # Projects cover images
 
+## Current three demos — supplied photographs
+
+| Demo | Asset | Original file supplied by the human |
+| --- | --- | --- |
+| Enfuce / Numbers | `numbers.jpg` | `carlos-muza-hpjSkU2UYSU-unsplash.jpg` |
+| HealthTech / Biotech / Claims | `claims.jpg` | `accuray-6pQPFuD7nJY-unsplash.jpg` |
+| Consumer / Marketplace / Narrative | `narrative.jpg` | `blake-wisz--JJg90OAnWI-unsplash.jpg` |
+
+Original JPEG bytes are preserved; CSS object-fit determines the displayed crop. These are contextual cover photographs, not evidence for a demo company's claims or photographs of its actual staff/products. Photo filenames credit Carlos Muza, Accuray and Blake Wisz respectively; no additional licensing assertion is made.
+
+The generated PNGs documented below are historical assets retained for compatibility; current project cards use the three supplied JPEGs above.
+
+## Previous generated covers (historical)
+
 Generated on 2026-10-24 using the built-in ImageGen tool (generate mode). These are conceptual business scenes, not photographs of the named companies, their employees or offices. Original generated PNGs are stored alongside this file. Only platform project cards consume these assets; landing page assets are unchanged.
 
 ## enfuce

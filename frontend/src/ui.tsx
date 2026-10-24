@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
+import { BrandMark } from './Brand'
 import { Activity, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BarChart3, Bell, BookOpen, Building2, Calculator, ChartNoAxesCombined, Check, ChevronDown, ChevronRight, CircleHelp, Clock3, Contact, Copy, Download, ExternalLink, File, FileCheck2, FileSpreadsheet, FileText, Flag, Folder, FolderOpen, Globe2, GripVertical, History, Layers3, LayoutDashboard, Link2, ListFilter, LoaderCircle, Maximize2, Menu, MessageCircle, MoreHorizontal, Pencil, Plus, Rocket, Scale, Search, Send, Settings2, ShieldCheck, Sparkles, Trash2, Upload, Users, WandSparkles, X, Zap } from 'lucide-react'
 
 const icons = { activity: Activity, down: ArrowDown, back: ArrowLeft, arrow: ArrowRight, up: ArrowUp, outward: ArrowUpRight, chart: BarChart3, bell: Bell, book: BookOpen, building: Building2, calculator: Calculator, trend: ChartNoAxesCombined, check: Check, chevronDown: ChevronDown, chevron: ChevronRight, help: CircleHelp, clock: Clock3, contact: Contact, copy: Copy, download: Download, external: ExternalLink, file: File, fileCheck: FileCheck2, sheet: FileSpreadsheet, document: FileText, flag: Flag, folder: Folder, folderOpen: FolderOpen, globe: Globe2, grip: GripVertical, history: History, layers: Layers3, dashboard: LayoutDashboard, link: Link2, filter: ListFilter, loading: LoaderCircle, maximize: Maximize2, menu: Menu, chat: MessageCircle, more: MoreHorizontal, pencil: Pencil, plus: Plus, rocket: Rocket, scale: Scale, search: Search, send: Send, settings: Settings2, shield: ShieldCheck, sparkles: Sparkles, trash: Trash2, upload: Upload, users: Users, wand: WandSparkles, x: X, zap: Zap }
 export function Icon({ name, size = 18, className = '' }: { name: string; size?: number; className?: string }) {
+  if (['sparkles', 'wand', 'zap'].includes(name)) return <BrandMark size={size} className={className} />
   const Component = icons[name as keyof typeof icons] ?? FileText
   return <Component size={size} strokeWidth={1.7} aria-hidden="true" className={className} />
 }

@@ -17,7 +17,8 @@
     "test:calculation": "node tests/calculation-lab.mjs",
     "test:narrative": "node tests/report-narrative.mjs",
     "test:chat": "node tests/company-chat.mjs",
-    "test:firebase": "node tests/firebase-integration.mjs"
+    "test:firebase": "node tests/firebase-integration.mjs",
+    "test:scenarios": "node tests/scenarios.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",

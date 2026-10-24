@@ -20,3 +20,7 @@ backend/.cache/
 *.duckdb.wal
 runtime/
 .akta_api_key
+# Private Firebase / Google service-account credentials (backend only)
+**/*firebase-adminsdk*.json
+**/serviceAccountKey.json
+**/service-account*.json
