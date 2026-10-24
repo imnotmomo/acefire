@@ -64,6 +64,7 @@ def main():
         generator = NarrativeGenerator(settings)
         for attempt in range(2):
             raw = generator._request(messages)
+            result = None
             try:
                 result = json.loads(raw)
                 if not isinstance(result, dict) or set(result) != set(batch):
