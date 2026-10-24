@@ -5,14 +5,10 @@ agent updates its own file; separate files reduce editing conflicts.
 
 | Teammate | Role | Current status |
 | --- | --- | --- |
-| [imnotmomo](.team/status/imnotmomo.md) | Database, calculations, reports and numeric traceability | C backend and Circle report/evidence frontend integrated; uploads/Akta pending for B; see status file |
+| [imnotmomo](.team/status/imnotmomo.md) | Database, calculations, reports and numeric traceability | Backend ready for B/frontend integration; see status file for contracts and validation |
 | [chr950331](.team/status/chr950331.md) | | Not reported |
-| [xiangji1002-ashley](.team/status/xiangji1002-ashley.md) | | Not reported |
+| [xiangji1002-ashley](.team/status/xiangji1002-ashley.md) | Product management, metric definitions, evidence report and demo acceptance | PM product contract documented; available for implementation review |
 | [XINWENGAri](.team/status/XINWENGAri.md) | Frontend workspace, report workflow, evidence/lineage UI and website documentation | Local prototype delivered and validated; C report/lineage API integration pending; see status file |
-
-The frontend owner's status records the earlier prototype handoff. Current Circle
-API integration and validation are recorded by C in `imnotmomo.md`; C has not
-modified another teammate's status file.
 
 The remaining blank role assignments are intentional. Their owners can add confirmed
 work in their own status file. This index is a convenience; the per-person file
