@@ -92,6 +92,8 @@ try {
     const financials = page.locator('#section-financials')
     assert.match(await financials.innerText(), /45,834,409,000 USD/)
     await financials.getByRole('button', { name: `Inspect ${calculationTitle} evidence`, exact: true }).click()
+    assert.match(await page.locator('.findings-panel').innerText(), /45,834,409,000 USD/)
+    await page.getByRole('button', { name: 'Open source evidence', exact: true }).click()
     await page.getByRole('dialog', { name: 'Evidence inspector', exact: true }).waitFor()
     await page.keyboard.press('Escape')
     await page.getByRole('button', { name: 'Edit Company overview', exact: true }).click()
