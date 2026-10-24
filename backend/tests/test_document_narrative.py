@@ -32,14 +32,14 @@ def workspace(tmp_path):
     catalog = build_catalog(store, company.deal_id, [source.id])
     page_id = next(iter(catalog))
     item = dict(id='draft-1', module_id='overview', topic='Company profile', kind='fact',
-                text='材料称，该公司提供支付处理服务。',
+                text='The source states that the company provides payment processing services.',
                 citations=[dict(page_id=page_id, quote='The company provides payment processing services.')], alternatives=[])
     yield store, company, source, catalog, item
     store.close()
 
 
 def reviewed(item, verdict='supported', comparable=False):
-    return Reviews(reviews=[dict(id=item['id'], verdict=verdict, comparable=comparable, reason='核对来源表述和计划状态。')])
+    return Reviews(reviews=[dict(id=item['id'], verdict=verdict, comparable=comparable, reason='Checked the source wording and planned status.')])
 
 
 def report_for(workspace, verdict='supported'):
@@ -109,10 +109,10 @@ def test_difference_requires_comparable_context_and_distinct_sources(workspace):
     page1 = next(iter(catalog))
     catalog['second'] = {**catalog[page1], 'page_id': 'second', 'sha256': 'b' * 64,
                          'snapshot_id': 'second-source', 'text': 'The company provides lending services.'}
-    item.update(kind='difference', text='同一期间的公司主营业务描述不同。', alternatives=[
-        dict(text='支付处理服务', citations=item['citations'], subject='Example', period='2020',
+    item.update(kind='difference', text='The sources describe different primary businesses for the same period.', alternatives=[
+        dict(text='Payment processing services', citations=item['citations'], subject='Example', period='2020',
              scope='group', definition='primary business', scenario='actual'),
-        dict(text='借贷服务', citations=[dict(page_id='second', quote='The company provides lending services.')],
+        dict(text='Lending services', citations=[dict(page_id='second', quote='The company provides lending services.')],
              subject='Example', period='2020', scope='group', definition='primary business', scenario='actual')])
     draft = Draft(items=[DraftItem(**item)])
     assert comparable_alternatives(draft.items[0], catalog)
@@ -197,7 +197,7 @@ def test_generation_resume_reuses_responses_and_exports_complete_handoff(workspa
                 payload = {'items': [item] if any(m['id'] == 'overview' for m in request['modules']) else []}
             else:
                 payload = {'reviews': [dict(id=i['id'], verdict='supported', comparable=False,
-                                           reason='核对来源表述。') for i in request['items']]}
+                                           reason='Checked against the source wording.') for i in request['items']]}
             return {'request_id': f'mock-{self.calls}', 'response': {'model': 'mock-test', 'choices': [
                 {'finish_reason': 'stop', 'message': {'content': json.dumps(payload)}}]}}
 
@@ -206,6 +206,10 @@ def test_generation_resume_reuses_responses_and_exports_complete_handoff(workspa
     report = generate(store, company.deal_id, [source.id], out, scope_label='test', client=client)
     assert client.calls == 7
     assert len(report['sections']) == 12
+    from app.output_language import contains_han
+    assert report['language'] == 'en'
+    assert not contains_han((out / 'frontend-text.md').read_text())
+    assert not contains_han((out / 'C_README.md').read_text())
     assert json.loads((out / 'c-handoff.json').read_text())['id'] == report['id']
     import zipfile
     with zipfile.ZipFile(out / 'c-package.zip') as archive:
@@ -221,7 +225,7 @@ def test_generation_resume_reuses_responses_and_exports_complete_handoff(workspa
     # a new manifest/version. No unreviewed replacement can inherit old review.
     import shutil
     edits = tmp_path / 'edits.json'
-    edits.write_text(json.dumps({'draft-000:draft-1': {'text': '历史材料称，该公司提供支付处理服务。'}}))
+    edits.write_text(json.dumps({'draft-000:draft-1': {'text': 'The historical source states that the company provides payment processing services.'}}))
     revised_dir = tmp_path / 'revised'
     revised_dir.mkdir()
     for raw in out.glob('draft-response-*.json'):
@@ -230,9 +234,39 @@ def test_generation_resume_reuses_responses_and_exports_complete_handoff(workspa
                        client=client, resume=True, edits_file=edits)
     assert client.calls == 8 and revised['id'] != report['id']
     assert revised['provenance']['editorial_review']['edited_draft_ids'] == ['draft-000:draft-1']
-    assert '历史材料称' in revised['sections'][0]['content']
+    assert 'The historical source states' in revised['sections'][0]['content']
     assert get_report(store, company.deal_id)['id'] == revised['id']
     edits.write_text(json.dumps({'draft-000:draft-1': {'text': 'Another unreviewed replacement'}}))
     with pytest.raises(ValueError, match='manifest differs'):
         generate(store, company.deal_id, [source.id], revised_dir, scope_label='test',
                  client=client, resume=True, edits_file=edits)
+
+
+def test_new_reports_have_english_fallbacks_and_language_metadata(workspace):
+    from app.output_language import contains_han
+    report = report_for(workspace)
+    assert report['language'] == 'en'
+    assert all(not contains_han(entry['text']) for section in report['sections'] for entry in section['entries'])
+    assert all(not contains_han(entry['review'].get('reason', '')) for section in report['sections'] for entry in section['entries'])
+
+
+def test_new_report_prose_and_review_reasons_must_be_english(workspace):
+    _, company, _, catalog, item = workspace
+    translated = {**item, 'text': '公司提供支付处理服务。'}
+    with pytest.raises(ValueError, match='English'):
+        validate_draft(Draft(items=[DraftItem(**translated)]), catalog)
+    with pytest.raises(ValueError, match='English'):
+        locate_draft(Draft(items=[DraftItem(**translated)]), catalog)
+    reviews = Reviews(reviews=[dict(id=item['id'], verdict='supported', comparable=False, reason='已核对。')])
+    with pytest.raises(ValueError, match='English'):
+        assemble_report(company, Draft(items=[DraftItem(**item)]), reviews, catalog, {}, scope_label='test')
+
+
+def test_english_report_can_retain_an_original_chinese_citation(workspace):
+    _, _, _, catalog, item = workspace
+    page = next(iter(catalog))
+    catalog[page] = {**catalog[page], 'text': '公司提供支付处理服务。'}
+    item['citations'][0]['quote'] = catalog[page]['text']
+    draft = validate_draft(Draft(items=[DraftItem(**item)]), catalog)
+    citation = resolve_citation(draft.items[0].citations[0], catalog)
+    assert citation['quote'] == '公司提供支付处理服务。'

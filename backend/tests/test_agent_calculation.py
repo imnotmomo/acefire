@@ -319,6 +319,43 @@ def test_extra_output_key_is_repaired_once_and_both_real_execution_attempts_rema
     assert proof['generation_prompt_sha256'] == attempts[1]['generation_prompt_sha256']
 
 
+def test_chinese_calculation_explanation_gets_one_repair_without_changing_value(records):
+    from app.agent_runtime import AgentSettings, LocalCodeRunner
+    rows, sources = records
+    invalid = CODE.replace('Adds the two supplied exact normalized source components.', '将两个来源数字相加。')
+    seen = []
+    config = AgentSettings(model_key='test-private-credential')
+    with sequence_model([invalid, CODE], seen) as model:
+        calculation = AgentCalculator(config, model, LocalCodeRunner(config)).calculate('circle', request(), rows, sources)
+    assert len(seen) == 2 and calculation.value == Decimal('9007199254740993.123406')
+    attempts = calculation.parameters['agent_execution']['generation_attempts']
+    assert [attempt['status'] for attempt in attempts] == ['rejected', 'accepted']
+    assert attempts[0]['error_code'] == 'invalid_execution_output'
+
+
+@pytest.mark.parametrize('field', ['formula', 'assumptions', 'limitations'])
+def test_chinese_calculation_assumptions_and_limitations_are_not_published(records, field):
+    from app.agent_calculation import _validated_output
+    rows, _ = records
+    value = result(**{field: '第一个数字加第二个数字' if field == 'formula' else ['需要复核来源。']})
+    with pytest.raises(AgentCalculationError, match='English'):
+        _validated_output(json.dumps(value), rows, [])
+
+
+def test_english_premise_reason_keeps_original_chinese_source_quote(records):
+    from app.agent_calculation import _validated_output
+    rows, sources = records
+    original = '公司报告的数字需要复核。'
+    supplied = [{'id': 'premise-one', 'text': original, 'source': {'snapshot_id': sources[0].id, 'sha256': sources[0].sha256}}]
+    value = result(premises=[{'evidence_id': 'premise-one', 'quote': original, 'role': 'premise', 'reason': 'The source requests review of reported values.'}])
+    output = _validated_output(json.dumps(value), rows, supplied)
+    assert output['premises'][0]['quote'] == original
+    assert output['premises'][0]['source']['sha256'] == sources[0].sha256
+    value['premises'][0]['reason'] = '需要复核。'
+    with pytest.raises(AgentCalculationError, match='English'):
+        _validated_output(json.dumps(value), rows, supplied)
+
+
 def test_nonzero_child_execution_can_be_corrected_using_its_bounded_actual_diagnostics(records):
     from app.agent_runtime import AgentSettings, LocalCodeRunner
     rows, sources = records

@@ -33,13 +33,27 @@ def source_claims(company, reports, snapshots):
 
 
 def summaries(reports):
-    return [{'id': r['id'], 'created_at': r['created_at'], 'language': r.get('language', 'unknown'),
-             'section_count': len(r.get('sections', [])), 'model': r.get('provenance', {}).get('requested_model', 'upstream model'),
-             'status': 'model_generated_unverified'} for r in reports]
+    from app.english_presentation import english_report
+    result = []
+    for original in reports:
+        try:
+            report, translation = english_report(original)
+        except ValueError:
+            report, translation = original, None
+        result.append({'id': report['id'], 'created_at': report['created_at'],
+                       'language': report.get('language', 'unknown'),
+                       'original_language': original.get('language', 'unknown'),
+                       'english_available': translation is not None or report.get('language', '').startswith('en'),
+                       'section_count': len(report.get('sections', [])),
+                       'model': report.get('provenance', {}).get('requested_model', 'upstream model'),
+                       'status': 'model_generated_unverified'})
+    return result
 
 
 def draft(report, current_report):
     from app.narrative import _source_graph
+    from app.english_presentation import english_report
+    report, translation = english_report(report)
     evidence = {e['id']: e for e in current_report['narrative_evidence']}
     sections, preferences = [], []
     for section in report['sections']:
@@ -71,4 +85,5 @@ def draft(report, current_report):
             'sections': sections, 'drafting_preferences': preferences, 'evidence_manifest': selected,
             'source_graph': _source_graph(report['id'], sections, selected),
             'origin': 'imported_stored_narrative_report', 'human_reviewed': False,
+            'language': 'en', 'translation': translation,
             'limitations': report.get('limitations', [])}

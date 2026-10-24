@@ -42,7 +42,7 @@ try {
     await page.keyboard.press('ArrowRight')
     assert.match(await page.locator('#ig-evidence-panel').innerText(), /3,417,663.76 \+ €35,019.05/)
     await page.keyboard.press('ArrowRight')
-    assert.match(await page.locator('#ig-evidence-panel').innerText(), /近五年财务情况!F4/)
+    assert.match(await page.locator('#ig-evidence-panel').innerText(), /Five-year financial summary!F4 \(English worksheet label\)/)
     await page.keyboard.press('Home')
     assert.match(await page.locator('#ig-evidence-panel').innerText(), /3,452,682.81/)
   })

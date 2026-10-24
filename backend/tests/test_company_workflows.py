@@ -144,3 +144,21 @@ def test_chat_has_one_bounded_repair_and_sends_full_context_without_credentials(
     assert json.loads(seen[0]['messages'][1]['content'])['company_context']['all_records']==['offscreen']
     assert 'private-key' not in json.dumps(seen)
     assert result['citations'][0]['source']['sha256']=='a'*64
+
+
+def test_chat_repairs_chinese_prose_but_preserves_original_chinese_quotes():
+    seen = []
+    evidence = catalog()
+    evidence[0]['text'] = '公司报告有14家客户。'
+    def provider(request):
+        seen.append(json.loads(request.content))
+        payload = {'answer': '公司报告有14家客户。' if len(seen) == 1 else 'The company reports 14 customers.',
+                   'state': 'verify', 'citations': [{'evidence_id': evidence[0]['id'], 'quote': evidence[0]['text']}]}
+        return httpx.Response(200, json={'choices': [{'message': {'content': json.dumps(payload)}}]})
+    settings = SimpleNamespace(model_key='private-key', nicrron_base_url='https://api.nicrron.ai/v1', model='test')
+    with httpx.Client(transport=httpx.MockTransport(provider)) as model:
+        answer = CompanyChat(settings, model).answer('circle', CompanyChatRequest(question='客户数量？', report_id='report'), evidence, {})
+    assert len(seen) == 2 and answer['language'] == 'en'
+    assert answer['answer'] == 'The company reports 14 customers.'
+    assert answer['citations'][0]['quote'] == '公司报告有14家客户。'
+    assert answer['citations'][0]['source']['locator']['page'] == 5

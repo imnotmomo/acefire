@@ -36,7 +36,7 @@ export function reorder<T>(items: T[], from: number, to: number): T[] {
 const PARAGRAPHS: Record<string, string> = {
   company: 'The historical FDD describes Enfuce as a financial technology company founded in 2016 and headquartered in Finland, with payment services as its primary business. This is the source’s description, not a current independently verified profile. [company]',
   income: 'H1 2020 group operating income totals €3,452,682.81: €3,417,663.76 in revenue plus €35,019.05 in other operating income. The saved worksheet values reproduce this arithmetic. [income]',
-  definition: 'The summary’s “营业收入” figure corresponds numerically to total operating income, rather than pure revenue. Confirm the report’s revenue definition before making a direct comparison. [definition]',
+  definition: 'The summary’s “operating revenue” figure (translated source label) corresponds numerically to total operating income, rather than pure revenue. Confirm the report’s revenue definition before making a direct comparison. [definition]',
   gross: 'The 2019 gross profit formula reproduces 3,609.32824 kEUR: 5,095.50635 − 1,536.17811 + 50. The additional 50 kEUR is an unlabeled constant; its business meaning needs clarification. [gross]',
   mrr: 'The MRR worksheet’s Q-column total is €366,559.95, displayed as 367 kEUR after the source number format is applied. ARR is not calculated: the recurring revenue definition, customer scope and as-of date need confirmation. [mrr]',
   rounding: 'Reported 2019 revenue of 5,096 kEUR is numerically consistent with the workbook’s 5,095.50635 kEUR after rounding. Entity scope remains unresolved, so this is not a final matched comparison. [rounding]',

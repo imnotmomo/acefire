@@ -15,6 +15,7 @@ from pypdf import PdfReader
 
 from app.schemas import Contract, stable_id
 from app.store import Store, _dump, _json
+from app.output_language import OutputLanguageError, contains_han
 
 MODULES = [
     ('overview', 'Company overview', ['Company profile', 'Business model', 'Ownership']),
@@ -141,6 +142,8 @@ def comparable_alternatives(item, catalog):
 def validate_draft(draft, catalog):
     seen = set()
     for item in draft.items:
+        if contains_han(item.text) or any(contains_han(alternative.text) for alternative in item.alternatives):
+            raise OutputLanguageError('New report prose must be in English; citation quotations remain in their original language.')
         if item.id in seen:
             raise ValueError('Duplicate draft item ID.')
         seen.add(item.id)
@@ -167,6 +170,8 @@ def assemble_report(company, draft, reviews, catalog, provenance, *, scope_label
     sources, entries, withheld = {}, {}, list(provenance.get('location_rejections', []))
     for item in draft.items:
         review = by_id[item.id]
+        if contains_han(review.reason):
+            raise OutputLanguageError('New report review explanations must be in English.')
         # Review applies to gap wording too: do not assert global absence.
         supported = review.verdict == 'supported'
         if item.kind == 'difference':
@@ -198,7 +203,7 @@ def assemble_report(company, draft, reviews, catalog, provenance, *, scope_label
             found = entries.get((module_id, topic), [])
             if not found:
                 found = [{'id': stable_id('narrative-gap-v1', company.deal_id, module_id, topic, canonical_hash(catalog)),
-                          'topic': topic, 'text': '当前已审阅材料不足以支持该主题的可发布表述，需补充资料或完成复核。',
+                          'topic': topic, 'text': 'The reviewed material does not support a publishable statement on this topic; additional evidence or review is required.',
                           'status': 'missing', 'evidenceIds': [], 'alternatives': [],
                           'review': {'method': 'coverage_check', 'human_reviewed': False}}]
             values.extend(found)
@@ -210,7 +215,7 @@ def assemble_report(company, draft, reviews, catalog, provenance, *, scope_label
                          'config': {'topics': topics, 'depth': 'Standard', 'geography': 'Global',
                                     'horizon': 'Source period', 'scope': 'Internal only', 'focus': ''}})
     report = {'schema_version': 'b-narrative-v1', 'deal_id': company.deal_id, 'entity_key': company.entity_key,
-              'company': company.legal_name, 'module_order': [m[0] for m in MODULES], 'language': 'zh-CN',
+              'company': company.legal_name, 'module_order': [m[0] for m in MODULES], 'language': 'en',
               'source_scope': {'label': scope_label, 'snapshot_ids': sorted({p['snapshot_id'] for p in catalog.values()}),
                                'catalog_sha256': canonical_hash(catalog), 'readable_pages': len(catalog)},
               'status_definitions': {

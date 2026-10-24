@@ -28,10 +28,14 @@
 
 ## English presentation task (separate chat, 2026-10-24)
 
-- State: in_progress; English release validation complete, publishing next.
+- State: live; English release `20261024T192316Z-60be47a522fe` activated and real Firebase report views verified. All eight live browser/export checks passed.
 - Human identity: imnotmomo confirmed directly; work was isolated in acefire-english and targeted changes have now been applied without altering existing source-preview edits.
 - Scope: English static wording, imported report views, future model/report/chat prose, and safe browser-draft language refresh.
 - Paths: backend/app/{english_presentation,output_language,stored_narratives,narrative,company_chat,agent_calculation,document_narrative}.py, backend/evidence narrative prompts/generator, new translation preparation script/docs/tests, frontend English helper/hook and static display data/domain/App/Chat/Landing/Evidence/DataRoom.
 - Firebase: acefire-50248 / acefire read access verified. Two original Chinese narrative_reports remain immutable; a private content-hash-bound English manifest supplies derived views. All source quotations/IDs/hashes and financial values are preserved.
-- Validation: 370 backend tests; 47 frontend unit tests and production build. Both real Enfuce reports validated as 12 English sections each with unchanged source bindings.
-- Coordination: this task did not edit the active source-preview files, Report/ReportReview UI or main.py, and did not commit/push. Private manifest is in ignored backend/.cache and will be installed under /etc/ingenium on the VPS.
+- Validation: 370 backend tests on both local and Linux server; 48 frontend unit tests and Linux production build. Both real Enfuce reports validated as 12 English sections each with unchanged source bindings.
+- Coordination: this task did not edit the active source-preview files, Report/ReportReview UI or main.py, and did not change source-preview implementation. The human has now explicitly requested committing and pushing the English fixes. Private manifest is in ignored backend/.cache and is installed at `/etc/ingenium/english-translations.json` on the VPS (root:ingenium 0640).
+
+- Active server source: ff1ce9c base plus the tested English-only changes; `release.json` records local_changes=true and source_sha256 `31764f5e65bef3da353b34592d5db7fefec57eb76fd30db9d47cdd4428e1923d`. The human authorized publishing these English changes to GitHub. Retain the private manifest across future releases; it is intentionally excluded from source control.
+
+- Publication validation on the latest combined source: 379 backend tests, 51 frontend unit tests and production build passed. Live checks cover English saved reports, exact source bindings, preserved human edits/history, English Markdown/DOCX/PDF, mobile layout and an English model answer to a Chinese question. The visible UI/legacy report export no longer contains the Chinese operating-revenue label.

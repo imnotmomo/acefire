@@ -18,6 +18,7 @@ import httpx
 from pydantic import Field, model_validator
 
 from app.schemas import Calculation, Contract, Observation, SourceSnapshot
+from app.output_language import contains_han
 
 
 MAX_CODE_BYTES = 24_000
@@ -147,6 +148,7 @@ def validate_generated_code(code: str) -> None:
 
 
 SYSTEM_PROMPT = """You write a single, source-bound financial analysis program in Python.
+Write generated explanations, formula descriptions, assumptions, limitations and premise reasons in English. Preserve original-language source quotations, identifiers, units and locators exactly in their dedicated fields; never translate those source bindings.
 Return ONLY a JSON object with one key, "code", containing Python source code.
 Define calculate(inputs, parameters) and return a JSON-compatible object. No top-level execution, decorators, annotations, default function parameters, classes, with statements, async, generators, global/nonlocal declarations, print, file access, network, processes, introspection, or dynamic execution. Set getcontext().prec inside calculate() when adjusting Decimal precision.
 Imports may only use decimal, json, datetime, calendar, math, statistics, collections. Do not use private names/attributes. Use Decimal from decimal for all monetary arithmetic and a decimal context precision of at least 50; use quoted decimal strings, never float literals. The supplied input values and assumptions are exact strings. Do not invent financial constants, reference values or assumptions; state all necessary assumptions explicitly or report insufficient_data.
@@ -237,6 +239,8 @@ def _validated_premises(value: Any, supplied: list[dict[str, Any]]) -> list[dict
             raise AgentCalculationError(502, 'invalid_text_provenance', 'A generated premise quote does not match the original supplied text verbatim.')
         if not isinstance(claim['role'], str) or claim['role'] not in {'evidence', 'premise', 'assumption'} or not isinstance(claim['reason'], str) or not claim['reason'].strip() or len(claim['reason']) > 2000:
             raise AgentCalculationError(502, 'invalid_text_provenance', 'A generated textual premise has an unsupported role or explanation.')
+        if contains_han(claim['reason']):
+            raise AgentCalculationError(502, 'invalid_execution_output', 'Generated premise explanations must be in English; source quotations must remain unchanged.')
         result.append({**claim, 'source': by_id[evidence_id]['source']})
     return result
 
@@ -266,6 +270,8 @@ def _validated_output(stdout: str, selected: list[Observation], supplied_text: l
     for name in ['assumptions', 'limitations']:
         if not isinstance(output[name], list) or len(output[name]) > 40 or not all(isinstance(item, str) and len(item) <= 1500 for item in output[name]):
             raise AgentCalculationError(502, 'invalid_execution_output', 'The generated result returned unsupported assumptions or limitations.')
+    if any(contains_han(output[name]) for name in ['formula', 'explanation']) or any(contains_han(item) for name in ['assumptions', 'limitations'] for item in output[name]):
+        raise AgentCalculationError(502, 'invalid_execution_output', 'Generated formula descriptions, explanations, assumptions and limitations must be in English; original wording belongs in source bindings.')
     if output['unit'] is not None and (not isinstance(output['unit'], str) or not output['unit'].strip() or len(output['unit']) > 80):
         raise AgentCalculationError(502, 'invalid_execution_output', 'The generated result unit is invalid.')
     if status == 'succeeded':

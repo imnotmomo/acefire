@@ -140,6 +140,34 @@ def test_bad_json_or_citation_can_be_repaired_once_with_sanitized_bounded_feedba
     assert draft['sections'][0]['claims'][0]['citations'][0]['quote'] == 'Circle was founded in 2013.'
 
 
+@pytest.mark.parametrize('field', ['claim', 'gap'])
+def test_chinese_generated_prose_is_repaired_to_english(catalog, field):
+    invalid = output()
+    if field == 'claim':
+        invalid['sections'][0]['claims'][0]['text'] = '公司成立于2013年。'
+    else:
+        invalid['sections'][2]['gaps'] = ['未提供市场规模证据。']
+    seen = []
+    with client([invalid, output()], seen) as model:
+        draft = NarrativeGenerator(settings(), model).generate('circle', draft_request(), catalog)
+    assert len(seen) == 2 and draft['language'] == 'en'
+    assert draft['generation_attempts'][0]['error_code'] == 'invalid_output_language'
+    assert 'English' in seen[1]['messages'][-1]['content']
+
+
+def test_english_narrative_keeps_original_chinese_quote_and_source_binding(catalog):
+    catalog[0]['text'] = '公司成立于2013年。'
+    value = output()
+    value['sections'][0]['claims'][0]['text'] = 'The company was founded in 2013.'
+    value['sections'][0]['claims'][0]['citations'][0]['quote'] = catalog[0]['text']
+    with client([value], []) as model:
+        draft = NarrativeGenerator(settings(), model).generate('circle', draft_request(), catalog)
+    citation = draft['sections'][0]['claims'][0]['citations'][0]
+    assert draft['language'] == 'en' and citation['quote'] == '公司成立于2013年。'
+    assert citation['source']['sha256'] == catalog[0]['source']['sha256']
+    assert draft['evidence_manifest'][0]['text'] == catalog[0]['text']
+
+
 @pytest.mark.parametrize('failure', ['missing_key', 'http', 'timeout'])
 def test_configuration_and_provider_failures_do_not_retry_or_echo_credentials(catalog, failure):
     seen = []

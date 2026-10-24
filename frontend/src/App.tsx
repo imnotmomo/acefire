@@ -13,6 +13,8 @@ import ConnectedDashboard from './ConnectedDashboard'
 import { ConnectedEvidenceInspector } from './ConnectedEvidence'
 import ConnectedDataRoom from './ConnectedDataRoom'
 import { backendProjectId, reportEvidence, useCompanyReport } from './backend'
+import { migrateLegacyEnglish } from './english'
+import { useEnglishWorkspace } from './useEnglishWorkspace'
 import './connected.css'
 import './connection.css'
 
@@ -67,18 +69,19 @@ export default function App() {
 
 function ProjectWorkspace({ project, page, stage, notify }: { project: Project; page: string; stage: string; notify: (message: string) => void }) {
   const key = `acefire:workspace:v1:${project.id}`
-  const [workspace, setWorkspace] = useState<Workspace>(() => { const stored = readLocal<Workspace>(key, emptyWorkspace()); return stored && Array.isArray(stored.order) && Array.isArray(stored.sections) && stored.configs && Array.isArray(stored.revisions) ? stored : emptyWorkspace() })
+  const [workspace, setWorkspace] = useState<Workspace>(() => { const stored = readLocal<Workspace>(key, emptyWorkspace()); return stored && Array.isArray(stored.order) && Array.isArray(stored.sections) && stored.configs && Array.isArray(stored.revisions) ? migrateLegacyEnglish(stored) : emptyWorkspace() })
   const [evidenceId, setEvidenceId] = useState<string | null>(null)
   const [chatOpen, setChatOpen] = useState(false)
   const dealId = backendProjectId(project.id)
   const { report, loading, error, refresh, loadedAt } = useCompanyReport(dealId)
   const backendEvidence = useMemo(() => report ? reportEvidence(report) : [], [report])
   const selectedEvidence = backendEvidence.find(item => item.id === evidenceId)
+  useEnglishWorkspace(project, report, workspace, setWorkspace, notify)
   useEffect(() => { if (!saveLocal(key, workspace)) notify('Changes could not be saved. Export your work and check browser storage.') }, [key, workspace, notify])
   if (dealId && loading) return <div className="backend-loading" role="status"><Icon name="loading" size={26} /><h2>Loading company evidence</h2><p>Reading the stored report, calculations and source references.</p></div>
   if (dealId && (error || !report)) return <div className="backend-error" role="alert"><h2>Company report unavailable</h2><p>{error || 'The backend did not return a company report.'}</p><p>Connect the company data service and make this company’s report available, then try again.</p><button className="button primary" onClick={refresh}>Retry connection<Icon name="arrow" size={15} /></button></div>
   return <>
-    {dealId && report && <div className="backend-connection" role="status"><Icon name="shield" size={16} /><div><strong>Stored company report connected</strong><small>{report.persistence?.provider === 'firestore' ? `Firebase · ${report.persistence.database_id} · ` : ''}{report.source_files.length} files · {report.reported_metrics.length} reported observations{loadedAt ? ` · loaded ${new Date(loadedAt).toLocaleTimeString()}` : ''}</small></div><button className="button secondary" onClick={refresh}>Refresh stored report<Icon name="history" size={14} /></button></div>}
+    {dealId && report && <div className="backend-connection" role="status"><Icon name="shield" size={16} /><div><strong>Stored company report connected</strong><small>{report.persistence?.provider === 'firestore' ? `Firebase · ${report.persistence.database_id} · ` : ''}{report.source_files.length} files · {report.reported_metrics.length} reported observations{loadedAt ? ` · loaded ${new Date(loadedAt).toLocaleTimeString('en-US')}` : ''}</small></div><button className="button secondary" onClick={refresh}>Refresh stored report<Icon name="history" size={14} /></button></div>}
     {page === 'Report' ? <Report project={project} workspace={workspace} setWorkspace={setWorkspace} stage={stage} navigate={go} inspect={setEvidenceId} notify={notify} backendReport={report ?? undefined} /> : page === 'Dashboard' ? report ? <ConnectedDashboard project={project} report={report} inspect={setEvidenceId} navigate={go} onCalculated={() => { notify('Calculation saved with its code and source references.'); refresh() }} /> : <Dashboard project={project} inspect={setEvidenceId} navigate={go} /> : report ? <ConnectedDataRoom report={report} /> : <DataRoom project={project} inspect={setEvidenceId} notify={notify} />}
     <div className="assistant-dock"><button className="dock-suggestion" onClick={() => setChatOpen(true)}><Icon name="sparkles" size={12} /> {page === 'Dashboard' ? 'Where do these numbers come from?' : page === 'Report' ? 'What evidence supports this summary?' : 'What do these documents establish?'}</button><button className="assistant-launcher" onClick={() => setChatOpen(true)}><span className="assistant-spark"><Icon name="sparkles" size={19} /></span><span>Ask anything about your evidence</span><Icon name="chat" size={17} /></button></div>
     {evidenceId && (dealId ? selectedEvidence ? <ConnectedEvidenceInspector key={evidenceId} evidence={selectedEvidence} onClose={() => setEvidenceId(null)} notify={notify} /> : <Dialog title="Evidence unavailable" onClose={() => setEvidenceId(null)}><div className="dialog-body"><p>This reference is not present in the current stored report. Refresh the report or regenerate its sections to use current evidence.</p></div></Dialog> : <EvidenceInspector key={evidenceId} id={evidenceId} onClose={() => setEvidenceId(null)} notify={notify} />)}

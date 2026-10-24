@@ -19,7 +19,7 @@ export const MODULES: ModuleDefinition[] = [
 export type Evidence = {
   id: string; title: string; file: string; locator: string; period: string; unit: string;
   status: 'Reproduced' | 'Needs review' | 'Reported'; value: string; description: string;
-  excerpt: string; rows: [string, string][]; formula?: string; note: string; hash?: string;
+  excerpt: string; originalExcerpt?: string; originalLocator?: string; rows: [string, string][]; formula?: string; note: string; hash?: string;
   category: 'Financial data' | 'Documents';
 }
 
@@ -34,10 +34,12 @@ export const EVIDENCE: Evidence[] = [
     hash: 'f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa', category: 'Financial data',
   },
   {
-    id: 'definition', title: 'Revenue definition', file: 'June 2020 Financials.xlsx', locator: '近五年财务情况 · A4, F4; P&L - Group · B4:I6', period: 'H1 2020', unit: 'EUR',
+    id: 'definition', title: 'Revenue definition', file: 'June 2020 Financials.xlsx', locator: 'Five-year financial summary (English worksheet label) · A4, F4; P&L - Group · B4:I6', period: 'H1 2020', unit: 'EUR',
+    originalLocator: '近五年财务情况 · A4, F4; P&L - Group · B4:I6',
     status: 'Needs review', value: 'Definition pending', description: 'Revenue and total income are not interchangeable',
-    excerpt: 'The summary label “营业收入” maps numerically to Income total, rather than pure Revenue.',
-    rows: [['Summary “营业收入”', '€3,452,682.81'], ['Pure Revenue', '€3,417,663.76'], ['Income total', '€3,452,682.81']],
+    excerpt: 'The summary label, translated into English as “Revenue,” maps numerically to Income total, rather than pure Revenue.',
+    originalExcerpt: 'The summary label “营业收入” maps numerically to Income total, rather than pure Revenue.',
+    rows: [['Summary “Revenue” (English label)', '€3,452,682.81'], ['Pure Revenue', '€3,417,663.76'], ['Income total', '€3,452,682.81']],
     note: 'Confirm whether the report’s revenue should include other operating income. No final mismatch conclusion is made.', category: 'Financial data',
   },
   {
@@ -67,14 +69,16 @@ export const EVIDENCE: Evidence[] = [
   {
     id: 'company', title: 'Company profile', file: 'Enfuce FDD v4.pptx', locator: 'Slide 2 · company description', period: '2020 source snapshot', unit: 'Narrative',
     status: 'Reported', value: 'Enfuce', description: 'Company description in the FDD report',
-    excerpt: 'Enfuce是一家成立于2016年的金融科技公司其总部位于芬兰，主要客户是位于北欧初创公司和企业目前Enfuce主要业务是支付服务，占营收超95%',
+    excerpt: 'English translation of the historical FDD excerpt: Enfuce is a fintech company founded in 2016 and headquartered in Finland. Its main customers are startups and companies in the Nordics. Its principal business is payment services, accounting for more than 95% of revenue.',
+    originalExcerpt: 'Enfuce是一家成立于2016年的金融科技公司其总部位于芬兰，主要客户是位于北欧初创公司和企业目前Enfuce主要业务是支付服务，占营收超95%',
     rows: [['Founded (reported)', '2016'], ['Headquarters (reported)', 'Finland'], ['Primary business (reported)', 'Payment services']],
     note: 'Historical report description, not an independently verified or current company profile.', category: 'Documents',
   },
   {
     id: 'customers', title: 'Reported customer base', file: 'Enfuce FDD v4.pptx', locator: 'Slide 2 · data summary', period: 'June 2020 source context', unit: 'Customers',
     status: 'Reported', value: '16', description: 'Customer count reported in the FDD',
-    excerpt: '现存客户16家，第一大客户是ST1',
+    excerpt: 'English translation of the historical FDD excerpt: There are 16 existing customers, and ST1 is the largest customer.',
+    originalExcerpt: '现存客户16家，第一大客户是ST1',
     rows: [['Reported customers', '16'], ['Largest customer (reported)', 'ST1'], ['Customer-level reconciliation', 'Not available']],
     note: 'Count is reported only. A customer-level ledger is needed to reproduce it.', category: 'Documents',
   },
