@@ -1,6 +1,10 @@
 # Automatic Git sync
 
-`auto-push.ps1` commits local changes and pushes to `origin/main`.
+`auto-push.ps1` commits changes under `frontend/` and pushes to `origin/main`.
+Put new application code and assets in `frontend/`. Other directories are not
+automatically staged. If another directory has staged changes, sync stops so
+those changes can be handled manually. As with any Git push, all existing local
+commits on main are pushed, so review manual commits before enabling sync.
 The Windows scheduled task `Acefire-AutoPush` runs it every five minutes while
 the Windows user is logged in. The computer must be awake and online.
 

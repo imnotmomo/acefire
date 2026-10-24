@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, patch
 import httpx
 from fastapi.testclient import TestClient
 
-from backend.main import app
+from frontend.main import app
 
 
 class AskTests(unittest.TestCase):

@@ -8,12 +8,33 @@ $lockPath = Join-Path $projectRoot '.git/auto-push.lock'
 $lock = $null
 
 function Invoke-Git {
-    param([string[]]$GitArgs)
-    $ErrorActionPreference = 'Continue'
-    $output = & git @GitArgs 2>&1
-    $code = $LASTEXITCODE
-    if ($output) { $output | Out-File -LiteralPath $logPath -Append -Encoding utf8 }
-    if ($code -ne 0) { throw "git $($GitArgs -join ' ') failed (exit $code). See $logPath" }
+    param([string[]]$GitArgs, [int[]]$AllowedExitCodes = @(0))
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = (Get-Command git -CommandType Application).Source
+    $startInfo.WorkingDirectory = $projectRoot
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $startInfo.Arguments = ($GitArgs | ForEach-Object { '"' + $_.Replace('"', '\"') + '"' }) -join ' '
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    try {
+        $null = $process.Start()
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
+        if (-not $process.WaitForExit(120000)) {
+            $process.Kill()
+            throw 'Git operation timed out.'
+        }
+        $output = $stdout.GetAwaiter().GetResult()
+        $errors = $stderr.GetAwaiter().GetResult()
+        if ($errors) { $errors | Out-File -LiteralPath $logPath -Append -Encoding utf8 }
+        if ($AllowedExitCodes -notcontains $process.ExitCode) {
+            throw "git $($GitArgs -join ' ') failed (exit $($process.ExitCode)). See $logPath"
+        }
+        return [pscustomobject]@{ Output = $output; ExitCode = $process.ExitCode }
+    } finally { $process.Dispose() }
 }
 
 try {
@@ -21,18 +42,22 @@ try {
         $lock = [System.IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None')
     } catch [System.IO.IOException] { exit 0 }
     "[$(Get-Date -Format o)] Sync started" | Out-File -LiteralPath $logPath -Append -Encoding utf8
-    $branch = & git branch --show-current
-    if ($LASTEXITCODE -ne 0 -or $branch -ne 'main') { throw 'Auto push requires the main branch.' }
-    Invoke-Git -GitArgs @('fetch', 'origin', 'main')
-    & git merge-base --is-ancestor origin/main HEAD
-    if ($LASTEXITCODE -ne 0) { throw 'Remote main has new commits. Integrate them manually before syncing.' }
-    Invoke-Git -GitArgs @('add', '--all')
-    & git diff --cached --quiet
-    $diffCode = $LASTEXITCODE
+    $branch = (Invoke-Git -GitArgs @('branch', '--show-current')).Output.Trim()
+    if ($branch -ne 'main') { throw 'Auto push requires the main branch.' }
+    $null = Invoke-Git -GitArgs @('fetch', 'origin', 'main')
+    $ancestor = Invoke-Git -GitArgs @('merge-base', '--is-ancestor', 'origin/main', 'HEAD') -AllowedExitCodes @(0, 1)
+    if ($ancestor.ExitCode -ne 0) { throw 'Remote main has new commits. Integrate them manually before syncing.' }
+    $staged = (Invoke-Git -GitArgs @('diff', '--cached', '--name-only', '-z')).Output
+    foreach ($path in $staged.Split([char]0)) {
+        if ($path -and -not $path.StartsWith('frontend/')) { throw 'Other directories have staged changes. Commit or unstage them manually.' }
+    }
+    $null = Invoke-Git -GitArgs @('add', '--all', '--', 'frontend')
+    $diffCode = (Invoke-Git -GitArgs @('diff', '--cached', '--quiet') -AllowedExitCodes @(0, 1)).ExitCode
     if ($diffCode -eq 1) {
-        Invoke-Git -GitArgs @('commit', '-m', "Auto sync $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+        $null = Invoke-Git -GitArgs @('commit', '-m', "Auto sync frontend $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
     } elseif ($diffCode -ne 0) { throw 'Unable to inspect staged changes.' }
-    Invoke-Git -GitArgs @('push', 'origin', 'main')
+    $null = Invoke-Git -GitArgs @('push', 'origin', 'main')
+    "[$(Get-Date -Format o)] Sync completed" | Out-File -LiteralPath $logPath -Append -Encoding utf8
 } catch {
     "[$(Get-Date -Format o)] ERROR: $_" | Out-File -LiteralPath $logPath -Append -Encoding utf8
     Write-Error $_ -ErrorAction Continue

@@ -4,9 +4,9 @@ Run these commands from the project root in PowerShell:
 
 ```powershell
 py -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r frontend/requirements.txt
 $env:NICRRON_API_KEY = "your-api-key"
-.\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload
+.\.venv\Scripts\python.exe -m uvicorn frontend.main:app --reload
 ```
 
 For local development, the backend also loads `NICRRON_API_KEY` from the project root `.env` file (ignored by Git). Existing environment variables take precedence. Set `NICRRON_API_KEY` in the backend's environment in production. Never use a frontend/public environment variable for the key.
@@ -28,7 +28,7 @@ The backend calls `https://api.nicrron.ai/v1/chat/completions` with model `nicrr
 Tests use mocked upstream responses and require no API key or network calls:
 
 ```powershell
-.\.venv\Scripts\python.exe -m unittest backend.test_main -v
+.\.venv\Scripts\python.exe -m unittest frontend.test_main -v
 ```
 
 This endpoint sends the question only; document retrieval and evidence-backed answers are not implemented yet.
