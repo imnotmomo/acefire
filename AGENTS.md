@@ -85,6 +85,29 @@ teammate's human confirms it.
   bases: FY2020 summary revenue of about €7.5m, management estimate of €7.499m,
   investor estimate of €7.166m and May 2020 run-rate of €7.4m. Treat these as
   different source/period/scenario observations, not automatically as an error.
+- The four primary storytelling metrics are deliberately chosen to demonstrate
+  four different evidence outcomes:
+  1. **FY2020 revenue — cross-source/definition difference.** Present the
+     €7.5m summary, €7.499m management estimate, €7.166m investor estimate and
+     €7.4m May run-rate together. The story is that several values may be valid
+     when their source, period and scenario differ; the product explains the
+     difference instead of selecting a winner.
+  2. **FY2019 gross margin — successfully reproduced.** Recalculate
+     `€3.6093m gross profit / €5.0955m revenue = 70.83%`, compare it with the
+     reported 71% and mark it matched within the displayed rounding policy. The
+     story is that a reported KPI can be independently verified from its inputs.
+  3. **Top-customer concentration — missing underlying evidence.** Preserve the
+     reported ST1 values of 40% of LTM revenue and 44% of ARR as different
+     denominator definitions. Do not reproduce either without customer-level
+     revenue/ARR data. The story is that source text alone is not the same as
+     auditable underlying evidence.
+  4. **Runway — explicit refusal.** Monthly cash burn is reported as €169k for
+     2020E, but cash balance is absent, so `cash balance / monthly burn` cannot
+     be calculated. The story is that the product refuses to invent a number
+     and instead asks for the missing cash-balance date and amount.
+- Present these four metrics in that order during the core demo: difference →
+  verification → evidence gap → refusal and follow-up. This sequence shows the
+  product's range without adding more metrics to the critical path.
 - Minimum product acceptance: a displayed number is sourced, deterministically
   computed or explicitly refused; users can open its file/page/field locator and
   formula inputs; missing data are not zero; actuals, estimates and run-rates are
