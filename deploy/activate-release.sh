@@ -2,7 +2,14 @@
 set -euo pipefail
 umask 077
 release_id=${1:?release id required}
+expected_previous=${2:-}
 [[ "$release_id" =~ ^[0-9TZ-]+[a-f0-9]+$ ]] || exit 1
+exec 9>/run/lock/ingenium-deploy.lock
+flock -n 9 || { echo 'Another managed release activation is running.'; exit 1; }
+if [[ -n "$expected_previous" && "$(readlink -f /srv/ingenium/current)" != "$expected_previous" ]]; then
+  echo 'The active backend changed after preparation; inspect the newer release before activation.'
+  exit 1
+fi
 release="/srv/ingenium/releases/$release_id"
 static="/var/www/ingenium/releases/$release_id"
 [[ -x "$release/backend/.venv/bin/python" && -f "$static/release.json" ]] || { echo 'Release not prepared'; exit 1; }
@@ -45,7 +52,7 @@ rollback() { trap - ERR; echo 'Activation failed; restoring previous release.'; 
 trap rollback ERR
 ln -sfn "$release" /srv/ingenium/current.next
 mv -Tf /srv/ingenium/current.next /srv/ingenium/current
-install -m 0644 -o root -g root /root/ingenium-deploy-staging/ingenium-backend.service /etc/systemd/system/ingenium-backend.service
+install -m 0644 -o root -g root "$release/deploy/ingenium-backend.service" /etc/systemd/system/ingenium-backend.service
 systemd-analyze verify /etc/systemd/system/ingenium-backend.service
 systemctl daemon-reload
 systemctl enable ingenium-backend
@@ -65,9 +72,10 @@ python3 - "$backup/enfuce-check.json" <<'PY'
 import json,sys
 r=json.load(open(sys.argv[1]));assert r['company']['deal_id']=='enfuce-2020' and len(r['reported_metrics'])==19 and len(r['stored_reports'])==2
 PY
-caddy fmt --overwrite /root/ingenium-deploy-staging/Caddyfile
-caddy validate --config /root/ingenium-deploy-staging/Caddyfile --adapter caddyfile
-install -m 0644 -o root -g root /root/ingenium-deploy-staging/Caddyfile /etc/caddy/Caddyfile
+cp "$release/deploy/Caddyfile" "$backup/new-Caddyfile"
+caddy fmt --overwrite "$backup/new-Caddyfile"
+caddy validate --config "$backup/new-Caddyfile" --adapter caddyfile
+install -m 0644 -o root -g root "$backup/new-Caddyfile" /etc/caddy/Caddyfile
 systemctl reload caddy
 ln -sfn "$static" /var/www/ingenium/current.next
 mv -Tf /var/www/ingenium/current.next /var/www/ingenium/current

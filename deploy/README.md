@@ -60,7 +60,11 @@ and ADC/source manifest files under `/etc/ingenium` with the permissions above.
    revision, creates an isolated Linux venv, installs `backend/requirements.lock`, freezes resolved
    Python versions, builds the locked frontend, runs backend/frontend tests and
    prepares the public static copy. It leaves the active release unchanged.
-4. Run `activate-release.sh RELEASE_ID`. It snapshots current links/configuration,
+4. Record `readlink -f /srv/ingenium/current`, then run
+   `activate-release.sh RELEASE_ID EXPECTED_PREVIOUS_APP_PATH`. Activation takes a
+   server lock and refuses if the active backend changed after preparation. It
+   installs the unit/Caddyfile from the precise prepared release, preserving
+   existing systemd drop-ins. It snapshots current links/configuration,
    installs the service, checks Firestore health and the imported Enfuce report,
    validates/reloads Caddy, atomically switches the public symlink and checks live
    HTTPS metadata. Failed activation invokes its saved rollback.
