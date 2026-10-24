@@ -250,9 +250,9 @@ Source viewer 的显示方式取决于文件类型：
 
 ### Contextual chat：跨工作区的提问入口
 
-Chat 位于项目页面底部，携带当前项目和所在工作区信息。当前可回答收入、毛利润、MRR / ARR 缺口和客户数相关的有限快照问题，并提供证据按钮；也可以跳转到 Report Builder 或 Data room。
+Chat 位于项目页面底部。已连接项目打开调用 Nicrron 模型的 Company chat，使用该公司的已存资料、计算结果和报告，并提供可检查的引用；Source search 则检索公司的原始文件与来源记录。缺少证据或服务失败时显示缺口/重试，不返回预设财务答案。
 
-不受支持的问题会说明证据不足，不会补造数字。新建项目没有提取结果时，不会调用 Enfuce 的事实回答。当前对话保存在组件内存中，关闭聊天或重新加载页面后不会保留历史。
+未连接的项目先显示连接操作。历史 `enfuce` 工作簿/FDD 快照保持独立，需明确选择 **Open Enfuce company chat** 才进入 `enfuce-documents` 的 April 2020 deck 证据范围，旧草稿和文件不会转移。Company chat 的历史和未完成问题使用公司/报告范围内的 sessionStorage 保存；证据变化后重新校验引用。
 
 <a id="evidence"></a>
 ## 7. 证据模型与示例数据

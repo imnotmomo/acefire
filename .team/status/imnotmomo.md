@@ -1,7 +1,7 @@
 # imnotmomo
 
 - Role: C — structured storage, normalization, calculations, company reports and source traceability.
-- State: in_progress — legacy chat launcher correction.
+- State: ready_for_review — legacy chat launcher fixed and deployed.
 - Updated: 2026-10-24
 - Working on: Full frontend/backend workflow repair and server update. B branch b-document-intake is merged as 9284893, with source chat isolated at /evidence-chat and C whole-company /chat preserved. Human explicitly requests deploying without messaging other chats and defers login.
 - Active paths: Final verification and deploy/. Completed repair paths include workspace upload/store/router, App/company adapters, report/reference/export and both side-chat drawers, source preview and focused tests. Agent edits are frozen for release; preserve the English manifest and existing PRISM drop-in.
@@ -79,3 +79,5 @@
 - Replace canned answers with an explicit connection path. Historical Enfuce remains isolated and offers an explicitly labeled switch to the imported Enfuce company chat; local starters connect using the existing shared-company API. Loading/error states must never silently become a canned assistant. Commit/push/deploy remain authorized; no other-chat messaging or browser access.
 
 - Validation before release: all 90 frontend unit/SSR tests and TypeScript/Vite production build passed. Real public `/deals/enfuce-2020/chat` returned `openai/gpt-6.1-sol`, Verify and four checked source citations for a company-description question. No company records changed. Backend load failures retain explicit retry; no canned-response code remains. Browser access was not retried.
+
+- Deployed and verified release `20261024T202309Z-97658f4fef0a` (application commit `97658f4`). Public index and all 10 JS/CSS files match the prepared release; the old banner is absent and the live company-chat action is present. Named Firestore health, configured model, Enfuce 19 observations/two saved reports and two-company list are unchanged. Local preview :4173 also serves the new bundle. Full release backend/frontend checks passed; no browser automation or cross-chat messages.
