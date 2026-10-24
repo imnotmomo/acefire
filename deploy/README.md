@@ -43,6 +43,11 @@ source files are copied privately and checked against their registered SHA-256.
 
 ## Prepare and activate a release
 
+The Linux build/test machine needs LibreOffice for B's real DOCX/PPTX conversion
+checks (`soffice`/`libreoffice` on PATH, or `SOFFICE_BIN`). Python dependencies alone
+do not supply it. The 2026-10-24 staged combined release stopped at two Office
+integration tests because this VPS lacks the converter; it was not activated.
+
 Do not put credentials in source, shell command arguments, build artifacts or logs.
 Install the private backend environment using `backend.env.example` as a template,
 and ADC/source manifest files under `/etc/ingenium` with the permissions above.
