@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from fastapi import FastAPI, File, HTTPException, UploadFile, Query
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import Field, model_validator
 
 from app.akta import AktaClient, AktaError, ingest_akta_circle
@@ -35,6 +35,7 @@ from app.evidence_catalog import add_document_claims, build_evidence_catalog
 from app.stored_narratives import source_claims as stored_source_claims, summaries as stored_report_summaries, draft as stored_draft
 from app.document_routes import document_router
 from app.chat import chat_router
+from app.workspace_routes import workspace_router
 
 
 class CompareRequest(Contract):
@@ -95,11 +96,13 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
     app.state.store = ledger
     app.include_router(document_router(ledger))
     app.include_router(chat_router(ledger, route="/deals/{deal_id}/evidence-chat"))
+    workspace_api = workspace_router(ledger)
+    app.include_router(workspace_api)
 
     def company(deal_id):
         value = ledger.company(deal_id)
         if value is None:
-            raise HTTPException(404, 'Deal not found. Ingest the Circle case first.')
+            raise HTTPException(404, 'Company workspace not found. Create or select a company first.')
         return value
 
     def observation(deal_id, record_id):
@@ -166,9 +169,18 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
 
     @app.post('/deals/{deal_id}/files')
     async def upload_file(deal_id: str, file: UploadFile = File(...), provider: Literal['orbis', 'pitchbook', 'uploaded'] = 'uploaded'):
-        circle_only(deal_id)
-        selected = ledger.company(deal_id) or CIRCLE
         try:
+            if getattr(ledger, 'backend', None) == 'firestore':
+                from app.workspace_intake import SUPPORTED
+                selected = company(deal_id)
+                if Path(file.filename or '').suffix.lower() not in SUPPORTED:
+                    raise HTTPException(415, 'Unsupported upload format. Use PDF, Office, image, CSV/Excel, text or JSON.')
+                content = await file.read(50 * 1024 * 1024 + 1)
+                if len(content) > 50 * 1024 * 1024:
+                    raise HTTPException(413, 'File exceeds the 50 MiB upload limit.')
+                return JSONResponse(workspace_api.upload_jobs.submit(selected, content, file.filename or 'source', file.content_type, provider), status_code=202)
+            circle_only(deal_id)
+            selected = ledger.company(deal_id) or CIRCLE
             content = await file.read(50 * 1024 * 1024 + 1)
             result = ingest_upload(content, file.filename or 'upload.bin', file.content_type, provider, selected, cache_root())
             return {**ledger.ingest(result), 'sources': result.snapshots, 'warnings': result.warnings}

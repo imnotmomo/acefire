@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { createServer } from 'vite'
 
 test('source-linked sentences and numbers render as inline evidence buttons; unsupported text stays plain', async () => {
-  const server=await createServer({ configFile:false, server:{middlewareMode:true}, appType:'custom', plugins:[(await import('@vitejs/plugin-react')).default()] })
+  const server=await createServer({ configFile:false, server:{middlewareMode:true,hmr:false,ws:false}, appType:'custom', plugins:[(await import('@vitejs/plugin-react')).default()] })
   try {
     const { default:ReportReview }=await server.ssrLoadModule('/src/ReportReview.tsx')
     const evidence=[{id:'source-one',title:'Source revenue',status:'Reported',value:'100.123400 USD',file:'finance.csv',locator:'Row 2',period:'Source period',unit:'USD',excerpt:'100.123400',rows:[],note:''}]

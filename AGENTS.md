@@ -113,8 +113,8 @@ coverage, assumptions, output status and file/page/cell/field provenance.
   dashboard, evidence/lineage UI, data room and contextual chat.
 - `frontend/README.md`, `frontend/DESIGN.md`: frontend architecture, local setup,
   implementation limits and visual direction. Enfuce retains historical snapshots;
-  Circle consumes C's stored report/lineage APIs. New upload processing and Akta
-  retrieval remain pending for B.
+  Circle consumes C's stored report/lineage APIs. B extraction is now connected through C’s workspace upload jobs; live Akta
+  retrieval remains separate. See backend/WORKSPACE_UPLOADS.md.
 - `.team/status/XINWENGAri.md`: delivered frontend prototype and its original handoff.
 - `.team/status/imnotmomo.md`: current C backend and Circle frontend integration validation.
 
@@ -192,3 +192,11 @@ python -m app.cli demo-circle
 Run checks appropriate to the change. Report what actually passed and any
 remaining limits; do not claim a live provider call or document extraction that
 was not performed.
+
+## Current workflow integration (2026-10-24)
+
+- `app/workspace_routes.py` exposes shared company creation/listing and durable upload jobs; `workspace_intake.py` reuses B preparation/quote checks through a scratch DuckDB before publishing to the selected store. Firebase keeps immutable envelopes and a private on-server original-file index.
+- New projects and explicitly connected local starters use their own backend company ID. Existing local drafts/files are preserved; legacy files upload only on explicit user action. Login remains deferred.
+- Both chat contracts are retained: C `/chat` takes report/history/context; B `/evidence-chat` searches registered originals and source-located records. Side drawers can switch modes. Roundtable stays disabled unless separately authorized.
+- Images/scans need Tesseract; Office needs LibreOffice. XLSX/XLSM read inert cached XML; XLS reads cached BIFF via xlrd. No spreadsheet conversion/calculation engine executes. Unknown scale, period and identity stay unknown.
+- Unicode PDF export uses the bundled licensed/hash-checked font. Source-reference refresh preserves original generation basis and human wording, verifies unchanged recorded quote/hash/locator bindings, and cannot make a stale/foreign/changed citation valid.

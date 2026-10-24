@@ -15,7 +15,7 @@ ingenium.linearproduct.co {
 	handle @api {
 		header Cache-Control no-store
 		request_body {
-			max_size 2MB
+			max_size 53MB
 		}
 		uri strip_prefix /api
 		reverse_proxy 127.0.0.1:8017 {

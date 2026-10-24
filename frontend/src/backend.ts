@@ -81,6 +81,7 @@ export type BackendEvidence = Evidence & {
 export function backendProjectId(frontendId: string): string | null {
   if (frontendId === 'circle' || frontendId === 'circle-2025-ipo') return 'circle-2025-ipo'
   if (frontendId === 'enfuce-documents' || frontendId === 'enfuce-2020') return 'enfuce-2020'
+  if (/^deal-[a-z0-9_-]{1,115}$/.test(frontendId)) return frontendId
   return null
 }
 
@@ -208,6 +209,8 @@ export function reportEvidence(report: CompanyReport): BackendEvidence[] {
   const registered = new Map(report.source_files.map(source => [source.snapshot_id, source]))
   const documentEvidence: BackendEvidence[] = (report.document_claims ?? []).flatMap(claim => claim.evidence.map((item, index) => {
     const source = documentSource(registered.get(item.snapshot_id)!, item.locator)
+    const original = item.original_snapshot_id && item.original_snapshot_id !== item.snapshot_id ? registered.get(item.original_snapshot_id) : undefined
+    const sources = [source, ...(original ? [documentSource(original, item.original_locators?.[0] ?? { kind: 'original_file', note: 'Quotation is located in the linked PDF reading view.' })] : [])]
     const id = documentEvidenceId(claim.id, index)
     const sourceNodeId = `file:${source.snapshot_id}`
     return {
@@ -216,7 +219,7 @@ export function reportEvidence(report: CompanyReport): BackendEvidence[] {
       description: `B-extracted claim · ${humanize(claim.claim_type)} · ${source.provider}`,
       rows: [['B-extracted claim / paraphrase', claim.statement], ['Stored source quotation', item.quote], ['Claim type', claim.claim_type], ['Extractor version', claim.extractor_version], ['Quote match rule', item.quote_match_rule ?? 'Not supplied'], ['Representation', item.representation_kind ?? 'Not supplied'], ['Verification status from extractor', claim.verification_status ?? 'Not supplied'], ['Source locator', formatLocator(item.locator)], ...claim.limitations.map((value, i) => [`Limitation ${i + 1}`, value] as [string, string])],
       note: note(["The title is B's extracted claim or paraphrase. The value and excerpt are the stored source quotation, not that paraphrase.", item.quote_match_rule ? `Extractor quote matching: ${item.quote_match_rule}. This does not assert a byte-exact match to the original PDF.` : 'The extractor did not supply a quote matching rule.', ...claim.limitations]),
-      hash: source.sha256, category: 'Documents', sources: [source], conflictNumbers: false, normalizedValue: null, normalizationStatus: null,
+      hash: source.sha256, category: 'Documents', sources, conflictNumbers: false, normalizedValue: null, normalizationStatus: null,
       context: { hasEvidence: true, document_claim_id: claim.id, evidence_index: index, claim_type: claim.claim_type, claim_statement: claim.statement, extractor_version: claim.extractor_version, model: claim.model ?? null, verification_status: claim.verification_status ?? null, quote_match_rule: item.quote_match_rule ?? null, representation_kind: item.representation_kind ?? null, original_snapshot_id: item.original_snapshot_id ?? null, original_locators: item.original_locators ?? [], limitations: claim.limitations },
       graph: { nodes: [{ id: sourceNodeId, type: 'source', data: { kind: 'source_file', label: source.file_name, source } }, { id, type: 'text_evidence', data: { kind: 'text_evidence', label: 'Stored source quotation', text: item.quote, source, document_claim_id: claim.id } }], edges: [{ id: `source-document:${id}`, source: sourceNodeId, target: id, label: 'Extracted source quotation' }] },
     }
@@ -434,11 +437,11 @@ export function useCompanyReport(dealId: string | null) {
   useEffect(() => {
     const controller = new AbortController()
     if (!dealId) { setResult({ dealId, report: null, loading: false, error: null, loadedAt: null }); return () => controller.abort() }
-    setResult({ dealId, report: null, loading: true, error: null, loadedAt: null })
+    setResult(previous => ({ dealId, report: previous.dealId === dealId ? previous.report : null, loading: true, error: null, loadedAt: previous.dealId === dealId ? previous.loadedAt : null }))
     fetchCompanyReport(dealId, controller.signal).then(report => {
       if (!controller.signal.aborted) setResult({ dealId, report, loading: false, error: null, loadedAt: new Date().toISOString() })
     }).catch(error => {
-      if (!controller.signal.aborted) setResult({ dealId, report: null, loading: false, error: error instanceof Error ? error.message : 'The report could not be loaded.', loadedAt: null })
+      if (!controller.signal.aborted) setResult(previous => ({ dealId, report: previous.dealId === dealId ? previous.report : null, loading: false, error: error instanceof Error ? error.message : 'The report could not be loaded.', loadedAt: previous.dealId === dealId ? previous.loadedAt : null }))
     })
     return () => controller.abort()
   }, [dealId, attempt])

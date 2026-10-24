@@ -16,7 +16,9 @@ separate `caddy` and `ingenium` system users.
 | `/etc/ingenium/backend.env` | Root-only model/runtime environment |
 | `/etc/ingenium/firestore-runtime.json` | Root-owned, ingenium-readable runtime identity |
 | `/etc/ingenium/source-files.json` | Private snapshot-to-file manifest |
-| `/var/lib/ingenium/sources` | Hash-verified original evidence bytes, outside the public web root |
+| `/var/lib/ingenium/sources` | Original Circle evidence, outside the public web root |
+| `/var/lib/ingenium/uploads` | Writable private originals, extraction artifacts, source index and durable jobs |
+| `/etc/ingenium/english-translations.json` | Content-bound English presentation of immutable imported reports |
 | `/root/ingenium-deploy-backups/{release_id}` | Prior links/configuration and executable rollback |
 
 The dedicated Google service account is
@@ -33,10 +35,13 @@ filesystem view, private temporary directory, no privilege escalation, and resou
 limits. The generated Python worker retains its application-level restrictions;
 this is not a hardware sandbox.
 
-This deploys the existing demo access model. Team login, tenant authorization and
-frontend upload-to-extraction wiring are not added. B's offline PDF/Office extraction
-code and stored-document read APIs are included; Office conversion also requires
-LibreOffice on the machine running extraction. Model requests are live provider calls.
+Login remains deferred by the human. New company workspaces and uploads now use
+Firestore and B’s existing source validation pipeline. The unit permits writes only
+to `/var/lib/ingenium/uploads` in addition to its private temporary directory; Caddy
+allows 53 MB request bodies for the backend’s 50 MiB file limit. CSV/Excel/native
+text, PDFs, Office and OCR images feed stored evidence, calculations, reports and
+both chat modes. Model requests are live provider calls. Source-file search uses
+`/evidence-chat`; whole-company chat retains `/chat`. Roundtable stays disabled.
 Original Enfuce PDF bytes were not supplied; quotations/page references remain
 available, while original-file preview is marked unavailable. Circle's 16 available
 source files are copied privately and checked against their registered SHA-256.
@@ -45,8 +50,11 @@ source files are copied privately and checked against their registered SHA-256.
 
 The Linux build/test machine needs LibreOffice for B's real DOCX/PPTX conversion
 checks (`soffice`/`libreoffice` on PATH, or `SOFFICE_BIN`). Python dependencies alone
-do not supply it. The 2026-10-24 staged combined release stopped at two Office
-integration tests because this VPS lacks the converter; it was not activated.
+do not supply it. An earlier stage correctly stopped when the converter was absent.
+It is now installed. Image/scanned-PDF intake also requires Tesseract and its English/
+Chinese language data. The service selects `eng+chi_sim+chi_tra`; no source macro or
+spreadsheet formula is executed. Retain the private English translation manifest
+and existing PRISM systemd environment drop-in across releases.
 
 Do not put credentials in source, shell command arguments, build artifacts or logs.
 Install the private backend environment using `backend.env.example` as a template,

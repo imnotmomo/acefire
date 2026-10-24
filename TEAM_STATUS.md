@@ -5,7 +5,7 @@ agent updates its own file; separate files reduce editing conflicts.
 
 | Teammate | Role | Current status |
 | --- | --- | --- |
-| [imnotmomo](.team/status/imnotmomo.md) | Database, calculations, reports and numeric traceability | Firebase-backed Circle/Enfuce, source-cited LLM reports/calculations/chat integrated; uploads/Akta pending for B |
+| [imnotmomo](.team/status/imnotmomo.md) | Database, calculations, reports and numeric traceability | Shared Firebase workspaces, source uploads/extraction, calculations/reports, file tracing and both side chats integrated; live Akta retrieval separate |
 | [chr950331](.team/status/chr950331.md) | B: document/Akta extraction, sponsor model integration and source-bound handoff | Document extraction/intake and 12-module sourced narrative delivered; C imported Enfuce reports; B Chat upload deferred |
 | [xiangji1002-ashley](.team/status/xiangji1002-ashley.md) | Product scope, semantic layer, metric catalog and hackathon pitch | Integrating the latest product into a pitch-ready contract and demo narrative |
 | [XINWENGAri](.team/status/XINWENGAri.md) | Frontend workspace, report workflow, evidence/lineage UI and website documentation | Local prototype delivered and validated; C report/lineage API integration pending; see status file |

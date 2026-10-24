@@ -22,7 +22,10 @@ export default function SourceFilePreview({ source }: { source: BackendSource })
         if (kind === 'workbook') {
           const params = new URLSearchParams()
           if (sheet) params.set('sheet', sheet)
-          if (typeof source.locator?.cell === 'string' && (!sheet || sheet === source.locator.sheet)) params.set('cell', source.locator.cell)
+          if (typeof source.locator?.cell === 'string' && (!sheet || sheet === source.locator.sheet)) {
+            const anchor = /^\$?([A-Z]{1,3})\$?([1-9][0-9]{0,6})(?::\$?[A-Z]{1,3}\$?[1-9][0-9]{0,6})?$/i.exec(source.locator.cell)
+            if (anchor) params.set('cell', `${anchor[1].toUpperCase()}${anchor[2]}`)
+          }
           if (row !== null) params.set('row_start', String(row))
           const response = await apiFetch(`/sources/${encodeURIComponent(source.snapshot_id)}/preview?${params}`, { signal: controller.signal })
           if (!response.ok) throw new Error('The workbook preview could not be loaded. You can still download the original file.')

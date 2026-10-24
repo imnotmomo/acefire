@@ -17,7 +17,7 @@ from time import monotonic
 from google.api_core.exceptions import AlreadyExists
 from google.cloud import firestore
 
-from app.schemas import Company, SourceSnapshot, Observation, Calculation, Comparison
+from app.schemas import Company, SourceSnapshot, Observation, Calculation, Comparison, IngestionResult
 
 COLLECTIONS = ('source_snapshots', 'source_observations', 'company_profiles',
                'calculations', 'comparisons', 'document_claims', 'narrative_reports')
@@ -60,7 +60,13 @@ class FirebaseStore:
         self.client = client or firestore.Client(project=self.project, database=self.database)
         self.cache_seconds = cache_seconds
         self._cache = {}
+        self._generation = {}
         self._lock = RLock()
+
+    def _invalidate(self, deal_id):
+        with self._lock:
+            self._generation[deal_id] = self._generation.get(deal_id, 0) + 1
+            self._cache.pop(deal_id, None)
 
     def initialize(self):
         # Fail at startup if credentials or the named database are unavailable.
@@ -76,15 +82,120 @@ class FirebaseStore:
         record = unpack(self.client.collection('companies').document(identifier(deal_id)).get(timeout=30))
         return Company.model_validate(record) if record else None
 
+    def create_company(self, company):
+        company = Company.model_validate(company.model_dump(mode='json'))
+        doc = self.client.collection('companies').document(identifier(company.deal_id))
+        try:
+            doc.create(envelope(company.model_dump(mode='json')), timeout=30)
+        except AlreadyExists:
+            if unpack(doc.get(timeout=30)) != company.model_dump(mode='json'):
+                raise ValueError('Company ID already belongs to a different workspace.') from None
+        self._invalidate(company.deal_id)
+        return company
+
+    def ingest(self, result):
+        """Validate a complete intake before create-only writes; retries are idempotent.
+
+        Original bytes are indexed privately on this server, never stored as paths
+        inside Firestore records. Large intakes use separate immutable writes;
+        callers must report a failure honestly and may retry the same identities.
+        """
+        result = IngestionResult.model_validate(result.model_dump(mode='json'))
+        company = self.company(result.company.deal_id)
+        if company is None or company.model_dump(mode='json') != result.company.model_dump(mode='json'):
+            raise ValueError('Source intake cannot create or change a selected company identity.')
+        sources = {s.id: s for s in self.snapshots(company.deal_id)}
+        pending = []
+        for source in result.snapshots:
+            if (source.deal_id, source.entity_key) != (company.deal_id, company.entity_key):
+                raise ValueError('Snapshot company does not match ingestion company.')
+            data = source.model_dump(mode='json', exclude={'local_path'})
+            if data['source_uri'].startswith('file:'):
+                data['source_uri'] = 'local-file://' + (source.original_filename or source.id)
+            sources[source.id] = source
+            pending.append(('source_snapshots', source.id, data))
+        for row in result.observations:
+            source = sources.get(row.snapshot_id)
+            if not source or (row.deal_id, row.entity_key, row.provider) != (company.deal_id, company.entity_key, source.provider):
+                raise ValueError('Observation references an unknown or foreign source.')
+            pending.append(('source_observations', row.id, row.model_dump(mode='json')))
+        if result.profile is not None or result.profiles:
+            raise ValueError('Workspace upload intake does not replace primary Akta profiles.')
+        writes = self._save_many(company.deal_id, pending)
+        return {'snapshots_added': sum(c == 'source_snapshots' for c, _, _ in writes),
+                'observations_added': sum(c == 'source_observations' for c, _, _ in writes)}
+
+    def save_document_claims(self, company, claims):
+        from app.document_intake import DocumentClaim
+        from app.intake import _validate_locator
+        sources = {s.id: s for s in self.snapshots(company.deal_id)}
+        checked = [DocumentClaim.model_validate(c.model_dump(mode='json') if hasattr(c, 'model_dump') else c) for c in claims]
+        for claim in checked:
+            if (claim.deal_id, claim.entity_key) != (company.deal_id, company.entity_key) or claim.snapshot_id not in sources:
+                raise ValueError('Document claim belongs to another company or source.')
+            for evidence in claim.evidence:
+                if evidence.get('snapshot_id') not in sources or evidence.get('original_snapshot_id') not in (None, *sources):
+                    raise ValueError('Document quotation references an unknown source.')
+                if not isinstance(evidence.get('quote'), str) or not evidence['quote'].strip():
+                    raise ValueError('Document quotation must retain nonempty original source text.')
+                if not isinstance(evidence.get('locator'), dict):
+                    raise ValueError('Document quotation needs its native source locator.')
+                _validate_locator(evidence['locator'])
+        self._save_many(company.deal_id, [('document_claims', claim.id, claim.model_dump(mode='json')) for claim in checked])
+        return {'document_claims_received': len(checked)}
+
+    def _save_many(self, deal_id, records):
+        """Preflight a batch, then create at most 400 immutable records per commit."""
+        indexed = {}
+        for collection, record_id, record in records:
+            key = (collection, identifier(record_id))
+            if key in indexed and indexed[key] != record:
+                raise ValueError('Duplicate immutable record identity has different content.')
+            envelope(record)
+            indexed[key] = record
+        prepared = [(collection, record_id, record, self._collection(deal_id, collection).document(record_id))
+                    for (collection, record_id), record in indexed.items()]
+        previous = {}
+        if hasattr(self.client, 'get_all'):
+            for start in range(0, len(prepared), 200):
+                for document in self.client.get_all([row[3] for row in prepared[start:start+200]], timeout=30):
+                    previous[document.reference.path] = unpack(document)
+        writes = []
+        for collection, record_id, record, ref in prepared:
+            old = previous.get(ref.path) if hasattr(self.client, 'get_all') else unpack(ref.get(timeout=30))
+            if old is not None and old != record:
+                raise ValueError('Existing immutable source/observation/claim has different content.')
+            if old is None:
+                writes.append((collection, record_id, record, ref))
+        try:
+            for start in range(0, len(writes), 400):
+                group = writes[start:start+400]
+                if hasattr(self.client, 'batch'):
+                    batch = self.client.batch()
+                    for _, _, record, ref in group:
+                        batch.create(ref, envelope(record))
+                    try:
+                        batch.commit(timeout=30)
+                    except AlreadyExists:
+                        # A concurrent identical retry is acceptable; mismatched
+                        # content cannot be replaced by either writer.
+                        if any(unpack(ref.get(timeout=30)) != record for _, _, record, ref in group):
+                            raise ValueError('Concurrent immutable batch identity conflict.') from None
+                else:
+                    for _, _, record, ref in group:
+                        try:ref.create(envelope(record), timeout=30)
+                        except AlreadyExists:
+                            if unpack(ref.get(timeout=30)) != record:
+                                raise ValueError('Concurrent immutable record identity conflict.') from None
+        finally:
+            self._invalidate(deal_id)
+        return [(collection, record_id, record) for collection, record_id, record, _ in writes]
+
     def _collection(self, deal_id, name):
         return self.client.collection('companies').document(identifier(deal_id)).collection(name)
 
     def bundle(self, deal_id):
         identifier(deal_id)
-        with self._lock:
-            cached = self._cache.get(deal_id)
-            if cached and monotonic() - cached[0] < self.cache_seconds:
-                return cached[1]
         def read(name):
             values = [unpack(doc) for doc in self._collection(deal_id, name).stream(timeout=30)]
             for record in values:
@@ -93,14 +204,24 @@ class FirebaseStore:
                 if record.get('deal_id') != deal_id:
                     raise ValueError('Stored record belongs to another company.')
             return name, values
-        with ThreadPoolExecutor(max_workers=6) as pool:
-            result = dict(pool.map(read, COLLECTIONS))
-        source_ids = {s['id'] for s in result['source_snapshots']}
-        if any(p['snapshot_id'] not in source_ids for p in result['company_profiles']):
-            raise ValueError('Company profile is missing its registered source.')
-        with self._lock:
-            self._cache[deal_id] = (monotonic(), result)
-        return result
+        while True:
+            with self._lock:
+                cached = self._cache.get(deal_id)
+                if cached and monotonic() - cached[0] < self.cache_seconds:
+                    return cached[1]
+                generation = self._generation.get(deal_id, 0)
+            with ThreadPoolExecutor(max_workers=6) as pool:
+                result = dict(pool.map(read, COLLECTIONS))
+            with self._lock:
+                if self._generation.get(deal_id, 0) != generation:
+                    # An upload/calculation committed while these independent
+                    # reads were in flight. Never return or cache that old view.
+                    continue
+                source_ids = {s['id'] for s in result['source_snapshots']}
+                if any(p['snapshot_id'] not in source_ids for p in result['company_profiles']):
+                    raise ValueError('Company profile is missing its registered source.')
+                self._cache[deal_id] = (monotonic(), result)
+                return result
 
     def snapshots(self, deal_id):
         return [SourceSnapshot.model_validate(x) for x in self.bundle(deal_id)['source_snapshots']]
@@ -156,8 +277,7 @@ class FirebaseStore:
         except AlreadyExists:
             if unpack(doc.get(timeout=30)) != record:
                 raise ValueError('Existing immutable record has different content.') from None
-        with self._lock:
-            self._cache.pop(deal_id, None)
+        self._invalidate(deal_id)
 
     def save_calculation(self, result):
         from app.lineage import build_calculation_lineage
@@ -174,6 +294,10 @@ class FirebaseStore:
         self.save_record(result.deal_id, 'comparisons', result.id, result.model_dump(mode='json'))
 
     def local_source_file(self, source):
+        from app.workspace_intake import uploaded_source_path
+        uploaded = uploaded_source_path(source)
+        if uploaded is not None:
+            return uploaded
         manifest = os.getenv('SOURCE_FILE_MANIFEST')
         if not manifest:
             return None

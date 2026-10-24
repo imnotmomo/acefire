@@ -25,7 +25,7 @@ Ingenium 面向 VC 尽调场景，将项目资料、财务指标、计算依据�
 | **Data room** | 管理资料、登记来源、查看文件 |
 | **Contextual chat** | 围绕当前项目提问，跳转到对应证据或页面 |
 
-当前版本支持 **Circle 的 C 后端报告与证据工作流**，并保留 Enfuce 历史快照交互。Circle 从 DuckDB 后端读取已保存的公司数据；新增文件上传处理和 Akta 获取暂留空，等待数据队友接入。实时研究、资料解析和团队后端的完成情况统一说明在[后端与接入边界](#backend)中。产品不提供投资评分或 Invest / Pass 结论。
+当前版本支持通用公司工作区创建、Firestore 数据共享、文件上传与后台提取、动态模型计算、可追溯报告、原文件检查和两种侧边聊天，并保留 Enfuce 历史快照。CSV/Excel、PDF、Office、图片 OCR、文本和 JSON 可进入现有 B → C 证据流程；Akta 实时获取仍单独等待有效连接。实时研究、资料解析和团队后端的完成情况统一说明在[后端与接入边界](#backend)中。产品不提供投资评分或 Invest / Pass 结论。
 
 ## 目录
 
@@ -220,7 +220,7 @@ Review 使用文档阅读布局：上方章节目录、左侧正文，以及右�
 
 | 格式 | 适用场景 | 说明 |
 | --- | --- | --- |
-| PDF | 阅读与分享 | 当前使用内置拉丁字体；不支持的中文等字符会被替换 |
+| PDF | 阅读与分享 | 按需加载随项目分发的 Unicode 字体，保留中文定位、原文和精确数字；不支持的字符明确报错，不静默替换 |
 | DOCX | 继续协作编辑 | 保留正文、标题和 Unicode 来源名称 |
 | Markdown | 版本管理、复用或导入其他工具 | 导出纯文本正文及证据引用 |
 
@@ -482,3 +482,14 @@ Circle Dashboard 的计算工作区使用现有已登记数据：选择数值观
 当前 API 使用 Firebase `acefire-50248` / `acefire`。进入 **Enfuce · Document claims**，在 Build 中可加载两份已存报告；原文句子、页码、文件 hash 可点击追踪。19 条未规范化数值仍为空，不由报告补齐。原 Enfuce 卡片保留历史演示，Circle 使用自己的独立数据。
 
 侧边 Company chat 调用 Nicrron 模型，服务端提供该公司的全部已存资料，超出当前页可见数据；每个返回的引用必须与公司原文/结构化记录匹配。生成报告同样调用模型并验证引用，人工编辑在失败或刷新时保留。所有 Missing / Verify / Conflict 中的 Verify 均表示需要核对。详细 API、存储与启动说明见 [Firebase integration](../backend/FIREBASE_INTEGRATION.md)。`npm run test:firebase` 验证真实存储报告；`LIVE_COMPANY_CHAT=1` 才执行浏览器中的真实模型调用。
+
+
+## Current integrated workflows — 2026-10-24
+
+The current source supersedes older prototype/pending notes above. Create project confirms the backend company before navigation; shared companies load across browsers. Existing local projects can connect without losing their browser IDs, edits or files. Local files enter shared extraction only after an explicit upload. Login is deferred.
+
+Data room uploads use queued/processing/completed/failed receipts, preserve exact original bytes and expose errors/retry. Source search is a right-side drawer using B’s `/evidence-chat`; company chat uses C’s `/chat` with all stored company context, fresh report IDs and recoverable questions. Both show inspectable quotations and original-file controls. Calculations can select B’s sentence premises; exact numeric parameters never round through JavaScript numbers.
+
+See [workspace upload API](../backend/WORKSPACE_UPLOADS.md). Documents require LibreOffice, images/scans require Tesseract. Akta retrieval is still unavailable separately. Imported Enfuce originals remain absent here; stored quotations/page references remain inspectable. Report edits stay browser-local; company evidence is shared through Firestore. PDF export includes a local, hash-checked Unicode font; DOCX/Markdown remain available.
+
+Browser access was declined in this chat, so these new flows are validated through API integration, unit/SSR, actual conversion/OCR, PDF extraction/rendering and production builds. Earlier browser results above belong to earlier snapshots.

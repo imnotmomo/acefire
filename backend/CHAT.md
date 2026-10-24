@@ -1,7 +1,7 @@
 # Evidence bot
 
 The React **Ask your evidence** dialog now calls the shared FastAPI backend.
-`POST /deals/{deal_id}/chat` accepts `{"question":"收入来自哪些业务？"}`.
+`POST /deals/{deal_id}/evidence-chat` accepts `{"question":"收入来自哪些业务？"}`.
 It returns `status`, `answer` with numbered citations, source-bound `statements`,
 `sources` (original filename, SHA-256, locator, excerpt, record ID and original-file URL),
 `gaps` and retrieval `coverage`. Unknown deals return 404, invalid questions 422,
@@ -68,5 +68,6 @@ sanitized provider failures, and native Office/Excel locators with mocked model
 responses. A real provider call requires backend credentials and is a separate
 end-to-end validation.
 
-Frontend mapping: `circle` → `circle-2025-ipo`; `enfuce` → the existing
-`enfuce-2020` local workspace; other project IDs are used as registered deal IDs.
+Frontend mapping uses explicit backend company IDs. The historical Enfuce snapshot stays local. Registered workspaces open the source-file drawer from the data room or company-chat switch.
+
+C’s whole-company `/deals/{deal_id}/chat` contract remains separate: it accepts report ID, history and working draft. The source-file endpoint accepts a question and searches registered originals; both interfaces preserve their own cited response contracts.

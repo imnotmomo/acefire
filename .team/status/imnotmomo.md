@@ -1,10 +1,10 @@
 # imnotmomo
 
 - Role: C — structured storage, normalization, calculations, company reports and source traceability.
-- State: ready_for_review
+- State: in_progress — validated workflow repair, preparing final deployment.
 - Updated: 2026-10-24
-- Working on: Completed GitHub B document/read API and Report Review integration, dotted source links and original-file viewing. Human explicitly selected “Keep this update on GitHub for now” after a concurrent PRISM server release was discovered; do not activate this release or message the PRISM chat. Local combined API is running.
-- Active paths: None reserved after this handoff. Delivered source preview/API, launcher/dependency lock/tests, frontend report/evidence/file controls and styles, tests/docs, and managed deploy scripts.
+- Working on: Full frontend/backend workflow repair and server update. B branch b-document-intake is merged as 9284893, with source chat isolated at /evidence-chat and C whole-company /chat preserved. Human explicitly requests deploying without messaging other chats and defers login.
+- Active paths: Final verification and deploy/. Completed repair paths include workspace upload/store/router, App/company adapters, report/reference/export and both side-chat drawers, source preview and focused tests. Agent edits are frozen for release; preserve the English manifest and existing PRISM drop-in.
 - Shared contracts: `GET /calculation-runtime`, `POST /deals/{id}/calculate/agent`, `/report/draft`, `/chat`, and `GET /deals/{id}/stored-reports/{report_id}/draft`; preserve existing company/source/observation/calculation IDs and lineage. Report adds original quotations, stored report summaries and persistence metadata. Full details: `backend/FIREBASE_INTEGRATION.md`.
 - Firebase: Project `acefire-50248`, named database `acefire`, `us-east1`, existing metadata `freeTier: true`. 519 import/provenance records verified, complete replay made zero writes; later live calculation adds its own immutable record. Direct anonymous company read returned 403. Browser calls the local backend; OAuth/model credentials stay private. No billing upgrade, Functions or Storage deployment.
 - Latest handoff input: Read-only copy of supplied `acefire.duckdb`, SHA-256 `f6e20f79e152e9d12824139b8dd2a8d5aa5f3c09c148eafaa0b4161984fbd14a`. Enfuce `enfuce-2020`: 1 source, 39 original document claims, 19 observations (all normalized values null), 2 narrative reports. Import preserved all original payloads and IDs. The reusable importer verified all 62 records with zero writes. Source quotations from saved reports are derived API bindings, not additional extracted database claims.
@@ -13,7 +13,7 @@
 - Validation: 295 backend tests and 36 frontend unit tests; production build. Browser suites: 6 calculation, 5 narrative, 12 chat, 10 Circle integration, 10 legacy platform and 10 Ingenium landing flows. Real Firebase browser integration: saved report load, original source inspection, retained human edits/Markdown export and live model chat with inspectable citations passed. Live cloud-backed model chat and drafting returned checked citations; generated Python reproduced `45834409000` USD and saved calculation `a9d652ba-03c6-4525-aae7-dac00c3e35ce` with original I49/I53 input bindings. Contract browser tests mock model outputs; these are distinct from live checks.
 - Git synchronization: B document handoff e22f3fe, Review UI 1f736ef and PM pitch ef40d84 merged. Integration pushed as d573930, preserving existing Firebase/LLM workflows.
 - Local operation: `python backend/run_local.py` loads the private allowlisted `.env` and starts localhost:8017. Frontend dev :5173 and built preview :4173 use the API proxy; all are running. See backend handoff for another teammate's ADC setup. Existing private DBs/source files were not overwritten or committed; financial decimal strings remain exact.
-- Limits: New uploads and Akta retrieval stay pending. Human draft edits/projects remain browser-local; Firebase source data, imported reports and generated calculations are shared storage. Team authentication remains separate; hosting is now deployed to the authorized VPS. PDF export retains its existing Latin-font limitation; DOCX/Markdown preserve Chinese text.
+- Limits: Live Akta retrieval remains unavailable separately. Existing Enfuce original PDF bytes remain absent; stored source quotations/page/hash bindings remain available. Drafts and revisions are browser-local; company evidence/calculations are shared through Firestore. Login is explicitly deferred. Unsupported PDF glyphs fail clearly; supported Chinese locators and quotes export without replacement.
 
 - VPS deployed: `https://ingenium.linearproduct.co`, release `20261024T185907Z-ff0e4055878c`. Dedicated named-database runtime identity; Caddy `/api` proxy and enabled unprivileged systemd service. Server suite 294 passed/1 fixture skipped; the skipped fixture passed with DATA_ROOT set. 36 frontend unit tests, 10 live landing and 10 Circle integration flows, imported report/export/source inspection and live chat passed before browser access was declined. Live generated calculation `7c10c9d3-711b-4989-af31-2d1b5d49c352` reproduced 45834409000 USD; live narrative generation returned eight cited claims.
 
@@ -39,3 +39,26 @@
 - Active server source: ff1ce9c base plus the tested English-only changes; `release.json` records local_changes=true and source_sha256 `31764f5e65bef3da353b34592d5db7fefec57eb76fd30db9d47cdd4428e1923d`. The human authorized publishing these English changes to GitHub. Retain the private manifest across future releases; it is intentionally excluded from source control.
 
 - Publication validation on the latest combined source: 379 backend tests, 51 frontend unit tests and production build passed. Live checks cover English saved reports, exact source bindings, preserved human edits/history, English Markdown/DOCX/PDF, mobile layout and an English model answer to a Chinese question. The visible UI/legacy report export no longer contains the Chinese operating-revenue label.
+
+## Combined server update request — 2026-10-24
+
+- State: in_progress. Human now requests server activation when done, superseding the prior GitHub-only deferral.
+- Active paths: deploy/ and server release preparation/verification. Preserve in-progress English source edits and PRISM release/configuration. Coordination messaging permission requested; no message sent yet.
+- Prerequisite: install the missing LibreOffice writer/impress runtime and fonts, then rerun real Office conversion tests before activation. No billing/database change.
+- Coordination outcome: human requests deployment without messaging other chats. No cross-chat messages sent. Deploy the committed report/source revision; leave the English and PRISM chats’ unpublished source edits intact.
+
+## Full workflow repair and side-chat merge — 2026-10-24
+
+- State: in_progress. Human requests fixing frontend/backend workflows, ignoring login, and deploying; also merge the new B document-intake branch side-chat commit into main.
+- Root paths: frontend App/backend/domain/report workflow and project registration, backend main router/report version, deploy config/runtime checks. Delegated backend agent owns FirebaseStore and new workspace intake/routes/tests; frontend upload agent owns ConnectedDataRoom + new UploadPanel/workspaceApi; downstream agent owns CalculationLab/CompanyChat + new focusedhelpers/tests. Preserve all other source and live English translations.
+- Existing combined report/source/English candidate passed server tests; full intake repairs and side-chat merge will be validated before the final combined deployment. No cross-chat messaging or login work.
+
+## Validated full workflow release — 2026-10-24
+
+- Shared company creation/discovery is API-confirmed and retry-idempotent. Existing local project identities/drafts/files are retained; browser copies enter shared extraction only on explicit upload.
+- Queued uploads support native CSV/XLSX/XLSM/XLS/text, B PDF/Office extraction and Tesseract image/scanned-PDF reading views. Originals persist before extraction. Completion/failure/restart/dedup status and company-scoped receipts are durable. CSV/Excel values stay raw/unknown unless source metadata supports C Decimal normalization. Spreadsheet formulas/macros never execute.
+- Source-file and whole-company chat use distinct validated contracts with right-side drawers, model/citation errors, fresh-evidence recovery and preserved questions. Full company chat still receives all stored records; source search reports its bounded retrieval coverage. Raw original files use registered manifest paths and SHA checks; native quotes/locators are retained.
+- Calculations can cite document sentences beyond Akta fields, and optional numeric assumptions reject JavaScript precision loss. Report refresh preserves mounted editors/chat; unchanged retained quotation/hash/locator bindings can be explicitly refreshed without replacing human prose. Foreign/changed/missing refs stay blocked.
+- PDF exports preserve supported Unicode/native locators and exact decimals using a lazy hash-checked licensed font. Four actual PDF round-trip tests and rendered visual inspection passed. No browser access/automation was used in this chat after access was declined.
+- Local validation: 423 backend tests, 86 frontend unit/SSR tests, 11 disabled-Roundtable tests, production TypeScript/Vite build and shell checks passed. Real conversion/OCR tests use mocked model outputs; live provider and production API checks are separate final steps.
+- Runtime: LibreOffice Writer/Impress, Tesseract English/Simplified/Traditional Chinese installed. Managed unit permits private upload writes; Caddy accepts multipart overhead for 50 MiB sources. Final release activation pending.

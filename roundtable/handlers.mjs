@@ -21,7 +21,7 @@ export function handlers(config, request = fetch) {
       if (typeof question !== 'string' || !question.trim() || question.length > 4000) throw new Error('Invalid question.')
       const path = pathFor(runId, 'answer.json')
       await ctx.progress('Retrieving evidence, generating answer and checking source support through the local API.')
-      const reply = await json(await request(`${config.backend}/deals/${encodeURIComponent(dealId)}/chat`, {
+      const reply = await json(await request(`${config.backend}/deals/${encodeURIComponent(dealId)}/evidence-chat`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }),
         signal: AbortSignal.timeout(150000),
       }))

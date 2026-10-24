@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { BackendCalculation, CompanyReport } from './backend'
 import { apiFetch, formatDecimal, formatLocator, humanize } from './backend'
+import { calculationTextEvidence } from './calculationEvidence'
+import { parseCalculationParameters } from './calculationParameters'
 import { Badge, Icon } from './ui'
 import './calculation-lab.css'
 
@@ -51,7 +53,7 @@ export default function CalculationLab({ report, onComplete }: { report: Company
   const providers = useMemo(() => [...new Set(report.reported_metrics.map(item => item.source.provider))], [report])
   const selected = useMemo(() => new Set(selectedIds), [selectedIds])
   const availableIds = useMemo(() => new Set(report.reported_metrics.map(item => item.observation.id)), [report])
-  const textEvidence = useMemo(() => report.primary_profile.field_lineage.fields.filter(field => typeof field.value === 'string').map(field => ({ id: `field:${field.source.snapshot_id}:${field.field_path}`, text: field.value as string, fieldPath: field.field_path, source: field.source })), [report])
+  const textEvidence = useMemo(() => calculationTextEvidence(report), [report])
   const selectedPremises = useMemo(() => new Set(premiseIds), [premiseIds])
   const availablePremiseIds = useMemo(() => new Set(textEvidence.map(item => item.id)), [textEvidence])
   const filteredPremises = useMemo(() => textEvidence.filter(item => `${item.text} ${item.fieldPath} ${item.source.file_name}`.toLowerCase().includes(premiseQuery.toLowerCase())), [textEvidence, premiseQuery])
@@ -84,9 +86,9 @@ export default function CalculationLab({ report, onComplete }: { report: Company
   }
   async function calculate() {
     if (activeRequest.current || !runtime?.configured || !question.trim() || !selectedIds.length || selectedIds.length > maximumInputs) return
-    let parameters: unknown
-    try { parameters = JSON.parse(parameterText) } catch { setError('Parameters must be a valid JSON object. Keep financial amounts in quoted decimal strings.'); return }
-    if (!object(parameters)) { setError('Parameters must be a JSON object, such as {"period_end":"2024-12-31"}.'); return }
+    let parameters: Record<string, unknown>
+    try { parameters = parseCalculationParameters(parameterText) }
+    catch (reason) { setError(reason instanceof Error ? reason.message : 'Calculation parameters are invalid.'); return }
     const controller = new AbortController(); runController.current = controller; activeRequest.current = true
     setBusy(true); setError(''); setResult(null)
     try {

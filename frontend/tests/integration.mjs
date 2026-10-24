@@ -140,13 +140,13 @@ try {
       }
     }
   })
-  await check('Registered source files open through the proxy while new uploads and Akta stay pending', async () => {
+  await check('Registered source files open through the proxy and uploads are available', async () => {
     await page.getByRole('link', { name: 'Data room', exact: true }).click()
     await page.locator('.backend-source-table tbody tr').first().waitFor()
     assert.equal(await page.locator('.backend-source-table tbody tr').count(), report.source_files.length)
-    assert.equal(await page.getByRole('button', { name: 'Uploads · pending', exact: true }).isDisabled(), true)
-    assert.equal(await page.getByRole('button', { name: 'Akta · pending', exact: true }).isDisabled(), true)
-    assert.equal(await page.locator('input[type=file]').count(), 0)
+    assert.equal(await page.getByRole('button', { name: 'Upload files', exact: true }).isEnabled(), true)
+    assert.equal(await page.getByRole('button', { name: 'Akta retrieval unavailable', exact: true }).isDisabled(), true)
+    assert.equal(await page.locator('input[type=file]').count(), 1)
     const waiting = page.waitForEvent('download')
     await page.getByRole('button', { name: 'Download original', exact: true }).first().click()
     const downloaded = await waiting

@@ -20,7 +20,7 @@ function context(packet) {
 test('answer uses local evidence API, saves full packet and returns only pinned source', async () => {
   const ctx = context()
   const result = await handlers(config, async (url, opts) => {
-    assert.equal(url, 'http://127.0.0.1:8000/deals/test-deal/chat')
+    assert.equal(url, 'http://127.0.0.1:8000/deals/test-deal/evidence-chat')
     assert.deepEqual(JSON.parse(opts.body), { question: 'Question?' })
     return Response.json(reply())
   }).answer(task({ question: 'Question?' }), ctx)
