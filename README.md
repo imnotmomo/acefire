@@ -8,9 +8,18 @@
 
 **[阅读完整网页框架与开发说明 → frontend/README.md](frontend/README.md)**
 
+**[Hackathon Pitch、Demo 路线与三项指标语义 → PITCH.md](PITCH.md)**
+
 完整说明涵盖页面层级、Report 的 Build → Review → Export 流程、证据模型、代码与路由、本地存储、后端接入边界、运行验证和 Git 协作。
 
 Member B extracts PDF/Akta data. Member C stores structured records in Firebase (with DuckDB imports/offline compatibility), calculates metrics, and returns a source-bound company report to the frontend. Akta is the primary company source; Orbis and PitchBook files simulate private uploaded evidence.
+
+The product model is catalog-driven: an investment firm defines its reusable
+semantic layer and key-metric catalog, then each new project resolves those
+definitions against that project's data room. The current pitch catalog covers
+five-year total revenue, the firm's catalog-defined average historical growth
+rate, and valuation from either an explicit source value or a traceable revenue
+multiple scenario.
 
 - [Backend setup and API](backend/README.md)
 - [Member B: document extraction, database and sourced report handoff](backend/B_WORKFLOW.md)

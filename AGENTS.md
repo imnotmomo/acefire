@@ -9,7 +9,7 @@ This repository is shared by four human teammates and their coding agents.
 | --- | --- | --- |
 | `imnotmomo` | C: Firebase storage, DuckDB handoff, normalization, calculations, reports and provenance APIs | `.team/status/imnotmomo.md` |
 | `chr950331` | B: document/PDF/Office extraction, Nicrron model integration, source-bound claims for C | `.team/status/chr950331.md` |
-| `xiangji1002-ashley` | | `.team/status/xiangji1002-ashley.md` |
+| `xiangji1002-ashley` | Product manager: semantic layer, metric catalog, product scope, demo narrative, acceptance criteria and pitch | `.team/status/xiangji1002-ashley.md` |
 | `XINWENGAri` | Frontend: Projects, Dashboard, metric lineage/evidence inspection, Report Builder / Review / Export, Data room, contextual chat and website framework documentation | `.team/status/XINWENGAri.md` |
 
 The remaining blank assignments are intentional. Do not infer a role from a name,
@@ -34,6 +34,18 @@ teammate's human confirms it.
 
 ## Product and responsibility boundaries
 
+- `xiangji1002-ashley` owns the product scope, investment-firm semantic layer,
+  metric definitions, demo narrative and acceptance criteria. These definitions
+  guide implementation but do not move deterministic execution out of C or
+  frontend implementation out of the frontend workspace.
+- The product is an evidence-first data agent, not a company-specific dashboard.
+  An investment firm supplies a versioned semantic layer and metric catalog. A
+  new project searches its own data room for compatible inputs, calculates the
+  requested catalog metrics and returns the value together with source lineage,
+  formula, assumptions, coverage and missing-data states.
+- Never hard-code a company's number as the definition of a catalog metric.
+  Metric definitions are reusable; observations, calculations and evidence are
+  project-scoped. The browser renders stored results and does not recalculate them.
 - Akta provides company background through C's existing primary-profile channel.
   The saved responses in `data/akta/` are the current Circle demo inputs. B only
   needs selected Akta enrichment; source documents remain the evidence for
@@ -52,6 +64,31 @@ teammate's human confirms it.
   They retain vendor provenance and never silently replace the Akta main profile.
 - The frontend reads structured reports, formulas, inputs, files, and graph data.
   It must not recalculate financial metrics or manufacture source references.
+
+## Pitch metric catalog
+
+The first PM-approved pitch catalog contains three reusable metrics. They are
+product definitions; existing generic agent calculation remains the execution
+path until a dedicated catalog API and automatic project runner are implemented.
+
+1. `five_year_total_revenue`: select at most five distinct fiscal years. Prefer
+   an actual value when actual and forecast overlap in the same year. Use actual
+   years first and forecast years to fill the five-year window. If fewer than
+   five compatible years exist, sum only those present and return the coverage
+   count. Never mix incompatible entity scope, currency or revenue definitions.
+2. `catalog_cagr`: the firm's current catalog definition is the arithmetic mean
+   of available historical actual year-over-year revenue growth rates. Preserve
+   that formula and version explicitly because it differs from the conventional
+   endpoint CAGR formula. Do not silently include forecast growth rates.
+3. `valuation`: prefer an explicit, source-bound valuation. If none exists, use
+   the latest compatible actual revenue multiplied by a source-bound or
+   catalog-supplied revenue multiple. Record the multiple as an assumption and
+   label the result derived/scenario-based. If either input is unavailable,
+   return an explicit missing/insufficient-data result instead of guessing.
+
+Every metric result must retain the catalog definition/version, selected input
+IDs, exact fiscal periods, actual/forecast labels, unit and currency, formula,
+coverage, assumptions, output status and file/page/cell/field provenance.
 
 ## Shared contracts and core paths
 
