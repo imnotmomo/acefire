@@ -1,83 +1,361 @@
-# Acefire 网页工作台
+# Acefire｜尽调证据工作台
 
-基于 React、TypeScript、Vite 的本地前端。全部网页代码、素材和测试位于本目录。
+Acefire 面向 VC 尽调场景，将项目资料、财务指标、计算依据和报告编辑放在同一个工作区。用户可以从数字找到来源，也可以从来源回到报告，在保留证据和未解问题的前提下完成审核。
 
-## 启动
+产品由三个项目工作区和一个全局操作层组成：
 
-在当前文件夹打开 PowerShell：
+| 工作区 | 用户的核心任务 |
+| --- | --- |
+| **Dashboard** | 看数据、核对口径、理解计算过程 |
+| **Report** | 配置报告、阅读证据、人工修订、导出成果 |
+| **Data room** | 管理资料、登记来源、查看文件 |
+| **Contextual chat** | 围绕当前项目提问，跳转到对应证据或页面 |
+
+当前版本是**可操作的本地前端原型**，使用保存的 Enfuce 历史证据展示完整交互。实时研究、资料解析和团队后端的完成情况统一说明在[后端与接入边界](#backend)中。产品不提供投资评分或 Invest / Pass 结论。
+
+## 目录
+
+1. [运行项目](#start)
+2. [网页信息架构](#navigation)
+3. [Projects：项目入口](#projects)
+4. [Dashboard：数据与计算](#dashboard)
+5. [Report：Build → Review → Export](#report)
+6. [Data room 与全局 Chat](#sources-chat)
+7. [证据模型与示例数据](#evidence)
+8. [代码结构、路由与本地存储](#implementation)
+9. [后端与接入边界](#backend)
+10. [检查与验证](#validation)
+11. [协作、Git 同步与后续开发](#collaboration)
+
+<a id="start"></a>
+## 1. 运行项目
+
+### 环境要求
+
+- Node.js **22.18.0 或更高版本**；当前已在 Node.js 24 验证。
+- npm，随 Node.js 安装。
+- 现代浏览器。前端预览不要求 Python 服务、大模型 API Key 或数据库启动。
+
+### 从仓库启动
 
 ```powershell
-npm install
+git clone https://github.com/imnotmomo/acefire.git
+cd acefire/frontend
+npm ci
 npm run dev
 ```
 
-打开 http://127.0.0.1:5173/ 。需要 Node.js 22.18+，已在 Node.js 24 验证。
+如果已在本地项目中，进入 `frontend` 后运行最后两条命令即可。仓库提交了 `package-lock.json`，首次安装使用 `npm ci` 复现锁定依赖；调整依赖时再使用 `npm install`。
 
-## 已实现
+开发地址：**http://127.0.0.1:5173/**。开发服务需要保持运行；只打开网址不会自动启动服务。端口启用了 `strictPort`，如果 5173 已占用，Vite 会报错，不会悄悄切换到其他端口。
 
-- Projects：卡片 / 列表、搜索、行业筛选、新建项目。
-- Dashboard：Enfuce 历史财务数据、月收入图、证据覆盖、可点击计算图和证据检查器。
-- Report / Build：12 类模块、子主题、深度、地域、时间范围、证据范围、自定义 focus，拖动及键盘可用的按钮排序。
-- Report / Review：带引用的本地报告预览、人工编辑、版本历史、证据 Findings、真实活动记录。
-- Report / Export：可下载 PDF、DOCX、Markdown，附引用、原文位置及缺口说明。
-- Data room：本地文件保存、分类、搜索、链接登记、文本 / 图片 / 视频 / PDF 查看器。
-- Contextual chat：按当前项目提供有限的快照问答和工作区导航。
-- 项目与报告使用 localStorage，上传文件使用 IndexedDB；刷新后保留，项目之间隔离。
-- 390px 手机布局、可见键盘焦点、对话框焦点限制与 Escape 关闭。
-
-## 数据和功能边界
-
-Enfuce 数值来自仓库的 `database-design/demo_results.json` 和
-`database-design/evidence/workbooks.json` 保存记录。公司与客户叙述来自
-`database-design/evidence/reports.json`。界面呈现的是历史证据快照，
-不代表当下公司数据、独立审计或投资建议。原始 Office 文件不随预览复制。
-
-Circle、BackerKit 是空的起始工作区；不会继承 Enfuce 指标。新项目也不会被填入虚构数据。
-
-报告生成目前是确定性快照组装，不调用大模型。配置会持久保存并出现在研究简报中；
-所选财务子主题控制纳入哪些已有事实。深度、地域、时间、focus 和外部证据偏好
-尚不触发实时检索或新的分析。缺少证据的模块明确显示缺口。上传文件不会自动解析。
-
-聊天是有限的本地证据路由，不是开放式 AI 对话。原有 Python `/ask` 模块仍保留，
-但当前 React 网页未连接它。后续应通过服务层接入检索、计算、报告生成和聊天 API，
-并把存储改成团队后端。`src/domain.ts` 保留了项目、模块、报告和版本结构。
-
-PDF 使用内置拉丁字体；原始中文 sheet 名请用 DOCX / Markdown 完整保留。
-人工改写不会自动重新核实。引用被删除后，导出的引用列表也会随之更新。
-浏览器清理会删除本地工作区，因此重要报告请及时导出。
-
-## 验证
+### 构建与本地预览
 
 ```powershell
-npm test
 npm run build
-npm run test:e2e
+npm run preview
 ```
 
-端到端验证需要正在运行的开发服务器，并默认使用已安装的 Chrome。
-若 Chrome 路径不同，设置 `PLAYWRIGHT_BROWSER_PATH` 为浏览器可执行文件路径。
-验证结果、页面截图、导出的样例文件在忽略 Git 的 `test-results/` 中。
+构建产物位于 `frontend/dist/`，构建预览地址为 **http://127.0.0.1:4173/**。`preview` 是本地检查工具；当前仓库没有配置正式网站部署流程。直接双击 `index.html` 不能代替 Vite 服务。
 
-## 文件结构
+<a id="navigation"></a>
+## 2. 网页信息架构
 
 ```text
-src/
-  App.tsx           项目、导航、主框架
-  Dashboard.tsx     财务图表与指标
-  Report.tsx        Build / Review / Export
-  DataRoom.tsx      本地文件与来源管理
-  Evidence.tsx      证据检查器与计算图
-  Chat.tsx          全局上下文问答
-  domain.ts         纯业务逻辑、本地存储
-  data.ts           模块和证据模型
-  data/             保存的来源快照
-  export.ts         报告下载
-  styles.css        根据四张参考图实现的视觉和响应式样式
+App
+├── Projects
+│   ├── 项目卡片 / 列表
+│   ├── 搜索 / 行业筛选
+│   └── Create project
+└── Project
+    ├── Dashboard
+    │   ├── 财务总览与月度图表
+    │   ├── Evidence coverage
+    │   └── Metric detail
+    │       ├── Source fields
+    │       ├── Formula / Review
+    │       └── Result
+    ├── Report
+    │   ├── Build：模块库、配置、排序、生成预览
+    │   ├── Review：报告正文、Findings、人工编辑、活动与版本
+    │   └── Export：PDF / DOCX / Markdown
+    └── Data room
+        ├── Documents
+        ├── Financial data
+        ├── External sources
+        ├── Images / Video
+        └── Source viewer
+
+共享能力
+├── Evidence inspector：从 Dashboard、报告引用或来源入口打开
+└── Contextual chat：跨项目工作区的上下文提问入口
 ```
 
-## 保留的 Python 服务
+侧栏负责项目内导航，顶部面包屑标识当前位置。计算详情、证据检查、文件查看和编辑通过对话框展开，避免为短时查看增加新的页面层级。
 
-Run these commands from the project root in PowerShell:
+建议首次体验顺序：进入 **Enfuce** → 在 Dashboard 点击一个指标 → 查看计算图和来源 → 进入 Report 配置模块 → 生成预览并编辑 → 导出报告。
+
+<a id="projects"></a>
+## 3. Projects：项目入口
+
+Projects 是工作台首页，提供项目检索、筛选和创建，并将用户带入具体项目。
+
+项目卡片展示名称、行业、地域、来源数量、模块数量、跟进项及进入工作区的按钮。支持在卡片与列表布局之间切换；搜索会匹配名称、行业和地域，行业筛选可与搜索同时使用。
+
+新建项目需要名称，可设置行业和地域。创建后直接进入该项目的 Report Builder。每个新项目使用默认报告结构，但**不继承其他项目的财务数字或证据**。
+
+### 预置项目的区别
+
+| 项目 | 初始内容 | 用途 |
+| --- | --- | --- |
+| Enfuce | 历史财务与叙述证据快照 | 演示指标、计算、引用和报告审核 |
+| Circle | 空的起始工作区 | 展示不同项目的导航和状态隔离 |
+| BackerKit | 空的起始工作区 | 展示项目管理和资料录入 |
+
+首页的 Enfuce 跟进项和检查汇总来自预置示例，不是后台实时汇总，也不会因用户修改报告自动变成新的审计结果。后续接入项目 API 时应替换这些汇总来源。
+
+<a id="dashboard"></a>
+## 4. Dashboard：数据与计算
+
+Dashboard 将“数值是多少”和“这个数值如何成立”放在同一条查看路径中。
+
+### 财务总览
+
+主区域展示 H1 2020 的 Revenue 或 Operating income，支持切换指标。月度图表使用保存的 `P&L - Group!C4:H4` 数据，并提供数据表入口，便于核对月份、单元格和金额。
+
+当总览切换为 Operating income 时，图表仍表示纯 Revenue；界面会解释总额中另有其他营业收入。两个指标的定义不会被混用。
+
+下方展示 2019 毛利润、MRR 工作表总额，以及五项示例检查的证据覆盖情况。覆盖图描述这个样本中哪些算术已复现、哪些口径仍需审核，不能解释为公司质量评分或整个 Data room 的覆盖率。
+
+### Metric detail：计算过程
+
+点击指标后，计算画布沿以下方向展开：
+
+```text
+原始字段 / 单元格 → 公式或比较规则 → 结果与限制
+```
+
+来源节点可点击，画布可缩放；放大或窄屏时可在画布内滚动。选中节点后，下方显示对应字段、公式及来源定位。随后可打开 Evidence inspector，进一步查看保存的摘录与原值。
+
+画布呈现的是**已有计算记录**，不会在浏览器中执行任意 Excel 公式，也不会重新核验底层账本。没有证据的新项目显示空状态，并引导用户进入 Data room。
+
+<a id="report"></a>
+## 5. Report：Build → Review → Export
+
+Report 将报告生成前的配置、生成后的审核和最终交付拆成三个阶段。模块配置与已经生成的报告正文分别保存；改变配置后，界面会提示需要重新生成，避免用户误以为旧正文已自动更新。
+
+### 5.1 Build：定义报告结构与研究范围
+
+Build 由模块库、报告结构和当前模块设置三部分组成。用户可搜索和添加模块，移除不需要的部分，通过拖放或上移 / 下移按钮调整顺序。
+
+#### 模块库
+
+| 模块 | 可配置的子主题 |
+| --- | --- |
+| Company overview | 公司概况、商业模式、股权 |
+| Market | 市场规模、市场增长、消费趋势、客户分群、竞争、地域扩张 |
+| Financials | 收入、毛利润、经常性收入、现金与 runway |
+| Customers | 客户基础、集中度、留存 |
+| Product | 产品、技术、路线图 |
+| Competition | 竞争格局、差异化、转换成本 |
+| GTM | 渠道、销售方式、增长策略 |
+| Unit economics | CAC、LTV、回收期 |
+| Team | 管理层、组织、招聘计划 |
+| Legal / IP | 公司结构、合同、知识产权 |
+| Clinical / Regulatory | 临床证据、监管状态、合规 |
+| Open questions | 证据缺口、定义核对、后续资料请求 |
+
+默认结构包含 Company overview、Market、Financials、Customers、Team 和 Open questions。其他模块按需加入；Clinical / Regulatory 是特定行业的可选模块。
+
+#### 每个模块的配置
+
+| 配置项 | 取值或输入 | 当前行为 |
+| --- | --- | --- |
+| Sub-topics | 勾选子主题 | 保存研究范围；部分已有证据模块据此筛选内容 |
+| Depth | Brief / Standard / Deep | 保存目标深度并写入研究简报 |
+| Geography | Global / Europe / US / Nordics / Asia Pacific | 保存目标地域 |
+| Time horizon | Source period / Last 12 months / 3 years / 5 years | 保存目标时间范围，不改变历史来源的真实期间 |
+| Evidence scope | Internal only / Internal + external | 保存来源偏好，外部研究请求会明确标记 |
+| Additional focus | 自定义文本，最多 2,000 字符 | 保存具体关注点，附在对应模块中 |
+
+例如 Market 可配置为：选择市场规模、增长、消费趋势和客户分群，深度设为 Deep，地域设为 US，证据范围选择 Internal + external，focus 填写 `Focus on Gen Z purchasing behavior`。
+
+这个配置表达“接下来要研究什么”，本身不构成市场结论。当前只有已保存的证据可以进入事实段落；没有支持材料时，生成结果会列出请求范围和证据缺口。Financials 的收入、毛利润及经常性收入子主题已与对应快照事实关联。
+
+### 5.2 Review：阅读、追溯与人工修订
+
+Review 使用三栏审核布局：
+
+| 区域 | 内容与操作 |
+| --- | --- |
+| 报告正文 | 按模块顺序阅读；通过顶部目录定位章节；点击引用打开证据；编辑章节正文 |
+| Findings | 呈现来源中未解决的定义、调整或缺口；检查证据；把跟进要求加入报告 |
+| Activity | 展示本地生成与修订事件；按 All / Human / System 筛选 |
+
+正文中的 `[income]`、`[gross]` 等标记关联具体证据。编辑时保留这些标记即可保留引用链接。删除正文引用后，导出引用列表会重新计算，而不是继续列出已经没有被引用的来源。
+
+每次实际改变正文的保存会记录修改前后内容、章节、时间和操作人。Version history 可查看对比；当前没有一键恢复旧版本的功能。来源跟进项可以加入 Open questions，或在该模块不存在时加入 Financials。
+
+重新生成会用当前配置重新组装正文，替换现有章节中的人工编辑。仍保留且正文发生变化的章节会记录生成前后差异；移除模块不会为被删除章节新增修订记录，已有修订记录仍保留。人工编辑及已接受的建议不会自动重新验证，也不代表来源问题已解决。
+
+### 5.3 Export：带着证据交付
+
+| 格式 | 适用场景 | 说明 |
+| --- | --- | --- |
+| PDF | 阅读与分享 | 当前使用内置拉丁字体；不支持的中文等字符会被替换 |
+| DOCX | 继续协作编辑 | 保留正文、标题和 Unicode 来源名称 |
+| Markdown | 版本管理、复用或导入其他工具 | 导出纯文本正文及证据引用 |
+
+导出内容包括当前报告章节、人工修改后的正文、仍被正文引用的来源、定位信息和证据限制。历史修订列表及原始资料文件不会打包进报告。
+
+文件在浏览器中生成并下载。需要完整保留中文 sheet 名或其他非拉丁字符时，选择 DOCX 或 Markdown。
+
+<a id="sources-chat"></a>
+## 6. Data room 与全局 Chat
+
+### Data room：来源管理
+
+资料按 Documents、Financial data、External sources、Images / Video 分类，也可在 All sources 中统一检索。
+
+用户可以选择或拖入本地文件。新增文件保存后标记为 `Not extracted`；外部来源链接标记为 `Not retrieved`。链接只允许 `http://` 和 `https://`，保存链接不等于获取其内容。
+
+Source viewer 的显示方式取决于文件类型：
+
+| 类型 | 查看方式 |
+| --- | --- |
+| TXT / CSV / TSV / Markdown / JSON | 文本预览，最多显示前 100,000 字符 |
+| 图片、视频 | 浏览器原生媒体查看 |
+| PDF | 浏览器内嵌查看，实际支持情况取决于浏览器 |
+| 其他格式 | 下载原文件，用对应应用打开 |
+
+预置 Enfuce 来源打开的是保存的摘录、字段和定位，不附带原始 Office 文件。移除用户新增来源只会移出本项目的资料列表，不会修改已生成报告；当前实现也没有清理对应 IndexedDB 二进制记录的逻辑。
+
+### Contextual chat：跨工作区的提问入口
+
+Chat 位于项目页面底部，携带当前项目和所在工作区信息。当前可回答收入、毛利润、MRR / ARR 缺口和客户数相关的有限快照问题，并提供证据按钮；也可以跳转到 Report Builder 或 Data room。
+
+不受支持的问题会说明证据不足，不会补造数字。新建项目没有提取结果时，不会调用 Enfuce 的事实回答。当前对话保存在组件内存中，关闭聊天或重新加载页面后不会保留历史。
+
+<a id="evidence"></a>
+## 7. 证据模型与示例数据
+
+### Evidence inspector
+
+所有证据入口共用一个检查器，提供三个标签页：
+
+- **Evidence**：摘录、保存的源字段、数值及结论边界。
+- **Lineage**：来源字段、计算或审核节点、输出之间的关系。
+- **Source details**：文件名、位置、期间、单位、读取方法，以及部分来源的 SHA-256；可复制引用信息。
+
+### 状态的含义
+
+| 状态 | 可以确认什么 | 不能据此推导什么 |
+| --- | --- | --- |
+| Reproduced | 保存的输入可复现已有算术结果 | 原始账本已经审计，或数字业务含义已全部确认 |
+| Needs review | 定义、主体范围或其他条件需要补充确认 | 已确认数字冲突，或公司存在某种投资风险结论 |
+| Reported | 来源中存在该描述或数字 | 已通过独立材料核实或重算 |
+
+比较数字前需要确认主体、期间、币种、单位和指标定义。未知值保持缺失；例如不能在 ARR 定义未确认时直接将 MRR 乘以 12。
+
+### 数据来源与数量口径
+
+| 内容 | 保存位置 | 当前用途 |
+| --- | --- | --- |
+| 五项财务检查 | [`src/data/enfuce-checks.json`](src/data/enfuce-checks.json) | 由仓库已有的 `database-design/demo_results.json` 复制 |
+| 六个月收入字段 | [`src/data/monthly-revenue.json`](src/data/monthly-revenue.json) | 从保存的工作簿证据提取，保留原值、规范化值与单元格 |
+| 七条可查看证据 | [`src/data.ts`](src/data.ts) | 五项财务证据，加公司概况与客户数摘录 |
+| 原始检查记录 | [`database-design/`](../database-design/) | 提供工作簿、报告摘录及口径说明，供开发核对 |
+
+Dashboard 的五项检查中，三项为算术复现，两项仍涉及定义或范围审核；Data room 的三个预置来源是两个工作簿和一份 FDD 报告。检查数、证据摘录数和来源文件数分别计数，不能相互替代。
+
+数据主要涉及 2017–2020 年的历史来源。导入前端的摘录不会随仓库其他数据文件自动刷新，后续应由统一服务提供版本化结果。
+
+<a id="implementation"></a>
+## 8. 代码结构、路由与本地存储
+
+### 技术组成
+
+前端使用 React 19、TypeScript 和 Vite；Lucide React 提供图标，jsPDF 与 docx 分别生成 PDF 和 Word 文件。图表、项目封面及计算连线使用本地 SVG / CSS，没有外部图片或字体依赖。具体依赖版本以 [`package.json`](package.json) 和锁文件为准。
+
+### 文件职责
+
+```text
+frontend/
+├── public/                    静态资源
+├── src/
+│   ├── App.tsx                应用壳、Projects、项目切换、全局对话框
+│   ├── Dashboard.tsx          财务总览、图表、指标详情入口
+│   ├── Report.tsx             Build / Review / Export 与修订操作
+│   ├── DataRoom.tsx           资料录入、分类、检索和文件查看
+│   ├── Evidence.tsx           Evidence inspector 与 Lineage
+│   ├── Chat.tsx               有限证据问答和工作区导航
+│   ├── domain.ts              数据类型、报告组装、引用、排序和存储
+│   ├── data.ts                模块定义、默认结构、证据映射
+│   ├── data/                  历史证据快照
+│   ├── export.ts              文件导出
+│   ├── ui.tsx                 图标、标签、空状态和对话框
+│   ├── styles.css             页面视觉与响应式规则
+│   └── main.tsx               React 入口
+├── tests/                     业务与浏览器测试
+├── main.py                    保留的独立 FastAPI 问答模块
+├── test_main.py               Python 问答测试
+├── requirements.txt           Python 依赖
+├── DESIGN.md                  四张参考图对应的视觉约定
+├── package.json               前端依赖和命令
+├── tsconfig.json              TypeScript 配置
+└── vite.config.ts             本地服务与构建配置
+```
+
+Python 文件与网页文件目前共同位于 `frontend`，这是现有目录结构；它们不会因此自动成为 React 应用的运行依赖。
+
+### 路由
+
+使用 URL hash 路由，浏览器前进、后退可切换页面。Evidence inspector、文件查看器和聊天不是独立 URL。
+
+| 地址片段 | 页面 |
+| --- | --- |
+| `#/projects` | 项目首页，也是首次进入的默认页面 |
+| `#/project/:projectId/dashboard` | 指标与财务总览 |
+| `#/project/:projectId/report/build` | 模块配置与排序 |
+| `#/project/:projectId/report/review` | 报告审核 |
+| `#/project/:projectId/report/export` | 报告导出 |
+| `#/project/:projectId/data-room` | 来源管理 |
+
+### 数据关系与持久化
+
+`Project` 标识项目；`Workspace` 保存模块顺序、模块配置、报告章节和修订记录；`Section` 保存正文、配置快照及证据 ID；`LocalDocument` 登记用户新增资料。多个章节可以引用同一条 `Evidence`。
+
+| 存储位置 | 内容 |
+| --- | --- |
+| localStorage · `acefire:projects:v1` | 项目列表 |
+| localStorage · `acefire:workspace:v1:<projectId>` | 各项目的模块配置、报告及修订 |
+| localStorage · `acefire:documents:v1:<projectId>` | 各项目的文件 / 链接元数据 |
+| IndexedDB · `acefire-files` / `files` | 以文件 ID 索引的本地二进制内容 |
+| 组件内存 | 当前对话、筛选条件等临时界面状态 |
+
+刷新后可以恢复已持久化内容，但清理站点数据会丢失本地项目与文件。不同浏览器、设备及 origin 不共享这些数据；`localhost` 和 `127.0.0.1` 也不是同一个 origin。当前没有账号、服务端持久化或多人同步。
+
+<a id="backend"></a>
+## 9. 后端与接入边界
+
+### 当前完成情况
+
+| 能力 | 当前实现 | 后续需要接入 |
+| --- | --- | --- |
+| 项目、模块、编辑历史 | 浏览器本地状态 | 项目 API、团队权限、服务端版本 |
+| Dashboard 与 Lineage | 展示保存的字段和计算结果 | 指标、计算、比较及来源查询服务 |
+| 报告生成 | `generateSections()` 确定性组装快照 | 按模块配置检索证据、调用生成服务、返回逐条引用 |
+| Data room | 文件保存、链接登记和原生预览 | 上传存储、解析状态、OCR / 多模态提取、结构化映射 |
+| 外部研究 | 保存请求偏好 | 搜索、来源获取、召回排序与版本管理 |
+| Chat | 有限关键词路由与快照回答 | 项目上下文、工具查询、证据约束的模型回答 |
+
+已配置的深度、地域、时间范围和 focus 目前不会触发新的研究或改变来源期间。接入后的生成流程应先读取配置，再检索和核对证据，最后产生带来源的章节；缺少支持时继续返回缺口。
+
+### 保留的 Python 问答服务
+
+[`main.py`](main.py) 已提供 `POST /ask`，但 React 页面**尚未调用此接口**，Vite 也未配置对应代理。只启动该服务不会使底部 Chat 自动变为实时 AI。
+
+在**仓库根目录**运行：
 
 ```powershell
 py -m venv .venv
@@ -86,26 +364,59 @@ $env:NICRRON_API_KEY = "your-api-key"
 .\.venv\Scripts\python.exe -m uvicorn frontend.main:app --reload
 ```
 
-For local development, the backend also loads `NICRRON_API_KEY` from the project root `.env` file (ignored by Git). Existing environment variables take precedence. Set `NICRRON_API_KEY` in the backend's environment in production. Never use a frontend/public environment variable for the key.
+默认服务地址为 `http://127.0.0.1:8000`，交互接口文档为 `/docs`。本地开发也会读取仓库根目录 `.env` 中的 `NICRRON_API_KEY`，已有环境变量优先。密钥不应进入浏览器环境变量或提交到 Git。
 
-`POST /ask` accepts JSON:
+请求：`{"question":"Where does the reported ARR come from?"}`；成功响应：`{"answer":"..."}`。
 
-```json
-{"question": "Where does the reported ARR come from?"}
+服务将问题发送到 `https://api.nicrron.ai/v1/chat/completions`，使用 `nicrron/auto`。它校验问题长度和空白输入，设置 60 秒网络不活动超时，并对错误和密钥回显做处理。目前只传问题文本，没有项目证据检索、资料访问或确定性财务计算。
+
+前后端对接时还需明确 API 地址、跨域或代理策略、统一数据契约和错误状态；上述能力矩阵是待接入边界，不代表相关服务已经存在。
+
+<a id="validation"></a>
+## 10. 检查与验证
+
+在 `frontend` 运行：
+
+| 命令 | 检查内容 | 前置条件 |
+| --- | --- | --- |
+| `npm test` | 6 项业务测试：排序、项目隔离、子主题筛选、范围说明、引用导出、URL 协议 | 已安装依赖 |
+| `npm run build` | TypeScript 类型检查与生产构建 | 已安装依赖 |
+| `npm run test:e2e` | 10 条浏览器流程，覆盖主工作区、导出、上传、聊天和手机布局 | 5173 开发服务正在运行，且有可用 Chrome |
+
+端到端测试使用无头浏览器和独立上下文，不读取日常浏览器中已有的项目数据。默认 Chrome 路径为 `C:/Program Files/Google/Chrome/Application/chrome.exe`；其他安装位置或兼容 Chromium 浏览器可通过 `PLAYWRIGHT_BROWSER_PATH` 指定：
+
+```powershell
+$env:PLAYWRIGHT_BROWSER_PATH = "C:\path\to\chrome.exe"
+npm run test:e2e
 ```
 
-Successful response:
+结果、页面截图和导出样例保存到 `frontend/test-results/`，该目录不提交 Git。当前首版已通过上述 6 项业务测试、10 条浏览器流程及构建；这是本地原型验证，不代表生产环境或真实模型质量验收。
 
-```json
-{"answer": "The model's answer"}
-```
-
-The backend calls `https://api.nicrron.ai/v1/chat/completions` with model `nicrron/auto`. Only the answer is returned. Upstream errors use generic messages; credentials are never returned. Requests time out after 60 seconds of network inactivity. Blank questions and questions longer than 20,000 characters are rejected.
-
-Tests use mocked upstream responses and require no API key or network calls:
+Python 测试从仓库根目录运行，使用模拟上游响应：
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest frontend.test_main -v
 ```
 
-This endpoint sends the question only; document retrieval and evidence-backed answers are not implemented yet.
+<a id="collaboration"></a>
+## 11. 协作、Git 同步与后续开发
+
+### 目录和同步规则
+
+网页代码与素材统一放在 `frontend/`。依赖、构建结果、测试产物、虚拟环境和 `.env` 等本地内容通过 `.gitignore` 排除。
+
+当前用户电脑配置了 Windows 任务 `Acefire-AutoPush`，每 5 分钟提交 `frontend/` 的改动并推送到 `origin/main`。该任务是本机配置，克隆仓库不会自动创建。电脑需要开机、用户已登录且联网。
+
+同步脚本遇到远程新提交、非 `main` 分支或其他目录已有暂存改动时会停止，等待人工处理，不会强制覆盖远程历史。操作方法和日志路径见 [`scripts/README.md`](../scripts/README.md)。
+
+**Git 同步网页源码，不同步浏览器数据。** 在页面中新建的项目、上传文件、报告编辑及聊天不会因此上传 GitHub，也不等于正式网站部署。需要保留报告时使用 Export；需要跨设备协作时接入后端存储。
+
+### 后续开发顺序
+
+1. **统一数据契约与项目 API。** 对齐项目、来源、证据、指标、计算、章节和修订结构，替换本地项目持久化。
+2. **完成资料处理链路。** 建立文件存储、提取状态、单元格 / 页码定位及来源版本，替换预置证据。
+3. **接入可验证指标服务。** 后端返回规范化数值、单位、期间、公式和限制，前端据此展示 Dashboard 与 Lineage。
+4. **接入模块化报告生成。** 将 Build 配置转成检索请求，生成逐条带引用的章节，并保留人工修改历史。
+5. **接入上下文 Chat 与团队协作。** 基于真实证据和计算工具回答，再完善权限、服务端审计、部署及跨设备使用。
+
+实现时优先替换数据和服务边界，复用当前页面层级及组件职责。视觉方向见 [`DESIGN.md`](DESIGN.md)，历史数据设计见 [`database-design/README.md`](../database-design/README.md)。
