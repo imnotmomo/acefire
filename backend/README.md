@@ -94,6 +94,8 @@ export DUCKDB_PATH='/absolute/path/to/acefire.duckdb'
 
 `GET /calculations/{calculation_id}/lineage` 返回计算值、公式、输入数字、文件名、SHA-256、`preview_url` 与精确 locator，以及可用于 React Flow 的 `nodes` / `edges`。关系为 **文件 → 来源数字 → 计算结果**；同一文件的多个输入共用一个文件节点。`GET /sources/{snapshot_id}/file` 只返回已登记且 hash 未变化的文件。
 
+`GET /sources/{snapshot_id}/preview?sheet=...&cell=I49` 提供只读 XLSX 窗口：原始缓存值、公式文本、单元格定位、sheet 列表、`row_start` / `column_start` 分页。每次先核对登记 SHA-256；不执行公式，不写入数字观察值。前端 Evidence inspector 的 File 标签使用此接口突出被引用的单元格；PDF、图片与纯文本使用原始文件接口，并在客户端再次检查 SHA-256。
+
 真实示例：FY2024 Orbis 工作簿中的 `I49`（Non-current assets，$669,460,000）加 `I53`（Current assets，$45,164,949,000）得到 **$45,834,409,000**。这是同一来源的算术重现，保留未知 scenario，不声称完成跨来源或独立财务核验。
 
 `GET /deals/{id}/company-profile` 同样返回 Akta 字段与文件的绑定：例如估值区间回到财务 JSON 的 `/response/data/financial_estimate/valuation_estimate`，不同来源的冲突值分别保留。前端读取保存的结构化值。模型只生成计算代码，最终数值必须来自本地执行输出；不能直接把模型回答中的数字当作计算结果。
