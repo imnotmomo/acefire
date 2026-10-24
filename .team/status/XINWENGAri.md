@@ -1,16 +1,25 @@
 # XINWENGAri
 
 - Role: Frontend — Projects, Dashboard, metric lineage and evidence inspection, Report Builder / Review / Export, Data room, contextual chat, and website framework documentation. Confirmed by this teammate's frontend implementation requests.
-- State: ready_for_backend_integration
+- State: ready_for_review
 - Updated: 2026-10-24
-- Working on: Local frontend prototype and website framework documentation delivered. This update records the handoff; backend integration is the next planned step and has not started.
-- Active paths: None reserved after this handoff. Frontend implementation lives under `frontend/`; this coordination update changes only this file, `AGENTS.md` and `TEAM_STATUS.md`.
+- Working on: Delivered the Ingenium landing page with the human's approved slogan, investment-team personas, four-step workflow, core capabilities, SaaS plan positioning and hello@ingenium.ai contact links. Keye informed the visual design. C's Circle frontend integration is preserved; original pending-integration notes below are historical.
+- Active paths: None reserved after this handoff. Landing implementation is in `frontend/src/Landing.tsx`, `landing.css`, `Site.tsx` and `public/images/`; existing workspace edits are branding/navigation only. Setup, tests, metadata, root/frontend docs and this status were updated. Backend and API adapters were not changed.
 - Shared contracts: No shared API/model/schema changes. Current frontend-local types are `Project`, `Workspace`, `ModuleConfig`, `Section`, `Revision` and `LocalDocument` in `frontend/src/domain.ts`; evidence/module definitions live in `frontend/src/data.ts`.
-- Handoff: Consume C's structured report, source-file and lineage APIs; see the integration notes below. Keep backend calculation/source ownership with C and extraction with B.
-- Validation: Before this status update, `npm run build`, 6 domain tests and 10 browser flows passed; the final graph zoom correction also passed a targeted browser check. Tests cover search/filter, numeric source inspection, drag/button reordering, configuration persistence, revisions, real PDF/DOCX/Markdown downloads, upload persistence, source URL validation, contextual chat, project isolation and 390px layout. Results are frontend prototype validation, not verification of C's newly fetched backend or live providers. This documentation-only update is checked for links and Git whitespace errors; application tests are not rerun for it.
-- Blockers: No blocker to run the local prototype. API consumption, live document processing, external research and open-ended AI chat remain unconnected in the UI; project/deal identity and the frontend-to-backend transport still need alignment.
+- Handoff: Root URL introduces Ingenium; Book a Demo / See the Platform open `#/projects`. Existing `#/project/...` routes and browser data keys remain compatible. Contact/pricing open email drafts; they do not send messages, book meetings or charge subscriptions. C still owns backend calculations and B owns extraction.
+- Validation: This landing change passed `npm run build`, all 19 current unit tests, 10 landing browser flows and the original 10 platform browser flows, with no runtime or missing-asset errors. Landing checks cover the exact slogan, real screenshots, role/evidence tabs, workflow/plans/contact, navigation, unchanged project storage and 1440/1024/768/390px layouts. C's separate Circle integration suite was not rerun for branding; its prior validation remains recorded in imnotmomo.md. Local document/anchor links and `git diff --check` also passed.
+- Blockers: None for the landing page or historical local demo. Circle needs the prepared C backend. New-document extraction, external research, open-ended chat, generic onboarding, enterprise permissions and production hosting remain separate work; no new provider integration or commercial checkout is claimed.
 
-## Delivered frontend
+## Ingenium landing page
+
+- Approved slogan: **Trusted diligence, powered by the world’s evidence.** Public contact supplied by the human: **hello@ingenium.ai**; `VITE_CONTACT_EMAIL` optionally overrides it.
+- Content: Hero; fragmented data / hard-to-verify claims / hidden contradictions; VC Analysts & Associates, Senior Associates/VPs/Principals, Partners/ICs; Ingest → Trace → Verify → Decide; five core capabilities; real workspace previews and a historical evidence example; Team/Professional/Enterprise positioning; trust narrative, FAQ and contact.
+- Design: original navy/periwinkle SVG sculpture and Ingenium mark, locally hosted Manrope font, scoped landing styles. No borrowed competitor claims, customer logos, certifications, testimonials or invented savings statistics.
+- `frontend/src/Site.tsx` separates marketing anchors from existing workspace hash routes. The platform can return home via its Ingenium brand link. Existing `acefire` package/API/storage identifiers are intentionally retained for compatibility.
+- Screenshot assets in `frontend/public/images/` were captured from the actual Enfuce workspace, not a fabricated live product. Assets and all landing interactions work without fetching external fonts or images.
+- Commands: `npm run dev` for root landing/platform; `npm run test:landing` for landing browser QA. Full rationale and references: `frontend/INGENIUM_LANDING.md`. No hosted production deployment was performed.
+
+## Delivered frontend (original prototype)
 
 - Projects: project cards/list, search, sector filter and local project creation. Enfuce contains saved historical evidence; Circle and BackerKit are empty starter workspaces, not connected company reports.
 - Dashboard: source-bound H1 2020 figures and monthly revenue chart, snapshot evidence coverage, selectable metric details and source/formula/result lineage with zoom.
@@ -20,7 +29,9 @@
 - Shared UI: white sidebar/project cards, monochrome financial dashboard, purple lineage canvas and document/findings/activity review layout based on the human's four references; responsive navigation and dialog keyboard support.
 - Documentation: `frontend/README.md` is the detailed website reference; root `README.md` links to it. `frontend/DESIGN.md` records visual direction.
 
-## Integration handoff
+## Original integration plan (historical)
+
+C has since implemented the Circle report/lineage connection described below; read `.team/status/imnotmomo.md` for the current connected scope. The following records the earlier prototype handoff, not a new reservation or a claim that Circle integration remains undone.
 
 1. Read `backend/README.md` for C's current DuckDB/FastAPI setup and exact response contracts. The frontend README's legacy `frontend/main.py` `/ask` module is separate and is not the shared company-report backend.
 2. Start with `GET /deals/{id}/report` and `GET /deals/{id}/company-profile`; map frontend project IDs to backend deal IDs. The UI must label Akta profile data separately from supplemental Orbis/PitchBook evidence.

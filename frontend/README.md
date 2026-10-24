@@ -1,6 +1,20 @@
-# Acefire｜尽调证据工作台
+# Ingenium｜尽调证据工作台
 
-Acefire 面向 VC 尽调场景，将项目资料、财务指标、计算依据和报告编辑放在同一个工作区。用户可以从数字找到来源，也可以从来源回到报告，在保留证据和未解问题的前提下完成审核。
+Ingenium 面向 VC 尽调场景，将项目资料、财务指标、计算依据和报告编辑放在同一个工作区。用户可以从数字找到来源，也可以从来源回到报告，在保留证据和未解问题的前提下完成审核。
+
+**Trusted diligence, powered by the world’s evidence.**
+
+### 产品介绍首页与 Demo
+
+网站根地址 `http://127.0.0.1:5173/` 展示 Ingenium landing page，内容包括 slogan、尽调痛点、三个工作区的真实预览、工作流程、目标用户、来源示例和联系入口。视觉主要参考 Keye，使用深海军蓝、蓝紫色原创立体 SVG 和本地 Manrope 字体。
+
+所有 **Book a Demo / See the Platform** 按钮进入 `#/projects`；原有 `#/project/...` 深链接保持可用。平台中的 Ingenium 品牌链接可返回产品首页，不修改已有项目和报告。截图示例来自历史 Enfuce 工作区。
+
+**Contact the team** 和方案询价使用用户指定的 `hello@ingenium.ai`，打开邮件草稿，不自动发送。可在 `frontend/.env` 设置 `VITE_CONTACT_EMAIL` 并重启 Vite 来更换公开联系邮箱。Demo 按钮进入平台，不代表完成预约；Team / Professional / Enterprise 展示订阅方案定位，没有在线付款或虚构价格。
+
+首页入口在 `src/Site.tsx`，页面和样式分别为 `src/Landing.tsx`、`src/landing.css`；截图素材在 `public/images/`。设计与文案约定见 [`INGENIUM_LANDING.md`](INGENIUM_LANDING.md)。原 `acefire` 仓库名、API 配置和浏览器存储键保持兼容，不随展示品牌一起重命名。
+
+`npm run test:landing` 验证 slogan、图片、标签交互、导航、联系草稿、Demo 跳转、移动端和减少动态效果偏好；需先启动 5173 开发服务。当前首页已通过 10 条浏览器流程，原有平台也通过 10 条回归流程；19 项单元测试通过。
 
 产品由三个项目工作区和一个全局操作层组成：
 
@@ -93,7 +107,7 @@ App
 
 侧栏负责项目内导航，顶部面包屑标识当前位置。计算详情、证据检查、文件查看和编辑通过对话框展开，避免为短时查看增加新的页面层级。
 
-建议首次体验顺序：进入 **Enfuce** → 在 Dashboard 点击一个指标 → 查看计算图和来源 → 进入 Report 配置模块 → 生成预览并编辑 → 导出报告。
+建议首次体验顺序：首页 **Book a Demo** → 进入 **Enfuce** → 在 Dashboard 点击一个指标 → 查看计算图和来源 → 进入 Report 配置模块 → 生成预览并编辑 → 导出报告。
 
 <a id="projects"></a>
 ## 3. Projects：项目入口

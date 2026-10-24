@@ -22,7 +22,7 @@ async function screenshot(name) {
   await page.screenshot({ path: path.join(artifactDir, `${name}.png`), fullPage: true })
 }
 try {
-  await page.goto('http://127.0.0.1:5173/', { waitUntil: 'networkidle' })
+  await page.goto('http://127.0.0.1:5173/#/projects', { waitUntil: 'networkidle' })
   await check('Projects: reference-inspired layout, search and sector filters', async () => {
     assert.equal(await page.locator('.project-card').count(), 3)
     await screenshot('projects-desktop')

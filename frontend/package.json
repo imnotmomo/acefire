@@ -12,21 +12,23 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.mjs",
     "test:e2e": "node tests/e2e.mjs",
-    "test:integration": "node tests/integration.mjs"
+    "test:integration": "node tests/integration.mjs",
+    "test:landing": "node tests/landing.mjs"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "lucide-react": "^0.468.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "docx": "^9.5.1",
     "jspdf": "^3.0.4",
-    "docx": "^9.5.1"
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
+    "playwright": "^1.56.1",
     "typescript": "~5.9.3",
-    "vite": "^7.1.12",
-    "playwright": "^1.56.1"
+    "vite": "^7.1.12"
   }
 }
