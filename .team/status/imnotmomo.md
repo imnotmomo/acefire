@@ -1,12 +1,12 @@
 # imnotmomo
 
 - Role: C — DuckDB, database/schema, normalization, calculations, company reports and source traceability.
-- State: ready_for_integration
+- State: ready_for_review
 - Updated: 2026-10-24
-- Working on: Completed DuckDB-only backend, B claim intake, complete report API, file/line/cell provenance, dynamic period coverage and post-calculation conflict flags.
-- Active paths: None reserved after this handoff. Latest change set covers `backend/`, current schema/docs and root team coordination files.
-- Shared contracts: `schemas.py`, `ExtractedClaim`, DuckDB schema, `/claims/batch`, `/report`, calculation/period/lineage APIs.
-- Current inputs: saved Circle Akta JSON in `data/akta/`; Orbis/PitchBook files used as private-upload demo fixtures.
-- Handoff: B supplies source-bound extracted claims; frontend consumes structured reports and React Flow-compatible graph data. Other team assignments are intentionally blank.
-- Validation: 188 backend tests passed; DuckDB schema executed; offline Circle demo produced 436 observations from 16 source files; backend tests cover period gaps/overlaps, B intake, source hashes, report graphs and both conflict-flag cases.
-- Blockers: none for the saved-data local workflow.
+- Working on: Human-authorized Circle frontend integration completed against the existing C backend. Preserved XINWENGAri's delivered frontend and latest ownership/handoff documentation.
+- Active paths: None reserved after this handoff. Changed frontend report/API adapters, dashboard/evidence/source views, API proxy, tests and setup docs. No backend implementation, source-data, upload-processing or Akta retrieval changes.
+- Shared contracts: Existing `GET /deals/{id}/report` and `/sources/{snapshot_id}/file`; frontend maps `circle` to `circle-2025-ipo`, consumes embedded calculation/observation/profile lineage, exact decimal strings, period coverage and nonblocking `conflict_numbers`. Vite `/api` proxy defaults to C backend port 8000.
+- Current inputs: Saved Circle Akta JSON in `data/akta/`; Orbis/PitchBook files remain private-upload demo fixtures. No live provider call was made.
+- Handoff: Circle loads stored report/profile/financial records with loading/error/retry states; calculations and observations open exact source locators, hashes, original files and selectable graphs. Report Builder preserves edits and UUID citations; stale/missing citation evidence pauses exports until explicit regeneration. Other projects keep their local behavior. XINWENGAri remains frontend owner; remaining blank role assignments follow `AGENTS.md`.
+- Validation: Actual project folder: 19 unit tests, production build and 10 Circle integration browser flows passed against the built preview and isolated real backend. Original 10 Enfuce/local-project browser flows also passed. Verified 436 observations, 16 sources, 224 profile fields and the stored 45,834,409,000 USD assets replay. Calculation/observation/profile graph checks and 390px layouts passed. PDF/DOCX/Markdown exports retain exact result and calculation ID; source references include original locators/hashes. Backend mutations during the Circle suite: zero. Prior backend validation remains 188 tests passed.
+- Blockers: None for reading the prepared Circle report. New uploads and Akta retrieval intentionally remain disabled/pending for B. New projects and edits are browser-local; generic company creation, live chat/research and production reverse-proxy deployment remain separate work. PDF retains its existing Latin-font limitation; DOCX/Markdown preserve non-Latin source text.

@@ -62,9 +62,11 @@ teammate's human confirms it.
 - `frontend/src/`: XINWENGAri's React/TypeScript workspace, report builder,
   dashboard, evidence/lineage UI, data room and contextual chat.
 - `frontend/README.md`, `frontend/DESIGN.md`: frontend architecture, local setup,
-  implementation limits and visual direction. The current UI uses historical
-  Enfuce snapshots; consuming C's Circle report/lineage APIs is still pending.
-- `.team/status/XINWENGAri.md`: frontend completion, validation and integration handoff.
+  implementation limits and visual direction. Enfuce retains historical snapshots;
+  Circle consumes C's stored report/lineage APIs. New upload processing and Akta
+  retrieval remain pending for B.
+- `.team/status/XINWENGAri.md`: delivered frontend prototype and its original handoff.
+- `.team/status/imnotmomo.md`: current C backend and Circle frontend integration validation.
 
 ## Evidence and calculation rules
 

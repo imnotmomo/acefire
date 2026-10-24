@@ -1,4 +1,6 @@
-import type { Project, Section } from './domain'
+import type { Project, Section, ReportExportContext } from './domain'
+import type { Evidence } from './data'
+import { EVIDENCE } from './data'
 import { reportMarkdown } from './domain'
 
 export function downloadBlob(blob: Blob, name: string) {
@@ -8,8 +10,8 @@ export function downloadBlob(blob: Blob, name: string) {
   setTimeout(() => URL.revokeObjectURL(url), 10000)
 }
 
-export async function exportReport(format: 'Markdown' | 'PDF' | 'DOCX', project: Project, sections: Section[]) {
-  const text = reportMarkdown(project, sections)
+export async function exportReport(format: 'Markdown' | 'PDF' | 'DOCX', project: Project, sections: Section[], evidence: Evidence[] = EVIDENCE, context: ReportExportContext = { kind: 'snapshot' }) {
+  const text = reportMarkdown(project, sections, evidence, context)
   const filename = `${project.name.replace(/[^a-z0-9-]/gi, '-')}-diligence-report`
   if (format === 'Markdown') return downloadBlob(new Blob([text], { type: 'text/markdown;charset=utf-8' }), `${filename}.md`)
   if (format === 'PDF') {

@@ -11,7 +11,7 @@ Acefire 面向 VC 尽调场景，将项目资料、财务指标、计算依据�
 | **Data room** | 管理资料、登记来源、查看文件 |
 | **Contextual chat** | 围绕当前项目提问，跳转到对应证据或页面 |
 
-当前版本是**可操作的本地前端原型**，使用保存的 Enfuce 历史证据展示完整交互。实时研究、资料解析和团队后端的完成情况统一说明在[后端与接入边界](#backend)中。产品不提供投资评分或 Invest / Pass 结论。
+当前版本支持 **Circle 的 C 后端报告与证据工作流**，并保留 Enfuce 历史快照交互。Circle 从 DuckDB 后端读取已保存的公司数据；新增文件上传处理和 Akta 获取暂留空，等待数据队友接入。实时研究、资料解析和团队后端的完成情况统一说明在[后端与接入边界](#backend)中。产品不提供投资评分或 Invest / Pass 结论。
 
 ## 目录
 
@@ -109,7 +109,7 @@ Projects 是工作台首页，提供项目检索、筛选和创建，并将用�
 | 项目 | 初始内容 | 用途 |
 | --- | --- | --- |
 | Enfuce | 历史财务与叙述证据快照 | 演示指标、计算、引用和报告审核 |
-| Circle | 空的起始工作区 | 展示不同项目的导航和状态隔离 |
+| Circle | 读取 `circle-2025-ipo` 后端报告 | 实际计算结果、期间覆盖、冲突标记和文件来源追踪 |
 | BackerKit | 空的起始工作区 | 展示项目管理和资料录入 |
 
 首页的 Enfuce 跟进项和检查汇总来自预置示例，不是后台实时汇总，也不会因用户修改报告自动变成新的审计结果。后续接入项目 API 时应替换这些汇总来源。
@@ -338,22 +338,48 @@ Python 文件与网页文件目前共同位于 `frontend`，这是现有目录�
 <a id="backend"></a>
 ## 9. 后端与接入边界
 
-### 当前完成情况
+### Circle：启动已接入的 C 后端
 
-| 能力 | 当前实现 | 后续需要接入 |
+在两个终端分别运行。后端使用已保存的 Circle 文件，不发起新的 Akta 请求。
+
+```bash
+# Terminal 1 — repository root
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.lock
+python -m app.cli demo-circle
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+```bash
+# Terminal 2 — repository root; Node >= 22.18
+cd frontend
+npm ci
+npm run dev
+```
+
+打开 `http://127.0.0.1:5173/#/project/circle/dashboard`。同一个 DuckDB 文件只运行一个后端进程；请勿添加多个 worker。
+
+默认浏览器请求 `/api`，Vite 开发/预览代理到 `http://127.0.0.1:8000`。后端地址不同时，在 `frontend/.env.local` 设置 `ACEFIRE_BACKEND_URL`，参考 [`.env.example`](.env.example)。正式部署需要反向代理将 `/api/*` 转到 C 后端并去掉 `/api` 前缀；Vite 的开发代理不会进入静态构建。若设置独立域名的 `VITE_API_BASE_URL`，后端必须允许该页面的跨域来源。源码没有 API 密钥。
+
+| 能力 | 当前实现 | 仍待接入 |
 | --- | --- | --- |
-| 项目、模块、编辑历史 | 浏览器本地状态 | 项目 API、团队权限、服务端版本 |
-| Dashboard 与 Lineage | 展示保存的字段和计算结果 | 指标、计算、比较及来源查询服务 |
-| 报告生成 | `generateSections()` 确定性组装快照 | 按模块配置检索证据、调用生成服务、返回逐条引用 |
-| Data room | 文件保存、链接登记和原生预览 | 上传存储、解析状态、OCR / 多模态提取、结构化映射 |
-| 外部研究 | 保存请求偏好 | 搜索、来源获取、召回排序与版本管理 |
-| Chat | 有限关键词路由与快照回答 | 项目上下文、工具查询、证据约束的模型回答 |
+| Circle Dashboard | 真实 `/report`、精确十进制字符串、计算结果、期间覆盖和非阻塞 `conflict_numbers` | 新的提取数据到达后刷新存储报告 |
+| Circle Evidence / Lineage | 后端 UUID、公式、输入、原始文件、sheet/cell、JSON pointer、已提供的 page/line 与 SHA-256 | 未提供的位置保持未知；没有伪造逐行高亮 |
+| Circle 报告与导出 | 根据已加载证据确定性生成章节；保留人工编辑、版本记录和 UUID 引用；Markdown / PDF / DOCX 包含来源 | 研究检索与叙述生成服务 |
+| Circle Data room | 展示注册文件、提供原始文件预览/下载；上传与 Akta 获取按钮禁用并标记 pending | B 的上传处理与 Akta 获取流程 |
+| 项目、模块、编辑历史 | 浏览器本地状态；Circle 映射到 `circle-2025-ipo` | 公司/项目列表创建 API、团队权限、服务端版本 |
+| Enfuce / 其他项目 | 保留原有快照和本地演示；不继承 Circle 数据 | 对应公司的后端数据与映射 |
+| Chat / 外部研究 | Circle 使用证据查看入口；Enfuce 保留本地快照问答 | 实时模型、搜索、来源获取 |
 
-已配置的深度、地域、时间范围和 focus 目前不会触发新的研究或改变来源期间。接入后的生成流程应先读取配置，再检索和核对证据，最后产生带来源的章节；缺少支持时继续返回缺口。
+加载失败、未准备公司数据或 API 返回不兼容内容时，Circle 显示错误和重试入口，不替换成 Enfuce 数据。刷新报告不会重新获取 Akta 或自动覆盖人工编辑；需要用户明确重新生成报告章节。
+
+深度、地域、时间范围和 focus 是草稿偏好，不会执行新研究或改变原始来源期间。缺失值不填零，部分月份不自动年化，冲突不会触发审批流程。所有财务运算由后端完成。
 
 ### 保留的 Python 问答服务
 
-[`main.py`](main.py) 已提供 `POST /ask`，但 React 页面**尚未调用此接口**，Vite 也未配置对应代理。只启动该服务不会使底部 Chat 自动变为实时 AI。
+[`main.py`](main.py) 已提供 `POST /ask`，但 React 页面**尚未调用此接口**，`/api` 代理指向 C 财务后端，不代理此 `/ask` 服务。只启动该服务不会使底部 Chat 自动变为实时 AI。
 
 在**仓库根目录**运行：
 
@@ -364,13 +390,13 @@ $env:NICRRON_API_KEY = "your-api-key"
 .\.venv\Scripts\python.exe -m uvicorn frontend.main:app --reload
 ```
 
-默认服务地址为 `http://127.0.0.1:8000`，交互接口文档为 `/docs`。本地开发也会读取仓库根目录 `.env` 中的 `NICRRON_API_KEY`，已有环境变量优先。密钥不应进入浏览器环境变量或提交到 Git。
+该旧服务不要与 C 后端争用同一端口；它不是上述 Circle 工作流的一部分。其交互接口文档为 `/docs`。本地开发也会读取仓库根目录 `.env` 中的 `NICRRON_API_KEY`，已有环境变量优先。密钥不应进入浏览器环境变量或提交到 Git。
 
 请求：`{"question":"Where does the reported ARR come from?"}`；成功响应：`{"answer":"..."}`。
 
 服务将问题发送到 `https://api.nicrron.ai/v1/chat/completions`，使用 `nicrron/auto`。它校验问题长度和空白输入，设置 60 秒网络不活动超时，并对错误和密钥回显做处理。目前只传问题文本，没有项目证据检索、资料访问或确定性财务计算。
 
-前后端对接时还需明确 API 地址、跨域或代理策略、统一数据契约和错误状态；上述能力矩阵是待接入边界，不代表相关服务已经存在。
+Circle 的 API 地址、代理、契约校验和错误状态已接入 C 后端。旧 Python 问答服务与 B 的上传/Akta 流程没有在本次接入中启用。
 
 <a id="validation"></a>
 ## 10. 检查与验证
@@ -415,8 +441,12 @@ Python 测试从仓库根目录运行，使用模拟上游响应：
 
 1. **统一数据契约与项目 API。** 对齐项目、来源、证据、指标、计算、章节和修订结构，替换本地项目持久化。
 2. **完成资料处理链路。** 建立文件存储、提取状态、单元格 / 页码定位及来源版本，替换预置证据。
-3. **接入可验证指标服务。** 后端返回规范化数值、单位、期间、公式和限制，前端据此展示 Dashboard 与 Lineage。
+3. **扩展已接入的指标服务。** Circle 已使用 C 后端返回的数值、单位、期间、公式和来源。其他公司仍需各自的数据和项目映射。
 4. **接入模块化报告生成。** 将 Build 配置转成检索请求，生成逐条带引用的章节，并保留人工修改历史。
 5. **接入上下文 Chat 与团队协作。** 基于真实证据和计算工具回答，再完善权限、服务端审计、部署及跨设备使用。
 
 实现时优先替换数据和服务边界，复用当前页面层级及组件职责。视觉方向见 [`DESIGN.md`](DESIGN.md)，历史数据设计见 [`database-design/README.md`](../database-design/README.md)。
+
+### Circle 集成验证
+
+启动上述后端和前端后，在 `frontend/` 运行 `npm run test:integration`。该测试读取实际存储报告，验证 Circle 页面、来源文件、精确数值、UUID 引用、报告导出、项目隔离、失败重试和 pending 控件；它不调用新增上传或 Akta 获取。`npm test` 检查契约/精度与报告逻辑，`npm run test:e2e` 保留原有 Enfuce 浏览器回归。Chrome 可通过 `PLAYWRIGHT_BROWSER_PATH` 指定；否则使用 Playwright 的 Chromium。
