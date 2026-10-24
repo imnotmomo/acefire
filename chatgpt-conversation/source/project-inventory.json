@@ -1,0 +1,60 @@
+{
+  "kind": "sanitized_rendered_project_chat_list",
+  "source_project_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/project",
+  "source_export_filename": "project-inventory-final.webarchive",
+  "source_export_sha256": "b73fffbd063fd17008d3eac6b3fb7de3485c7e186265356b68216fce2b2c1cb1",
+  "entry_count": 5,
+  "enumeration_observation": "Browser operator verified list after scrolling to bottom; exactly these five entries, no pagination or Load more control.",
+  "entries": [
+    {
+      "position": 1,
+      "source_id": "6adbbabf-52a8-83ea-a079-cfb9a8b66f75",
+      "title": "分析开发架构",
+      "owner": "Haoran Chen",
+      "project_member_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6adbbabf-52a8-83ea-a079-cfb9a8b66f75?owner_user_id=user-ISYmM2KjVI1Ee0PgjpMGuhUd",
+      "canonical_conversation_url": "https://chatgpt.com/c/6adbbabf-52a8-83ea-a079-cfb9a8b66f75",
+      "last_updated_label": "Last updated Oct 23",
+      "last_user_prompt_preview": "但是这个LLM也要根据成员C的结果吗"
+    },
+    {
+      "position": 2,
+      "source_id": "6adad23c-b5dc-83ea-9d43-bdd811157637",
+      "title": "数据整合溯源对比",
+      "owner": "Aria W",
+      "project_member_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6adad23c-b5dc-83ea-9d43-bdd811157637?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6adad23c-b5dc-83ea-9d43-bdd811157637",
+      "last_updated_label": "Last updated Oct 23",
+      "last_user_prompt_preview": "给我整理一个最终的容易理解的 清晰的 concise 有逻辑的产品prd用于我们的最后产品 生成md文件"
+    },
+    {
+      "position": 3,
+      "source_id": "6ad7926f-cb18-83ea-8591-22705cf7d840",
+      "title": "Fintech黑客松获奖案例",
+      "owner": "Aria W",
+      "project_member_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad7926f-cb18-83ea-8591-22705cf7d840?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad7926f-cb18-83ea-8591-22705cf7d840",
+      "last_updated_label": "Last updated Oct 23",
+      "last_user_prompt_preview": "给我第三个项目的workflow"
+    },
+    {
+      "position": 4,
+      "source_id": "6ad25553-5f78-83ea-a84f-a5790cbe3e80",
+      "title": "调研VC黑客松",
+      "owner": "Aria W",
+      "project_member_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad25553-5f78-83ea-a84f-a5790cbe3e80?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad25553-5f78-83ea-a84f-a5790cbe3e80",
+      "last_updated_label": "Last updated Oct 23",
+      "last_user_prompt_preview": "真的没有了吗 看看luma上有没有别的"
+    },
+    {
+      "position": 5,
+      "source_id": "6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "title": "解释Deal Flow Tracks",
+      "owner": "Aria W",
+      "project_member_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad42236-593c-83ea-8f01-f525f5f3d08a?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "last_updated_label": "Last updated Oct 23",
+      "last_user_prompt_preview": "创业公司人才监控agent hack deal sourcing\n学校 实验室 \npowerbi\ngithub repo\n可以写代码数据reports 点进去每个数据都可以clarify逻辑\n\nfedrated learning 验证企业数据信息又保证数据不被泄漏\nrhino\nipo行不通 vc卖给pe"
+    }
+  ]
+}

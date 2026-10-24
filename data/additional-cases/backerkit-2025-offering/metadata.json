@@ -1,0 +1,338 @@
+{
+  "case_id": "backerkit-2025-offering",
+  "case_type": "independent_real_company_public_offering_materials",
+  "company_brand": "BackerKit",
+  "legal_entity": "Diaspora, Inc. (dba BackerKit)",
+  "created_at_utc": "2026-10-24T01:26:42.100795+00:00",
+  "source_files": [
+    {
+      "id": "backerkit-offering-page",
+      "filename": "backerkit-offering-details.html",
+      "kind": "html",
+      "role": "company offering narrative, financial highlights, risks, capital structure, document index",
+      "url": "https://wefunder.com/backerkit/details",
+      "requested_at_utc": "2026-10-24T01:26:41.942512+00:00",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403
+    },
+    {
+      "id": "backerkit-fy2025-financials",
+      "filename": "Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "kind": "pdf",
+      "role": "FY2025 unaudited financial statements and notes",
+      "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "requested_at_utc": "2026-10-24T01:26:41.942873+00:00",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403
+    },
+    {
+      "id": "backerkit-fy2023-2024-audited",
+      "filename": "Backerkit_2023_2024_Audited_Financials.pdf",
+      "kind": "pdf",
+      "role": "FY2023 and FY2024 audited financial statements",
+      "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/3789513-bzFvPSyWCPFFYkStg4tgDFcm/Backerkit_2023_2024_Audited_Financials.pdf",
+      "requested_at_utc": "2026-10-24T01:26:41.942976+00:00",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403
+    },
+    {
+      "id": "backerkit-safe-template",
+      "filename": "backerkit-safe-offering-template.pdf",
+      "kind": "pdf",
+      "role": "public offering SAFE form; unsigned template, not an executed investor agreement",
+      "url": "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+      "requested_at_utc": "2026-10-24T01:26:42.044550+00:00",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403
+    },
+    {
+      "id": "backerkit-spv-subscription-template",
+      "filename": "backerkit-spv-subscription-offering-template.pdf",
+      "kind": "pdf",
+      "role": "public offering SPV subscription form; unsigned template, not an executed investor agreement",
+      "url": "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+      "requested_at_utc": "2026-10-24T01:26:42.045988+00:00",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403
+    },
+    {
+      "id": "backerkit-fy2023-2024-audited-sec-candidate",
+      "filename": "document_4.pdf",
+      "kind": "pdf",
+      "role": "Official SEC-distributed candidate for FY2023 and FY2024 audited financial statements; document existence indexed, original bytes not saved",
+      "url": "https://www.sec.gov/Archives/edgar/data/2059521/000205952125000009/document_4.pdf",
+      "requested_at_utc": "2026-10-24T12:24:32.900551+00:00",
+      "attempt_evidence_basis": "Parent agent report of one normal HTTP acquisition attempt after local environment reconnection",
+      "status": "failed_no_retry",
+      "error_type": "HTTPError",
+      "error": "HTTP Error 403: Forbidden",
+      "http_status": 403,
+      "original_document_saved": false,
+      "saved_path": null,
+      "saved_byte_count": 0,
+      "sha256": null,
+      "retry_policy": "Closed after this HTTP 403; no alternate headers, proxies or route variants",
+      "public_discovery_evidence": {
+        "indexed_document_title": "2024-2023 Financial Statement Audit - Diaspora Inc. (dba Backerkit)",
+        "issuer_cik": "2059521",
+        "filing_accession": "0002059521-25-000009",
+        "filing_form": "C-AR",
+        "filing_date": "2025-11-26",
+        "period_end_from_filing_context": "2025-07-31",
+        "candidate_document_fiscal_years": [
+          "2023",
+          "2024"
+        ],
+        "filing_index_url": "https://www.sec.gov/Archives/edgar/data/2059521/000205952125000009/0002059521-25-000009-index.html",
+        "directory_url": "https://www.sec.gov/Archives/edgar/data/2059521/000205952125000009",
+        "indexed_byte_count": 16571746,
+        "indexed_byte_count_is_not_saved_bytes": true,
+        "discovery_status": "Official SEC search/index entries establish a public listed candidate; direct web reads timed out and the original HTTP acquisition subsequently returned 403",
+        "candidate_content_or_same_version_match_verified": false,
+        "new_financial_observations_imported": false
+      }
+    }
+  ],
+  "reference_filing_index_url": "https://www.sec.gov/Archives/edgar/data/2059521/000167025425000787/0001670254-25-000787-index.htm",
+  "reference_cik": "2059521",
+  "reference_filing_accession": "0001670254-25-000787",
+  "validation_status": "partial_web_evidence_validated_no_originals_downloaded",
+  "previous_attempts": [
+    {
+      "at_utc": "2026-10-24T01:26:13.737099+00:00",
+      "source_files": [
+        {
+          "id": "backerkit-offering-page",
+          "filename": "backerkit-offering-details.html",
+          "kind": "html",
+          "role": "company offering narrative, financial highlights, risks, capital structure, document index",
+          "url": "https://wefunder.com/backerkit/details",
+          "requested_at_utc": "2026-10-24T01:26:13.718148+00:00",
+          "status": "failed_no_retry",
+          "error_type": "URLError",
+          "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        },
+        {
+          "id": "backerkit-fy2025-financials",
+          "filename": "Backerkit_-_Financial_Statements_2025.docx.pdf",
+          "kind": "pdf",
+          "role": "FY2025 unaudited financial statements and notes",
+          "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+          "requested_at_utc": "2026-10-24T01:26:13.718456+00:00",
+          "status": "failed_no_retry",
+          "error_type": "URLError",
+          "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        },
+        {
+          "id": "backerkit-fy2023-2024-audited",
+          "filename": "Backerkit_2023_2024_Audited_Financials.pdf",
+          "kind": "pdf",
+          "role": "FY2023 and FY2024 audited financial statements",
+          "url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/3789513-bzFvPSyWCPFFYkStg4tgDFcm/Backerkit_2023_2024_Audited_Financials.pdf",
+          "requested_at_utc": "2026-10-24T01:26:13.718519+00:00",
+          "status": "failed_no_retry",
+          "error_type": "URLError",
+          "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        },
+        {
+          "id": "backerkit-safe-template",
+          "filename": "backerkit-safe-offering-template.pdf",
+          "kind": "pdf",
+          "role": "public offering SAFE form; unsigned template, not an executed investor agreement",
+          "url": "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+          "requested_at_utc": "2026-10-24T01:26:13.736624+00:00",
+          "status": "failed_no_retry",
+          "error_type": "URLError",
+          "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        },
+        {
+          "id": "backerkit-spv-subscription-template",
+          "filename": "backerkit-spv-subscription-offering-template.pdf",
+          "kind": "pdf",
+          "role": "public offering SPV subscription form; unsigned template, not an executed investor agreement",
+          "url": "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+          "requested_at_utc": "2026-10-24T01:26:13.736671+00:00",
+          "status": "failed_no_retry",
+          "error_type": "URLError",
+          "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The offering webpage is a capture at fetch time and contains updates after the initial 2025 offering; it is not a frozen initial-offering snapshot.",
+    "Public access does not establish a blanket redistribution or model-training licence. Kept as a local research source packet; not published.",
+    "The SAFE and SPV documents are public offering templates with placeholders, not evidence of an executed investor-specific agreement.",
+    "No internal customer ledger, native financial workbook, FDD, board packet, or investment committee memo has been acquired.",
+    "Statements and projections remain source claims. No investment conclusion or independent bottom-ledger verification is made."
+  ],
+  "completed_at_utc": "2026-10-24T01:29:09.989701+00:00",
+  "packet_completeness": "partial",
+  "original_source_file_count": 0,
+  "extracted_evidence_file_count": 4,
+  "evidence_files": [
+    {
+      "id": "backerkit-offering-page-extract",
+      "source_id": "backerkit-offering-page",
+      "path": "extracted-evidence/offering-page-facts.json",
+      "bytes": 1770,
+      "sha256": "2045fed561f3ef4b527f538bfc84563b576507828a34f6e61420120f4244c4b7",
+      "source_url": "https://wefunder.com/backerkit/details",
+      "original_document": false,
+      "complete_source_content": false,
+      "saved_at_utc": "2026-10-24T01:29:09.989701+00:00"
+    },
+    {
+      "id": "backerkit-fy2025-notes-extract",
+      "source_id": "backerkit-fy2025-financials",
+      "path": "extracted-evidence/fy2025-financial-note-facts.json",
+      "bytes": 1935,
+      "sha256": "55a8f2af225c7779afd327e2d07ae452e7abde32e0e2fc537c11ca47210bf459",
+      "source_url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "original_document": false,
+      "complete_source_content": false,
+      "saved_at_utc": "2026-10-24T01:29:09.989701+00:00"
+    },
+    {
+      "id": "backerkit-safe-template-extract",
+      "source_id": "backerkit-safe-template",
+      "path": "extracted-evidence/safe-template-term-facts.json",
+      "bytes": 1646,
+      "sha256": "dd516f07e01690d0880929c65b115092e2837826de8b43682c5e719ed2270011",
+      "source_url": "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+      "original_document": false,
+      "complete_source_content": false,
+      "saved_at_utc": "2026-10-24T01:29:09.989701+00:00"
+    },
+    {
+      "id": "backerkit-spv-template-extract",
+      "source_id": "backerkit-spv-subscription-template",
+      "path": "extracted-evidence/spv-template-identity-facts.json",
+      "bytes": 1623,
+      "sha256": "72a2e853b1bfaf5087da9079bccb9f8310bc74a166d89ff240559435743e1da3",
+      "source_url": "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+      "original_document": false,
+      "complete_source_content": false,
+      "saved_at_utc": "2026-10-24T01:29:09.989701+00:00"
+    }
+  ],
+  "acquisition_blocker": {
+    "action": "Download original public offering HTML/PDF responses into the local case directory",
+    "targets": [
+      "https://wefunder.com/backerkit/details",
+      "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+      "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/3789513-bzFvPSyWCPFFYkStg4tgDFcm/Backerkit_2023_2024_Audited_Financials.pdf",
+      "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+      "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+      "https://www.sec.gov/Archives/edgar/data/2059521/000205952125000009/document_4.pdf"
+    ],
+    "status": "six_original_source_urls_closed_after_http_403",
+    "reason": "The five original Wefunder offering/document requests returned HTTP 403 and remain closed. One newly discovered official SEC audited-financial candidate was requested once by ordinary HTTP at 2026-10-24T12:24:32.900551+00:00 and also returned HTTP 403. No original HTML/PDF was saved; no alternate headers, proxies or route variants were used to retry these denied URLs.",
+    "already_completed": "Existing four labeled web fact extracts remain saved and unchanged. The newly indexed SEC candidate establishes public document existence only, not acquired bytes or a verified copy of the audited statements."
+  },
+  "additional_omissions": [
+    {
+      "source_id": "backerkit-fy2023-2024-audited",
+      "detail": "Web extractor rejected the 16,693,703-byte PDF because it exceeded its size limit; the direct original request separately returned 403. Its contents were not inspected or copied."
+    },
+    {
+      "source_id": "backerkit-fy2025-financials",
+      "detail": "Web text included cover and notes but did not expose the principal financial tables. No complete financial-statement transcription is saved."
+    },
+    {
+      "source_id": "backerkit-offering-page",
+      "detail": "Only selected dated facts are saved; no full narrative or image capture."
+    },
+    {
+      "source_id": "backerkit-safe-template",
+      "detail": "Only selected cover terms and template status are saved; the full contract is not reproduced."
+    },
+    {
+      "source_id": "backerkit-spv-subscription-template",
+      "detail": "Only entity/structure facts are saved; full 16-page form is not reproduced."
+    },
+    {
+      "source_id": "backerkit-fy2023-2024-audited-sec-candidate",
+      "detail": "SEC public index/search existence and listed size do not establish successful acquisition. The one normal HTTP request returned 403; no PDF bytes were saved, inspected locally or substituted into the case. No new financial amounts were imported from search."
+    }
+  ],
+  "company_jurisdiction": {
+    "country": "United States",
+    "state": "Delaware",
+    "evidence": "FY2025 financial statement cover and Note 1; public offering Overview"
+  },
+  "entity_aliases": [
+    {
+      "legal_name": "Diaspora, Inc.",
+      "brand": "BackerKit",
+      "entity_role": "operating issuer",
+      "country": "United States",
+      "state": "Delaware"
+    },
+    {
+      "legal_name": "BackerKit I, a series of Wefunder SPV, LLC",
+      "entity_role": "offering SPV",
+      "country": "United States",
+      "state": "Delaware",
+      "separate_from_operating_issuer": true
+    }
+  ],
+  "missing_original_documents": [
+    {
+      "source_id": "backerkit-offering-page",
+      "document": "Full offering page original HTML",
+      "status": "missing_http_403"
+    },
+    {
+      "source_id": "backerkit-fy2025-financials",
+      "document": "Complete FY2025 unaudited financial-statement PDF including main tables",
+      "status": "missing_http_403_partial_notes_only"
+    },
+    {
+      "source_id": "backerkit-fy2023-2024-audited",
+      "alternative_source_id": "backerkit-fy2023-2024-audited-sec-candidate",
+      "document": "FY2023–FY2024 audited financial-statement PDF",
+      "status": "missing_both_original_wefunder_and_new_sec_candidate_http_403"
+    },
+    {
+      "source_id": "backerkit-safe-template",
+      "document": "Complete public SAFE offering template PDF",
+      "status": "missing_http_403_selected_terms_only"
+    },
+    {
+      "source_id": "backerkit-spv-subscription-template",
+      "document": "Complete public SPV subscription offering template PDF",
+      "status": "missing_http_403_selected_identity_facts_only"
+    }
+  ],
+  "acquisition_audit_updated_at_utc": "2026-10-24T12:27:54.606890+00:00",
+  "original_pdf_file_count": 0,
+  "selected_fact_count": 17,
+  "original_source_url_attempt_count": 6,
+  "latest_source_attempt_at_utc": "2026-10-24T12:24:32.900551+00:00",
+  "focused_alternate_source_research": {
+    "date_utc": "2026-10-24",
+    "scope": "One focused official backerkit.com PDF search for financial statements, audited statements, SAFE or subscription agreement",
+    "result": "No matching result returned; no newly verified issuer-site document URL",
+    "originals_acquired": 0,
+    "no_closed_urls_retried": true
+  },
+  "documentation_files": [
+    {
+      "path": "README.md",
+      "bytes": 3272,
+      "sha256": "a61159699977dceee4a1fd6ab433665f12bbb9e0db8449fb823a89809bb224c1",
+      "role": "Case scope, acquisition audit and explicit missing-original list"
+    }
+  ]
+}

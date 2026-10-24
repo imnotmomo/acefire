@@ -1,0 +1,117 @@
+{
+  "record_type": "quarantined_company_identity_candidates",
+  "representation": "derived_not_original",
+  "original_document": false,
+  "saved_date_utc": "2026-10-24",
+  "case_id": "backerkit-2025-offering",
+  "target_brand": "BackerKit",
+  "target_legal_entity": "Diaspora, Inc. (dba BackerKit)",
+  "identity_verification_status": "conflict_quarantined_no_automatic_merge",
+  "use_for_case_financial_analysis": false,
+  "source": {
+    "observation_method": "Parent agent's visible Orbis search and report observations, recorded as structured facts by this child agent",
+    "report_url": "http://120.79.81.87:8834/version-20260316-10-15/Orbis/1/Companies/Report",
+    "search_url": "http://120.79.81.87:8834/version-20260316-10-15/Orbis/1/Companies/Search",
+    "url_limitation": "Generic UI routes do not identify a persistent company-specific report. Use the BvD and Orbis identifiers below as anchors.",
+    "native_export_requested": false,
+    "native_export_saved": false,
+    "original_source_file_count": 0
+  },
+  "candidate_count": 2,
+  "candidates": [
+    {
+      "candidate_id": "orbis-backerkit-brand-hit",
+      "search_term": "BackerKit",
+      "search_result_count_observed": 1,
+      "display_name": "BACKERKIT",
+      "bvd_id": "US358518533L",
+      "orbis_id": "558666560",
+      "country": "United States",
+      "company_status_observed": "Private",
+      "location_type_observed": "Single location",
+      "address_observed": "1265 FOLSOM ST, SAN FRANCISCO, CA 94103-3816, US",
+      "domain_observed": "backerkit.com",
+      "industry_observed": "Printing & Publishing",
+      "identity_status": "candidate_only_not_proven_to_be_Diaspora_Inc",
+      "use_for_case_financial_analysis": false,
+      "quarantined_financial_observations": [
+        {
+          "year_displayed": 2023,
+          "metric_label_observed": "Turnover",
+          "value_as_displayed": "70.0 千 USD",
+          "display_currency": "USD",
+          "display_unit": "thousand",
+          "normalized_amount_imported": false,
+          "actual_forecast_status": "not_verified",
+          "audit_status": "not_verified",
+          "use_for_case_financial_analysis": false
+        },
+        {
+          "year_displayed": null,
+          "metric_label_observed": "Employees",
+          "value_as_displayed": "2",
+          "actual_forecast_status": "not_verified",
+          "use_for_case_financial_analysis": false
+        }
+      ]
+    },
+    {
+      "candidate_id": "orbis-diaspora-legal-name-hit",
+      "search_term": "Diaspora Inc",
+      "search_result_count_observed": 776,
+      "display_name": "DIASPORA, INC",
+      "bvd_id": "US292632908L",
+      "orbis_id": "345944719",
+      "country": "United States",
+      "company_status_observed": "Private",
+      "location_type_observed": "Single location",
+      "address_observed": "1265 FOLSOM ST, SAN FRANCISCO, CA 94103-3816, US",
+      "registration_year_observed": 2017,
+      "domain_observed": "diasporaco.com",
+      "website_observed": "www.diasporaco.com",
+      "linkedin_url_observed": "https://linkedin.com/company/backerkit",
+      "industry_observed": "Media & Broadcasting",
+      "identity_status": "conflicting_attributes_unresolved",
+      "use_for_case_financial_analysis": false,
+      "quarantined_financial_observations": [
+        {
+          "table_label_observed": "财务大数",
+          "source_label_observed": "Local registry filing",
+          "information_provider_observed": "Cortera",
+          "year_displayed": 2025,
+          "period_months_displayed": 12,
+          "currency_displayed": "USD",
+          "revenue_value_displayed": "1,030,000",
+          "employees_value_displayed": "2",
+          "forecast_legend_visible": true,
+          "forecast_legend_text_observed": "预测 (Forecast)",
+          "actual_forecast_status": "unresolved_forecast_indicator_present_not_verified_actual",
+          "audit_status": "not_verified_audited",
+          "use_for_case_financial_analysis": false
+        }
+      ]
+    }
+  ],
+  "identity_review": {
+    "supporting_observations": [
+      "The two candidates share the observed Folsom Street address.",
+      "The brand-search candidate uses backerkit.com.",
+      "The legal-name candidate links to the BackerKit LinkedIn page."
+    ],
+    "conflicting_or_unresolved_observations": [
+      "The legal-name candidate uses diasporaco.com rather than backerkit.com.",
+      "Its observed registration year requires reconciliation with the official offering identity.",
+      "The two candidates carry different industry classifications.",
+      "A shared address or LinkedIn reference alone does not establish a legal-entity match.",
+      "The report's forecast legend and third-party provider labels do not establish audited actual revenue."
+    ],
+    "resolution": "Unresolved. Retain both candidates separately, without automatic merge or financial import."
+  },
+  "handling_rules": [
+    "Keep every numeric observation in this file quarantined.",
+    "Do not replace or revise official BackerKit offering financials using these observations.",
+    "Do not count these candidate records as independent corroboration of the official offering financials.",
+    "Do not import these values into BackerKit case calculations or comparisons until identity and figure basis are verified.",
+    "This file is a derived observation record, not a native Orbis export or a complete report."
+  ]
+}

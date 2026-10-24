@@ -1,0 +1,155 @@
+{
+  "case_id": "marqeta-2024",
+  "evidence_type": "derived_selected_web_text_not_original_source_files",
+  "claims": [
+    {
+      "claim_id": "MQ24-C01",
+      "source_id": "MQ24-RELEASE",
+      "metric": "net_revenue",
+      "raw_value": "506995",
+      "source_unit": "USD thousand",
+      "currency": "USD",
+      "scale_multiplier": "1000",
+      "normalized_value": "506995000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 2 (P1), Operating Highlights, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    },
+    {
+      "claim_id": "MQ24-C02",
+      "source_id": "MQ24-RELEASE",
+      "metric": "gross_profit",
+      "raw_value": "351849",
+      "source_unit": "USD thousand",
+      "currency": "USD",
+      "scale_multiplier": "1000",
+      "normalized_value": "351849000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 2 (P1), Operating Highlights, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    },
+    {
+      "claim_id": "MQ24-C03",
+      "source_id": "MQ24-RELEASE",
+      "metric": "costs_of_revenue",
+      "raw_value": "155146",
+      "source_unit": "USD thousand",
+      "currency": "USD",
+      "scale_multiplier": "1000",
+      "normalized_value": "155146000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 5 (P4), Statements of Operations, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    },
+    {
+      "claim_id": "MQ24-C04",
+      "source_id": "MQ24-RELEASE",
+      "metric": "net_income",
+      "raw_value": "27287",
+      "source_unit": "USD thousand",
+      "currency": "USD",
+      "scale_multiplier": "1000",
+      "normalized_value": "27287000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 5 (P4), Statements of Operations, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    },
+    {
+      "claim_id": "MQ24-C05",
+      "source_id": "MQ24-RELEASE",
+      "metric": "adjusted_ebitda",
+      "raw_value": "29093",
+      "source_unit": "USD thousand",
+      "currency": "USD",
+      "scale_multiplier": "1000",
+      "normalized_value": "29093000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 2 (P1), Operating Highlights, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    },
+    {
+      "claim_id": "MQ24-C06",
+      "source_id": "MQ24-RELEASE",
+      "metric": "total_processing_volume",
+      "raw_value": "291105",
+      "source_unit": "USD million",
+      "currency": "USD",
+      "scale_multiplier": "1000000",
+      "normalized_value": "291105000000",
+      "period": "FY2024",
+      "financial_scope": "Marqeta, Inc. consolidated, per source table",
+      "locator": "PDF page 2 (P1), Operating Highlights, TPV in millions, FY2024 column",
+      "verification_status": "web_text_read_original_not_saved",
+      "source_table_status": "unaudited"
+    }
+  ],
+  "arithmetic_checks": [
+    {
+      "check_id": "MQ24-CALC01",
+      "description": "FY2024 net revenue less costs of revenue equals gross profit",
+      "input_claims": [
+        "MQ24-C01",
+        "MQ24-C03"
+      ],
+      "comparison_claim": "MQ24-C02",
+      "formula": "506995 - 155146",
+      "unit": "USD thousand",
+      "calculated": "351849",
+      "reported": "351849",
+      "difference": "0",
+      "status": "exact_arithmetic_match"
+    },
+    {
+      "check_id": "MQ24-CALC02",
+      "description": "Displayed quarterly net revenues sum to displayed FY2024 net revenue",
+      "source_id": "MQ24-RELEASE",
+      "locator": "PDF page 8 (P7), Financial and Operating Highlights",
+      "inputs": [
+        "117968",
+        "125270",
+        "127967",
+        "135790"
+      ],
+      "unit": "USD thousand",
+      "calculated": "506995",
+      "reported": "506995",
+      "difference": "0",
+      "status": "exact_arithmetic_match"
+    },
+    {
+      "check_id": "MQ24-CALC03",
+      "description": "Displayed quarterly gross profits vs displayed FY2024 gross profit",
+      "source_id": "MQ24-RELEASE",
+      "locator": "PDF page 8 (P7), Financial and Operating Highlights; annual figure page2 (P1)",
+      "inputs": [
+        "84161",
+        "79353",
+        "90132",
+        "98202"
+      ],
+      "unit": "USD thousand",
+      "calculated": "351848",
+      "reported": "351849",
+      "difference": "-1",
+      "status": "rounding_candidate_not_an_accounting_error_verdict",
+      "interpretation": "Displayed quarterly sums are 1 USD thousand below displayed annual total. Retain source rounding precision and do not declare a substantive inconsistency without underlying precision."
+    }
+  ],
+  "limits": [
+    "No original files saved",
+    "No original ledger, spreadsheet formulas or independently sourced financial data verified",
+    "Do not imply annual report or contract comparisons have been fully completed",
+    "Public contract redactions prevent reconstruction of undisclosed pricing"
+  ],
+  "created_at_utc": "2026-10-24T01:28:49.530068+00:00"
+}

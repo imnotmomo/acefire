@@ -1,0 +1,179 @@
+{
+  "record_type": "company_profile_and_quarantined_financial_observations",
+  "representation": "derived_not_original",
+  "original_document": false,
+  "saved_date_utc": "2026-10-24",
+  "case_id": "backerkit-2025-offering",
+  "pitchbook_profile_id": "104907-52",
+  "source": {
+    "observation_method": "Parent agent directly read the visible PitchBook profile after switching its entity type from Service Provider to Company. This file structures those observations; it is not a native export.",
+    "service_provider_profile_url": "https://my.pitchbook.com/profile/104907-52/advisor/profile",
+    "company_financials_profile_url": "https://my.pitchbook.com/profile/104907-52/company/profile#financials",
+    "service_provider_type_observed": "Funding / Crowdfunding Platform",
+    "financial_observation_profile_type": "Company",
+    "original_source_file_count": 0,
+    "new_downloads_from_profile": false
+  },
+  "identity": {
+    "brand": "BackerKit",
+    "explicit_legal_name_as_observed": "Diaspora, Inc",
+    "founded_year_as_observed": "2012",
+    "backing_status_as_observed": "Privately Held",
+    "financing_status_as_observed": "Venture Capital Backed",
+    "business_status_as_observed": "Generating Revenue",
+    "location_as_observed": "San Francisco, CA, US",
+    "country": "United States",
+    "identity_link_status": "matches_official_case_brand_and_explicit_legal_name",
+    "identity_link_target": "Diaspora, Inc. (dba BackerKit)",
+    "orbis_candidate_conflict_resolved": false,
+    "orbis_handling": "This PitchBook identity match does not validate or merge either quarantined Orbis candidate."
+  },
+  "profile_dates": {
+    "profile_last_updated_as_displayed": "12-Aug-2026",
+    "profile_last_updated": "2026-08-12",
+    "financial_footer_last_updated_as_displayed": "28-Apr-2025",
+    "financial_footer_last_updated": "2025-04-28",
+    "latest_financing_narrative_as_of": "2025-10-03",
+    "dates_are_separate_fields_not_interchangeable": true
+  },
+  "employee_observation": {
+    "employees_as_displayed": "44",
+    "as_of_as_displayed": "06-Oct-2025",
+    "as_of": "2025-10-06",
+    "basis": "dated_vendor_profile_claim"
+  },
+  "financial_observation_count": 4,
+  "use_for_case_financial_analysis": false,
+  "financial_display_context": {
+    "income_statement_units_as_observed": "Thousands USD",
+    "balance_sheet_units_as_observed": "Thousands USD",
+    "year_column_as_observed": "2025",
+    "ttm_column_reported_by_observer": "TTM Dec 2025",
+    "footer_financial_units_as_observed": "Financial amounts in thousands USD",
+    "footer_stock_price_units_as_observed": "Stock Price USD",
+    "normalization_status": "blocked_pending_period_unit_and_source_basis_verification"
+  },
+  "financial_observations": [
+    {
+      "observation_id": "pb-backerkit-revenue-2025-column",
+      "table": "Income Statement",
+      "metric_as_displayed": "Total Revenue",
+      "column_as_observed": "2025",
+      "value_as_displayed": "23,695",
+      "units_as_observed": "Thousands USD",
+      "currency_as_observed": "USD",
+      "fiscal_period_end": null,
+      "actual_forecast_status": "not_shown_or_verified",
+      "source_filing": null,
+      "audit_status": "not_verified",
+      "normalized_amount": null,
+      "use_for_case_financial_analysis": false
+    },
+    {
+      "observation_id": "pb-backerkit-revenue-ttm-dec-2025-column",
+      "table": "Income Statement",
+      "metric_as_displayed": "Total Revenue",
+      "column_as_observed": "TTM Dec 2025",
+      "value_as_displayed": "23,695",
+      "units_as_observed": "Thousands USD",
+      "currency_as_observed": "USD",
+      "ttm_end_month_as_observed": "2025-12",
+      "exact_period_end": null,
+      "actual_forecast_status": "not_shown_or_verified",
+      "source_filing": null,
+      "audit_status": "not_verified",
+      "normalized_amount": null,
+      "use_for_case_financial_analysis": false
+    },
+    {
+      "observation_id": "pb-backerkit-assets-2025-column",
+      "table": "Balance Sheet",
+      "metric_as_displayed": "Total Assets",
+      "column_as_observed": "2025",
+      "value_as_displayed": "3,689,284",
+      "units_as_observed": "Thousands USD",
+      "currency_as_observed": "USD",
+      "balance_sheet_as_of": null,
+      "actual_forecast_status": "not_shown_or_verified",
+      "source_filing": null,
+      "audit_status": "not_verified",
+      "normalized_amount": null,
+      "use_for_case_financial_analysis": false
+    },
+    {
+      "observation_id": "pb-backerkit-assets-ttm-dec-2025-column",
+      "table": "Balance Sheet",
+      "metric_as_displayed": "Total Assets",
+      "column_as_observed": "TTM Dec 2025",
+      "value_as_displayed": "3,689,284",
+      "units_as_observed": "Thousands USD",
+      "currency_as_observed": "USD",
+      "column_end_month_as_observed": "2025-12",
+      "balance_sheet_as_of": null,
+      "actual_forecast_status": "not_shown_or_verified",
+      "source_filing": null,
+      "audit_status": "not_verified",
+      "normalized_amount": null,
+      "use_for_case_financial_analysis": false
+    }
+  ],
+  "source_quality_flags": [
+    {
+      "flag": "financial_footer_predates_displayed_ttm_period",
+      "detail": "The financial footer says 28-Apr-2025 while a displayed column says TTM Dec 2025. Their relationship is unresolved."
+    },
+    {
+      "flag": "annual_column_period_unspecified",
+      "detail": "The 2025 column does not establish a fiscal closing date. The official case uses a July 31 fiscal year-end; no period alignment is assumed."
+    },
+    {
+      "flag": "unit_basis_requires_verification",
+      "detail": "The Total Assets string 3,689,284 is retained under the displayed Thousands USD unit. No silent unit repair, rescaling or financial import was performed."
+    },
+    {
+      "flag": "reported_actual_forecast_and_source_basis_not_shown",
+      "detail": "The observation does not establish whether values are reported, forecast or otherwise estimated, and no underlying source filing was shown."
+    },
+    {
+      "flag": "no_formal_reconciliation",
+      "detail": "No formal reconciliation or confirmed financial match to the official offering material has been completed. Repeated strings in two columns are not independent corroboration."
+    }
+  ],
+  "financing_claim_count": 2,
+  "financing_claims": [
+    {
+      "claim_id": "pb-backerkit-crowdfunding-in-process-2025",
+      "basis": "dated_vendor_narrative_not_signed_source",
+      "narrative_as_of": "2025-10-03",
+      "claim_status_as_observed": "in process of raising",
+      "amount_as_displayed": "$2,728,883",
+      "instrument_as_observed": "SAFE",
+      "route_as_observed": "equity crowdfunding via Wefunder",
+      "raising_status_as_of": "2025-08-26",
+      "planned_close_date": "2025-11-28",
+      "planned_close_is_confirmed_execution": false,
+      "current_fundraising_status_established": false,
+      "signed_or_executed_document_obtained": false,
+      "use_for_case_financial_analysis": false
+    },
+    {
+      "claim_id": "pb-backerkit-prior-venture-funding-2025",
+      "basis": "dated_vendor_narrative_not_signed_source",
+      "narrative_as_of": "2025-10-03",
+      "claim_status_as_observed": "prior venture funding",
+      "amount_as_displayed": "$25,000",
+      "event_date_as_reported": "2025-09-29",
+      "investor_as_observed": "undisclosed investor",
+      "execution_status": "vendor_claim_not_independently_verified",
+      "signed_or_executed_document_obtained": false,
+      "use_for_case_financial_analysis": false
+    }
+  ],
+  "handling_rules": [
+    "Keep these observations separate from original source documents and official offering financials.",
+    "Do not use the four financial values in case calculations or comparisons until period, unit and source basis are verified.",
+    "Do not infer a current fundraising status or a completed closing from dated, planned or in-process vendor claims.",
+    "Do not treat profile field exports as signed company agreements or audited financial statements.",
+    "Do not alter the existing Orbis identity quarantine based on this record."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "backerkit-safe-template-extract",
+  "source_id": "backerkit-safe-template",
+  "source_url": "https://wefunder.com/backerkit/rounds/125796/templates/25986/preview?format=pdf",
+  "source_format": "pdf",
+  "source_page_count": 5,
+  "publication_date": null,
+  "execution_date": null,
+  "facts": [
+    {
+      "locator": "PDF page 1, instrument heading",
+      "field": "issuer",
+      "value": "Diaspora, Inc."
+    },
+    {
+      "locator": "PDF page 1, terms immediately above Section 1",
+      "field": "post_money_valuation_cap",
+      "currency": "USD",
+      "amount": "89000000.00"
+    },
+    {
+      "locator": "PDF page 1, terms immediately above Section 1",
+      "field": "discount_rate_as_printed",
+      "value": "100.000%"
+    },
+    {
+      "locator": "PDF page 1, opening certification",
+      "field": "form_status",
+      "value": "Investor name, investment amount and effective date remain placeholders."
+    }
+  ],
+  "limitations": [
+    "Public offering form, not an executed investor-specific agreement.",
+    "Valuation cap is a contract term; it does not establish an observed equity valuation.",
+    "Original PDF bytes were not downloaded. Page locators are one-based."
+  ],
+  "representation": "selected_paraphrased_facts_from_successful_web_text_read",
+  "original_document": false,
+  "complete_source_content": false,
+  "saved_at_utc": "2026-10-24T01:29:09.989701+00:00",
+  "observation_time_note": "Read through the web tool earlier in this session; exact source-fetch timestamp unavailable.",
+  "evidence_basis": "Selected source-reported facts; not an independent audit or derived investment conclusion."
+}

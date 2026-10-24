@@ -1,0 +1,42 @@
+{
+  "id": "backerkit-spv-template-extract",
+  "source_id": "backerkit-spv-subscription-template",
+  "source_url": "https://wefunder.com/backerkit/rounds/125796/templates/25987/preview?format=pdf",
+  "source_format": "pdf",
+  "source_page_count": 16,
+  "publication_date": null,
+  "execution_date": null,
+  "facts": [
+    {
+      "locator": "PDF page 1, heading",
+      "field": "spv",
+      "value": "BackerKit I, a series of Wefunder SPV, LLC."
+    },
+    {
+      "locator": "PDF page 1, introductory paragraph",
+      "field": "target_company",
+      "value": "Diaspora, Inc."
+    },
+    {
+      "locator": "PDF page 1, introductory paragraph",
+      "field": "structure",
+      "value": "The SPV states that all its assets will be invested in securities of the target company."
+    },
+    {
+      "locator": "PDF page 1, top of document",
+      "field": "form_status",
+      "value": "Investment amount and date remain placeholders."
+    }
+  ],
+  "limitations": [
+    "Public subscription form, not an executed investor-specific agreement.",
+    "The SPV and operating company are distinct entities.",
+    "Original PDF bytes were not downloaded. Page locators are one-based."
+  ],
+  "representation": "selected_paraphrased_facts_from_successful_web_text_read",
+  "original_document": false,
+  "complete_source_content": false,
+  "saved_at_utc": "2026-10-24T01:29:09.989701+00:00",
+  "observation_time_note": "Read through the web tool earlier in this session; exact source-fetch timestamp unavailable.",
+  "evidence_basis": "Selected source-reported facts; not an independent audit or derived investment conclusion."
+}

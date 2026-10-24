@@ -1,0 +1,37 @@
+{
+  "verified_at_utc": "2026-10-24T00:05:46.510489+00:00",
+  "source_file_hashes_checked": 366,
+  "source_files_changed": [],
+  "eligible_source_files": 365,
+  "schema_tables": [
+    "deals",
+    "entities",
+    "files",
+    "processing_runs",
+    "evidence",
+    "metric_definitions",
+    "claims",
+    "claim_evidence",
+    "calculations",
+    "calculation_inputs",
+    "comparisons"
+  ],
+  "sql_foreign_key_count": 26,
+  "sql_indexes": 9,
+  "sql_validation": "Static table/reference/numeric/rounding review only. PostgreSQL execution not performed; no PostgreSQL server/client installed.",
+  "arithmetic_checks_passed": 5,
+  "arithmetic_scope": "Explicit narrow fixtures, supplied workbook cached values only. No formulas or external workbook links executed.",
+  "source_raw_workbooks_executed": false,
+  "external_workbook_links_followed": false,
+  "external_database_created": false,
+  "source_data_uploaded": false,
+  "file_sha256": {
+    "demo_results.json": "126dac98c9af427dec03e3cf24d05cd1a5800d3f6cfef67db5f009232168afdb",
+    "schema.sql": "55afb69c89b1b8009fc5f5cd7c9f98010b56fbd2f80e9bb5902b72041d974678",
+    "README.md": "722b9ddb824bf15e0f8f9a9f6bc32b9027784792bcadde46f1d750543d8734ec",
+    "demo_checks.py": "f041f4e559f2398b57ff7ecc4a67e9604fe1dfbceaa13cbe469b92baf3fb5557",
+    "data_inventory.json": "b419599374f77b3c7c4e57f14e22cb36a939153ba2976b0ffb87802bc1f6fa07",
+    "evidence/reports.json": "601a50d67bfbdfc0c97607cdee3bb70b1e8c3d3a8610ffc7c68cf0f1e88837d7",
+    "evidence/workbooks.json": "dc91d445bf445117f0a0896711f2b1fe15cdb4c649c890e1dd49785391421b15"
+  }
+}

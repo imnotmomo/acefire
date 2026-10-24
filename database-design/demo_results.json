@@ -1,0 +1,132 @@
+{
+  "scope": "Explicit narrow fixtures, supplied workbook cached values only. No formulas or external workbook links executed.",
+  "source_hashes_verified": {
+    "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx": "cbd6e2b302adbe97eac6c10b5a2017db16f87162303e4c5bc041a4e261c8e0a9",
+    "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+    "data/Enfuce/Enfuce_FDD_0910_v4.pptx": "544944c53c983f703ac790644c4275777b676c89d4a1e2948c06b21c4f233a0e",
+    "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa"
+  },
+  "normalization": "Preserve raw decimals; quantize EUR source amounts to cents or kEUR to0.00001 before arithmetic, using Decimal ROUND_HALF_UP.",
+  "checks": [
+    {
+      "id": "h1_income_reconciliation",
+      "status": "arithmetic_reproduced",
+      "entity_scope": "Enfuce Group as labeled by source",
+      "period": "2020H1",
+      "unit": "EUR",
+      "net_sales": "3417663.76",
+      "other_operating_income": "35019.05",
+      "calculated_income_total": "3452682.81",
+      "source_income_total": "3452682.81",
+      "sources": [
+        {
+          "file": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+          "file_sha256": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa",
+          "sheet": "P&L - Group",
+          "cells": "C4:H5,I6"
+        }
+      ],
+      "limit": "Internal arithmetic of supplied values; underlying external monthly source not independently verified."
+    },
+    {
+      "id": "summary_revenue_definition",
+      "status": "not_comparable",
+      "reason": "Summary label营业收入 maps numerically to Income total, not pure Revenue; metric definition requires review.",
+      "summary_value_as_eur": "3452682.81",
+      "pure_revenue_eur": "3417663.76",
+      "income_total_eur": "3452682.81",
+      "delta_for_investment_conclusion": null,
+      "sources": [
+        {
+          "file": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+          "file_sha256": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa",
+          "sheet": "近五年财务情况",
+          "cells": "A4,F4"
+        },
+        {
+          "file": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+          "file_sha256": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa",
+          "sheet": "P&L - Group",
+          "cells": "B4:I6"
+        }
+      ],
+      "open_question": "Should the report's revenue include other operating income?"
+    },
+    {
+      "id": "gross_margin_formula_lineage",
+      "status": "arithmetic_reproduced",
+      "unit": "kEUR",
+      "period": "2019",
+      "source_formula": "+F7+F8+50",
+      "revenue": "5095.50635",
+      "signed_cogs": "-1536.17811",
+      "explicit_unlabeled_adjustment": "50",
+      "calculated": "3609.32824",
+      "sources": [
+        {
+          "file": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+          "file_sha256": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+          "sheet": "PL",
+          "cells": "F7:F9,AF9,AH9"
+        }
+      ],
+      "open_question": "Explain the50kEUR constant. The formula does not itself identify its business meaning."
+    },
+    {
+      "id": "mrr_detail_reconciliation",
+      "status": "arithmetic_reproduced",
+      "unit": "EUR",
+      "calculated": "366559.95",
+      "source_total": "366559.95",
+      "number_format": "#,##0,",
+      "stored_scale_to_eur": "1",
+      "display_divisor": "1000",
+      "blank_source_cells": [
+        "Q13"
+      ],
+      "blank_policy": "Ignore blank Q13 within this explicit SUM range only; do not replace unknown required inputs with zero.",
+      "displayed_integer_k_eur": "367",
+      "sources": [
+        {
+          "file": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+          "file_sha256": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+          "sheet": "MRR",
+          "cells": "Q4:Q14"
+        }
+      ],
+      "arr": null,
+      "arr_limit": "No automatic x12; confirm recurring revenue, customer scope, as-of date and ARR definition first."
+    },
+    {
+      "id": "fdd_rounded_2019_revenue",
+      "status": "candidate_rounding_consistency",
+      "pl_value_k_eur": "5095.50635",
+      "fdd_value_k_eur": "5096",
+      "rounding_rule": "Nearest whole kEUR",
+      "numeric_rounding_consistent": true,
+      "sources": [
+        {
+          "file": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+          "file_sha256": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+          "sheet": "PL",
+          "cells": "F7"
+        },
+        {
+          "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+          "locator": {
+            "kind": "pptx_table_cell",
+            "slide_number": 11,
+            "table_index": 1,
+            "row": 2,
+            "column": 4
+          },
+          "raw_text": "5,096 "
+        }
+      ],
+      "comparison_status": "insufficient_evidence",
+      "limit": "Report group-vs-parent scope is unresolved; numeric proximity alone does not authorize a final matched comparison."
+    }
+  ],
+  "passed_checks": 5,
+  "investment_conclusions_generated": false
+}

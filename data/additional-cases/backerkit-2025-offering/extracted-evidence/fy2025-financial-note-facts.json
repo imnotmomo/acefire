@@ -1,0 +1,53 @@
+{
+  "id": "backerkit-fy2025-notes-extract",
+  "source_id": "backerkit-fy2025-financials",
+  "source_url": "https://uploads.wefunder.com/uploads/form_c/163546/remote_files/4055168-7wkBU9VPGshXrhTc8UPEHbqX/Backerkit_-_Financial_Statements_2025.docx.pdf",
+  "source_format": "pdf",
+  "source_page_count": 8,
+  "publication_date": null,
+  "period_end": "2025-07-31",
+  "financial_statements_available_for_issue_date": "2025-11-14",
+  "facts": [
+    {
+      "locator": "PDF page 1, cover",
+      "field": "audit_status",
+      "value": "Unaudited"
+    },
+    {
+      "locator": "PDF page 6, Note 2, Cash & Cash Equivalents",
+      "field": "cash_and_cash_equivalents",
+      "as_of": "2025-07-31",
+      "currency": "USD",
+      "amount": "2329450"
+    },
+    {
+      "locator": "PDF page 7, Note 2, Accounts Receivables",
+      "field": "accounts_receivable",
+      "as_of": "2025-07-31",
+      "currency": "USD",
+      "amount": "644452"
+    },
+    {
+      "locator": "PDF page 8, Note 4, Convertible Note",
+      "field": "convertible_notes_outstanding",
+      "as_of": "2025-07-31",
+      "currency": "USD",
+      "amount": "344944"
+    }
+  ],
+  "limitations": [
+    "Selected machine-readable notes only. The main financial tables were not captured in the web text extraction.",
+    "Original PDF bytes were not downloaded. Page locators are one-based."
+  ],
+  "representation": "selected_paraphrased_facts_from_successful_web_text_read",
+  "original_document": false,
+  "complete_source_content": false,
+  "saved_at_utc": "2026-10-24T01:29:09.989701+00:00",
+  "observation_time_note": "Read through the web tool earlier in this session; exact source-fetch timestamp unavailable.",
+  "evidence_basis": "Selected source-reported facts; not an independent audit or derived investment conclusion.",
+  "issuer_jurisdiction": {
+    "country": "United States",
+    "state": "Delaware",
+    "locator": "PDF page 1 cover; page 6 Note 1"
+  }
+}

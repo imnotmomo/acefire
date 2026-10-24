@@ -1,0 +1,51 @@
+{
+  "id": "backerkit-offering-page-extract",
+  "source_id": "backerkit-offering-page",
+  "source_url": "https://wefunder.com/backerkit/details",
+  "source_format": "html",
+  "publication_date": null,
+  "facts": [
+    {
+      "locator": "Management discussion, Overview",
+      "field": "legal_entity_and_brand",
+      "value": "Diaspora, Inc. operates as BackerKit."
+    },
+    {
+      "locator": "Management discussion, Historical Results of Operations",
+      "field": "revenue",
+      "period_end": "2025-07-31",
+      "currency": "USD",
+      "amount": "17125436"
+    },
+    {
+      "locator": "Management discussion, Historical Results of Operations",
+      "field": "revenue",
+      "period_end": "2024-07-31",
+      "currency": "USD",
+      "amount": "23695051"
+    },
+    {
+      "locator": "Management discussion, Runway & Short/Mid Term Expenses",
+      "field": "cash",
+      "as_of": "2025-11-24",
+      "currency": "USD",
+      "amount": "2551625"
+    },
+    {
+      "locator": "Capital Structure",
+      "field": "common_shares_outstanding",
+      "amount": "8390345",
+      "as_of": null
+    }
+  ],
+  "limitations": [
+    "Live offering page includes post-offering updates. Individual facts have different dates.",
+    "Only selected facts are retained; this is not the original HTML or a full page transcript."
+  ],
+  "representation": "selected_paraphrased_facts_from_successful_web_text_read",
+  "original_document": false,
+  "complete_source_content": false,
+  "saved_at_utc": "2026-10-24T01:29:09.989701+00:00",
+  "observation_time_note": "Read through the web tool earlier in this session; exact source-fetch timestamp unavailable.",
+  "evidence_basis": "Selected source-reported facts; not an independent audit or derived investment conclusion."
+}

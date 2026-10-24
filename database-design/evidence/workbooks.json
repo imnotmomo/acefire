@@ -1,0 +1,2871 @@
+{
+  "kind": "read_only_xlsx_evidence_for_database_design",
+  "method": "Python stdlib ZipFile and XML only; cached values and formula strings read without executing/recalculating formulas or following external workbook links. Originals unmodified.",
+  "workbook_file_count": 13,
+  "real_workbook_count": 12,
+  "lock_file_count": 1,
+  "inventory": [
+    {
+      "path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_AGM_Dividends 2018 (2018-04-26).xlsx",
+      "bytes": 21716,
+      "sha256": "410f81c64e5b8347cbc9ab728556fea1de8e90abe420203279e0c52061ad16f7",
+      "sheets": [
+        {
+          "name": "Dividens  A-share",
+          "dimension": "A1:J16",
+          "cell_count": 95,
+          "formula_count": 13,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        },
+        {
+          "name": "Dividens  C-Share",
+          "dimension": "A2:B16",
+          "cell_count": 29,
+          "formula_count": 14,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/ELS, EPS, Eswe - Translation of financial statement key figures - 2019.xlsx",
+      "bytes": 20180,
+      "sha256": "4a2c2a6bae37d22f426ef878bd347748980b6bc3b884d52f0d9ff478dda385e9",
+      "sheets": [
+        {
+          "name": "ELS",
+          "dimension": "B3:E32",
+          "cell_count": 44,
+          "formula_count": 4,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        },
+        {
+          "name": "EPS",
+          "dimension": "B3:E32",
+          "cell_count": 44,
+          "formula_count": 4,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        },
+        {
+          "name": "Eswe",
+          "dimension": "B3:E32",
+          "cell_count": 44,
+          "formula_count": 4,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "bytes": 47013,
+      "sha256": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+      "sheets": [
+        {
+          "name": "PL",
+          "dimension": "C3:AL51",
+          "cell_count": 1543,
+          "formula_count": 338,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 237,
+          "data_inspected": true
+        },
+        {
+          "name": "MRR",
+          "dimension": "B2:R21",
+          "cell_count": 205,
+          "formula_count": 15,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 15,
+          "data_inspected": true
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Further updates (financial related) 5.8.2020.xlsx",
+      "bytes": 385584,
+      "sha256": "b9f123b2e16174aebb39e013db635fba543659e3d418172089479620f038f5fe",
+      "sheets": [
+        {
+          "name": "Contingent liabilities",
+          "dimension": "C1:P35",
+          "cell_count": 3,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        },
+        {
+          "name": "Loan summary",
+          "dimension": "A1:BF145",
+          "cell_count": 5659,
+          "formula_count": 13,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 8,
+          "data_inspected": false
+        },
+        {
+          "name": "Tax related",
+          "dimension": "B4:B10",
+          "cell_count": 5,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        },
+        {
+          "name": "Rev per customer",
+          "dimension": "B4:D27",
+          "cell_count": 72,
+          "formula_count": 7,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        },
+        {
+          "name": "Major vendors",
+          "dimension": "A2:C82",
+          "cell_count": 145,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": true,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/~$Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "bytes": 165,
+      "sha256": "a56509277035f865d54f697560634f21da3e36da0c983cc6f72ebb79ec3b73eb",
+      "status": "skip_excel_lock_file",
+      "sheets": []
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Customer and Prospect Revenue (pre TS information).xlsx",
+      "bytes": 25048,
+      "sha256": "285ae30b8e1f6599ec9446db441054762487ab9077a01a026b7d92fc222a582b",
+      "sheets": [
+        {
+          "name": "Pipeline value",
+          "dimension": "B2:G64",
+          "cell_count": 224,
+          "formula_count": 55,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 36,
+          "data_inspected": true
+        },
+        {
+          "name": "Number of customers",
+          "dimension": "B2:N24",
+          "cell_count": 108,
+          "formula_count": 38,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 8,
+          "data_inspected": true
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Revenue Forecast and simulation June 2020 200617 (pre TS information).xlsx",
+      "bytes": 38233,
+      "sha256": "a33a9f88f845996a5ac89a51c3edaa0a9999b4a269bccb1d35847f2fd43ee2ac",
+      "sheets": [
+        {
+          "name": "PL BS ",
+          "dimension": "C3:AA68",
+          "cell_count": 807,
+          "formula_count": 215,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 135,
+          "data_inspected": true
+        },
+        {
+          "name": "FC current planning",
+          "dimension": "A1:AA48",
+          "cell_count": 427,
+          "formula_count": 193,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 153,
+          "data_inspected": true
+        },
+        {
+          "name": "FC with B round funding",
+          "dimension": "A3:E25",
+          "cell_count": 44,
+          "formula_count": 7,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/1.6.1 Breakdown of personnel, including management and the employees.xlsx",
+      "bytes": 29143,
+      "sha256": "672eda0ff7102cd232e5db53f2eadadc43dfdef23e878e8aa9286eec0c179d7f",
+      "sheets": [
+        {
+          "name": "Sheet1",
+          "dimension": "A1:G992",
+          "cell_count": 2243,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/EFS_ESOP Grants List (as of 2020-08-10).xlsx",
+      "bytes": 25821,
+      "sha256": "ab14d28da21e28e39bca8bb728209a7ed76686e92f79a5aba25ef5f4517dd2a4",
+      "sheets": [
+        {
+          "name": "ESOP",
+          "dimension": "A2:Z1000",
+          "cell_count": 511,
+          "formula_count": 2,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Terminations and lay-offs.xlsx",
+      "bytes": 16662,
+      "sha256": "65c8ee9aed740fc5650aa927def1fef48675dd9b17284046a30717c385f2154c",
+      "sheets": [
+        {
+          "name": "Sheet1",
+          "dimension": "A1:D26",
+          "cell_count": 104,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/ENFUCE_Trademarks (as of 2020-08-05).xlsx",
+      "bytes": 258508,
+      "sha256": "14c3686c5fe5e1e932fcf49750b54a45fa229abb8bd3b4199a456c2b111bcd60",
+      "sheets": [
+        {
+          "name": "Enfuce Financial Services Oy ",
+          "dimension": "A1:N29",
+          "cell_count": 380,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/M. Supplmental FDD/Finacial framing details (inquiry in August).xlsx",
+      "bytes": 39468,
+      "sha256": "0a34a7517d0a566f09a78d9bfa15e4525247e57cd9b497d993fc57a2825ebfe7",
+      "sheets": [
+        {
+          "name": "COMMENTS",
+          "dimension": "C5:C13",
+          "cell_count": 7,
+          "formula_count": 0,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": false
+        },
+        {
+          "name": "PL BS ",
+          "dimension": "C3:AA68",
+          "cell_count": 806,
+          "formula_count": 215,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 135,
+          "data_inspected": true
+        },
+        {
+          "name": "View on REV Framing",
+          "dimension": "A2:AA48",
+          "cell_count": 413,
+          "formula_count": 193,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 153,
+          "data_inspected": true
+        },
+        {
+          "name": "Personnel",
+          "dimension": "C2:G16",
+          "cell_count": 23,
+          "formula_count": 6,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 2,
+          "data_inspected": false
+        }
+      ],
+      "external_link_parts_present": false,
+      "status": "read_only_xml_inspection"
+    },
+    {
+      "path": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+      "bytes": 63610,
+      "sha256": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa",
+      "sheets": [
+        {
+          "name": "P&L - Group",
+          "dimension": "B1:O50",
+          "cell_count": 385,
+          "formula_count": 224,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 98,
+          "data_inspected": true
+        },
+        {
+          "name": "近五年财务情况",
+          "dimension": "A3:G19",
+          "cell_count": 102,
+          "formula_count": 1,
+          "formula_cached_value_missing_count": 0,
+          "shared_formula_instances": 0,
+          "data_inspected": true
+        }
+      ],
+      "external_link_parts_present": true,
+      "status": "read_only_xml_inspection",
+      "limitation": "Month inputs contain external workbook formulas with cached values; originals underlying monthly ledger/source workbook have not been confirmed present. SUM/EBITDA reconciliations reproduce supplied values, not independent ledger verification."
+    }
+  ],
+  "financial_samples": {
+    "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/ELS, EPS, Eswe - Translation of financial statement key figures - 2019.xlsx": {
+      "ELS": {
+        "B3": {
+          "cell": "B3",
+          "type": "s",
+          "raw_value": "Enfuce License Services",
+          "number_format": "General",
+          "style_index": 2,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B4": {
+          "cell": "B4",
+          "type": "s",
+          "raw_value": "2992502-3",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B8": {
+          "cell": "B8",
+          "type": "s",
+          "raw_value": "Figures in EUR. ",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C12": {
+          "cell": "C12",
+          "type": "n",
+          "raw_value": "2019",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2019",
+          "display_divisor": 1
+        },
+        "C14": {
+          "cell": "C14",
+          "type": "n",
+          "raw_value": "78.849999999999994",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "78.849999999999994",
+          "display_divisor": 1
+        },
+        "C15": {
+          "cell": "C15",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C16": {
+          "cell": "C16",
+          "type": "n",
+          "raw_value": "78.849999999999994",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C14-C15",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "78.849999999999994",
+          "display_divisor": 1
+        },
+        "C17": {
+          "cell": "C17",
+          "type": "n",
+          "raw_value": "78.849999999999994",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "78.849999999999994",
+          "display_divisor": 1
+        },
+        "C18": {
+          "cell": "C18",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C16-C17",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C24": {
+          "cell": "C24",
+          "type": "n",
+          "raw_value": "78.849999999999994",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "78.849999999999994",
+          "display_divisor": 1
+        },
+        "C25": {
+          "cell": "C25",
+          "type": "n",
+          "raw_value": "50000",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "50000",
+          "display_divisor": 1
+        },
+        "C26": {
+          "cell": "C26",
+          "type": "n",
+          "raw_value": "50078.85",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C24+C25",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "50078.85",
+          "display_divisor": 1
+        },
+        "C29": {
+          "cell": "C29",
+          "type": "n",
+          "raw_value": "50000",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "50000",
+          "display_divisor": 1
+        },
+        "C30": {
+          "cell": "C30",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C31": {
+          "cell": "C31",
+          "type": "n",
+          "raw_value": "78.849999999999994",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "78.849999999999994",
+          "display_divisor": 1
+        },
+        "C32": {
+          "cell": "C32",
+          "type": "n",
+          "raw_value": "50078.85",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "SUM(C29:C31)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "50078.85",
+          "display_divisor": 1
+        }
+      },
+      "EPS": {
+        "B3": {
+          "cell": "B3",
+          "type": "s",
+          "raw_value": "Enfuce Payment Services Oy",
+          "number_format": "General",
+          "style_index": 2,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B4": {
+          "cell": "B4",
+          "type": "s",
+          "raw_value": "2961701-2 ",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B8": {
+          "cell": "B8",
+          "type": "s",
+          "raw_value": "Figures in EUR. ",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C12": {
+          "cell": "C12",
+          "type": "n",
+          "raw_value": "2019",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2019",
+          "display_divisor": 1
+        },
+        "C14": {
+          "cell": "C14",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C15": {
+          "cell": "C15",
+          "type": "n",
+          "raw_value": "577.21",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "577.21",
+          "display_divisor": 1
+        },
+        "C16": {
+          "cell": "C16",
+          "type": "n",
+          "raw_value": "-577.21",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C14-C15",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-577.21",
+          "display_divisor": 1
+        },
+        "C17": {
+          "cell": "C17",
+          "type": "n",
+          "raw_value": "111.4",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "111.4",
+          "display_divisor": 1
+        },
+        "C18": {
+          "cell": "C18",
+          "type": "n",
+          "raw_value": "-688.61",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C16-C17",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-688.61",
+          "display_divisor": 1
+        },
+        "C24": {
+          "cell": "C24",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C25": {
+          "cell": "C25",
+          "type": "n",
+          "raw_value": "1811.39",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1811.39",
+          "display_divisor": 1
+        },
+        "C26": {
+          "cell": "C26",
+          "type": "n",
+          "raw_value": "1811.39",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C24+C25",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "1811.39",
+          "display_divisor": 1
+        },
+        "C29": {
+          "cell": "C29",
+          "type": "n",
+          "raw_value": "2500",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2500",
+          "display_divisor": 1
+        },
+        "C30": {
+          "cell": "C30",
+          "type": "n",
+          "raw_value": "-688.61",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "-688.61",
+          "display_divisor": 1
+        },
+        "C31": {
+          "cell": "C31",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "C32": {
+          "cell": "C32",
+          "type": "n",
+          "raw_value": "1811.3899999999999",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "SUM(C29:C31)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "1811.3899999999999",
+          "display_divisor": 1
+        }
+      },
+      "Eswe": {
+        "B3": {
+          "cell": "B3",
+          "type": "s",
+          "raw_value": "Enfuce Sweden AB",
+          "number_format": "General",
+          "style_index": 2,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B4": {
+          "cell": "B4",
+          "type": "s",
+          "raw_value": "559199-7449",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B8": {
+          "cell": "B8",
+          "type": "s",
+          "raw_value": "Figures in SEK. ",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C12": {
+          "cell": "C12",
+          "type": "n",
+          "raw_value": "2019",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2019",
+          "display_divisor": 1
+        },
+        "C14": {
+          "cell": "C14",
+          "type": "n",
+          "raw_value": "1373848",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1373848",
+          "display_divisor": 1
+        },
+        "C15": {
+          "cell": "C15",
+          "type": "n",
+          "raw_value": "1308427",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1308427",
+          "display_divisor": 1
+        },
+        "C16": {
+          "cell": "C16",
+          "type": "n",
+          "raw_value": "65421",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C14-C15",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "65421",
+          "display_divisor": 1
+        },
+        "C17": {
+          "cell": "C17",
+          "type": "n",
+          "raw_value": "13999",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "13999",
+          "display_divisor": 1
+        },
+        "C18": {
+          "cell": "C18",
+          "type": "n",
+          "raw_value": "51422",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C16-C17",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "51422",
+          "display_divisor": 1
+        },
+        "C24": {
+          "cell": "C24",
+          "type": "n",
+          "raw_value": "540828",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "540828",
+          "display_divisor": 1
+        },
+        "C25": {
+          "cell": "C25",
+          "type": "n",
+          "raw_value": "102353",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "102353",
+          "display_divisor": 1
+        },
+        "C26": {
+          "cell": "C26",
+          "type": "n",
+          "raw_value": "643181",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "C24+C25",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "643181",
+          "display_divisor": 1
+        },
+        "C29": {
+          "cell": "C29",
+          "type": "n",
+          "raw_value": "50000",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "50000",
+          "display_divisor": 1
+        },
+        "C30": {
+          "cell": "C30",
+          "type": "n",
+          "raw_value": "51422",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "51422",
+          "display_divisor": 1
+        },
+        "C31": {
+          "cell": "C31",
+          "type": "n",
+          "raw_value": "541759",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "541759",
+          "display_divisor": 1
+        },
+        "C32": {
+          "cell": "C32",
+          "type": "n",
+          "raw_value": "643181",
+          "number_format": "#,##0",
+          "style_index": 4,
+          "formula_raw": "SUM(C29:C31)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "643181",
+          "display_divisor": 1
+        }
+      }
+    },
+    "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx": {
+      "PL": {
+        "C3": {
+          "cell": "C3",
+          "type": "s",
+          "raw_value": "ENFUCE GROUP: Actual 2017-19; FRAMING 2020 -2022 k€",
+          "number_format": "General",
+          "style_index": 1,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D6": {
+          "cell": "D6",
+          "type": "n",
+          "raw_value": "2017",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2017",
+          "display_divisor": 1
+        },
+        "E6": {
+          "cell": "E6",
+          "type": "n",
+          "raw_value": "2018",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2018",
+          "display_divisor": 1
+        },
+        "F6": {
+          "cell": "F6",
+          "type": "n",
+          "raw_value": "2019",
+          "number_format": "General",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2019",
+          "display_divisor": 1
+        },
+        "S6": {
+          "cell": "S6",
+          "type": "s",
+          "raw_value": "2020F",
+          "number_format": "General",
+          "style_index": 5,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "T6": {
+          "cell": "T6",
+          "type": "s",
+          "raw_value": "2021F",
+          "number_format": "General",
+          "style_index": 5,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "U6": {
+          "cell": "U6",
+          "type": "s",
+          "raw_value": "2022F",
+          "number_format": "General",
+          "style_index": 5,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C7": {
+          "cell": "C7",
+          "type": "s",
+          "raw_value": "Net sales",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "F7": {
+          "cell": "F7",
+          "type": "n",
+          "raw_value": "5095.5063499999997",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "SUM(AE7:AH7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "5095.5063499999997",
+          "display_divisor": 1
+        },
+        "S7": {
+          "cell": "S7",
+          "type": "n",
+          "raw_value": "7499",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": "SUM(G7:R7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7499",
+          "display_divisor": 1
+        },
+        "AE7": {
+          "cell": "AE7",
+          "type": "n",
+          "raw_value": "1187.79107",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1187.79107",
+          "display_divisor": 1
+        },
+        "AF7": {
+          "cell": "AF7",
+          "type": "n",
+          "raw_value": "1370.82762",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1370.82762",
+          "display_divisor": 1
+        },
+        "AG7": {
+          "cell": "AG7",
+          "type": "n",
+          "raw_value": "1036.7154599999999",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1036.7154599999999",
+          "display_divisor": 1
+        },
+        "AH7": {
+          "cell": "AH7",
+          "type": "n",
+          "raw_value": "1500.1722",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1500.1722",
+          "display_divisor": 1
+        },
+        "F8": {
+          "cell": "F8",
+          "type": "n",
+          "raw_value": "-1536.1781100000001",
+          "number_format": "#,##0",
+          "style_index": 11,
+          "formula_raw": "SUM(AE8:AH8)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-1536.1781100000001",
+          "display_divisor": 1
+        },
+        "F9": {
+          "cell": "F9",
+          "type": "n",
+          "raw_value": "3609.3282399999998",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "+F7+F8+50",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "3609.3282399999998",
+          "display_divisor": 1
+        },
+        "AF9": {
+          "cell": "AF9",
+          "type": "n",
+          "raw_value": "986.15604000000008",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": "SUM(AF7:AF8)+35",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "986.15604000000008",
+          "display_divisor": 1
+        },
+        "AH9": {
+          "cell": "AH9",
+          "type": "n",
+          "raw_value": "1051.4518399999999",
+          "number_format": "#,##0",
+          "style_index": 39,
+          "formula_raw": "SUM(AH7:AH8)+15",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "1051.4518399999999",
+          "display_divisor": 1
+        },
+        "F12": {
+          "cell": "F12",
+          "type": "n",
+          "raw_value": "-3075.9473699999999",
+          "number_format": "#,##0",
+          "style_index": 11,
+          "formula_raw": "SUM(AE12:AH12)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-3075.9473699999999",
+          "display_divisor": 1
+        },
+        "F13": {
+          "cell": "F13",
+          "type": "n",
+          "raw_value": "-1729.90706",
+          "number_format": "#,##0",
+          "style_index": 11,
+          "formula_raw": "SUM(AE13:AH13)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-1729.90706",
+          "display_divisor": 1
+        },
+        "F14": {
+          "cell": "F14",
+          "type": "n",
+          "raw_value": "-1196.52619",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "+F9+F12+F13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-1196.52619",
+          "display_divisor": 1
+        },
+        "S14": {
+          "cell": "S14",
+          "type": "n",
+          "raw_value": "-931",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": "+S9+S12+S13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-931",
+          "display_divisor": 1
+        },
+        "S34": {
+          "cell": "S34",
+          "type": "n",
+          "raw_value": "673",
+          "number_format": "#,##0",
+          "style_index": 13,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "673",
+          "display_divisor": 1
+        },
+        "F35": {
+          "cell": "F35",
+          "type": "n",
+          "raw_value": "7446.0275600000004",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "+F27+F31",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7446.0275600000004",
+          "display_divisor": 1
+        },
+        "F45": {
+          "cell": "F45",
+          "type": "n",
+          "raw_value": "7445.5259999999989",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "+F41+F37",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "F45:U45",
+            "si": "41"
+          },
+          "shared_formula_master": {
+            "master_cell": "F45",
+            "formula": "+F41+F37",
+            "range": "F45:U45"
+          },
+          "display_numeric_value_before_rounding": "7445.5259999999989",
+          "display_divisor": 1
+        }
+      },
+      "MRR": {
+        "B2": {
+          "cell": "B2",
+          "type": "s",
+          "raw_value": "Monthly Recurring Revenues from Procountor (k€)",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "Q4": {
+          "cell": "Q4",
+          "type": "s",
+          "raw_value": "Mar",
+          "number_format": "General",
+          "style_index": 38,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "Q5": {
+          "cell": "Q5",
+          "type": "n",
+          "raw_value": "49401.53",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "49.40153",
+          "display_divisor": 1000
+        },
+        "Q6": {
+          "cell": "Q6",
+          "type": "n",
+          "raw_value": "134625",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "134.625",
+          "display_divisor": 1000
+        },
+        "Q7": {
+          "cell": "Q7",
+          "type": "n",
+          "raw_value": "112395.13000000002",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "112.39513000000002",
+          "display_divisor": 1000
+        },
+        "Q8": {
+          "cell": "Q8",
+          "type": "n",
+          "raw_value": "11375",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "11.375",
+          "display_divisor": 1000
+        },
+        "Q9": {
+          "cell": "Q9",
+          "type": "n",
+          "raw_value": "25560.400000000001",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "25.560400000000001",
+          "display_divisor": 1000
+        },
+        "Q10": {
+          "cell": "Q10",
+          "type": "n",
+          "raw_value": "22082",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "22.082",
+          "display_divisor": 1000
+        },
+        "Q11": {
+          "cell": "Q11",
+          "type": "n",
+          "raw_value": "9370.4599999999991",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "9.3704599999999991",
+          "display_divisor": 1000
+        },
+        "Q12": {
+          "cell": "Q12",
+          "type": "n",
+          "raw_value": "1750.43",
+          "number_format": "#,##0,",
+          "style_index": 46,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "1.75043",
+          "display_divisor": 1000
+        },
+        "Q13": {
+          "cell": "Q13",
+          "type": "n",
+          "raw_value": null,
+          "number_format": "General",
+          "style_index": 38,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C14": {
+          "cell": "C14",
+          "type": "n",
+          "raw_value": "279512.3",
+          "number_format": "#,##0,",
+          "style_index": 47,
+          "formula_raw": "SUM(C5:C13)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "C14:Q14",
+            "si": "0"
+          },
+          "shared_formula_master": {
+            "master_cell": "C14",
+            "formula": "SUM(C5:C13)",
+            "range": "C14:Q14"
+          },
+          "display_numeric_value_before_rounding": "279.5123",
+          "display_divisor": 1000
+        },
+        "Q14": {
+          "cell": "Q14",
+          "type": "n",
+          "raw_value": "366559.95000000007",
+          "number_format": "#,##0,",
+          "style_index": 47,
+          "formula_raw": null,
+          "formula_attributes": {
+            "t": "shared",
+            "si": "0"
+          },
+          "shared_formula_master": {
+            "master_cell": "C14",
+            "formula": "SUM(C5:C13)",
+            "range": "C14:Q14"
+          },
+          "display_numeric_value_before_rounding": "366.55995000000007",
+          "display_divisor": 1000
+        }
+      }
+    },
+    "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Further updates (financial related) 5.8.2020.xlsx": {
+      "Rev per customer": {
+        "C4": {
+          "cell": "C4",
+          "type": "s",
+          "raw_value": " 2019 Total",
+          "number_format": "General",
+          "style_index": 23,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D4": {
+          "cell": "D4",
+          "type": "s",
+          "raw_value": "2020- 1H",
+          "number_format": "General",
+          "style_index": 23,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B5": {
+          "cell": "B5",
+          "type": "s",
+          "raw_value": "Payment Platform",
+          "number_format": "General",
+          "style_index": 25,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C5": {
+          "cell": "C5",
+          "type": "n",
+          "raw_value": "4758.951070000001",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": "SUM(C6:C21)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "4758.951070000001",
+          "display_divisor": 1
+        },
+        "D5": {
+          "cell": "D5",
+          "type": "n",
+          "raw_value": "3221",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": "SUM(D6:D21)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "3221",
+          "display_divisor": 1
+        },
+        "B22": {
+          "cell": "B22",
+          "type": "s",
+          "raw_value": "Open Banking",
+          "number_format": "General",
+          "style_index": 25,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C22": {
+          "cell": "C22",
+          "type": "n",
+          "raw_value": "336.78500000000003",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": "+C23",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "336.78500000000003",
+          "display_divisor": 1
+        },
+        "D22": {
+          "cell": "D22",
+          "type": "n",
+          "raw_value": "68",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": "+D23",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "68",
+          "display_divisor": 1
+        },
+        "B24": {
+          "cell": "B24",
+          "type": "s",
+          "raw_value": "My Carbon Action",
+          "number_format": "General",
+          "style_index": 25,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C24": {
+          "cell": "C24",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1
+        },
+        "D24": {
+          "cell": "D24",
+          "type": "n",
+          "raw_value": "20",
+          "number_format": "#,##0",
+          "style_index": 31,
+          "formula_raw": "+D25",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "20",
+          "display_divisor": 1
+        },
+        "B26": {
+          "cell": "B26",
+          "type": "s",
+          "raw_value": "Other",
+          "number_format": "General",
+          "style_index": 28,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C26": {
+          "cell": "C26",
+          "type": "n",
+          "raw_value": "0.43",
+          "number_format": "#,##0",
+          "style_index": 36,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "0.43",
+          "display_divisor": 1
+        },
+        "D26": {
+          "cell": "D26",
+          "type": "n",
+          "raw_value": "108.517",
+          "number_format": "#,##0",
+          "style_index": 36,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "108.517",
+          "display_divisor": 1
+        },
+        "B27": {
+          "cell": "B27",
+          "type": "s",
+          "raw_value": "Total sales",
+          "number_format": "General",
+          "style_index": 29,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C27": {
+          "cell": "C27",
+          "type": "n",
+          "raw_value": "5095.7360700000008",
+          "number_format": "#,##0",
+          "style_index": 37,
+          "formula_raw": "+C5+C22+C24",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "5095.7360700000008",
+          "display_divisor": 1
+        },
+        "D27": {
+          "cell": "D27",
+          "type": "n",
+          "raw_value": "3417.5169999999998",
+          "number_format": "#,##0",
+          "style_index": 37,
+          "formula_raw": "D26+D24+D22+D5",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "3417.5169999999998",
+          "display_divisor": 1
+        }
+      }
+    },
+    "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Customer and Prospect Revenue (pre TS information).xlsx": {
+      "Pipeline value": {
+        "C6": {
+          "cell": "C6",
+          "type": "s",
+          "raw_value": "Monthly minimum (K€)",
+          "number_format": "General",
+          "style_index": 16,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D6": {
+          "cell": "D6",
+          "type": "s",
+          "raw_value": "Contract length (mths)",
+          "number_format": "General",
+          "style_index": 16,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "E6": {
+          "cell": "E6",
+          "type": "s",
+          "raw_value": "Total deal value (K€)",
+          "number_format": "General",
+          "style_index": 16,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B7": {
+          "cell": "B7",
+          "type": "s",
+          "raw_value": "TOTAL",
+          "number_format": "General",
+          "style_index": 13,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C7": {
+          "cell": "C7",
+          "type": "n",
+          "raw_value": "263",
+          "number_format": "#,##0",
+          "style_index": 17,
+          "formula_raw": "SUM(C8:C22)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "263",
+          "display_divisor": 1
+        },
+        "E7": {
+          "cell": "E7",
+          "type": "n",
+          "raw_value": "14970",
+          "number_format": "#,##0",
+          "style_index": 17,
+          "formula_raw": "SUM(E8:E22)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "E7",
+            "si": "0"
+          },
+          "shared_formula_master": {
+            "master_cell": "E7",
+            "formula": "SUM(E8:E22)",
+            "range": "E7"
+          },
+          "display_numeric_value_before_rounding": "14970",
+          "display_divisor": 1
+        },
+        "B26": {
+          "cell": "B26",
+          "type": "s",
+          "raw_value": "TOTAL",
+          "number_format": "General",
+          "style_index": 13,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C26": {
+          "cell": "C26",
+          "type": "n",
+          "raw_value": "100",
+          "number_format": "#,##0",
+          "style_index": 17,
+          "formula_raw": "SUM(C27:C36)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "100",
+          "display_divisor": 1
+        },
+        "E26": {
+          "cell": "E26",
+          "type": "n",
+          "raw_value": "1880",
+          "number_format": "#,##0",
+          "style_index": 17,
+          "formula_raw": "SUM(E27:E36)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "E26",
+            "si": "2"
+          },
+          "shared_formula_master": {
+            "master_cell": "E26",
+            "formula": "SUM(E27:E36)",
+            "range": "E26"
+          },
+          "display_numeric_value_before_rounding": "1880",
+          "display_divisor": 1
+        },
+        "B40": {
+          "cell": "B40",
+          "type": "s",
+          "raw_value": "TOTAL",
+          "number_format": "General",
+          "style_index": 13,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C40": {
+          "cell": "C40",
+          "type": "n",
+          "raw_value": "180",
+          "number_format": "General",
+          "style_index": 18,
+          "formula_raw": "SUM(C41:C64)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "180",
+          "display_divisor": 1
+        },
+        "E40": {
+          "cell": "E40",
+          "type": "n",
+          "raw_value": "6462",
+          "number_format": "General",
+          "style_index": 18,
+          "formula_raw": "SUM(E41:E64)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "6462",
+          "display_divisor": 1
+        }
+      },
+      "Number of customers": {
+        "B2": {
+          "cell": "B2",
+          "type": "s",
+          "raw_value": "Expected revenue split and number of customers",
+          "number_format": "General",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C4": {
+          "cell": "C4",
+          "type": "n",
+          "raw_value": "2020",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2020",
+          "display_divisor": 1
+        },
+        "D4": {
+          "cell": "D4",
+          "type": "n",
+          "raw_value": "2021",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2021",
+          "display_divisor": 1
+        },
+        "E4": {
+          "cell": "E4",
+          "type": "n",
+          "raw_value": "2022",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2022",
+          "display_divisor": 1
+        },
+        "F4": {
+          "cell": "F4",
+          "type": "n",
+          "raw_value": "2023",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2023",
+          "display_divisor": 1
+        },
+        "C5": {
+          "cell": "C5",
+          "type": "s",
+          "raw_value": "full year",
+          "number_format": "General",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "H5": {
+          "cell": "H5",
+          "type": "n",
+          "raw_value": null,
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B6": {
+          "cell": "B6",
+          "type": "s",
+          "raw_value": "Revenue",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C6": {
+          "cell": "C6",
+          "type": "n",
+          "raw_value": "7517",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "7517",
+          "display_divisor": 1
+        },
+        "D6": {
+          "cell": "D6",
+          "type": "n",
+          "raw_value": "21587.586377931795",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "21587.586377931795",
+          "display_divisor": 1
+        },
+        "E6": {
+          "cell": "E6",
+          "type": "n",
+          "raw_value": "44254.552074760177",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": "2.05*D6",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "44254.552074760177",
+          "display_divisor": 1
+        },
+        "F6": {
+          "cell": "F6",
+          "type": "n",
+          "raw_value": "81870.921338306332",
+          "number_format": "#,##0",
+          "style_index": 9,
+          "formula_raw": "1.85*E6",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "81870.921338306332",
+          "display_divisor": 1
+        },
+        "B7": {
+          "cell": "B7",
+          "type": "s",
+          "raw_value": "  Recurring Revenue",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C7": {
+          "cell": "C7",
+          "type": "n",
+          "raw_value": "5790.9391900000001",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "5790.9391900000001",
+          "display_divisor": 1
+        },
+        "D7": {
+          "cell": "D7",
+          "type": "n",
+          "raw_value": "18707.586377931795",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "18707.586377931795",
+          "display_divisor": 1
+        },
+        "E7": {
+          "cell": "E7",
+          "type": "n",
+          "raw_value": "38350.552074760177",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "D7*2.05",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "38350.552074760177",
+          "display_divisor": 1
+        },
+        "F7": {
+          "cell": "F7",
+          "type": "n",
+          "raw_value": "70948.521338306324",
+          "number_format": "#,##0",
+          "style_index": 7,
+          "formula_raw": "1.85*E7",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "70948.521338306324",
+          "display_divisor": 1
+        },
+        "B24": {
+          "cell": "B24",
+          "type": "s",
+          "raw_value": "TOTAL",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D24": {
+          "cell": "D24",
+          "type": "n",
+          "raw_value": "51.218006188039425",
+          "number_format": "0",
+          "style_index": 11,
+          "formula_raw": "SUM(D21:D23)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "51.218006188039425",
+          "display_divisor": 1
+        },
+        "E24": {
+          "cell": "E24",
+          "type": "n",
+          "raw_value": "70.673104094408998",
+          "number_format": "0",
+          "style_index": 11,
+          "formula_raw": "SUM(E21:E23)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "E24:F24",
+            "si": "3"
+          },
+          "shared_formula_master": {
+            "master_cell": "E24",
+            "formula": "SUM(E21:E23)",
+            "range": "E24:F24"
+          },
+          "display_numeric_value_before_rounding": "70.673104094408998",
+          "display_divisor": 1
+        },
+        "F24": {
+          "cell": "F24",
+          "type": "n",
+          "raw_value": "114.55998247973233",
+          "number_format": "0",
+          "style_index": 11,
+          "formula_raw": null,
+          "formula_attributes": {
+            "t": "shared",
+            "si": "3"
+          },
+          "shared_formula_master": {
+            "master_cell": "E24",
+            "formula": "SUM(E21:E23)",
+            "range": "E24:F24"
+          },
+          "display_numeric_value_before_rounding": "114.55998247973233",
+          "display_divisor": 1
+        }
+      }
+    },
+    "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Revenue Forecast and simulation June 2020 200617 (pre TS information).xlsx": {
+      "PL BS ": {
+        "C3": {
+          "cell": "C3",
+          "type": "s",
+          "raw_value": "ENFUCE GROUP: FRAMING 2020 -2022 k€",
+          "number_format": "General",
+          "style_index": 17,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C4": {
+          "cell": "C4",
+          "type": "s",
+          "raw_value": "BASED ON FC Low",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "Q6": {
+          "cell": "Q6",
+          "type": "s",
+          "raw_value": "2020F",
+          "number_format": "General",
+          "style_index": 20,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "Q7": {
+          "cell": "Q7",
+          "type": "n",
+          "raw_value": "7499",
+          "number_format": "#,##0",
+          "style_index": 24,
+          "formula_raw": "SUM(E7:P7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7499",
+          "display_divisor": 1
+        },
+        "R7": {
+          "cell": "R7",
+          "type": "n",
+          "raw_value": "14998",
+          "number_format": "#,##0",
+          "style_index": 24,
+          "formula_raw": "+Q7*2",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "14998",
+          "display_divisor": 1
+        },
+        "S7": {
+          "cell": "S7",
+          "type": "n",
+          "raw_value": "30000",
+          "number_format": "#,##0",
+          "style_index": 24,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "30000",
+          "display_divisor": 1
+        }
+      },
+      "FC current planning": {
+        "A1": {
+          "cell": "A1",
+          "type": "s",
+          "raw_value": "CURRENT SALES ORGANIZATION - NO ADDITIONAL FUNDING",
+          "number_format": "General",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B4": {
+          "cell": "B4",
+          "type": "n",
+          "raw_value": "2020",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2020",
+          "display_divisor": 1
+        },
+        "G4": {
+          "cell": "G4",
+          "type": "s",
+          "raw_value": "FC",
+          "number_format": "General",
+          "style_index": 71,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "N5": {
+          "cell": "N5",
+          "type": "s",
+          "raw_value": "2020FC",
+          "number_format": "General",
+          "style_index": 51,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "A6": {
+          "cell": "A6",
+          "type": "s",
+          "raw_value": "CURRENT SIGNED & FC",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "N7": {
+          "cell": "N7",
+          "type": "n",
+          "raw_value": "7516.8156600000002",
+          "number_format": "#,##0",
+          "style_index": 12,
+          "formula_raw": "SUM(B7:M7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7516.8156600000002",
+          "display_divisor": 1
+        },
+        "N8": {
+          "cell": "N8",
+          "type": "n",
+          "raw_value": "5790.9391900000001",
+          "number_format": "#,##0",
+          "style_index": 23,
+          "formula_raw": "SUM(B8:M8)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "N8:N10",
+            "si": "0"
+          },
+          "shared_formula_master": {
+            "master_cell": "N8",
+            "formula": "SUM(B8:M8)",
+            "range": "N8:N10"
+          },
+          "display_numeric_value_before_rounding": "5790.9391900000001",
+          "display_divisor": 1
+        }
+      },
+      "FC with B round funding": {
+        "A3": {
+          "cell": "A3",
+          "type": "s",
+          "raw_value": "FUNDING FOR SALES & MARKETING",
+          "number_format": "General",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B8": {
+          "cell": "B8",
+          "type": "n",
+          "raw_value": "2020",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2020",
+          "display_divisor": 1
+        },
+        "C8": {
+          "cell": "C8",
+          "type": "n",
+          "raw_value": "2021",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2021",
+          "display_divisor": 1
+        },
+        "D8": {
+          "cell": "D8",
+          "type": "n",
+          "raw_value": "2022",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2022",
+          "display_divisor": 1
+        },
+        "E8": {
+          "cell": "E8",
+          "type": "n",
+          "raw_value": "2023",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2023",
+          "display_divisor": 1
+        },
+        "B11": {
+          "cell": "B11",
+          "type": "n",
+          "raw_value": "7517",
+          "number_format": "#,##0",
+          "style_index": 10,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "7517",
+          "display_divisor": 1
+        },
+        "C11": {
+          "cell": "C11",
+          "type": "n",
+          "raw_value": "21587.586377931795",
+          "number_format": "#,##0",
+          "style_index": 10,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "21587.586377931795",
+          "display_divisor": 1
+        },
+        "D11": {
+          "cell": "D11",
+          "type": "n",
+          "raw_value": "44254.552074760177",
+          "number_format": "#,##0",
+          "style_index": 10,
+          "formula_raw": "2.05*C11",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "44254.552074760177",
+          "display_divisor": 1
+        },
+        "E11": {
+          "cell": "E11",
+          "type": "n",
+          "raw_value": "81870.921338306332",
+          "number_format": "#,##0",
+          "style_index": 10,
+          "formula_raw": "1.85*D11",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "81870.921338306332",
+          "display_divisor": 1
+        }
+      }
+    },
+    "data/Enfuce/M. Supplmental FDD/Finacial framing details (inquiry in August).xlsx": {
+      "PL BS ": {
+        "C3": {
+          "cell": "C3",
+          "type": "s",
+          "raw_value": "ENFUCE GROUP: FRAMING 2020 -2022 k€",
+          "number_format": "General",
+          "style_index": 12,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D6": {
+          "cell": "D6",
+          "type": "n",
+          "raw_value": "2019",
+          "number_format": "General",
+          "style_index": 13,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2019",
+          "display_divisor": 1
+        },
+        "Q6": {
+          "cell": "Q6",
+          "type": "s",
+          "raw_value": "2020F",
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "R6": {
+          "cell": "R6",
+          "type": "s",
+          "raw_value": "2021F",
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "S6": {
+          "cell": "S6",
+          "type": "s",
+          "raw_value": "2022F",
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "D7": {
+          "cell": "D7",
+          "type": "n",
+          "raw_value": "5095.5060000000003",
+          "number_format": "#,##0",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "5095.5060000000003",
+          "display_divisor": 1
+        },
+        "Q7": {
+          "cell": "Q7",
+          "type": "n",
+          "raw_value": "7499",
+          "number_format": "#,##0",
+          "style_index": 19,
+          "formula_raw": "SUM(E7:P7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7499",
+          "display_divisor": 1
+        },
+        "R7": {
+          "cell": "R7",
+          "type": "n",
+          "raw_value": "14998",
+          "number_format": "#,##0",
+          "style_index": 19,
+          "formula_raw": "+Q7*2",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "14998",
+          "display_divisor": 1
+        },
+        "S7": {
+          "cell": "S7",
+          "type": "n",
+          "raw_value": "30000",
+          "number_format": "#,##0",
+          "style_index": 19,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "30000",
+          "display_divisor": 1
+        },
+        "Q14": {
+          "cell": "Q14",
+          "type": "n",
+          "raw_value": "-931",
+          "number_format": "#,##0",
+          "style_index": 19,
+          "formula_raw": "+Q9+Q12+Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-931",
+          "display_divisor": 1
+        }
+      },
+      "View on REV Framing": {
+        "B4": {
+          "cell": "B4",
+          "type": "n",
+          "raw_value": "2020",
+          "number_format": "General",
+          "style_index": 52,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "2020",
+          "display_divisor": 1
+        },
+        "G5": {
+          "cell": "G5",
+          "type": "n",
+          "raw_value": "6",
+          "number_format": "General",
+          "style_index": 52,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "6",
+          "display_divisor": 1
+        },
+        "N5": {
+          "cell": "N5",
+          "type": "s",
+          "raw_value": "2020FC",
+          "number_format": "General",
+          "style_index": 53,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "A6": {
+          "cell": "A6",
+          "type": "s",
+          "raw_value": "CURRENT SIGNED & FC",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B7": {
+          "cell": "B7",
+          "type": "n",
+          "raw_value": "574.21487999999999",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "574.21487999999999",
+          "display_divisor": 1
+        },
+        "C7": {
+          "cell": "C7",
+          "type": "n",
+          "raw_value": "562.06768",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "562.06768",
+          "display_divisor": 1
+        },
+        "D7": {
+          "cell": "D7",
+          "type": "n",
+          "raw_value": "523.40106000000003",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "523.40106000000003",
+          "display_divisor": 1
+        },
+        "E7": {
+          "cell": "E7",
+          "type": "n",
+          "raw_value": "582.48963000000003",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "582.48963000000003",
+          "display_divisor": 1
+        },
+        "F7": {
+          "cell": "F7",
+          "type": "n",
+          "raw_value": "615.64241000000004",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "615.64241000000004",
+          "display_divisor": 1
+        },
+        "G7": {
+          "cell": "G7",
+          "type": "n",
+          "raw_value": "579",
+          "number_format": "General",
+          "style_index": 53,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "579",
+          "display_divisor": 1
+        },
+        "N7": {
+          "cell": "N7",
+          "type": "n",
+          "raw_value": "7516.8156600000002",
+          "number_format": "#,##0",
+          "style_index": 54,
+          "formula_raw": "SUM(B7:M7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "7516.8156600000002",
+          "display_divisor": 1
+        },
+        "N8": {
+          "cell": "N8",
+          "type": "n",
+          "raw_value": "5790.9391900000001",
+          "number_format": "#,##0",
+          "style_index": 18,
+          "formula_raw": "SUM(B8:M8)",
+          "formula_attributes": {
+            "t": "shared",
+            "ref": "N8:N10",
+            "si": "0"
+          },
+          "shared_formula_master": {
+            "master_cell": "N8",
+            "formula": "SUM(B8:M8)",
+            "range": "N8:N10"
+          },
+          "display_numeric_value_before_rounding": "5790.9391900000001",
+          "display_divisor": 1
+        },
+        "N46": {
+          "cell": "N46",
+          "type": "n",
+          "raw_value": "30168.634076064121",
+          "number_format": "#,##0",
+          "style_index": 48,
+          "formula_raw": "SUM(B46:M46)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "30168.634076064121",
+          "display_divisor": 1
+        }
+      }
+    },
+    "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx": {
+      "P&L - Group": {
+        "B2": {
+          "cell": "B2",
+          "type": "s",
+          "raw_value": "Enfuce Group",
+          "number_format": "General",
+          "style_index": 22,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "I2": {
+          "cell": "I2",
+          "type": "s",
+          "raw_value": " 1-6/20",
+          "number_format": "builtin:14",
+          "style_index": 20,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "L2": {
+          "cell": "L2",
+          "type": "s",
+          "raw_value": "2020F",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "M2": {
+          "cell": "M2",
+          "type": "s",
+          "raw_value": "2019 A",
+          "number_format": "General",
+          "style_index": 8,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "B4": {
+          "cell": "B4",
+          "type": "s",
+          "raw_value": "Revenue",
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C4": {
+          "cell": "C4",
+          "type": "n",
+          "raw_value": "574214.88",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-01'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "574.21488",
+          "display_divisor": 1000
+        },
+        "D4": {
+          "cell": "D4",
+          "type": "n",
+          "raw_value": "562067.67999999993",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-02'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "562.06767999999993",
+          "display_divisor": 1000
+        },
+        "E4": {
+          "cell": "E4",
+          "type": "n",
+          "raw_value": "523401.06",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-03'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "523.40106",
+          "display_divisor": 1000
+        },
+        "F4": {
+          "cell": "F4",
+          "type": "n",
+          "raw_value": "582489.63",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-04'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "582.48963",
+          "display_divisor": 1000
+        },
+        "G4": {
+          "cell": "G4",
+          "type": "n",
+          "raw_value": "615642.40999999992",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-05'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "615.64240999999992",
+          "display_divisor": 1000
+        },
+        "H4": {
+          "cell": "H4",
+          "type": "n",
+          "raw_value": "559848.10000000009",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-06'!Q8",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "559.84810000000009",
+          "display_divisor": 1000
+        },
+        "B5": {
+          "cell": "B5",
+          "type": "s",
+          "raw_value": "Other operating income",
+          "number_format": "General",
+          "style_index": 15,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "C5": {
+          "cell": "C5",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-01'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1000
+        },
+        "D5": {
+          "cell": "D5",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-02'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1000
+        },
+        "E5": {
+          "cell": "E5",
+          "type": "n",
+          "raw_value": "-1112.1400000000001",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-03'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "-1.1121400000000001",
+          "display_divisor": 1000
+        },
+        "F5": {
+          "cell": "F5",
+          "type": "n",
+          "raw_value": "35700",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-04'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "35.7",
+          "display_divisor": 1000
+        },
+        "G5": {
+          "cell": "G5",
+          "type": "n",
+          "raw_value": "0",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-05'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "0",
+          "display_divisor": 1000
+        },
+        "H5": {
+          "cell": "H5",
+          "type": "n",
+          "raw_value": "431.19",
+          "number_format": "#,##0,",
+          "style_index": 1,
+          "formula_raw": "'[1]2020-06'!Q13",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "0.43119",
+          "display_divisor": 1000
+        },
+        "B6": {
+          "cell": "B6",
+          "type": "s",
+          "raw_value": "Income total",
+          "number_format": "General",
+          "style_index": 19,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "I6": {
+          "cell": "I6",
+          "type": "n",
+          "raw_value": "3452682.8099999996",
+          "number_format": "#,##0,",
+          "style_index": 6,
+          "formula_raw": "SUM(C6:H6)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "3452.6828099999996",
+          "display_divisor": 1000
+        },
+        "L6": {
+          "cell": "L6",
+          "type": "n",
+          "raw_value": "7499",
+          "number_format": "#,##0",
+          "style_index": 3,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "7499",
+          "display_divisor": 1
+        },
+        "M6": {
+          "cell": "M6",
+          "type": "n",
+          "raw_value": "5095.5060000000003",
+          "number_format": "#,##0",
+          "style_index": 5,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "5095.5060000000003",
+          "display_divisor": 1
+        },
+        "B7": {
+          "cell": "B7",
+          "type": "s",
+          "raw_value": "Raw materials and services",
+          "number_format": "General",
+          "style_index": 10,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "I7": {
+          "cell": "I7",
+          "type": "n",
+          "raw_value": "1426867.67",
+          "number_format": "#,##0,",
+          "style_index": 4,
+          "formula_raw": "SUM(C7:H7)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "1426.86767",
+          "display_divisor": 1000
+        },
+        "B8": {
+          "cell": "B8",
+          "type": "s",
+          "raw_value": "Gross Margin",
+          "number_format": "General",
+          "style_index": 19,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "I8": {
+          "cell": "I8",
+          "type": "n",
+          "raw_value": "2025815.1399999997",
+          "number_format": "#,##0,",
+          "style_index": 6,
+          "formula_raw": "SUM(C8:H8)",
+          "formula_attributes": {},
+          "display_numeric_value_before_rounding": "2025.8151399999997",
+          "display_divisor": 1000
+        },
+        "I12": {
+          "cell": "I12",
+          "type": "n",
+          "raw_value": "1718226.53",
+          "number_format": "#,##0,",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": {
+            "t": "shared",
+            "si": "3"
+          },
+          "shared_formula_master": {
+            "master_cell": "I10",
+            "formula": "SUM(C10:H10)",
+            "range": "I10:I24"
+          },
+          "display_numeric_value_before_rounding": "1718.22653",
+          "display_divisor": 1000
+        },
+        "I22": {
+          "cell": "I22",
+          "type": "n",
+          "raw_value": "614872.61999999988",
+          "number_format": "#,##0,",
+          "style_index": 4,
+          "formula_raw": null,
+          "formula_attributes": {
+            "t": "shared",
+            "si": "3"
+          },
+          "shared_formula_master": {
+            "master_cell": "I10",
+            "formula": "SUM(C10:H10)",
+            "range": "I10:I24"
+          },
+          "display_numeric_value_before_rounding": "614.87261999999988",
+          "display_divisor": 1000
+        },
+        "B24": {
+          "cell": "B24",
+          "type": "s",
+          "raw_value": "EBITDA",
+          "number_format": "General",
+          "style_index": 7,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "I24": {
+          "cell": "I24",
+          "type": "n",
+          "raw_value": "-307284.01",
+          "number_format": "#,##0,",
+          "style_index": 6,
+          "formula_raw": null,
+          "formula_attributes": {
+            "t": "shared",
+            "si": "3"
+          },
+          "shared_formula_master": {
+            "master_cell": "I10",
+            "formula": "SUM(C10:H10)",
+            "range": "I10:I24"
+          },
+          "display_numeric_value_before_rounding": "-307.28401",
+          "display_divisor": 1000
+        }
+      },
+      "近五年财务情况": {
+        "F3": {
+          "cell": "F3",
+          "type": "s",
+          "raw_value": "20201H",
+          "number_format": "General",
+          "style_index": 28,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "A4": {
+          "cell": "A4",
+          "type": "s",
+          "raw_value": "营业收入",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "F4": {
+          "cell": "F4",
+          "type": "n",
+          "raw_value": "3452.6828099999998",
+          "number_format": "#,##0 ;[Red](#,##0)",
+          "style_index": 32,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "3452.6828099999998",
+          "display_divisor": 1
+        },
+        "A11": {
+          "cell": "A11",
+          "type": "s",
+          "raw_value": "EBITDA",
+          "number_format": "General",
+          "style_index": 0,
+          "formula_raw": null,
+          "formula_attributes": null
+        },
+        "F11": {
+          "cell": "F11",
+          "type": "n",
+          "raw_value": "-307.28401000000002",
+          "number_format": "#,##0 ;[Red](#,##0)",
+          "style_index": 32,
+          "formula_raw": null,
+          "formula_attributes": null,
+          "display_numeric_value_before_rounding": "-307.28401000000002",
+          "display_divisor": 1
+        }
+      }
+    }
+  },
+  "supported_demos": [
+    {
+      "id": "h1_2020_income_reconciliation",
+      "file": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+      "sheet": "P&L - Group",
+      "inputs": {
+        "net_sales_cells": "C4:H4",
+        "other_operating_income_cells": "C5:H5",
+        "reported_income_total_cell": "I6",
+        "raw_input_unit": "EUR",
+        "display_format": "#,##0, (displays kEUR)"
+      },
+      "calculation": {
+        "net_sales_sum_eur": "3417663.75999999994",
+        "other_operating_income_sum_eur": "35019.0499999999999",
+        "sum_of_both_eur": "3452682.8099999999399",
+        "reported_income_total_eur": "3452682.8099999996",
+        "difference_eur": "3.399E-10",
+        "normalized_net_sales_eur": "3417663.76",
+        "normalized_other_operating_income_eur": "35019.05",
+        "normalized_income_total_eur": "3452682.81",
+        "normalized_difference_eur": "0.00",
+        "comparison_tolerance_eur": "0.01"
+      },
+      "finding": "Income total includes other operating income. The Chinese summary F4 labeled 营业收入 is equal to I6/1000; it is not equal to pure Revenue row4/1000. Label mismatch needs definition review, not an investment verdict."
+    },
+    {
+      "id": "historical_2019_gross_margin_adjustment",
+      "file": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "sheet": "PL",
+      "inputs": [
+        "F7",
+        "F8",
+        "F9",
+        "AF9",
+        "AH9"
+      ],
+      "unit": "kEUR",
+      "calculation": {
+        "revenue": "5095.5063499999997",
+        "negative_cogs": "-1536.1781100000001",
+        "formula_constant": 50,
+        "reproduced_gross_margin": "3609.3282399999996",
+        "source_cached_gross_margin": "3609.3282399999998",
+        "difference": "-2E-13",
+        "normalized_revenue_k_eur": "5095.50635",
+        "normalized_negative_cogs_k_eur": "-1536.17811",
+        "normalized_gross_margin_k_eur": "3609.32824",
+        "normalized_difference_k_eur": "0.00000",
+        "comparison_tolerance_k_eur": "0.00001",
+        "rounded_to_integer_k_eur": {
+          "revenue": "5096",
+          "cogs_magnitude": "1536",
+          "gross_margin": "3609"
+        }
+      },
+      "finding": "Source F9 formula explicitly adds50; quarterlyAF9 adds35 andAH9 adds15. Do not infer adjustment reason without supporting source."
+    },
+    {
+      "id": "mrr_2020_03_customer_sum",
+      "file": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "sheet": "MRR",
+      "inputs": [
+        "Q5:Q13",
+        "Q14",
+        "B2",
+        "Q4"
+      ],
+      "raw_input_unit": "EUR",
+      "displayed_unit": "kEUR",
+      "calculation": {
+        "sum_populated_customer_rows_eur": "366559.9500000000201",
+        "source_total_eur": "366559.95000000007",
+        "difference_eur": "-4.99E-11",
+        "normalized_customer_sum_eur": "366559.95",
+        "normalized_source_total_eur": "366559.95",
+        "normalized_difference_eur": "0.00",
+        "comparison_tolerance_eur": "0.01",
+        "display_total_k_eur_rounded": "367"
+      },
+      "finding": "Q14 inherited shared formula fromC14; preserve master and translated references. This supports a source-MRR arithmetic reconciliation. Annualized MRR requires explicit ARR definition/eligibility; it is not evidence that ARR equals recognized annual revenue."
+    }
+  ],
+  "additional_diagnostics": {
+    "h1_ebitda_eur": "-307284.01000000028",
+    "h1_reported_ebitda_eur": "-307284.01",
+    "h1_ebitda_difference_eur": "-2.8E-10",
+    "2019_customer_breakdown_total_k_eur": "5095.7360700000008",
+    "2019_pl_net_sales_k_eur": "5095.5063499999997",
+    "difference_2019_customer_breakdown_minus_pl_k_eur": "0.2297200000011",
+    "customer_breakdown_total_formula": "C27=+C5+C22+C24 (does not include OtherC26=0.43); sheetunit not explicitly declared, must confirm before cross-file value-mismatch status."
+  },
+  "database_requirements": [
+    "Store original file hash/version and exact sheet/cell/range pointers.",
+    "Separate group consolidation scope and legal entity; ELS/EPS useEUR whileEswe usesSEK.",
+    "Separate actual, estimate, forecast, and scenario; annualflow,quarterflow,monthflow and balancesnapshotperiods differ.",
+    "Preserve raw numeric value, numberformat, storedunit, displayedunit and scale; units vary bysheet/column.",
+    "Keep workbook formula strings, sharedformula masters, cached value and provenance status; cached result is not independently reproduced source ledger.",
+    "Avoid automatic external-workbook execution; June P&L references a sourceworkbook not yet confirmed present.",
+    "Record nullable missing vs zero distinctly; amounts, formulas and all parameter mappings need Decimal arithmetic.",
+    "Use reported value vs recomputed value plus definitionalcomparable/incomparable/needs_review states."
+  ],
+  "privacy_scope": "Only aggregatefinance values and businesssource references are sampled. HR, grants and trademark workbook contents not extracted; structural metadata only.",
+  "numeric_normalization_note": "Source XLSX cached decimals include binary floating-point serialization artifacts. Comparison decimals below are quantized to currency cents (0.01 EUR) or equivalent0.00001 kEUR before comparison; raw evidence remains unchanged."
+}

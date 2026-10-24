@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "case_id": "circle-2025-ipo",
+  "status": "conditional_reconciliation_of_saved_derivative_evidence_only",
+  "created_at_utc": "2026-10-24T02:15:54.992136+00:00",
+  "analysis_scope": "Only the two existing local derivative JSON files were read. No network, browser, source-download retry, new original document or investment conclusion.",
+  "input_files": [
+    {
+      "project_relative_path": "data/additional-cases/orbis-coverage/circle_orbis_observations.json",
+      "sha256": "3172420e3f2a4c8c130698f785603c16c360eba8ae80470de5aff063420e4e3b",
+      "kind": "derived_manual_UI_capture",
+      "capture_date_utc": "2026-10-24"
+    },
+    {
+      "project_relative_path": "data/additional-cases/circle-2025-ipo/extracted_evidence.json",
+      "sha256": "2cc8a4fd5f9f767c3ac8fc5a6b7659080d9d279480e4c3ea979e02d60b003f89",
+      "kind": "small_manual_public_filing_evidence_extract",
+      "verified_at_utc": "2026-10-24T01:28:06Z"
+    }
+  ],
+  "entity_and_scope": {
+    "legal_name_on_both_inputs": "Circle Internet Group, Inc.",
+    "orbis_bvd_id": "US992840247",
+    "orbis_id": "674047230",
+    "orbis_scope_label": "Consolidated",
+    "ipo_financial_scope": "Circle Internet Group, Inc. and subsidiaries; consolidated",
+    "identity_basis": "Same legal name and consolidated labels make these candidate comparisons; exact subsidiary perimeter and source-version equivalence have not been established.",
+    "location_not_incorporation_note": "The Orbis UI capture reports New York as location. The IPO extract identifies Delaware as incorporation state. These are different attributes, so no jurisdiction conflict is inferred."
+  },
+  "comparisons": [
+    {
+      "id": "circle_fy2024_revenue_candidate",
+      "period_end": "2024-12-31",
+      "left_observation_id": "circle-orbis-2024-revenue",
+      "left_raw_display_string": "1,676,253,000",
+      "left_metric_definition_status": "unverified",
+      "left_effective_unit": null,
+      "left_selected_scale_multiplier": null,
+      "right_fact_id": "fy2024_total_revenue_and_reserve_income",
+      "right_raw_value": "1676253",
+      "right_stored_unit": "thousand USD",
+      "right_explicit_scale_multiplier": "1000",
+      "display_number_ratio_left_to_right": "1000",
+      "hypothesis_only": {
+        "conditions": [
+          "Orbis display strings represent base USD amounts",
+          "Orbis Revenue denotes the same continuing-operations revenue-plus-reserve-income measure",
+          "The consolidated scope and historical source version are comparable"
+        ],
+        "right_fact_in_usd_using_its_explicit_unit": "1676253000",
+        "left_raw_number_equals_right_fact_in_usd": true,
+        "selected_as_effective_orbis_unit": false
+      },
+      "conclusion": "conditional_numeric_agreement_candidate",
+      "is_confirmed_monetary_match": false,
+      "is_confirmed_conflict": false,
+      "reason_unresolved": "The Orbis column currency labels and separate thousand-USD control do not resolve display scaling; metric definition and exact PROSP source version remain unverified."
+    },
+    {
+      "id": "circle_fy2023_revenue_candidate",
+      "period_end": "2023-12-31",
+      "left_observation_id": "circle-orbis-2023-revenue",
+      "left_raw_display_string": "1,450,466,000",
+      "left_metric_definition_status": "unverified",
+      "left_effective_unit": null,
+      "left_selected_scale_multiplier": null,
+      "right_fact_id": "fy2023_total_revenue_and_reserve_income",
+      "right_raw_value": "1450466",
+      "right_stored_unit": "thousand USD",
+      "right_explicit_scale_multiplier": "1000",
+      "display_number_ratio_left_to_right": "1000",
+      "hypothesis_only": {
+        "conditions": [
+          "Orbis display strings represent base USD amounts",
+          "Orbis Revenue denotes the same continuing-operations revenue-plus-reserve-income measure",
+          "The consolidated scope and historical source version are comparable"
+        ],
+        "right_fact_in_usd_using_its_explicit_unit": "1450466000",
+        "left_raw_number_equals_right_fact_in_usd": true,
+        "selected_as_effective_orbis_unit": false
+      },
+      "conclusion": "conditional_numeric_agreement_candidate",
+      "is_confirmed_monetary_match": false,
+      "is_confirmed_conflict": false,
+      "reason_unresolved": "The Orbis column currency labels and separate thousand-USD control do not resolve display scaling; metric definition and exact PROSP source version remain unverified."
+    },
+    {
+      "id": "circle_fy2024_revenue_growth_candidate",
+      "period_end": "2024-12-31",
+      "comparison_period_end": "2023-12-31",
+      "left_observation_ids": [
+        "circle-orbis-2024-revenue",
+        "circle-orbis-2023-revenue"
+      ],
+      "right_fact_ids": [
+        "fy2024_total_revenue_and_reserve_income",
+        "fy2023_total_revenue_and_reserve_income",
+        "fy2024_reported_growth"
+      ],
+      "formula": "(current_display_number / prior_display_number - 1) * 100",
+      "left_growth_percent_from_display_numbers": "15.56651448568942670838199590",
+      "right_growth_percent_from_explicit_ipo_facts": "15.56651448568942670838199590",
+      "rounded_to_one_decimal_percent": "15.6",
+      "ipo_reported_percent": "15.6",
+      "numeric_ratios_equal": true,
+      "rounding_agrees": true,
+      "conditions": [
+        "Orbis year columns use one common currency scale",
+        "The Revenue definition and consolidated scope are consistent across both years and with the IPO measure"
+      ],
+      "unit_invariant_note": "A common unknown multiplier cancels in the ratio. This does not resolve the absolute Orbis display unit or prove equivalent metric definitions.",
+      "conclusion": "conditional_scale_invariant_growth_agreement",
+      "is_independent_financial_verification": false
+    }
+  ],
+  "comparison_count": 3,
+  "confirmed_absolute_monetary_match_count": 0,
+  "confirmed_conflict_count": 0,
+  "temporal_guard": {
+    "historical_case_cutoff": "2025-05-27",
+    "orbis_capture_date_utc": "2026-10-24",
+    "fy2025_observations_excluded": [
+      "circle-orbis-2025-revenue",
+      "circle-orbis-2025-pretax_profit",
+      "circle-orbis-2025-net_income",
+      "circle-orbis-2025-cash_flow_ui",
+      "circle-orbis-2025-total_assets",
+      "circle-orbis-2025-equity",
+      "circle-orbis-2025-current_ratio",
+      "circle-orbis-2025-profit_margin_percent",
+      "circle-orbis-2025-return_on_equity_pretax_percent",
+      "circle-orbis-2025-return_on_capital_employed_pretax_percent",
+      "circle-orbis-2025-solvency_assets_percent",
+      "circle-orbis-2025-employees"
+    ],
+    "fy2025_excluded_count": 12,
+    "reason": "FY2025 ends after the historical IPO cutoff. Its values are later supplemental data, not facts available at the May2025 IPO date.",
+    "historical_restatement_limit": "Even FY2023/FY2024 Orbis values were observed in2026; a PROSP label alone does not establish that they are the exact May27,2025 filing version."
+  },
+  "not_compared": [
+    {
+      "metrics": [
+        "pretax_profit",
+        "net_income",
+        "cash_flow_ui",
+        "total_assets",
+        "equity",
+        "current_ratio",
+        "profit_margin_percent",
+        "return_on_equity_pretax_percent",
+        "return_on_capital_employed_pretax_percent",
+        "solvency_assets_percent",
+        "employees"
+      ],
+      "reason": "The saved IPO derivative file has no corresponding observed facts for these metrics. No discrepancy or agreement is asserted from remembered or unsaved filing content."
+    },
+    {
+      "period_end": "2022-12-31",
+      "metric": "revenue",
+      "reason": "FY2022 is referenced in the source inventory, but its revenue value is not present in the saved IPO derivative facts."
+    },
+    {
+      "metric": "cash_flow_ui",
+      "reason": "The visible cash-flow label has no verified definition; no mapping to a particular cash-flow-statement category was attempted."
+    }
+  ],
+  "source_relationship_limit": "Orbis PROSP figures may originate from the same prospectus as the IPO extraction. Even resolved numeric agreement would show cross-source processing consistency, not independent ledger validation.",
+  "required_follow_up": [
+    "Verify Orbis effective display scaling from a permitted source or clearly documented native export without choosing a multiplier from numeric fit alone.",
+    "Verify the provider's Revenue definition and exact source filing/version before marking either absolute candidate matched.",
+    "Verify consolidated entity scope and preserve later retrieval/as-of dates separately.",
+    "Acquire corresponding local IPO facts before comparing profit, balance-sheet or cash-flow metrics."
+  ],
+  "original_source_files_added": 0,
+  "native_provider_exports_added": 0,
+  "existing_source_observations_modified": false
+}

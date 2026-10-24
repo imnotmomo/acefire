@@ -1,0 +1,19 @@
+MARQETA FY2024 - PARTIAL WEB-EXTRACTED EVIDENCE
+This is a manually selected excerpt from previously retrieved official web/PDF text. It is not an original PDF, a full transcript, or a complete case packet.
+
+[MQ24-RELEASE]
+Source: https://investors.marqeta.com/static-files/05e01c2a-3a69-44d3-ad3f-0e387754b4d6
+Published: 2025-02-26. Financial period: FY2024 and Q4 2024.
+Page 2 (zero-based P1), Operating Highlights: in thousands, except TPV which is in millions.
+FY2024: Net revenue 506,995; Gross profit 351,849; Adjusted EBITDA 29,093; TPV 291,105.
+Page 5 (P4), Condensed Consolidated Statements of Operations, in thousands: FY2024 costs of revenue 155,146; net income 27,287.
+Page 8 (P7), quarterly highlights: Q1/Q2/Q3/Q4 net revenue 117,968 / 125,270 / 127,967 / 135,790; gross profit 84,161 / 79,353 / 90,132 / 98,202.
+These financial tables are marked unaudited. Quarterly sum differences may reflect displayed rounding; no independent ledger validation was performed.
+
+[MQ24-BLOCK-AM17]
+Source: https://www.sec.gov/Archives/edgar/data/1522540/000152254023000027/exhibit101-8xka81123.htm
+Opening heading and paragraph identify Amendment No.17 to the Master Services Agreement between Block, Inc. and Marqeta, Inc., effective 2023-07-01; the base agreement is dated 2016-04-19.
+The exhibit expressly redacts confidential information using [***]. Signed, unredacted economic terms were not acquired.
+
+ACQUISITION LIMIT
+Original PDF/HTML downloads failed: sandbox DNS failure, followed by one permitted network attempt that returned HTTP 403 for every source. Original file count: 0. No access workaround was used.

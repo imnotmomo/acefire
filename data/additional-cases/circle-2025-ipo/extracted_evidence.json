@@ -1,0 +1,243 @@
+{
+  "format": "small manually transcribed factual extraction plus short exact quotations",
+  "is_original_document": false,
+  "is_full_document_extract": false,
+  "verified_at_utc": "2026-10-24T01:28:06Z",
+  "locator_note": "Heading, printed page or clause references are preferred. web_reader_lines refer to the observed web reader rendering and are not original HTML line numbers.",
+  "financial_facts": [
+    {
+      "id": "fy2024_reserve_income",
+      "source_id": "circle_s1a_20250527",
+      "metric": "reserve_income",
+      "raw_value": "1661084",
+      "currency": "USD",
+      "stored_unit": "thousand USD",
+      "scale_multiplier": "1000",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_type": "duration",
+      "actual_forecast": "actual",
+      "locator": {
+        "section": "Consolidated statements of operations",
+        "table_header": "Year Ended December 31",
+        "column": "2024",
+        "row_search": "Reserve income",
+        "web_reader_lines": [
+          8263,
+          8267
+        ],
+        "printed_page": "F-36"
+      },
+      "entity_scope": "Circle Internet Group, Inc. and subsidiaries; consolidated"
+    },
+    {
+      "id": "fy2024_other_revenue",
+      "source_id": "circle_s1a_20250527",
+      "metric": "other_revenue",
+      "raw_value": "15169",
+      "currency": "USD",
+      "stored_unit": "thousand USD",
+      "scale_multiplier": "1000",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_type": "duration",
+      "actual_forecast": "actual",
+      "locator": {
+        "section": "Consolidated statements of operations",
+        "column": "2024",
+        "row_search": "Other revenue",
+        "web_reader_lines": [
+          8263,
+          8268
+        ],
+        "printed_page": "F-36"
+      },
+      "entity_scope": "Circle Internet Group, Inc. and subsidiaries; consolidated"
+    },
+    {
+      "id": "fy2024_total_revenue_and_reserve_income",
+      "source_id": "circle_s1a_20250527",
+      "metric": "total_revenue_and_reserve_income_continuing_operations",
+      "raw_value": "1676253",
+      "currency": "USD",
+      "stored_unit": "thousand USD",
+      "scale_multiplier": "1000",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_type": "duration",
+      "actual_forecast": "actual",
+      "locator": {
+        "section": "Consolidated statements of operations",
+        "column": "2024",
+        "row_search": "Total revenue and reserve income from continuing operations",
+        "web_reader_lines": [
+          8263,
+          8270
+        ],
+        "printed_page": "F-36"
+      },
+      "entity_scope": "Circle Internet Group, Inc. and subsidiaries; consolidated"
+    },
+    {
+      "id": "fy2023_total_revenue_and_reserve_income",
+      "source_id": "circle_s1a_20250527",
+      "metric": "total_revenue_and_reserve_income_continuing_operations",
+      "raw_value": "1450466",
+      "currency": "USD",
+      "stored_unit": "thousand USD",
+      "scale_multiplier": "1000",
+      "period_start": "2023-01-01",
+      "period_end": "2023-12-31",
+      "period_type": "duration",
+      "actual_forecast": "actual",
+      "locator": {
+        "section": "Consolidated statements of operations",
+        "column": "2023",
+        "row_search": "Total revenue and reserve income from continuing operations",
+        "web_reader_lines": [
+          8263,
+          8270
+        ],
+        "printed_page": "F-36"
+      },
+      "entity_scope": "Circle Internet Group, Inc. and subsidiaries; consolidated"
+    },
+    {
+      "id": "fy2024_reported_growth",
+      "source_id": "circle_s1a_20250527",
+      "metric": "year_over_year_growth_total_revenue_and_reserve_income",
+      "raw_value": "15.6",
+      "stored_unit": "percent",
+      "scale_multiplier": "0.01",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "comparison_period_end": "2023-12-31",
+      "locator": {
+        "section": "Management discussion and analysis; annual results comparison",
+        "column": "2024 vs 2023 percent change",
+        "row_search": "Total revenue and reserve income from continuing operations",
+        "web_reader_lines": [
+          3188,
+          3188
+        ]
+      }
+    }
+  ],
+  "offering_facts": [
+    {
+      "id": "proposed_offering_20250527",
+      "source_ids": [
+        "circle_s1a_20250527",
+        "circle_ipo_launch_20250527"
+      ],
+      "as_of": "2025-05-27",
+      "is_final_ipo_outcome": false,
+      "total_shares": "24000000",
+      "issuer_primary_shares": "9600000",
+      "selling_stockholder_secondary_shares": "14400000",
+      "expected_price_low_usd": "24.00",
+      "expected_price_high_usd": "26.00",
+      "additional_underwriter_option_shares": "3600000",
+      "locator": {
+        "s1a": "Prospectus cover, May 27, 2025",
+        "company_announcement": "Opening two paragraphs"
+      },
+      "comparison_note": "Same-day proposed terms only; final June 2025 IPO pricing and size are outside this case cutoff."
+    }
+  ],
+  "short_exact_quotes": [
+    {
+      "source_id": "circle_s1a_20250527",
+      "quote": "Reserve income is recorded on a gross basis before the impact of any distribution costs.",
+      "locator": {
+        "section": "Management discussion and analysis; Key components of revenue and expenses; Reserve income",
+        "web_reader_lines": [
+          3005,
+          3005
+        ]
+      },
+      "purpose": "Definition context, not a full accounting policy extraction."
+    },
+    {
+      "source_id": "circle_coinbase_collaboration_20230818",
+      "quote": "The initial term (the “Initial Term”) of this Agreement shall commence on the Effective Date",
+      "locator": {
+        "section": "3.1 Initial Term",
+        "printed_page": "12",
+        "web_reader_lines": [
+          436,
+          436
+        ]
+      },
+      "purpose": "Short excerpt only. Full clause also discusses duration and renewal; original is not saved."
+    },
+    {
+      "source_id": "circle_coinbase_ecosystem_20241114",
+      "quote": "Nothing in this Ecosystem Agreement is intended to modify the rights or obligations set forth in the Collaboration Agreement",
+      "locator": {
+        "section": "Recitals",
+        "web_reader_lines": [
+          16,
+          16
+        ]
+      },
+      "purpose": "Contract-reference extraction only; this excerpt omits the remainder of the sentence."
+    }
+  ],
+  "arithmetic_replays": [
+    {
+      "id": "fy2024_revenue_sum",
+      "inputs": [
+        "fy2024_reserve_income",
+        "fy2024_other_revenue"
+      ],
+      "formula": "1661084 + 15169",
+      "expected": "1676253",
+      "unit": "thousand USD",
+      "evidence_scope": "internal consistency of a single public S-1/A table; not independent ledger verification"
+    },
+    {
+      "id": "fy2024_growth_rounding",
+      "inputs": [
+        "fy2024_total_revenue_and_reserve_income",
+        "fy2023_total_revenue_and_reserve_income"
+      ],
+      "formula": "(1676253 / 1450466 - 1) * 100",
+      "expected_rounded_percent": "15.6",
+      "decimal_places": 1,
+      "evidence_scope": "single filing arithmetic and displayed rounding only"
+    },
+    {
+      "id": "proposed_share_count",
+      "inputs": [
+        "proposed_offering_20250527"
+      ],
+      "formula": "9600000 + 14400000",
+      "expected": "24000000",
+      "unit": "shares",
+      "evidence_scope": "same-day proposed offering reconciliation, not final proceeds or valuation"
+    }
+  ],
+  "limitations": [
+    "Manually transcribed facts; inspect the linked complete sources before production use",
+    "No full local original source files; unavailable originals must not be represented as imported",
+    "Quoted excerpts are incomplete clauses and do not support legal conclusions",
+    "Distinct contracting and consolidated reporting entities must not be merged automatically",
+    "No independent verification of corporate ledger, contract economics or accounting accuracy"
+  ],
+  "issuer_facts": {
+    "legal_name": "Circle Internet Group, Inc.",
+    "country": "United States",
+    "incorporation_state": "Delaware",
+    "headquarters_at_filing": "New York, NY",
+    "source_id": "circle_s1a_20250527",
+    "locator": {
+      "section": "Cover",
+      "web_reader_lines": [
+        25,
+        37
+      ]
+    },
+    "note": "Keep the issuer separate from Circle Internet Financial, LLC and other affiliates."
+  }
+}

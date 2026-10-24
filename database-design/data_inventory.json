@@ -1,0 +1,3702 @@
+{
+  "generated_at_utc": "2026-10-23T23:59:55.853332+00:00",
+  "source_root": "data/Enfuce",
+  "deal_key": "enfuce",
+  "hashing": "SHA-256 entire file; duplicate bytes do not remove separate source references",
+  "file_id_rule": "UUIDv5 namespace 2de120ad-55d3-590c-87a2-f2824186ee34 of relativepath#sha256",
+  "summary": {
+    "physical_file_count": 366,
+    "eligible_file_count": 365,
+    "size_bytes": 332348072,
+    "extension_counts": {
+      ".docx": 11,
+      ".pdf": 339,
+      ".xlsx": 13,
+      ".pptx": 3
+    },
+    "category_counts": {
+      "Investment reports": 2,
+      "A. Corporate Documentation": 69,
+      "B. Financial and Tax Information": 10,
+      "C. Financing": 12,
+      "D. Material Agreements": 121,
+      "E. Employment Matters": 124,
+      "F. Disputes, Claims and Compliance": 12,
+      "G. Intellectual Property": 9,
+      "Supplemental FDD": 7
+    },
+    "exact_duplicate_groups": [
+      {
+        "sha256": "a3251ca1417f750ac4df539dd22d343713a84f028931d2fa057e8ce1b45a8f67",
+        "paths": [
+          "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-05-02).pdf",
+          "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/ELS_Board Minutes (2019-05-02).pdf"
+        ]
+      }
+    ],
+    "unique_eligible_content_hashes": 364,
+    "files_with_content_extracted": "Only targeted financial workbooks and2key reports; file inventory is not full claim extraction."
+  },
+  "files": [
+    {
+      "source_file_id": "f7d5c75e-a9c5-5a49-a96e-91ced72eb1f6",
+      "relative_path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+      "extension": ".docx",
+      "bytes": 118809,
+      "sha256": "cbd6e2b302adbe97eac6c10b5a2017db16f87162303e4c5bc041a4e261c8e0a9",
+      "category": "Investment reports",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4091cd5f-d77f-5cd5-9317-c910c0c0bf3d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/AGM2017_with signature.pdf",
+      "extension": ".pdf",
+      "bytes": 1914637,
+      "sha256": "e2d4f44e12539aef1cd2cbec1ec3639ee81ddb471897824d6c8ffaf365eb2b72",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7263a19e-2bc0-548a-bf31-ed3f9d093a29",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS IA Amendment Resolution of the Shareholders (2020-02-25).pdf",
+      "extension": ".pdf",
+      "bytes": 393115,
+      "sha256": "ce646776a226a774fcbd87379acca359de0ba285118bb8a78ebc88803226fb50",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "60ebc9a5-1d8e-5e08-a11e-1fc852c9e9b3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_AGM (2018-04-26).pdf",
+      "extension": ".pdf",
+      "bytes": 656633,
+      "sha256": "9782873347b8885bc5f29c1d4c09b74710ac77533972c270fb38cfb9ecb79a44",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c769959c-5683-5627-94ac-71166e9cb13a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_AGM (2019-04-30).pdf",
+      "extension": ".pdf",
+      "bytes": 1548159,
+      "sha256": "f8e858e8bd80c9ef35ddd26a1208946ed3a35af305f8e169ffd90b4b416cf328",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e51d9454-4029-5dfd-ab09-3aea7692364e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_AGM Minutes (2020-04-15).pdf",
+      "extension": ".pdf",
+      "bytes": 3735441,
+      "sha256": "6d1bb2b81e3d5b27b8fb6a2d33c356fe633e69c66d23c415972437b8a4f566c9",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f3c4aeff-d2bd-55b1-8a5b-5e74babd3758",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_AGM_Dividends 2018 (2018-04-26).xlsx",
+      "extension": ".xlsx",
+      "bytes": 21716,
+      "sha256": "410f81c64e5b8347cbc9ab728556fea1de8e90abe420203279e0c52061ad16f7",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "00e7e032-55ae-58bb-ada0-0d9538e9d79b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_Jaffar 2018 POA.pdf",
+      "extension": ".pdf",
+      "bytes": 323945,
+      "sha256": "57623df9578ef70fcaf319a1f527679b740f4317c20478c4534743c42ac3cdcb",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fdc8954e-7ad4-59ac-ad94-3b88c00fe021",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2016-12-27) (Auditor appointment).pdf",
+      "extension": ".pdf",
+      "bytes": 267358,
+      "sha256": "7dbc309cb685311581481b2c75e00b898ac333a3edc215f11240c19ac6d8bba7",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "158c5fdc-19f3-5908-952c-c96ae413e558",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2018-03-12) (MN issue).pdf",
+      "extension": ".pdf",
+      "bytes": 448930,
+      "sha256": "6224b3c9f61007a85254e2cc701bc504d1a9d34750f0ecaeede82bca265d3630",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2ed531ed-0a8b-59f4-80db-a744193b0481",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2018-11 unsigned)(AA issue).pdf",
+      "extension": ".pdf",
+      "bytes": 176257,
+      "sha256": "803b73f978d8e2711c29bb7897467f9d29bf4498a4c9392b6bf79fbccf275377",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "325717d7-1a00-544c-987c-af281811e7ad",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2019-06-18) (Lelluleet issue).pdf",
+      "extension": ".pdf",
+      "bytes": 3411392,
+      "sha256": "ad04ef20b0c995acf5ae7fb5e49f67b52005a37b4893c5c2afe9cb6c33ab733e",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "43241388-8cec-5df9-87ec-f5b2e2adccd2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2019-11-02) (Maki Investment).PDF",
+      "extension": ".pdf",
+      "bytes": 224991,
+      "sha256": "301e07617a219894925a684f5483ff3ed18fbd71f400b02019d9485c15f3bf6f",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9059e9c3-ba32-57f7-9578-f8b9270c3e73",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EFS_SH Resolutions (2020-04-14).pdf",
+      "extension": ".pdf",
+      "bytes": 420207,
+      "sha256": "9120cc59fad33b383ab7390c56e3a60087b005357c408d516a4d0c9fff029e9e",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "20a31431-782b-5a8d-ba48-480a1dcc1072",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/ELS_AGM Minutes (2020-04-01).pdf",
+      "extension": ".pdf",
+      "bytes": 248314,
+      "sha256": "14c9c0a408a2b10b06b20e9edbf20904879a1771f1d0256828d2fc94c16fcc8d",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9603024e-1bed-5abe-bdae-f105f39c03a7",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/EPS_AGM Minutes (2020-04-01).pdf",
+      "extension": ".pdf",
+      "bytes": 249449,
+      "sha256": "9e513cf0572d026d0c9bdb570353c695fc064f9f711e3d20064f99b13f84d974",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "65840ac8-9512-5c1d-a1da-68c8133df941",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/ES AB_EGM (17.4.19).pdf",
+      "extension": ".pdf",
+      "bytes": 391305,
+      "sha256": "aeccd77642626b6e0d7a6175c9edfff55d1b973876c4a15626f28290410c3f7f",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4dd68f9e-f9d5-53a5-b2bc-d493fd256802",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/AGM & SH Resolutions/Valorem Operari_SH Resolutions (2016-10-06).pdf",
+      "extension": ".pdf",
+      "bytes": 306830,
+      "sha256": "84eff57e0f4943acb048fb71a9c5d9c21da4735f87ba6423055d7cc2b474df80",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6bbbb476-892f-5549-b545-4e384952f48e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2016-12-15).pdf",
+      "extension": ".pdf",
+      "bytes": 1137835,
+      "sha256": "cb56667a013a25973498c34eb07bcd2ba9b98b20b2c3f811ac0b5e0c4be8f891",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "96211f99-405f-5f9d-b20d-1f15777fac0b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2017-02-28).pdf",
+      "extension": ".pdf",
+      "bytes": 1016889,
+      "sha256": "ba049c44009bd8949962b41119b5da9b38838f7c887caa8cfa5bff71b35266ba",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5872b67f-f5f7-54ec-84c5-74c5d60d916a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2017-10-04).pdf",
+      "extension": ".pdf",
+      "bytes": 1012121,
+      "sha256": "5c148fff81231f5b1eae221b504382c29fbd1dec3b09754af12899e6528f3481",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "98cec175-cf91-55d8-9cd5-b443589db1ef",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2017-11-02).pdf",
+      "extension": ".pdf",
+      "bytes": 165827,
+      "sha256": "2361d90c8e5231409e73fb0ed004aa3ed8d5f7da43efe5c74226ad164c90d3a2",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b3ce8f61-f92f-550f-b343-982deac99acd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2017-12-07).pdf",
+      "extension": ".pdf",
+      "bytes": 247111,
+      "sha256": "63e30915c4bb01d382af8fef4ae9646904372413492c05436858b5abbe736300",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0d4beb67-8312-571f-afc0-3b07d6241dd8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-04-09 unsigned) (SHA breach).pdf",
+      "extension": ".pdf",
+      "bytes": 65401,
+      "sha256": "428ddb9d7f9ea43842b3c4f2367d3b4b848449c455cd718544592a9f8c071f0f",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a3f97770-40bd-5f57-9fc8-62d2661d6365",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-04-16).pdf",
+      "extension": ".pdf",
+      "bytes": 467608,
+      "sha256": "1beb481d163141cafdf497215c6e01590cc2bea6670d6bc8693ac9a68d8ccf0c",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7ee8b3cc-f79f-5e66-a1ae-e92a213150e2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-04-27).pdf",
+      "extension": ".pdf",
+      "bytes": 350504,
+      "sha256": "68c8d6e1b3f4ab0265b283714af172c3eb63e864b849dc873461a2cdeb560158",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "dfb0358d-6ab9-5ffb-ae96-7e5a1df96028",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-06-26).pdf",
+      "extension": ".pdf",
+      "bytes": 1225878,
+      "sha256": "33e18f7c1733626358d799c22ee408466e91d7b453e7b70055ba2e5f9c847042",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "03717e92-e106-5054-ab11-b784141b38c0",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-08-28).pdf",
+      "extension": ".pdf",
+      "bytes": 200220,
+      "sha256": "65f590c24ce113218ec63f07e17194a647f298e2ed744680f8fead1d1fc4a653",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7015e51c-b7a8-5078-9004-6236d82d7f76",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-10-02).pdf",
+      "extension": ".pdf",
+      "bytes": 878559,
+      "sha256": "4b502dc622a60d52e3345f93ba6471c7e220ef5d716e9b5d31b5e0e88515403c",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "66e48940-cff8-5b33-97cb-76e56d5bc0f8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-10-29).pdf",
+      "extension": ".pdf",
+      "bytes": 622193,
+      "sha256": "45110acf9e36f95162997717c0504ff20b174dfeb62d60116869e4d6fb7853f9",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c22991e9-e14c-569b-b472-0b6e64d50d44",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2018-12-18).pdf",
+      "extension": ".pdf",
+      "bytes": 588209,
+      "sha256": "f69aaf84e35cfb0bd870f4c376636c3141b5aad1d594a835d703c4a28e2f8086",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "45e94636-47a4-5d22-ba1c-7fd68451b8e3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-01-17).pdf",
+      "extension": ".pdf",
+      "bytes": 498669,
+      "sha256": "5b909406bc0c7accaee48fd0cc0c84a4d5abda0427170a99c3c5230ec2e51cfe",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c0fe1db2-80a7-5aeb-ac55-72d05661668e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-01-31).pdf",
+      "extension": ".pdf",
+      "bytes": 604799,
+      "sha256": "b2059f6f2f028208b8740165c6601abab89d9e29d5c15378f8e3f255761d4f66",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ef5829a6-3b7b-594f-a343-4f0afc885139",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-03-20).pdf",
+      "extension": ".pdf",
+      "bytes": 672712,
+      "sha256": "332cf2fdf77570cb0684389b48188a23959c0ec5f1ef5fb3f9bd77a443154c29",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "db548d42-b389-5960-9ed4-63915bc49682",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-03-28).pdf",
+      "extension": ".pdf",
+      "bytes": 938905,
+      "sha256": "f29d03c06da84acbbc66e11b88e67188a21366e6c77b664c2e0d3f93b944f84f",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c0dad1b4-3bb8-5466-ae11-74e191c621d6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-04-26).pdf",
+      "extension": ".pdf",
+      "bytes": 855113,
+      "sha256": "7d129f2db828ec4b8e174644b3c8079d594641d65cc5dbb8e5e33112eabbf6bb",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "eb782673-3b27-537a-b4fd-5581f56d0260",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-05-02).pdf",
+      "extension": ".pdf",
+      "bytes": 776239,
+      "sha256": "a3251ca1417f750ac4df539dd22d343713a84f028931d2fa057e8ce1b45a8f67",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "20bf9847-512d-5304-8812-c40c9511af03",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-05-10).pdf",
+      "extension": ".pdf",
+      "bytes": 908904,
+      "sha256": "573acea14a82aece1f9be661d6755d3a1441ce77502c97aefbd70cbaaf36aa17",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a4b40377-2979-53bb-b13e-18dd3e40f4ef",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-06-27).pdf",
+      "extension": ".pdf",
+      "bytes": 818497,
+      "sha256": "f3872a962e59113a3d0e6fec51864e7764b010952d6ec4ad283eb8f806a3b15a",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f129523c-d334-544e-8ed5-3fd1016f0358",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2019-11-29).pdf",
+      "extension": ".pdf",
+      "bytes": 1246448,
+      "sha256": "d00a51e98ba0f8a9217ff711a8bbe8161f5d66b94cb23ad4905a846e5776c729",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "87f31643-be8e-5fb8-8bed-2ada6d21885e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2020-02-27).pdf",
+      "extension": ".pdf",
+      "bytes": 955403,
+      "sha256": "029ed653566479329f24c4841bb81004714fdf76037bab9951ad5522a08ce5cf",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f8966053-e603-5e99-8b2b-34e4fa987983",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2020-05-26).pdf",
+      "extension": ".pdf",
+      "bytes": 267392,
+      "sha256": "07f17bee9d6329cff5c9a5f4915e2d42808fef337c5baba5abcd2ab5ad27ca52",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "43e16099-447d-5362-8c51-11d7a224a7c6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2020-06-11).pdf",
+      "extension": ".pdf",
+      "bytes": 263194,
+      "sha256": "edb5fcb9bb81a4858b1370d01ffebd6c52ef0fda8806b68d995f05e9c1725393",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6c251232-3629-5046-8286-f3b5ea4f68ff",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Minutes (2020-06-29).pdf",
+      "extension": ".pdf",
+      "bytes": 275713,
+      "sha256": "be0b123d182563248961053ad5a617dff8efc1ee22f64edee18d05c1ac7514de",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9adc1ba1-7837-51b6-9e9e-26880d9dae25",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2017-05-19)(key employee bonus).pdf",
+      "extension": ".pdf",
+      "bytes": 58701,
+      "sha256": "78c11d97ee018c1baa4851a2e5a78b0eff6c59f9b58f97b09c80d63109ddc74a",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2998bfbb-c855-50f9-aa0a-51edb22455a9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2019-11-02) (Approval of Maki IA and SHA).PDF",
+      "extension": ".pdf",
+      "bytes": 187662,
+      "sha256": "5906a617608e494501929123262e53fb72fc41acd21de225b528256d417714d8",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "29987a2a-5466-5174-98af-5db329a44e5e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2019-11-13) (Maki Actions).PDF",
+      "extension": ".pdf",
+      "bytes": 278753,
+      "sha256": "74d2d73e5461358f4e088331b7ba24b300563d64260e7e2af66a3351707f34ca",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c9d78f33-ef0a-5732-b8f1-af2daa3fc324",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2019-11-25) (Cap_Table_Approval).pdf",
+      "extension": ".pdf",
+      "bytes": 266410,
+      "sha256": "ae83b787c1ff5d7186e49a89ce93ae9c72abee39a20a128cdf61d7f95017c537",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f37e694a-e998-5b4c-acb9-66012926a08c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2019-12-02) (Spanish_Branch_Liquidation).pdf",
+      "extension": ".pdf",
+      "bytes": 256530,
+      "sha256": "d22f3aeb502a2686c581a526bd67d33f4a0ac432809335be456828ef12e55809",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "03fb0fb7-3487-58d7-b164-9ce817ff7fe1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2020-02-25) (Second Closing Tranche A).pdf",
+      "extension": ".pdf",
+      "bytes": 2424371,
+      "sha256": "7139e0d27a88133922c38b128b9ad98ab5b2a034044c2a9289884020c98a7a5b",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "84d9c2aa-b988-5684-98da-8ba5a2a58ec3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2020-04-10) (AB Company Redemption).docx.pdf",
+      "extension": ".pdf",
+      "bytes": 397618,
+      "sha256": "4275d211e39746550ce2328d50954110749d1e106864ccf46c810a1633420d5d",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "92c8b9cb-031d-5f38-94b4-b0b9a0f3f606",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2020-04-14).pdf",
+      "extension": ".pdf",
+      "bytes": 276724,
+      "sha256": "4d66926f0b3b1c5f79d253461792ac5ee810267df862e2439e89da344eba5298",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "48c21b95-1fb9-5eb3-a439-649a74fd3824",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/EFS_Board Resolutions (2020-06-30) (Management Change)_v2.docx.pdf",
+      "extension": ".pdf",
+      "bytes": 254599,
+      "sha256": "74d7c83508f0d4cead31ad9600d49cb11366bea4c581b39530f398748cb0ae8e",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d83a9513-e70e-5b4c-9bea-226c2795371d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/ELS_Board Minutes (2019-05-02).pdf",
+      "extension": ".pdf",
+      "bytes": 776239,
+      "sha256": "a3251ca1417f750ac4df539dd22d343713a84f028931d2fa057e8ce1b45a8f67",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "51ed13f9-405a-5609-9704-ed34bae7ae6c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/ES AB_Board Minutes (17.4.19).pdf",
+      "extension": ".pdf",
+      "bytes": 474247,
+      "sha256": "9f74eb3b34d90d63478048953ee1bbf5ef3b97e6d53630bfb7a967760fe02be6",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4bf8d277-1551-5522-8b06-d42f530c3350",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Board Minutes/Valorem Operari_Board Minutes (2016-10-14).pdf",
+      "extension": ".pdf",
+      "bytes": 755087,
+      "sha256": "eeed06a621f3fd2c1df55f7e49f60c694100969c7a90b1c7a2404154706f466b",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "da17308a-dc8a-5cd4-9f69-18e3d16aaa90",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_Cap table (as of 2020-04-14).pdf",
+      "extension": ".pdf",
+      "bytes": 48670,
+      "sha256": "9535ad6287a0267ab5456afc81b3e99e167349f5ea2ad8966f97ab4812d300a9",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "039f9f83-b7cd-5db9-9bee-8c4dfd7d2a56",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_PRH AoA (2019-12-12).pdf",
+      "extension": ".pdf",
+      "bytes": 112205,
+      "sha256": "ad500d3d506798eef77b75f7b86226397d1da0c28b7ee05e3df9a897b74cb4d8",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f9e5b7f3-4f13-5a44-90fe-08e346a6ea91",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_PRH Extract (2020-06-25).pdf",
+      "extension": ".pdf",
+      "bytes": 650315,
+      "sha256": "f5b7e3594684b1740a69fca6e9e7969d19b5131baecc9862a4cccca3444d08f1",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d7002afc-890f-5750-966c-f5b71a515e36",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_PRH Extract (2020-07-20).pdf",
+      "extension": ".pdf",
+      "bytes": 497566,
+      "sha256": "444e9ab4254ea9944d5c3a87db5cd0221223e465d0914945f49cfb0043fa5c37",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bdc7668b-03f1-525b-a422-33387eababd1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_PRH UBOs Notification (2020-06-18).pdf",
+      "extension": ".pdf",
+      "bytes": 1840700,
+      "sha256": "028c3ff44d46d707f96e1be1c16a946d7f12d241074f23b477a18d3694fcf2ea",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0e134d44-a606-5619-87c0-ff2918aa16bc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EFS_SHA (2019-11-02).PDF",
+      "extension": ".pdf",
+      "bytes": 762549,
+      "sha256": "498c3fc8bba324f234c86a3aa2dada1cb0efc3c490616d92a7c707be3945947b",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b2dbd2d0-4e75-5e67-9245-ca966ff8b985",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/ELS_PRH AoA (2019-09-30).pdf",
+      "extension": ".pdf",
+      "bytes": 100991,
+      "sha256": "e380c51e0040a4a7509992237954608f8b7a17893453673bd17b546f540e2628",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d9f441a4-b621-5c8b-868c-a73d13109e34",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/ELS_PRH Extract (2020-06-11).pdf",
+      "extension": ".pdf",
+      "bytes": 453498,
+      "sha256": "234a5eb03ae9da245544b2c5311e70d2d05393ed7974367966c88a45f6752efd",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "af5b6c3d-fafe-516e-9546-55d300041122",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/ELS_PRH UBOs Notification (2020-06-18).pdf",
+      "extension": ".pdf",
+      "bytes": 943207,
+      "sha256": "d8ab53cf46e7848e718f11d43d9c689a7a1892d2ec2fcc94d8b7696695cbfdf5",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "79fd5ecc-7bb4-50d4-b811-b318eee331b8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EPS_PRH AoA (2019-09-30).pdf",
+      "extension": ".pdf",
+      "bytes": 104007,
+      "sha256": "76781c15a1449acb1e9ea92b3e27ff590de70cfe0f663f8e1f6c9b98243a2511",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "99e09378-d450-5040-985a-40ae9e28f8f6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EPS_PRH Extract (2020-06-11).pdf",
+      "extension": ".pdf",
+      "bytes": 462889,
+      "sha256": "74e3c59d83bba016ae447cee43a6b9aa7bddedad2fce78e4dba37b164c170b7a",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1dab2ad7-01f1-5d8f-a18f-a71ef1200f33",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/EPS_PRH UBOs Notification (2020-06-18).pdf",
+      "extension": ".pdf",
+      "bytes": 1769701,
+      "sha256": "98d49821b900d577a0c12c3e090515c13dd8df0495692793ca6569e7e618b924",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2d9621a3-07b0-5287-8530-8faffe5b83fe",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/ES AB_Company AoA (23.10.19).pdf",
+      "extension": ".pdf",
+      "bytes": 549545,
+      "sha256": "50e53bfeb2edbee908e558d64f6a6703d8ec92f9372496901458a9e42b136427",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d68416ad-5402-565d-91af-c4c172d025c1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/A. Corporate Documentation/Group Ownership Chart 2019-12-18.pdf",
+      "extension": ".pdf",
+      "bytes": 213842,
+      "sha256": "c3425daef15e22080bb766cd6c47b35c964e6a1b588a56e49be4e5bf783ffc17",
+      "category": "A. Corporate Documentation",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b57f068e-4ca2-59e2-a0dd-824e314a6e36",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/EFS_2017 Financial Statments (PRH filed).pdf",
+      "extension": ".pdf",
+      "bytes": 2405102,
+      "sha256": "8723d7ccf04656963935942396b10f42930f670eb41e576a918444fd4177b060",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "865d3222-6afa-54cc-bf22-7636237c2ddb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/EFS_2018 Financial Statments (PRH filed).pdf",
+      "extension": ".pdf",
+      "bytes": 1358809,
+      "sha256": "739e0a7a24c56f40f90ea2d8d98c19e588af6746c04c85167f04c5d7cb5953a3",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5007066e-55b5-5e29-8861-e7e4f655d7e7",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/EFS_Financial Statements 2019.pdf",
+      "extension": ".pdf",
+      "bytes": 2523466,
+      "sha256": "d4698de2b4ae68a0bba04c774995046d82ab2a8dee6fad5abd28c1337bfe350f",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a238a515-c4da-5baa-9bf2-2f5d23328926",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/ELS, EPS, Eswe - Translation of financial statement key figures - 2019.xlsx",
+      "extension": ".xlsx",
+      "bytes": 20180,
+      "sha256": "4a2c2a6bae37d22f426ef878bd347748980b6bc3b884d52f0d9ff478dda385e9",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "aab9cbac-94d0-597e-9944-eba0406134c5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/ELS_Financial Statements 2019.pdf",
+      "extension": ".pdf",
+      "bytes": 593134,
+      "sha256": "167476db3ea8b9c9d8dcd7330074b3ecc6e7a233da30a7a5dfc6e0f55b48c7b5",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9e041e74-1b08-5bf7-ad60-3a0674b17518",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/EPS_Financial Statements 2019.pdf",
+      "extension": ".pdf",
+      "bytes": 532710,
+      "sha256": "662aa28cd2ccdcd40d9093938e1839b897b29587250f37a9bf7e0455b8425733",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "08e01cdf-b1e5-58d8-9805-586407fbd82a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/ESwe_Arsredovisning 20191231.pdf",
+      "extension": ".pdf",
+      "bytes": 88152,
+      "sha256": "6c3f73825214cabf03d5b97f24c84e05c10e9c0e87bead9342be30a1f5fee041",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "83393cc6-b35b-5a96-b1d2-8dc6ec2cf2b4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "extension": ".xlsx",
+      "bytes": 47013,
+      "sha256": "fa1f28c79f39bf6934f4281ac813b868a02091ae5e22c35420d70140fcbdadb2",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f9c2648f-b6fc-5b5f-becd-4533cecb4821",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/Further updates (financial related) 5.8.2020.xlsx",
+      "extension": ".xlsx",
+      "bytes": 385584,
+      "sha256": "b9f123b2e16174aebb39e013db635fba543659e3d418172089479620f038f5fe",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ba6de76d-1ca2-54c4-85e3-bd42fae6ccdf",
+      "relative_path": "data/Enfuce/Enfuce 09-07/B. Financial and Tax Information/~$Enfuce P_L  2017- 2022F by Qs.xlsx",
+      "extension": ".xlsx",
+      "bytes": 165,
+      "sha256": "a56509277035f865d54f697560634f21da3e36da0c983cc6f72ebb79ec3b73eb",
+      "category": "B. Financial and Tax Information",
+      "ingest_eligible": false,
+      "skip_reason": "office_temporary_lockfile"
+    },
+    {
+      "source_file_id": "9298fc28-493a-5211-aa60-ca1d40e6f6da",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Bible of Documents - Juniorlainajarjes tely - Enfu⋯.pdf",
+      "extension": ".pdf",
+      "bytes": 8115849,
+      "sha256": "8a32a816ada65c45c2f47ba3fc931cbb34d5fe20e32ee1106ed27fea2c8139ca",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c6bfc8b9-5842-5200-8397-496dab9127c7",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_2018 loan agreement.pdf",
+      "extension": ".pdf",
+      "bytes": 991734,
+      "sha256": "1445b60ad816381fd05843d8731ccd4e3a18ad5e8446215fc27a1491e1e8696a",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bf17cc3b-4a1b-5dfa-865d-fcb5378665fe",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_Korona Grant (#4559) (2020-03-27).pdf",
+      "extension": ".pdf",
+      "bytes": 21336,
+      "sha256": "0a2adeb6af0cfe90d70807d951ddcbed48f6770091115ca272bedae1dfd94b4a",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c994ef10-1853-52a1-92cc-d31f3b2e253b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_Loan 2131 31 2020 (3035-18065).pdf",
+      "extension": ".pdf",
+      "bytes": 3933919,
+      "sha256": "8a8b2151c0c4140a5f86146e853dd691044c584889138023347d952a09614b25",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cbdbdd74-bd10-5767-a311-10463b6fdc8d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_OB Platform Grant (#4281) (2018-09-07).pdf",
+      "extension": ".pdf",
+      "bytes": 53706,
+      "sha256": "d195eced70a3d689a0d5ca4acca8bbb534d6f83ea11fb931972f26be9bf67bee",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "404f7af6-cf83-56b8-8432-9cc420b67e39",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_Tempo Grant (#1547) (2018-04-10).pdf",
+      "extension": ".pdf",
+      "bytes": 22314,
+      "sha256": "555cf9a6c88030cb6fdaf5d445714679284bc10aaa37d8b5b4577339218d19a5",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7ebc96a5-7a48-5114-bf5e-fd05b57cee8e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Business Finland_UCLA GAP Grant (#3963) (2019-05-23).pdf",
+      "extension": ".pdf",
+      "bytes": 24116,
+      "sha256": "e1568a643471e7079365eed8e997bf26eb0a3c2e814300212c4e1a58eb6378e4",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "84bed373-bab5-59e2-9795-4f5120a60b71",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/EFS_Loan Agreements with Nordea and Lahitapiola (2019-02-08).pdf",
+      "extension": ".pdf",
+      "bytes": 7920407,
+      "sha256": "a9490663a1a298f914e10be11cfb0d17bb6b78b44bde182611b23c74d5eaa266",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b9dd4ee6-d162-514e-b20f-60cc42379e6a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/EFS_Nordea Loan 180020-6011510 (2018-05-07).pdf",
+      "extension": ".pdf",
+      "bytes": 2184959,
+      "sha256": "f7f10bafcf6cd69ab290662377900fdcc545000bd852cb2da8fe472638640a3b",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4f0a24df-955f-533c-9403-13ee9d727bc9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/EFS_PRH Pledge List (as of 2019-05-17).pdf",
+      "extension": ".pdf",
+      "bytes": 38227,
+      "sha256": "5ef7bf7ad9151ff876c38136335a26724daf8a3809530140192bec18bed63672",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5786edd5-5773-514c-a1e8-7e49ec516439",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Finvera takaus 08052018.pdf",
+      "extension": ".pdf",
+      "bytes": 2506064,
+      "sha256": "6d494a3941acb7dc829c18d5d20ddd0a986f8ccbb36df782f1a15a6ec80cf7f2",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8a5858ab-b369-5dd7-b04b-aa9b7018bcb3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/C. Financing/Oracle_PS & PPA (2019-11-29).pdf",
+      "extension": ".pdf",
+      "bytes": 1153893,
+      "sha256": "da0afdb2a23caad19f5ab1c275c9ef4db4a6e814412c28a3f36fedaa96cbfaf1",
+      "category": "C. Financing",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d3318f74-866b-52e2-8622-b7a6b4a67ba9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_PA (signed 6.3.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1405619,
+      "sha256": "5c36f5c19dcf78e382c27f7e69cb3fb4dd3bb5c5443732467ccc71409e034c82",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e6a3b133-28b5-57c8-babc-29dfe80068f7",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 806326,
+      "sha256": "b64082816d99c0d9c077d1e269d7ab773e26e0f41845fdbfaad79f10168387ab",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "959d689f-c92e-5ef1-90c0-2285261574f6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Amendment (2020-06-24 signed).pdf",
+      "extension": ".pdf",
+      "bytes": 323286,
+      "sha256": "37cea24e31a3c3d136aebe694d34533b46fb785159b554bf766b0c5b0b805a69",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "56046ce4-709a-5dc3-bbc8-35936c65f23e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Annex 1 Service Description (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1084906,
+      "sha256": "8528b8b8ecf0ffc0e8fd541d8b4fd02cb47dbffe4f43554e8dc29ff5239003f3",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "75d8194d-7a80-5957-9354-ee605888bf5b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Annex 2 Price List (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 541155,
+      "sha256": "6d09ce1a2ba158cd62022d28dd39a11354be4b8736a16b16906061cf255b3378",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7991ea83-23c9-58d1-a7ff-dff20c482219",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Annex 3 SLA (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 789476,
+      "sha256": "4611e9b47517e6dc26920db42ff9af52081d0785c4a1a41d6b9f09e6b21e22ef",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4c145824-b666-5e0e-97ba-634eb8a18d6f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Annex 4 DPA (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1129639,
+      "sha256": "aeec6a4adb4d4aa93e0583cb0b8f26c24f59df58bc46ce51d3cec7d69ff63706",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "68e378e2-9ecb-5fb6-9c3c-aa66f54c6ca6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/AirPay_SA_Annex 5 List of Subcontractors (signed 27.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 171042,
+      "sha256": "07fea18f67cb234c214f935814bd22ee4f4da4a4bbd4c67c4a60430f4357e4ef",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "85e3594e-7ca2-5e92-ba24-a28a46ce3fcf",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/BP_Poland MVP RO Enfuce (2020-04-30).pdf",
+      "extension": ".pdf",
+      "bytes": 1878017,
+      "sha256": "92c4bbdfaf5359eaa00ad081b10ef26ff9da641538c732a0eb23f66845fd6ace",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5a73fde9-7205-51c4-a7b5-2d97f6e72a82",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/BP_SFSA Enfuce (2020-04-30).pdf",
+      "extension": ".pdf",
+      "bytes": 771398,
+      "sha256": "1a66dd4855e56b4bb99aee2896b86670dd1070e9c567d8aeb94ac6d566d1d359",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b6d5021d-e9d8-572b-8bc5-4a9dec967ecf",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Bynk_SA - Enfuce - Final 191011.pdf",
+      "extension": ".pdf",
+      "bytes": 2187287,
+      "sha256": "713ba4db7cfa82ad5180ca81d9e0a34fb57c72f956fa177c7591e97eaccf4885",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c4af4eec-5c5a-5e17-b60b-ea18766f1c37",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/ISC_CR-ISC-2020-2 (signed 28.02.20).pdf",
+      "extension": ".pdf",
+      "bytes": 5818966,
+      "sha256": "d6beeadc548d28a85d2b0276b23d138764c522e416712f5611fcee7360cb11b5",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "deb87533-2357-5b82-9f34-2985091c058d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/ISC_SA (signed 27.6.18).pdf",
+      "extension": ".pdf",
+      "bytes": 7645720,
+      "sha256": "8cd9cc7864ca384ec3429e0eee15667e5ba216b57f8ac6837736e44ecde32f29",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d57675b6-f108-5e26-ae03-e47c578bde81",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Indo_PA (signed 18.10.19).pdf",
+      "extension": ".pdf",
+      "bytes": 2868164,
+      "sha256": "2fcf4437101cd38789cada4bfed045eead8e0c70d83c3302d5601a1087cb6673",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "40aebd68-b32c-50dc-862a-e24d3d39df7b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Indo_SA (signed 18.10.19).pdf",
+      "extension": ".pdf",
+      "bytes": 5521947,
+      "sha256": "7294b6aa01d9889c27da21b23406202741000c79e0bbddbad939bd95d6ee2fc6",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "34a14cad-d427-5ca3-ac22-9d18e6d5896f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/MaaS_SA (signed 5.9.19).pdf",
+      "extension": ".pdf",
+      "bytes": 732042,
+      "sha256": "6e1dbb913f74ef81794ee54a52a266606c10fe2961a4d1a6579017e617c72a65",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bb2b3bb3-77ad-527a-b961-b2e6124009c3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 1_OP Financial Group_s general terms and conditions for ICT procurement-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 1486968,
+      "sha256": "5d90d6ee9bab28c6f960ae062cbe9867155442277d899f61c86c45b8759ed799",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "452dc312-585e-503d-ab0a-eaf0df7cffc1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 2_Standard Security Requirements-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 542975,
+      "sha256": "da9a2415190ab14b6956eb64cb313bda9d407af430977cad947687c4f0e84e4e",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8011b2e7-00ce-5a6b-8389-d953f804f114",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 3_Service Description Enfuce-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 469941,
+      "sha256": "47918993c05b816d9d349911cd33e0ad9286566c5e3503a73c3d7ce9cad07dc4",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ca7633a9-59c9-5e3e-bb0f-8c8c79591ca2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 4_Service Description of the Back Office Service Enfuce-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 155911,
+      "sha256": "015c1a4cc23bea8fa3665924ff6947ee5b0a60774c317aa56e667a182488d143",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ea57dd8d-f5a2-5121-bdcd-5ca40143f57d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 5_Price List-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 137340,
+      "sha256": "001f9ef3b2d5e66b335de41f978e63e9c3ac179bf056716278cae25e49dcec58",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "83f85bde-998a-5af2-8f7d-89897e46961a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 6_Service Level Agreement-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 442752,
+      "sha256": "72546b14b6c877569b9d932314a70ee996b51df92498a8297ef939dc9ac7e96b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4c3650c0-4610-5650-916e-a3fdb8968136",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 7_Description of existing Subcontractors-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 27498,
+      "sha256": "55db26b35ef314f2e5fc7201f773070c5443dd977c25ddf97f5d00d2e1d67dff",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7275245b-7696-56b2-aa9a-710d3fd69ebf",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 8_Enfuce Data Processing Agreement-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 326121,
+      "sha256": "5339fe26c1c275ade4403de788e294047a77d95a5e7a930f853798d42641381b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "84672106-1de0-504c-a106-a1fe320371bd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Annex 9_Enfuce Default Clause-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 69254,
+      "sha256": "aa4045b3d67716b05f2541e0d72af70c15136967022c1587e83cd16b4f308fff",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "52fb4168-37be-5e02-a4c8-d78073c1a2dd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/Service Agreement-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 444906,
+      "sha256": "c9712927a0d3b9dac4d7c122d836bd8cc872e77968763e715cd6a4ac8a6a2534",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "07f149f6-4090-5756-86e8-debcb6db240f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/OP Service Agreement-signed/draft_Appendix1 to Annex 8 GDPR Personal Data and Processing Description-signed.pdf",
+      "extension": ".pdf",
+      "bytes": 72432,
+      "sha256": "27d11905d7265542583d26b7ca45703584590d44257cf9366ebeb665e00939fd",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7e66a21f-45d5-5531-b030-f54061b8725f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Pleo_SA and its Annexes (signed 2019.09.25).pdf",
+      "extension": ".pdf",
+      "bytes": 2298962,
+      "sha256": "82684c7b85cea8e6439470727f40080bfdf5c259aff168487064071898f48989",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b85f7a59-f535-536e-a089-e9cad82bbbcb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Pleo_SA_Updated Price List Amendment (signed 18.03.20).pdf",
+      "extension": ".pdf",
+      "bytes": 651890,
+      "sha256": "7ade237a71d350403c83c01e37dbe09d404042059fa9d49b7acdf40410eb9eb5",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c889fb64-be6c-54c3-b544-d9a3b9da3b21",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Plexian_PA (signed 29.03.19).pdf",
+      "extension": ".pdf",
+      "bytes": 5798296,
+      "sha256": "0868d39b0c54bcbb15131e5c978adab09226545304fd41545625f57cd7579416",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c963e5ab-fd66-510f-9213-933a32d50802",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Plexian_PA BIN Amendment (signed 14.02.20).pdf",
+      "extension": ".pdf",
+      "bytes": 1926627,
+      "sha256": "6d943e45acd87c2e3cbc8479b13ac5a386860e73c30dfbc27a8dd62df4acb100",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a2185d2e-e8ec-5c1f-9919-2d518fa15353",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Plexian_SA_BIN Amendment (signed 14.02.20).pdf",
+      "extension": ".pdf",
+      "bytes": 324414,
+      "sha256": "91a78ed75cdc4340ea4d2f8b7065a7ce6ddd49cccb933db4d39a7ea5b619f9b7",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b48d6c91-60ab-5398-8608-949301bb4d5c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Qred-Enfuce Project Agreement signed 20190925.pdf",
+      "extension": ".pdf",
+      "bytes": 3408146,
+      "sha256": "1d694e39be7ce420a06862c2f0a82df1c36c4812d7515ded458c58920f7566a0",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3ef98553-42fc-566b-af63-96e8e2657210",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Qred-Enfuce Service Agreement signed 20190925.pdf",
+      "extension": ".pdf",
+      "bytes": 6778594,
+      "sha256": "735a59d400eb901435d2f3700575d50b5c9c64dff6ab95e8e6159443d9f03f27",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7cda3b44-6311-5ccf-9f58-69b99c00f5a4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Rabobank x Enfuce Experiment agreement_2020.03.18_signed copy.pdf",
+      "extension": ".pdf",
+      "bytes": 4041669,
+      "sha256": "55f28a85dde3494fec3a7d9c8e6f902b593b818ae61983679ef0d97c5efbdce2",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "010e0b8c-0b32-5c46-8375-9d90dc9196a2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Rabobank x Enfuce_purchase conditions_2020.03.18.pdf",
+      "extension": ".pdf",
+      "bytes": 653307,
+      "sha256": "5846dd6b890a52078ba7030a77a437c9fae815b4093c5934b06299e835425b71",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "71579853-9441-5cf8-83be-8a1af0c4f1f5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/SAT_SA (signed 16.9.19).pdf",
+      "extension": ".pdf",
+      "bytes": 2104704,
+      "sha256": "9dfc705c5b79527880a5c5e524a9627178c598b6911bdeb1b9835d0e2296c9aa",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "531772b7-22ce-50d7-8ffc-42c10d9e3092",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Santander_Framework Contract (signed 17.1.19).pdf",
+      "extension": ".pdf",
+      "bytes": 9567187,
+      "sha256": "602b6241f470826def86b227c5a351a6d0024332cc412fc25ca1381dbaf68b6c",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d5f1d0a4-f78a-5a45-afc7-98747a5a614b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Santander_Framework Contract_Annex 1 Project Description (signed 6.2.19).pdf",
+      "extension": ".pdf",
+      "bytes": 3622790,
+      "sha256": "63f97719f1e833b9466d017b30722488421d633ad41baf9269d00bad8b3803e1",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8c999476-d815-5416-81b9-a077fd386b7d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Additional Agreement (signed 17.5.19).pdf",
+      "extension": ".pdf",
+      "bytes": 938368,
+      "sha256": "a87658eb132c0532dd1a48e079b7ac0c8c5501f021e1c088a0b4079e3194a263",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "116018a1-67a6-5242-903a-dcca050c46b8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Frame Agreement (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 924822,
+      "sha256": "2584a544bf9700a7cbd41ec070e99b5d5d1960f31026534c898d759bdf76cc3e",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cc76ad9b-15fc-50b0-b85d-e482a45899d9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Frame Agreement_Annex 2 Financial Services Description (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 4120665,
+      "sha256": "fbbfbb15db4b77a7714ab9948fbd267aa6f5a2f7510041cf8d81def5020ae23d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e72fae69-c6bc-532d-b572-80faa7b0e0ce",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Frame Agreement_Annex 2.1 Price List (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 2001724,
+      "sha256": "37e83257a03f708bb799d4a63edb71facbf895fc3a3e0019180a3b6e3303a24e",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7c3a8cdd-5bd5-5825-9bd5-a752a913bbc6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Frame Agreement_Annex 2.2 SLA (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 698196,
+      "sha256": "2683a90c5039e2c628dc7b85de863bfa1db168621fba955ced948c6abfa8e990",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bf99c317-9fed-59c2-8738-811e71fa31b2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Frame Agreement_Annex 3 Description of existing data processing sites and Subcontractors (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 797634,
+      "sha256": "23385e9c13be0c674ce7d7038e48424db51464720499e471a5cecec8ffb9c3bc",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3518b31c-7aa0-56eb-bb0c-32f88f997125",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_Montecarlo Phase 1 PO (signed 25.6.19).pdf",
+      "extension": ".pdf",
+      "bytes": 2188314,
+      "sha256": "099dcac9d4a3b9d044f6265cc0d07a5b2879a55c3238a0e7e70819255a7f4a96",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "57aa67bd-1586-515a-85bf-fb437169d106",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_PO Tokenization Service (signed 9.2.17).pdf",
+      "extension": ".pdf",
+      "bytes": 284209,
+      "sha256": "86950fb4487bd5ebf458e27d50707635ec6a58b755f94d2d824dcaf1d18fb628",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d98e921d-08e2-5700-a91a-56c4a9788703",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_SA Dispute and Transaction monitoring (signed 13.9.17).pdf",
+      "extension": ".pdf",
+      "bytes": 274009,
+      "sha256": "152ea0f4c985799052c1089cbd591a3002e209b449264fb52e41089a4d4e9616",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4d035713-a3ce-5221-b761-c30bbba532de",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/St1_St1 DPA (Enfuce signed 27.6.18).pdf",
+      "extension": ".pdf",
+      "bytes": 2639209,
+      "sha256": "eb89aa96c54da45776c431066ede23412b5733d90ac35ac7db9a38dfe99ae052",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "44eeafe2-5a11-59bb-9089-c904a4ab929c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Steven_PA & SA (2020-07-10).pdf",
+      "extension": ".pdf",
+      "bytes": 615118,
+      "sha256": "131849052007c155b8033e7c6ad67e805a511a80bdeaca34040a6ce6ecb28d1e",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "61f92794-8654-59dc-a6a5-5d052973354c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Talenom_Partner Agreement (signed 20.03.20).pdf",
+      "extension": ".pdf",
+      "bytes": 582856,
+      "sha256": "7f005861aba335bb4e983b8974fd81fb5db44de57bb24f5b37c49d819f75dd2d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8d219672-88ac-540d-867b-e470ba83c0e4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Customers/Zero_PA & SA (signed 2020-08-05).pdf",
+      "extension": ".pdf",
+      "bytes": 630232,
+      "sha256": "8279a0880ff023bb26d7e9ad3adafc5a6ca87d9d6e0bae6af05cd02f875c572f",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c3b00908-6426-5a5d-8749-eae236a4b87a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/AWS_DPA (AWS signed 2016.05.04).pdf",
+      "extension": ".pdf",
+      "bytes": 329425,
+      "sha256": "515fc5b3adffae8c29d96760185af7e417b35c63a78ace7e4d3ba888bed78269",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "84a8ecc6-f15b-53b3-b6a9-59697e84a042",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/AWS_Enterprise Agreement (signed 3.3.17).pdf",
+      "extension": ".pdf",
+      "bytes": 417992,
+      "sha256": "eecb4b200d56c14065ea79fafcecf40772f63d9d7a4108532413e21b33aeaa62",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f3662ec1-283f-5343-a8c5-dc9b7c725bff",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/AWS_Financial Services Addendum (signed 14.3.17).pdf",
+      "extension": ".pdf",
+      "bytes": 572666,
+      "sha256": "0024b8e793fd2e81fc12521dc6ce6b6b4a2631558d451e7ee46ea783ac011777",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8f056ca9-3cc7-501e-adf7-97d487053ef5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/AWS_Private Pricing Addendum (signed 2020.02.24).pdf",
+      "extension": ".pdf",
+      "bytes": 532937,
+      "sha256": "2ec0d3d432f9d8434f39c9db3d132ecb64fdccf58f8599be31093bb5e17dedde",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0a474f41-7514-56ed-b4f9-943348738ca6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Connect2id_Software_License_Agreement (signed 2018.09.25).pdf",
+      "extension": ".pdf",
+      "bytes": 271846,
+      "sha256": "64f2a3857cdcf902ee4bd8728734e639b8eb73948984a1801b785a342138adcd",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5988da8b-7031-5e44-af72-efb233d33030",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Equinix_Global T_C and Master Country Agreement (signed 2016.12.14).pdf",
+      "extension": ".pdf",
+      "bytes": 552527,
+      "sha256": "0df91e2bb0f6080f1e1bb4227ea6b439fd95d7fa3a08a977fc3b5bf9133d5f85",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5523255f-8062-5e26-bc74-76ed7965d6c7",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Featurespace_Software Licence Development and Support Agreement (Enfuce signed 30.04.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1942598,
+      "sha256": "79e655142a8b4afe257353f6872ac0edabaafabdda25f692653973a469884cf5",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "897eac42-c5e1-5636-82f9-0af44b6a1e22",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/FicoloCloudDeliveryPricingEN_EnfuceOy20161219v03.pdf",
+      "extension": ".pdf",
+      "bytes": 857076,
+      "sha256": "3e632f35b71feb07596850acb7e3541b4acd55e5f2e853f17eaecb73c60cad13",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d148b572-16bb-51cd-b2f2-75afcd92836a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/FicoloContractEnfuceFinancialServices20180208v05Hardware.pdf",
+      "extension": ".pdf",
+      "bytes": 402650,
+      "sha256": "3e7adf16dd82417c0b16163b0c27861d483d608cccd4d8bf3d1cc16cd0a77090",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c446b87b-bc10-54f8-827e-db8f1a9a6ae6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/FicoloContractEnfuceFinancialServices20180208v05MainContractSignedBySeppo.pdf",
+      "extension": ".pdf",
+      "bytes": 268435,
+      "sha256": "8b757ec2ccdaf5c98d648367e41bf39203d32febe7351d212919f5b2c1228e37",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ceb69485-cc16-5257-9958-a73617f8269b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/FicoloContractEnfuceFinancialServices20180208v05NetworkManagement.pdf",
+      "extension": ".pdf",
+      "bytes": 585915,
+      "sha256": "4bf2c70fd714d6efa9c790ee588b1ef5e386aca33abc324a906c219d7f8c17ac",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0811bd6a-4d2a-571c-bac2-77ec0b92371a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/FicoloContractEnfuceFinancialServices20180208v05ServiceLevelAndContact.pdf",
+      "extension": ".pdf",
+      "bytes": 441270,
+      "sha256": "4de784e4d3ec6322c3754114861dccc292399a2a26f842bafd7dc2bc6f3595a4",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bb051f04-182d-5c97-9706-adaa37b930ca",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/Ficolo_yleiset_20120913_v6_EN_custom-enfuce.pdf",
+      "extension": ".pdf",
+      "bytes": 167001,
+      "sha256": "c3821a0d36da94b174e58bcebc6524132710b63adce8a9c096949e3d3577568d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cf843d23-b4ae-5b7b-96cc-dc47cb6cb138",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract Appendices/ficolo_colocation_SLA_20120827_v16_EN_custom-enfuce2016v2.pdf",
+      "extension": ".pdf",
+      "bytes": 525952,
+      "sha256": "b67b3027a2b7bda5fdef045c0d5da1227b3fc1cc77bb9932f317d994a4d7ae3d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "df791cad-ea04-514a-98a8-e7b7bc8d7aec",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Ficolo_Contract of Secure Private Network Management (signed 06.03.18).pdf",
+      "extension": ".pdf",
+      "bytes": 664961,
+      "sha256": "9837eb09d64410b44f270fcdc4d042483c81c45d658cc474e6c68e4f7df55329",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "49ad882d-b1a2-5407-995d-14b0b0e66dc6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Gemalto_Addendum No. 2 to VAR Agreement (dated 15.11.18).pdf",
+      "extension": ".pdf",
+      "bytes": 263971,
+      "sha256": "b5e0f1fae76a8faed5bcc2d3ea6b95aa60c379b2bfdd198aa589dec6154e5b1f",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2f4844dc-ba53-578f-8b81-3c175e92dff4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Gemalto_Ezio_Addendum No. 1 to VAR Agreement (signed 27.12.16).pdf",
+      "extension": ".pdf",
+      "bytes": 5723132,
+      "sha256": "31170b4068539730a6cb67de5328086630b7d68697f4f373d17a029644f78a5f",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "58b11392-6e71-56ae-a6dc-d148d718f62a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Gemalto_VAR Addendum No. 3 (2018-11-15).pdf",
+      "extension": ".pdf",
+      "bytes": 329035,
+      "sha256": "9fa284869043c2f3d7c7c8d5d27a4bfb81f760bb71c9ecc950f461ca666f8019",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "97b2d885-d412-50ea-9126-beee9429e0a6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Gemalto_VAR_Agreement (signed 16.01.17).pdf",
+      "extension": ".pdf",
+      "bytes": 6222819,
+      "sha256": "9468b463530e6ea5377b41dd4124f88dec8dc2fc515db430230d845148adc230",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d65e8828-7f0e-5a7f-accf-cf6d0b783b81",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Mastercard_License Agreement for Mastercard Cloud Based Payment Systems (signed 2018-10-10).pdf",
+      "extension": ".pdf",
+      "bytes": 6876202,
+      "sha256": "9977d898b8421d52eda1885ab5cc9f394476b8e80a4c2ae9b4848294a57daa37",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b9d7babe-35cd-5586-95f2-48856d78f021",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Mastercard_Masterpass API Wallet Specification License (EFS signed 2016-12-14).pdf",
+      "extension": ".pdf",
+      "bytes": 216614,
+      "sha256": "1f649505da7deb4f0fce41065aa325448d5b400993d62256b1ef7b2d67b3c6e0",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "57fc1f13-c5b1-5fe0-a747-9b49b88eb803",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/OW Europe_WAY4 license agreement_20181004.pdf",
+      "extension": ".pdf",
+      "bytes": 973272,
+      "sha256": "83d56c4cf90c1c4db8c10202b76dc7715adf9a43d4833434c8c032fc28b41f97",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2add5907-2b90-5ef1-96d8-086e2c41407a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/OW Europe_WAY4 maintenance _ support agreement_20181004.pdf",
+      "extension": ".pdf",
+      "bytes": 1156780,
+      "sha256": "a403c4380abea74e58f76743b58e6137c34c7013998d782301c1b9f84dd795e1",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9a5d1ddd-3c8e-5afd-baf0-fd62938cc2f2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/OW Europe_WAY4 master agreement_20181004.pdf",
+      "extension": ".pdf",
+      "bytes": 2085215,
+      "sha256": "7c02972d0134e34dc26b0bab6053ab359c5ee4df85b2d37f4b13f38a268e7b80",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b9e3b5b8-06dd-52f3-b0ea-58bda22a71ef",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/OW Europe_Way4_Amendment to the License Agreement (signed 22.8.19).pdf",
+      "extension": ".pdf",
+      "bytes": 381648,
+      "sha256": "b953277b8244cc7428d88f6d21abeef797984495a5bd6ebd1bda02e27d330172",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "91867fca-513d-5584-9c1a-465ed561cfeb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Oracle_Online End User Agreement Details (dated 2016-11-29).pdf",
+      "extension": ".pdf",
+      "bytes": 187086,
+      "sha256": "14e7505f0436f8d15a5a849e1c0c986b42a0a8dd04257647672ee4e84bf835bd",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c25e7b78-d196-5d67-afed-f6ad3ddde520",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Oracle_Online Transactional Oracle Master Agreement (v011414) (as of 2016-11-29).pdf",
+      "extension": ".pdf",
+      "bytes": 510309,
+      "sha256": "2a3b0355a7b367ec01242ccc903062a93721b68c7f42baf0923f60fa7218a840",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "58cecae8-4cea-5542-960e-4c48632c26a1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Oracle_Ordering Document (CPQ-1059611)(dated 2018-11-29).pdf",
+      "extension": ".pdf",
+      "bytes": 1720032,
+      "sha256": "b44374439c26cac3564554c66b722160ae966791347c616d206159a18b122c68",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "450b48a9-5106-5cb7-a7b2-60330833a84e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Plus.line_Confirmation of order 15688 (EFS signed 2018-04-19).pdf",
+      "extension": ".pdf",
+      "bytes": 70424,
+      "sha256": "526e2f3936616175a24eefa38b2b5ee5d86da5aeba1a178cf05a4acc52045b90",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "94b670e8-36aa-5b16-97be-e72babc24f1f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Sumologic_Sales Order - Renewal_and_upgrade (signed 2018-07-02).pdf",
+      "extension": ".pdf",
+      "bytes": 166213,
+      "sha256": "8b85c600a9bd6740f8d0c39a23939d0a40cd993c18d0d3f79f16fa24e6616e6d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8e167cb8-8cfd-5592-925c-eb0f45ba162b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Sumologic_Upgrade Sales Order Forms - Cloudflex v2 (signed 2019-11-18).pdf",
+      "extension": ".pdf",
+      "bytes": 173690,
+      "sha256": "ca1298a00546cf45d907907b9446e1f777b7fdd5afc019b1391f9db16e59b73c",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "23ee3c9f-f20e-5f82-b398-d4ca47eab13d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/IT Suppliers/Visa_VisaNet Agreement (Visa Exhibit 5A) (EFS signed 2020-03-10).pdf",
+      "extension": ".pdf",
+      "bytes": 360781,
+      "sha256": "bcd94e81646d2323e21310ec8240687147cc437222a1834acfb0f337680d4868",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9bd10850-6701-518c-a196-2396a614a475",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Intragroup/ELS_Hub SA .pdf",
+      "extension": ".pdf",
+      "bytes": 263613,
+      "sha256": "cfcb04d0b8fde3a2fe884c7c1a77ad097f8a15446e0b7315f073d08795b1684a",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "787249aa-5abb-57ce-9d08-7f46ecb6493a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Intragroup/Enfuce_Intragroup Agreement.pdf",
+      "extension": ".pdf",
+      "bytes": 260968,
+      "sha256": "9193286546187329e5789378b5d7d70dee8cc92a142541c0697ffbf0940e78ee",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7e8f801e-8c77-541e-b206-f3f724655ccc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Prior IAs/Bible of Documents 28.2.2020(10176491.1).pdf",
+      "extension": ".pdf",
+      "bytes": 1093036,
+      "sha256": "81c4a3ca768f09bca5e8e5545dfd4553bd8327091c02a8e0d0691773e057e5b8",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5b161e2d-e048-5fcd-909d-42fb715c84cc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Prior IAs/EFS_IA (execution v2 2020-04-14).docx(10299878.1).pdf",
+      "extension": ".pdf",
+      "bytes": 615000,
+      "sha256": "14485622bca3e7578573e097b04a9ffa68daeb9555faa6f8a724966288ea91f6",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "391d9b67-f2a7-5c3c-8717-6f794b919f20",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/R&D and Partner Agreements/Dmat_SA (signed 13.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 271197,
+      "sha256": "05c31e5332096ff91e61945dcecba58bcc81c7cbe76905b578b983902c38b402",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "099b5451-2ade-5a54-916a-87995a9bfec9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/R&D and Partner Agreements/Visa_Commercial Terms (Bynk) (signed 2020-02-28).pdf",
+      "extension": ".pdf",
+      "bytes": 348986,
+      "sha256": "8167d7aefc5cb9a769b027cb05a6d97fae99b40f85f6eebf8a425bca24ea5862",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cc178d8a-271a-56f1-a8aa-93529aff5b80",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/R&D and Partner Agreements/Visa_Fintech Fast-track Strategic Partner Agreement (signed 21.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1632371,
+      "sha256": "fcef410d00551d8c2e55aba6a184e981bd56db48c19aa41aa95a9bc0583b25ef",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5b92bce5-b440-5433-a298-cf9b69865185",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/R&D and Partner Agreements/Visa_Standard Terms and Conditions (non-member) Enfuce (EXECUTION VERSION 31.01.20(101518755.1)).pdf",
+      "extension": ".pdf",
+      "bytes": 464383,
+      "sha256": "d1191dd801d30951d9490a31816ce47069cf33c00cb22e4c65f65097679c4537",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fa627133-ee68-597a-a89b-557e3adc19ac",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/CashFlows_BIN sponsorship agreement (signed 11.9.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1039627,
+      "sha256": "c357a5bed29612300457cad60dc711e6e53cd6b90c40ba1942f117750e5a3e47",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b0b06e2c-eb9d-51dc-83a9-6c469a6e8fe8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/Luoto_BP PO (2020-04-14 signed).pdf",
+      "extension": ".pdf",
+      "bytes": 260880,
+      "sha256": "e4b76339d3d309291cce4d64474fea4b9f327106ad1fb9585d1562b3d92865a9",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bd6b2974-a075-5b69-b3f2-13b318540c92",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/Luoto_Framework Services Agreement (2020-04-14 signed).pdf",
+      "extension": ".pdf",
+      "bytes": 348924,
+      "sha256": "9f0fd0fcb7d21574f1dbe6b4fce19e9dbbdc88322b0dc5a8f2bfb430d3a2e4ba",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8123cd51-f6d5-5674-87d8-d0391a45e868",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/Luotocompany_ Consulting Services (David_Price)(signed 2019-05-16).pdf",
+      "extension": ".pdf",
+      "bytes": 1095209,
+      "sha256": "3503dfb7067b3d2706ac30a2855d17bb2885cd5f7f7900696c4e92fe63603342",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f68295b5-6ede-5339-96d5-dc4cd594b146",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/Luotocompany_Consulting Services (developers)(signed 2019-04-05).pdf",
+      "extension": ".pdf",
+      "bytes": 1756912,
+      "sha256": "c07e84e933c6c6fcad4b591ffd462273855ac923d2db96e7acc1101d94ebc92f",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e8ac1035-ecc6-5ff5-a825-13e2b180670f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/Megacard_Master Agreement (signed 2019-06-11).pdf",
+      "extension": ".pdf",
+      "bytes": 658243,
+      "sha256": "223d1634803d3d5df450c9c3c94e7b9b4522cc9326157ffaeb81bdc2f02b7b1d",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ce6e3759-6013-5bb5-88a6-66727b020f54",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/TPL_DPA (2020-07-09).pdf",
+      "extension": ".pdf",
+      "bytes": 936409,
+      "sha256": "635cca81e466100b4d37d2cb9271c78ee86b76b4b450fea56a080f5ce9f68052",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "aba88de2-ccfc-5957-b113-58c8cb84b98a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Subcontractors/TPL_PMA (2020-07-09).pdf",
+      "extension": ".pdf",
+      "bytes": 1281025,
+      "sha256": "40317647a02aadbda2a4861471fd69a2e0c966d12850463923caf084dfb1a111",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "24fd914c-46e9-5706-a792-abc332e2d67f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Customer and Prospect Revenue (pre TS information).xlsx",
+      "extension": ".xlsx",
+      "bytes": 25048,
+      "sha256": "285ae30b8e1f6599ec9446db441054762487ab9077a01a026b7d92fc222a582b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "39a7777f-c36e-5801-bdff-3dfd220746c5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Open Banking Insight 1.pdf",
+      "extension": ".pdf",
+      "bytes": 190651,
+      "sha256": "74e05fce9b9c4855c9019a9ad2bf52c8ad4e6122d2e33627d190d098d8cef331",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9778cf3f-fb81-5fda-9ca2-8714f3f7835a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Payment case example.pptx",
+      "extension": ".pptx",
+      "bytes": 1865583,
+      "sha256": "e576dcce00ab309c8743a7899b7a4ca58b1a9371785a65f23a8fe66d7a48d598",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b0002cc3-3df0-5130-a345-08dd5a6d533f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Revenue Forecast and simulation June 2020 200617 (pre TS information).xlsx",
+      "extension": ".xlsx",
+      "bytes": 38233,
+      "sha256": "a33a9f88f845996a5ac89a51c3edaa0a9999b4a269bccb1d35847f2fd43ee2ac",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d4102842-8067-5822-90d0-33f8fc657abd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Sales status June2020.pptx",
+      "extension": ".pptx",
+      "bytes": 5143648,
+      "sha256": "460dfad7831fd9ca3cc96b3d683f0b4ad18e06517e6ef5873e2f15022273fc2a",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cf066c61-ebbf-5401-ab80-a824942915f1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Summaries and Prospects (pre TS shared information)/Tencent DDQ 2020-05-19.docx",
+      "extension": ".docx",
+      "bytes": 88912,
+      "sha256": "509462126f2cae3d7b1d608f9fc40055fd4248c9eff43c95e71ede5b972eff4f",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fbda039e-63c1-5b66-80fd-168309982583",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/API Hub Developer Information (v. 03.12.19).pdf",
+      "extension": ".pdf",
+      "bytes": 104210,
+      "sha256": "660561c4e70984401413be3b8b8d846437679220c43d9778c2219b6b8b79535b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5676395a-984e-54eb-97e0-08ed91fd4cb2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/ELS_End-User T&C.pdf",
+      "extension": ".pdf",
+      "bytes": 84265,
+      "sha256": "6819356b8b7368382d468ca8a3180a3eafc13d6a78651af2fa1bb019560496be",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "73524e48-c30d-5a58-a8c6-2b4adb1ec8bc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/ELS_Loppukayttaja Yleiset kayttoehdot.pdf",
+      "extension": ".pdf",
+      "bytes": 77334,
+      "sha256": "78baa6580ba7410ddba9def94abde1cb37057ec930182592c3e4595b144893da",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "24590cff-63ed-5749-9836-ff52c5c72a52",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Hub Developer Portal ToS (v. 03.12.19).pdf",
+      "extension": ".pdf",
+      "bytes": 62781,
+      "sha256": "b162ec1cda844c31f007e33d8304c7a4c8371bf81148421949b96e6fe5aa0a81",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ee9b4814-7ba3-52b3-b0f2-c74eeee667f8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Hub SA_Annex 1 DPA.pdf",
+      "extension": ".pdf",
+      "bytes": 53631,
+      "sha256": "2f5ab274c250c1f3ddb89762548eabd0a6108f1c0a734a614b61328375d95b8b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9c97983f-d462-5a62-8631-21d94e7e5735",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Hub SA_Annex 3 SLA.pdf",
+      "extension": ".pdf",
+      "bytes": 71142,
+      "sha256": "eacfc09ad661e818da710c424c441ad6877f7a6222e1e936359d94a1636a5f40",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d61ff3b6-4d4c-5389-9491-e565c5a507b0",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/SA_Annex 1 DPA.pdf",
+      "extension": ".pdf",
+      "bytes": 53912,
+      "sha256": "d2f7072d0783fa62b5de45d21819d7487b15fcf4203c09d4e49e118a6f401204",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "00ec36a9-f89d-5df2-832c-deed82af83c1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/SA_Annex 2 General Terms.pdf",
+      "extension": ".pdf",
+      "bytes": 78607,
+      "sha256": "f49ca60238060dc4fa2c2f01cc05ef95e02292041fd25ea7d73feded151bf656",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5be936d4-eb0d-5bbe-acd9-e6d6bf1f4a7f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/SA_Annex 3 SLA.pdf",
+      "extension": ".pdf",
+      "bytes": 72385,
+      "sha256": "319086e0dd974de2d6c125be61548cc0e5cc562a67807e4ceed349853ce6c34b",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5dd88e21-e7c6-5d6b-977f-deae57e065ce",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_CR (03.03.20).docx",
+      "extension": ".docx",
+      "bytes": 303375,
+      "sha256": "9b5447c98301de5c3bb40ef9934b0f54b2027f5fd8b07b3fd40e2a44d2332caa",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "06a5c5d8-fac6-5a9f-9da7-748fdcb9e9de",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_ELS Partner Agreement (v 2.12.19).docx",
+      "extension": ".docx",
+      "bytes": 381142,
+      "sha256": "9a419bf2e35ba1b1e59ad907530b92c7decd828b65fcaeead0047fca60596be0",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fcca3671-2fc2-5e9e-ac47-464c9fa164c0",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_Hub SA (v 8.11.19).docx",
+      "extension": ".docx",
+      "bytes": 346977,
+      "sha256": "1ed038f7925a7d5aa0c6713c222def42924dcfde937c436ec6b50281db500d34",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c0f032e8-ed02-5679-99e7-42fbd27b25b3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_NDA (2020-04-17).docx",
+      "extension": ".docx",
+      "bytes": 338747,
+      "sha256": "44bd194d50dcc2e196c5605b67fcbd3aeda06e78f05e7a3285bc5d4c77d7459a",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e320291a-9065-583c-8da7-cff14aeb1a06",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_PA (2020-05-04).docx",
+      "extension": ".docx",
+      "bytes": 369719,
+      "sha256": "ead1d6995774ed0459a4ec1bb592fe014de84b4b72818345bfa39089f5498798",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3501c6f0-f0e0-50b2-a222-30b4dfd48fa2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/D. Material Agreements/Templates/Template_SA (08.11.19).docx",
+      "extension": ".docx",
+      "bytes": 357093,
+      "sha256": "9a778e38413b926c45d6f4624180f6b8ee4752ae7e6fb06f11988732ec8d8af8",
+      "category": "D. Material Agreements",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f3bd4931-2c1f-58ea-988c-827e1b1d0839",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/1.6.1 Breakdown of personnel, including management and the employees.xlsx",
+      "extension": ".xlsx",
+      "bytes": 29143,
+      "sha256": "672eda0ff7102cd232e5db53f2eadadc43dfdef23e878e8aa9286eec0c179d7f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "03eff628-5989-55dd-9fe4-743f7eed79f5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/EFS_C Share Register C1 - 10 (signed).pdf",
+      "extension": ".pdf",
+      "bytes": 510560,
+      "sha256": "de52dbf0d9648f16b62ac23bf7c790d07e796c685594ca5f7dc933eb06b15e22",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f8cc1f04-92ec-5b74-aab7-b9b32539a084",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/EFS_C Share Register C14 - 25 (signed).pdf",
+      "extension": ".pdf",
+      "bytes": 503909,
+      "sha256": "435601e505700706b5a24dd9aa0a91f9123769b4d39fb49672897dbd430b6e28",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f144258e-175f-5be7-b279-1bacf8edc0c3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/EFS_C Share Register C26 - 34 (signed).pdf",
+      "extension": ".pdf",
+      "bytes": 379979,
+      "sha256": "9df64cefada7d7a61071c2553fb4d09165a1ca2c306a3762c4df1a5510024d4b",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8af0d909-2410-5764-a297-dd98b2a41182",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Andreas Ahlman (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 144476,
+      "sha256": "ca84d7f1b2e75e2bba093ed0d720f73d0e57ee0d13452197880c3542bb2ed891",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d07663f3-ca78-5a54-9ac2-0935d7f03d52",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Andreas Bjork (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 485130,
+      "sha256": "181f2067d0e8b23e748441798132fdeec8ea667157f44048e8d74b6ea76ded4e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "52545dc6-499c-5659-a924-a10f14e9204f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Antti Lipasti (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 488564,
+      "sha256": "5c3fdd208f7dac86f94b2d0f6b8cec73899442d2a5756b2bab6854d8bbcb7005",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8e2992b9-4102-5f8c-821d-18c82446cabb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Christoffer Hanslin (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 479563,
+      "sha256": "a79eebd481d2d4ccb5adbf43028313ad706bed4949d68bf9f5cbbb04c1192d59",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "faadf6af-3501-53c9-bdd5-82754d8e4e9a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Cyril Augustine (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 481076,
+      "sha256": "d67649501f583ec94aeea61275577afd7485c0c570bf16ec71a13d3aff6924fc",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f41bfdd1-f752-5024-8e7a-df55da9773f6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Daniel Finneman(signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 983087,
+      "sha256": "161ff761a62571c04ec3bdf7369a133fffdfbdd3b83210f9619d7c3e9ba2e8b5",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5e3bbb73-d697-5175-ae34-e123fbb4127e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Denise Johansson (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 488184,
+      "sha256": "8683c388937a09e7dfec32916392c6d73d5547610661b5ccde11c0fb5fc9ac16",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "217f42b8-9957-5844-a588-9c1b237e9020",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Gabriel Lindstrom (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 481043,
+      "sha256": "fd46f59d5a50514bee5e1ddcc5ba44d6d7fddbc66d469ca2194db624b20143a2",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2a124ff7-200d-558e-8c51-e82bddb2da4e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Gustav Börman (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1023271,
+      "sha256": "89f562b873080238d4a87c6890db8b3e9a9d1c57c1ebd62c632bf30367833f57",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c6754642-1c0f-5718-b256-bc1c2bfda72e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Jani Flaaming (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 484049,
+      "sha256": "6320b7339d1184a678ce92a22ab2e7cc52fdcf5f546542a77f22267f7eaa54a0",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c4a06494-9d6f-5950-9b37-63f3cbcb928c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Johan Siren (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1044576,
+      "sha256": "d80238af48e84b2ea6c70a245be3d9003da2dd3d71b97d2c020965bc6a120a53",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "eb0e7e99-3991-536c-aada-19477703ddbc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Linda Buss (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 483446,
+      "sha256": "cd0de685cd1fa01e94d8d68c9cd56f9f0237e205430931679e27a4833c91fe19",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "55e6043d-af0e-57f9-91dd-a89fdcadb41c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Linda Essen (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1025526,
+      "sha256": "0ef4127e7a4ea3d078680f8753731c9564f32925d76b9f6b4303e8577b4498b1",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d7ffc259-2baa-59d0-99c5-f457371d3c8c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Markus Poikolainen (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 482314,
+      "sha256": "d9cafde74aba50bc4508a4117e860b746cc2364283d43e5a1c7ab9c34b26aeb0",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ea6b8cdc-2fff-515d-9d0a-d12d5bf5f365",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Markus Swensson (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1032826,
+      "sha256": "a73d46d4dc5dc22064a1108e37d1e6a404792abe1b9f054c057f61bb1662f729",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ca83b146-9a08-5525-8b5d-55f38c62138d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Mikko Nurminen (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 484931,
+      "sha256": "fc6e7e54dc6882c179aab7479a9b196f4b289ceb4334694111c59007ebbde829",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "92830518-2706-5286-ad58-6460820c7456",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Monika Liikamaa (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 484508,
+      "sha256": "0de21bdc03f07f756788636d38bb86be0d37f553edea70078ea5938eb72b223f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3cf2a368-1dec-5a31-971d-784be3790243",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Niklas Apellund (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1047424,
+      "sha256": "e826a141cb0962ca715822a55c8e5d13a52adca1d18d1c80ff40bb62ab51a5be",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a043d3d4-fff3-5d4f-8247-1b8011fe0e47",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Niklas Nurmi (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1035194,
+      "sha256": "73129eb0a11a9078b26bcb8952305fe20ab3500c4b0a0e8edb540ade2f4cc1b3",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1d39392b-eec2-5ff0-86af-c912c4536c24",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Petri Kukkonen (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 482158,
+      "sha256": "f233354ce6a799a47fbb8728c9871fcc84dfec22dd4a5e40545ef42099cf309d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a8a53790-0f3a-50ce-847a-90bbec354b2f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Ramya Jishin (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1025494,
+      "sha256": "16bd968636492db74e1147c84c0656cd0e4f7711f8c96f0c77fe00a0cbc3fa6f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "79e64de6-4476-5dd4-98c6-071a0ff05b1e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Sofia Janson (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 978955,
+      "sha256": "afb6e03f8f0df9d323d3a3216d702c91f5f5c3225caf39f4ba4c83dfc2a08ff7",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4b3bd91f-0cf3-5d59-a338-b737ccf7dac5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Tero Kallio (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 606963,
+      "sha256": "74becb87a3e53d4a6d997451c9a053ef5830ab0b8d19dd3f5afe5cf6be41f202",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6c92d0c7-5485-5e48-8197-66c362c5af19",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Tero Suhonen (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 482134,
+      "sha256": "1b3513884958efb43e91820e1700c8471131544d26373658b06870a086052eff",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9a95ee84-eb47-5d71-94ea-27472e50d0a2",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Tina Helsing-Oman (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1030656,
+      "sha256": "c97ca530b582630da850e136ec1cc54acfb0ea1b2fb65fd4bb6d861c0fdaf966",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6f3c4edb-fe64-5a88-b5a3-2fd26daddf6d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Tom Grahn (signed 6.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 608738,
+      "sha256": "fe9f35b9a3b3338f74d9d99758d55024375da732e542e501a118d75322b77846",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f00007ab-8649-5a6f-b3ef-8d0d83db2006",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - Vesa Alho (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 607300,
+      "sha256": "6e4044348579e7c0a1c265a3772d806bb4184899d6cc38ebe11051e71a66c30c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ba206a13-9af6-59a6-98e8-b9d513834277",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/Funding Transfer/EFS_C Share Transfer - William Ekström (signed 7.11.19).pdf",
+      "extension": ".pdf",
+      "bytes": 1042659,
+      "sha256": "d6d331a74e7cf20775564bb8ac538b78a4c517326e40d484d86a901e66359723",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ef5a784f-5c4a-540d-a9b0-eccf53eb4bc6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Andreas Ahlman (signed 08.19).pdf",
+      "extension": ".pdf",
+      "bytes": 400706,
+      "sha256": "b78801a2eeff951497bfb8e67d38be8bea8851648f88920828bc8cf10085b170",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "486e3af5-2305-5748-b866-73f09f73a141",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Andreas Bjork (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 391130,
+      "sha256": "1a8776b937fb10933f367edae3ef78abd163b7d3e6d308864724d73502c8b07f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b33e7f17-f295-5f3c-8df1-2f265a3f017b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Antti Lipasti (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415662,
+      "sha256": "313700d1aa289b27c67fa5ad2384c566e910914cd0e7883eca03bafa8382a49e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1cb5f4fa-b120-55ec-9084-644f230d21bf",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Christian Kilpi (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 390777,
+      "sha256": "dfd8d9b0beb00c5cb6cb4495db839c82ad0ed0b9b03ae0f142532dca6737ce65",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2568c3c5-c575-52fd-8bbe-531f3652b959",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Christoffer Hanslin (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 413090,
+      "sha256": "42856f60c247197dd65ea4027813bab114c83bada057122a15ea8b7cfe30f2f0",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9f896c64-3ba7-548c-9b3c-34c42b1c5674",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Cyril Augustine (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 397637,
+      "sha256": "fa52acdc1c917b3b187ca1ed9bd9fa1a2aa16323a5baf972af2c61cebfb27d6b",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "137a9e06-0e5f-5085-9c7b-23d802726095",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Daniel Finneman (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 413181,
+      "sha256": "ee402228277de147cb8912281fe42308aea9e77206ce99a85b59c7f0a509fc2f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "22f7127e-40b0-5e7d-935b-2a995877d3bc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Denise K (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 407646,
+      "sha256": "9cf16a32e5e2fe76ced067cf7207e867453a077cc18e9dc6d4bc91d35b21c93e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0bf61d9d-ea0b-5dc7-8ae5-da2895d5d2fc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Denise Koskinen (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 400021,
+      "sha256": "3ae3ae06d63dc5a2a6cfaf4754765d800a6304c5940afae1a16670fc0f61880c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "17dbb65b-4629-5014-aded-fac75b73ca72",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Gabriel Lindstrom (signed 08.19).pdf",
+      "extension": ".pdf",
+      "bytes": 400092,
+      "sha256": "3d106afa16659c21a7886ad90c2d5f5b01b76dccb0eb6d02822001c46fa3e339",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4c82ebc9-4667-5b07-b757-ea91d1186bf5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Gustav Borman (signed 9.8.19).pdf",
+      "extension": ".pdf",
+      "bytes": 397922,
+      "sha256": "dfe5c3c2220000195b2c80e19be3dccfcb7861b3a8ae64a109b4a6d891fda9b6",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "87edd0ad-d2ac-5aab-9e49-8c81cccb6e3f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Henrik Hoglund (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 392925,
+      "sha256": "a65c6ab3550797487cfee77e00305bb3593fd9150f907aec4a3992e03d307b0f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2069f16c-e1f5-58f2-bb21-7cb6e0d31c6d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Jani Flaaming (signed 08.19).pdf",
+      "extension": ".pdf",
+      "bytes": 399792,
+      "sha256": "9cdece017fe44279f0064c64de3b9b7eafb2c4babee3f61bcf3aded5e8398966",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6a39504b-4ff8-5011-a294-a0adbafc3e37",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Johan Siren (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 404352,
+      "sha256": "4ec6a29d054c5bbe70558dbc7ed72bddf01c82ef666b1a1e1f851d22059c616e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d2f4d2f4-b1c3-5656-9e22-25cc60624a07",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA John Osterlund (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415926,
+      "sha256": "86e02835d3a4a5f8049353a11c47a3b03c540f2835efbdc6dc9a6e3080880af0",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "89ae410c-9d37-5855-a986-56da67dabb15",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Linda Buss (signed 08.19).pdf",
+      "extension": ".pdf",
+      "bytes": 400976,
+      "sha256": "912a0f8de16621db46cc50dda38bedd159e412663fd8562bed1086ed2f4bace1",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "701870ac-2a6a-5882-9761-35508c4d9cd4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Linda Essen (signed 9.8.19).pdf",
+      "extension": ".pdf",
+      "bytes": 399347,
+      "sha256": "071fafbcdda65ba8d4f26ebadae6818e6e2b07cce71b36786e8c9ca55aa2d705",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2bb0878e-60fe-58d3-ac7a-6fde14f40849",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Markus Poikolainen (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415215,
+      "sha256": "7c9decadcb92576cd9d851a047715c8011d97f81efb33b834706e6fc6ddd530e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3a4aa77e-0790-5267-aba6-ae39d5c1dce4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Markus Swenson (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 403882,
+      "sha256": "ff27445602578d47fff5727582acae7af7f3ec0e849543ca594ab371645cf553",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5bdbe3ae-3fef-503a-9e1a-c44082adf630",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Mikko Nurminen (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 414171,
+      "sha256": "f420533d8986677a69474271bfa90536e9c8ce8671c7b5e78c558942a19a76d1",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "16e4aa3f-fa68-50e5-bed3-a9da6050de3d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Monika Liikamaa (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 391528,
+      "sha256": "3d5b4e201f8f9f27a3d3e53cf311a7fd7504f4510f98c8d29701fa3643e75fbf",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4317c0ab-0ac6-5342-a2fd-f2c459164490",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Niklas Jansson (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 404305,
+      "sha256": "4fc4a22f62e25d40da2e11cfe4eae059254c43023ad6744dabf71a4156266e47",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "eeefec14-3854-5d72-97c2-8a78ba5b93e9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Niklas Nurmi (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415299,
+      "sha256": "d0b1beff86f248a85704891346c5966ae11684fc7f8ca2a2ce2db1d824dcee88",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6f93c513-9204-5940-a8e1-98366cced73a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Oscar Sjoholm (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415202,
+      "sha256": "64c9bf58a37df03a4d0bcf83a3c1753ebd72c4f94316abce7a8e739e6cd810a3",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e39b5f9b-8ef4-54e5-8ac8-0de82ac8da59",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Patrik Heimdahl (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 402666,
+      "sha256": "8df515c4edfa84ac5cbcda61b9638262e16f46d0a396214fca9929b324b6ae20",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fbe32f9d-b32b-54cf-97f2-e6f2f3361fb4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Petri Kukkonen (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 394181,
+      "sha256": "61a2485676cf4c41315ceb044373daa6aac456212844121b9edda02729078668",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9fa9ae44-a5a1-55d0-8757-d01b215abc15",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Ramya Jishin (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 414443,
+      "sha256": "81a537c75c197946c2a80550929027e41ca93676a4513002b601d87f52b75534",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "afd09ba6-fcef-5eb0-8b34-6d3a6743ee98",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Sofia Janson (signed 9.8.19).pdf",
+      "extension": ".pdf",
+      "bytes": 398175,
+      "sha256": "e32da3d985a16d76b7696790b705d8d851ef9ea2f689d07b0cbb7dd814dd4ea4",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "922ddf0c-6f75-5d33-8f1b-5a15e6649071",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Tero Kallio (signed 08.19).pdf",
+      "extension": ".pdf",
+      "bytes": 400589,
+      "sha256": "c0d169741942aa8ad26e5443870df59430c2a139dd9c1823055fce563b00bae4",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "eccd0495-be77-54ac-b8db-c0713415fd45",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Tero Suhonen (signed 8.19).pdf",
+      "extension": ".pdf",
+      "bytes": 399640,
+      "sha256": "72b122daa52810391403de6faf803ece4130df6789d87b3d692e7a78cb9768f4",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c124595d-0c9b-5354-94e9-3caa4c92629a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Tina Helsing-Oman (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 414394,
+      "sha256": "02606f6effe810f6287f6b3094ed549903c18cc588574659ba323e30ecd3d7ab",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "812fee1e-d0ce-59f3-8b20-fd6d9a6dc396",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Tom Grahn (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 407702,
+      "sha256": "404b54f185c17922217bfaabb33c572fd7932618648d2b759e4d5043f75365a3",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "dbec9da7-f919-5fe5-b4ad-e07bdffdc754",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Vesa Alho (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 415879,
+      "sha256": "311ee93c15c53cd0a4edbd027b8fed8c5e6a9866bfc6ac59a79cde6a4aa51718",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "98801e49-e18a-5394-be16-7bdc4071db7e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA Wilhelm Lonnberg (signed 16.10.18).pdf",
+      "extension": ".pdf",
+      "bytes": 476192,
+      "sha256": "50ed906a702c82381f2575941025f0d322893ba5f19d8659217c8c5b1807ac29",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7356603e-2194-5b6e-880d-ca45cc6dbd4d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/C Shares/SHA/EFS_C SHA William Ekstrom (signed 30.12.17).pdf",
+      "extension": ".pdf",
+      "bytes": 407069,
+      "sha256": "2b81326636cba35b1bf9ed7e3a31836115d6e8655c22ce973ed43942640da21d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7c26ed1a-0890-588e-9638-8c32ec025fe6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/EFS_Applicable Collective Bargaining Agreement (Finnish 20.2.20 - 30.11.21).pdf",
+      "extension": ".pdf",
+      "bytes": 558206,
+      "sha256": "754c3bd2e36ffafe5bc10e4c83b6e608effd3b099b2233941a3bd2774569ed0e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4286441d-ed10-57fd-9e32-cda735bd86fe",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/EFS_2019 ESOP.pdf",
+      "extension": ".pdf",
+      "bytes": 154745,
+      "sha256": "68170e68c739501bb17b73dba3e6116f8be286178746d53a63a094bdff5c2acb",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9b066aa8-0428-50bb-b72b-f55be969a5eb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/EFS_ESOP Grants List (as of 2020-08-10).xlsx",
+      "extension": ".xlsx",
+      "bytes": 25821,
+      "sha256": "ab14d28da21e28e39bca8bb728209a7ed76686e92f79a5aba25ef5f4517dd2a4",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "84d4972c-dffb-5ad2-bff3-b998a8e7afbc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/EFS_ESOP Summary.pdf",
+      "extension": ".pdf",
+      "bytes": 48712,
+      "sha256": "4a9e3112959df1189a5b0cfc9575ac43ca9900d190faaf7b044a958ffcda014c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f24fb9d5-46a3-5758-806f-0ec25fc99c96",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Daniel Finneman_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 517674,
+      "sha256": "2da8935ffddb4b6fe0bc5b05b9ed4e61be92a8608334d15d16a6f8e0f5c6cfe2",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "a07840fd-d56b-5a77-a37d-0504c91351bd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Eric Sundberg_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 569540,
+      "sha256": "9977b7b8c1ca35d95c67659867fcceb72e34164114b31628506b4f02b1cce245",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6273e773-0b66-546f-a29d-3dd1c59b7e2e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Gustav Birman_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 568024,
+      "sha256": "52924041e7fa9b87058da18c606126618c29ada9e6cbc3279975e4b9e1f3c482",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7c61aeba-b091-55de-a1aa-f9b05848c1a8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Linda EssCn_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 514028,
+      "sha256": "692b5127c089dc6c8a3faddd8f4d404561555b43085b0d3dd6cea33846013945",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2136f9f2-5fd2-5e6b-a004-3ed7815debd0",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Markus Swenson_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 567673,
+      "sha256": "ebb8c964ac561e8ca55eda8e6063e2e72c90eccfc76a1403064898a8d212f290",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f0681771-9fa9-5b61-a320-bed6880ffa98",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Niklas Nurmi_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 515308,
+      "sha256": "94a6a549959394f97f263cff0290440c2958bef7623a84ef145deac33f876a4d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "94f30f70-9685-5a85-9d17-9b98f2a529fa",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Ramya Jishin_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 522197,
+      "sha256": "374990dd06882d595a3da298b8f3005d1cacb68570d67ea1a38249e11e278925",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6f80d5ec-1696-5935-8fea-d4f9c1a19fe6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Sara Sigfrids_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 566754,
+      "sha256": "7a5858eb8e832cee36d2fdf095b47b7c31e2f34e320837bfad6516a0eb472ea8",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "6646c2b0-4b76-5bad-9af9-1a44edb5c23c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Sebastian Alm_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 566695,
+      "sha256": "acbbf641fd765848409c927b26bc71e3825a10bd4074987059ed21791c00db45",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "592175be-15ba-5cd7-9d3f-9ddc91e36b72",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Sofia Janson_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 565228,
+      "sha256": "f023c80900e0634f05e3950ce90dc83eb356b219bf4748eacd2d58765dc3035e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "5e2ce720-e1e3-51ce-aa2d-52635d0cb42a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Tina Helsing-oman_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 526064,
+      "sha256": "4b0124c0fe21205a21defe01e8981b7fd34c88d063a96236187f624067a7ebac",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d2da82fa-c45d-5bfb-8b0d-ce8e22ae584f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/EFS_ESOP Grant Venla Pouru.pdf",
+      "extension": ".pdf",
+      "bytes": 132852,
+      "sha256": "2321c5c57aa9fc0ed003a1b7d290dbbfa99a58d25e6ffa11280a5b3c0fedff9e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8e2ff8e2-fb28-5b7b-aeb4-03090d659e7f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Annina Lehtimaki.pdf",
+      "extension": ".pdf",
+      "bytes": 294355,
+      "sha256": "402ac8356b22db06ed163547c4426a9cf120839b58752cf2cca8d69f1fe47c9e",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0f47577c-7e5a-53b5-ace4-6dc3f5fd0a64",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Antti Lipasti.pdf",
+      "extension": ".pdf",
+      "bytes": 295009,
+      "sha256": "7f2ea295ac8525f548534de09a019e26fe24a1c777dfaea455ef3c9deae39a64",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b2f72570-b4f8-53be-b4d2-a001a6cbdd8c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Christoffer Hanslin.pdf",
+      "extension": ".pdf",
+      "bytes": 294089,
+      "sha256": "22ecfa9b40953b96401d4e4c2349d73669a9ea96e9e5ed9f52d4c656f833aebd",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1adcfccf-984c-5f11-bb07-8ba76f0e55a4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Cyril Augustine.pdf",
+      "extension": ".pdf",
+      "bytes": 292660,
+      "sha256": "1370fb20413d1ec07e8f50db26129200aea1bb627fb90bdd65a6a46e7bed5a95",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c1aa0941-8a8e-531e-b484-337b36c63708",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Gabriel Lindstrom.pdf",
+      "extension": ".pdf",
+      "bytes": 293802,
+      "sha256": "a45882a6771d95e8e398012514b23cd291e66485fbd4b7f65505316aa6856386",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "59519d5b-9b9a-5b74-9ed5-fbb9bf95fbd8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Henrietta Dahlqvist.pdf",
+      "extension": ".pdf",
+      "bytes": 293930,
+      "sha256": "4e51510dbd13f2fd2eb7b97e5128c032752b372e82df2426aaf1593188a2aa24",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "365c503d-eee0-52c1-bea7-093b99be84b6",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Ilona Kivimaki.pdf",
+      "extension": ".pdf",
+      "bytes": 293814,
+      "sha256": "58450610b92dda78201b3eda34b0d9fa0ca8483e75c031f25381b3e549387dbe",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0033f9b2-b02c-5e2c-ae34-c1fc7337d425",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Jasmin Hagerstrom.pdf",
+      "extension": ".pdf",
+      "bytes": 291330,
+      "sha256": "36d550b9f03241941f8ccb3cb8d0df501f4f29422a9c1f70014fb72ae8ea2823",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1e6fd805-8f27-58f3-bf1b-c1f6da45bf00",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Jussi Juvonen.pdf",
+      "extension": ".pdf",
+      "bytes": 292680,
+      "sha256": "e7af7e39120241550db1d31f9581f3d0e21abaaba8f1a171cd0b31272eed20dc",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c16735a2-7b6a-54af-95fe-d8ee85162d2d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Jyuothi.pdf",
+      "extension": ".pdf",
+      "bytes": 296636,
+      "sha256": "e62ddc8177819794bbad6d98152aaf00f6726b893e891327ffc64021611a3bf7",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "48e45a94-29c9-58e6-8cf5-f1d0b09fad8d",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Linda Buss.pdf",
+      "extension": ".pdf",
+      "bytes": 290112,
+      "sha256": "167f36bc58616b695eb98eec66a7ce5bb8443c645de806ef1a14fed30437c2aa",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f7c4fe1e-cc84-522c-827c-0b39aee64c65",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Mark Falcon.pdf",
+      "extension": ".pdf",
+      "bytes": 300433,
+      "sha256": "449ccb5c389a579543e8900bf35702576b0ed286604f63b2d2ce43955ef9a086",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e4441b63-5837-5ebe-8fef-dd934b2f3c91",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Markus Poikolainen.pdf",
+      "extension": ".pdf",
+      "bytes": 299122,
+      "sha256": "677ce891e0f9ddc4436794cddc8f6954ceeebe2e818f00270ac52172669190a7",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "af35d1d0-284c-584e-8eb8-8a46febe708b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Michael Fabricius.pdf",
+      "extension": ".pdf",
+      "bytes": 294578,
+      "sha256": "5292939e4f083d8fba185598ea47d5c06891ef00e279697d208b67239ae30dca",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "32cd12d8-d5e6-55cf-89ec-22fcdb8ddc70",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Mikael Karlsson.pdf",
+      "extension": ".pdf",
+      "bytes": 297133,
+      "sha256": "93c946f819bd490417dff32bf5f011f6504cd20cd13e404cfb283c54a5f9b910",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "bdff0250-ac5a-5eb6-b5f1-cbd443b07e93",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Mikko Nurminen.pdf",
+      "extension": ".pdf",
+      "bytes": 290364,
+      "sha256": "c5b8547c13b0ebf4114f3e097d32883d4a34cc039168e12955bf9d4bc19aa24c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "54372139-c0b6-5696-ba06-327bd45f5888",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Nicolas Fisher.pdf",
+      "extension": ".pdf",
+      "bytes": 291588,
+      "sha256": "6ecacd2f6a29455f7a23a37625bdfd39dffcae45348b347a60abc218a40f9818",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0d5493bd-2a72-5814-8c11-9b63600763b4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Panu Simolin.pdf",
+      "extension": ".pdf",
+      "bytes": 290975,
+      "sha256": "faad02e7c9b4d3da94b6ff8cb7adb8a3b11724602ec9f2bd94b3762ecc81b459",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ad2d3fa1-d4bc-54fd-b43d-7457cd4f96c8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Petri Kukkonen.pdf",
+      "extension": ".pdf",
+      "bytes": 299198,
+      "sha256": "d72d19d8858507313f8928dd9259fdc742a57d30dde8a3edae24dd42eb64368f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "78c63c3c-f1a9-56c0-a661-1a2da208858f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Sunita Purohit.pdf",
+      "extension": ".pdf",
+      "bytes": 295698,
+      "sha256": "6eee9d55c092e4e3e97e9b36338d6d779ea892a6060623a12d22f83ecd186a4b",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b9375e5f-3bf7-5710-984f-64909b1a47fb",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Taneli Virtanen.pdf",
+      "extension": ".pdf",
+      "bytes": 293698,
+      "sha256": "26e901075293cc8019b0246537a8e79d8cc74e995aadf9fc76ebda7edaf0aec2",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c628e892-dca8-52ef-b8b2-de1f5a30040f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Tero Kallio.pdf",
+      "extension": ".pdf",
+      "bytes": 291748,
+      "sha256": "a5ff3385d763cbd79f7e8d350842c242e468a147b4f7acfb4f6b00e069d1668c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d0665f4d-c24a-5660-8f2a-224001d5253b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Tero Suhonen.pdf",
+      "extension": ".pdf",
+      "bytes": 213297,
+      "sha256": "26c94dfc4d151f932aa0d11914e66343bddb2c613087cf413db7d636456e33bc",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e7c0ff9a-a0d9-5fef-878a-47da66710800",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/ESOP/Grants/Signed ESOP Vesa Alho.pdf",
+      "extension": ".pdf",
+      "bytes": 289993,
+      "sha256": "d6c04a0cffd982226b7f2e261cf5eaca02b78f6bfff607a4b5e6b014e863b65d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "e4d7d798-71c3-5809-8f2d-09ad7eae1344",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Arbetsavtal Tom.pdf",
+      "extension": ".pdf",
+      "bytes": 647812,
+      "sha256": "e28cbc1a19946f90da7f6439e848ade24a4f861849b02e527cbdef393d846170",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "cda5cd8c-dc77-5515-a1c7-5000ca70b10a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Arbetsavtal William 1.pdf",
+      "extension": ".pdf",
+      "bytes": 646850,
+      "sha256": "d9e85480e1c6d9171cda5f8db6925009c3ce6215124b866abad2204b8aafd754",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "43ed255c-8b16-5c17-bc08-c7c7d9382129",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Bonusavtal_ahlman.pdf",
+      "extension": ".pdf",
+      "bytes": 638984,
+      "sha256": "6c786250defc911a4a04d405016d12170da0e49214f106c4da6c3ab1d6997bcb",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f256c457-65bc-5a78-ab56-a80aa7614b1f",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Director agreement Denise (2020-06-30).docx.pdf",
+      "extension": ".pdf",
+      "bytes": 285799,
+      "sha256": "51bc2aa8c0243c0dc05268e4a71b5f75c8a7274c16fdebf2d5b9ba6dda83eec6",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "790c2de4-b95d-5b0c-9e45-977eaf083e14",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/EFS_CFO Work Agreement (TV 281119)_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 735259,
+      "sha256": "ce3397b7171d177c29f655524bbb282bd06c9bd27dfdb402adb8964b5c07e6d5",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "0138b13a-d3d0-5a45-a0ad-3bf7e60f1e16",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Employment Agreement Amendments (2019-11-02).PDF",
+      "extension": ".pdf",
+      "bytes": 711139,
+      "sha256": "0c93eb7f0ce32e27e17683ab3dc4c057a1a2b0a9070620fc5fa8772af1a4ec5d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "853a7259-2496-57dd-a777-b69a50ebcc18",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Managing Director agreement Monika (2020-06-30).docx.pdf",
+      "extension": ".pdf",
+      "bytes": 290760,
+      "sha256": "9ad0687240a043d285276fa09184adbe30acd2d17cedcab9ad56fde8cd8c2b1d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "54e388fa-ab74-5f25-bacf-0781e50885ba",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Work Agreement NA_signed.pdf",
+      "extension": ".pdf",
+      "bytes": 562637,
+      "sha256": "8ee0d22ffd003e6810cc26078b678e4d9d26d11e4bd941f064be8107113fa52b",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3031a2ac-cf1a-5249-ad43-d7c2b8ede141",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Work agreement-Andreas Ahlman.pdf",
+      "extension": ".pdf",
+      "bytes": 1035372,
+      "sha256": "99d50028711df0148ed00bdd16b7b8d5e03e5118b2fceaf2f0015b0f11cc1d7f",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "3eda64c1-04bb-5d1a-8d8a-9a3947457c1c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Work agreement-Johan Siren.pdf",
+      "extension": ".pdf",
+      "bytes": 1222775,
+      "sha256": "18e781113797e9f123831b9f716067a54836a66244a8460b5afc9c68f4bb0a32",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b2b436fd-d1a6-560e-835b-98e8de058e83",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Management & Shareholder Agreements/Work agreement-Mikko Nurminen.pdf",
+      "extension": ".pdf",
+      "bytes": 1326287,
+      "sha256": "8a1d66b22bc1403a0eddc6996901760d02057588b6ecb0ef8bb3a9d2bc3ff660",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ef2c6905-bbcb-50bf-a4ca-20f44bac8cdd",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Template_Employment Agreement (MF 8.10.19).docx",
+      "extension": ".docx",
+      "bytes": 303635,
+      "sha256": "2b495b7005cc779e61c9bc6a4eb6565fa3b00c84ef51e3b9c1ad6a43baa1381d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8c9b961b-f98e-5900-8d09-5fcfe130b128",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Termination Agreements/EFS_ Sharma Termination Agreement (2018-01-18).pdf",
+      "extension": ".pdf",
+      "bytes": 561253,
+      "sha256": "0e09639925a14ebc9bf05a1ab154c7e31e2c375672942dd4ce8c2f1bc6cbdae1",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "c8afc944-80e3-51b9-9589-d5a7d6bb7716",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Termination Agreements/EFS_Sovintosopimus (Christian Kilpi) (2019-10-31).pdf",
+      "extension": ".pdf",
+      "bytes": 1113555,
+      "sha256": "72117d1d70f9e64429fdcbd9c98e3f4433880962169a096bcf6e5624c31c7a1d",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "ef5c3fab-a78a-5844-bea1-d3e9c8e05f32",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Termination Agreements/EFS_Sovintosopimus (Henrik Hoglund) (2019-10-31).pdf",
+      "extension": ".pdf",
+      "bytes": 1114082,
+      "sha256": "8ec6eecdce513a81e23aaec7e39a600fe5d1f8ac57e851cf02bd9feadc815d8a",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4744e3db-89f1-57ea-944b-5d2feb72477a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Termination Agreements/Irtisanomisilmoitus_Sofia Jansson.docx.pdf",
+      "extension": ".pdf",
+      "bytes": 176182,
+      "sha256": "4a33b61e681d47dadd9f1912aab58089cacfebc9870a4120fd0fdc8c568c9274",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "60df16f6-1695-5841-bc62-c87f058fe0ce",
+      "relative_path": "data/Enfuce/Enfuce 09-07/E. Employment Matters/Terminations and lay-offs.xlsx",
+      "extension": ".xlsx",
+      "bytes": 16662,
+      "sha256": "65c8ee9aed740fc5650aa927def1fef48675dd9b17284046a30717c385f2154c",
+      "category": "E. Employment Matters",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4f8f7c98-7031-5c1b-ab7e-2af68c8063e5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/EFS_Litigation Disclosure (as of 2020-08-04)).PDF",
+      "extension": ".pdf",
+      "bytes": 99368,
+      "sha256": "7f8cff61a21779555b186cb684a635fb7a1e07ab6c09a5ce0213b4ef98efeb77",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "093816b1-14cd-5ff3-aae4-15b1822debe3",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/ELS_Fiva AISP & PISP License.pdf",
+      "extension": ".pdf",
+      "bytes": 5409191,
+      "sha256": "0121f09fad032bb6dd2b382d7e1086ab6b2d366eb43d35731c993eb48b64b70b",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d2795c3f-97fa-5d3c-a59f-1835386362c4",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/PCI-DSS compliance documentation/20180604 Enfuce AoC Signed.pdf",
+      "extension": ".pdf",
+      "bytes": 4339559,
+      "sha256": "a6df9c8bc5026be3dfde790f1acfa5c205899f16a2a93bfe732486bd14a8079a",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7fe8ed1e-bea1-5aba-bcf5-b9c9495c3f3e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/PCI-DSS compliance documentation/Enfuce Financial Services Oy - DSS 3.2.1 - Final ROC_20March2019.pdf",
+      "extension": ".pdf",
+      "bytes": 4973341,
+      "sha256": "b05fcadb9bb0147b96c86d833f0ac0106c094492f31d68f998824b328e9e8d4b",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b28cb8b2-2162-5bed-af79-aa65b4e20021",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/PCI-DSS compliance documentation/Enfuce Financial Services Oy - PCI DSS 3.2.1 - Final ROC_26 May 2020-FINAL.pdf",
+      "extension": ".pdf",
+      "bytes": 4834152,
+      "sha256": "9c2e07faa9de6caa5fb39c8a0ba2c3734465cd3c1711ffd9ab7f96d5eb785f3e",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4e5946d7-6e02-5a64-939d-971fdccef699",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/PCI-DSS compliance documentation/PCI-DSS-v3_2_1-AOC-ServiceProviders_Enfuce Financial Services Oy_fully s.._.pdf",
+      "extension": ".pdf",
+      "bytes": 4993255,
+      "sha256": "1346cd219d736056fa4f4a6f7ab04e0f75d33012e4b084054e309984ad03c3c2",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "522a4813-ef9f-567c-9e51-8a8cc77d7e63",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/PCI-DSS compliance documentation/PCI-DSS-v3_2_1-AOC-ServiceProviders_Enfuce Financial Services Oy_fully signed.pdf",
+      "extension": ".pdf",
+      "bytes": 5440325,
+      "sha256": "3bac7349670fd285b38f1a1e2525ff90b21b5aff0eb910e9ddba428134030ca7",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8c749905-2002-5f71-8c63-d0450a0f2bd9",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/Personal Data/EFS_Data Flow Description (2020-07-01).docx",
+      "extension": ".docx",
+      "bytes": 340961,
+      "sha256": "8f5b7373ffc3c870969550be32535c78d5e2f385cf1f24aaa3b7b4fbb3832984",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4abceb1a-294a-558d-b371-e0dd791283dc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/Personal Data/EFS_EmployeeDataPrivacyNotice.201905.pdf",
+      "extension": ".pdf",
+      "bytes": 13407,
+      "sha256": "1eb155821d152de4853d83170ae6c2b44a61eb3864e659b2c509c2444264f664",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "d0d4ad5c-b2ff-5d5f-a14d-ecc58d3882d1",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/Personal Data/SD-OpenBankingDataProcessing-230519-0610.pdf",
+      "extension": ".pdf",
+      "bytes": 109407,
+      "sha256": "59d376fdc75eb9a870511046d8e291f8104ae9b403996ea5fc1831982cfac797",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "4feb013a-98f1-583a-8cbb-6b98e638f4bc",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/Personal Data/SD-PaymentPlatformDataProcessing-230519-0609.pdf",
+      "extension": ".pdf",
+      "bytes": 90373,
+      "sha256": "dcd03d2280f2322c6ef43459774205bc82bf990eb435b696017599ef7a923942",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2ea759f4-7022-59fc-8152-5dcfaed5e13c",
+      "relative_path": "data/Enfuce/Enfuce 09-07/F. Disputes, Claims and Compliance/Personal Data/SD-SCADataProcessing-230519-0610.pdf",
+      "extension": ".pdf",
+      "bytes": 77395,
+      "sha256": "f4ad487bd41146069aedc4acea611efbbe37c7377936095203058a8d71a116fd",
+      "category": "F. Disputes, Claims and Compliance",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "85cd955f-9315-5d16-9471-24367df8c101",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EFS_Registered Domains (June 2019).pdf",
+      "extension": ".pdf",
+      "bytes": 205083,
+      "sha256": "afa15c7a085097948af143c4db30bfffe0e66c75f90c96917ded34cb2c4841d2",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "14cddcf7-19e5-5917-8faf-930234737d7e",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/ENFUCE_Trademarks (as of 2020-08-05).xlsx",
+      "extension": ".xlsx",
+      "bytes": 258508,
+      "sha256": "14c3686c5fe5e1e932fcf49750b54a45fa229abb8bd3b4199a456c2b111bcd60",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "70a8fcd0-d354-5797-9174-a17dcd676a64",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/EUIPO_06052019_information to proprietors of earlier trademark registrat....pdf",
+      "extension": ".pdf",
+      "bytes": 250954,
+      "sha256": "cdfacc9cd85cc5ed4a2dec8e23fd5bfd54dba5fe1ac662ef5bf8be1899f21b04",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1260716a-3f28-531e-8aea-0822fc95caa8",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/EUTM ENFUCE INFUSE Notification from EUIPO suspension of the opposition proceedings BQ300111.pdf",
+      "extension": ".pdf",
+      "bytes": 125229,
+      "sha256": "654eb288ac37e1a52225b71a0e84a8aae2fd052de0aba550df45526390e2af24",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "8f186934-60df-5a9e-bbd2-424f2401f4b5",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/Extension of Cooling Off Period (BBH signatory).pdf",
+      "extension": ".pdf",
+      "bytes": 29998,
+      "sha256": "93c3757a1c16e45b7249b1b38d23e8538b655c1fcf10c3a3a0a92ec6d60fd08b",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "9d60347a-48dc-5d02-acc9-a5e09125359a",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/Opposition terms notification from EUIPO BQ300111 (ID 4735753).pdf",
+      "extension": ".pdf",
+      "bytes": 123628,
+      "sha256": "a58582db9dd1959ac6ebadce14c104e717dcbd16d9d07fe7f506525b03c90153",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "7e027f8a-e3d8-5128-a5fe-6016390895ef",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/Opposition to EUIPO BQ300111 (ID 4643824).pdf",
+      "extension": ".pdf",
+      "bytes": 1902279,
+      "sha256": "febef6727bb057e792bdb6d849ee1ce560ffe6475d6100785e5562e9ff8a5cd7",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "f99d3446-2ee5-567d-bf59-383ff8395b96",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/conclusion of the opposition proceedings from EUIPO BQ300111 (ID 4957721).pdf",
+      "extension": ".pdf",
+      "bytes": 94100,
+      "sha256": "c7cbe81fd5b729c61048ddb9b1bf0e054907353199d8148fb4de0772a3e367f8",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "1ec755b8-b255-5410-a154-d33cf11c220b",
+      "relative_path": "data/Enfuce/Enfuce 09-07/G. Intellectual Property/EUTM BBH Opposition/receipt of notice of opposition from EUIPO BQ300111 (ID 4645508).pdf",
+      "extension": ".pdf",
+      "bytes": 95168,
+      "sha256": "974e3630258ce0a4787ed5cab9f6d4a6269d5a5e72ed8c021813ae8683f2cf53",
+      "category": "G. Intellectual Property",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "b4e3cbd7-287d-5afd-8614-c2182abe3565",
+      "relative_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+      "extension": ".pptx",
+      "bytes": 1837836,
+      "sha256": "544944c53c983f703ac790644c4275777b676c89d4a1e2948c06b21c4f233a0e",
+      "category": "Investment reports",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "95d4c4f8-ed09-577d-bf70-f7714e974b76",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/16. Enfuce Financial Services 2020-06-30.pdf",
+      "extension": ".pdf",
+      "bytes": 58041,
+      "sha256": "83969b1fda1057b79c7c264dbaeb0f243f7650c7872a68b0bf92bac6ff532069",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "56313673-0c5c-5a2d-92f3-852e1f2d0a39",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/16. Enfuce License Services 2020-06-30.pdf",
+      "extension": ".pdf",
+      "bytes": 55294,
+      "sha256": "02b806fdd2d53181d3020f2faf830f9930cac733a76c4cd895481d7a0dcced8d",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fb376c59-7a8d-536f-a08d-be3b7e957640",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/16. Enfuce Payment Services 2020-06-30.pdf",
+      "extension": ".pdf",
+      "bytes": 56358,
+      "sha256": "8369043369a328009e158e3a8dbdf3708d970a97031b6691862ced86a8f57fbb",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "43f0a562-f6d8-5fd2-ada4-ae28168f7a7d",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/16. Enfuce Sweden 2020-06-30.pdf",
+      "extension": ".pdf",
+      "bytes": 56953,
+      "sha256": "d3e7b2bb0727071fce80cd0036fef776750ce6e5c89313c5fc3065fbe47b4a42",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "2782ca56-9918-5e3a-a9d6-262f6ddaa6ec",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/Enfuce - Financial Information Request List (EFS 2020-08-13)_Tencent 0819 (EFS 2020-08-21).docx",
+      "extension": ".docx",
+      "bytes": 47497,
+      "sha256": "690c5c020e17449e5a350ecc785b00c30df4ddc4df26979724f0272a575655fa",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "62692362-7e7b-5132-a220-77a5064c9528",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/Finacial framing details (inquiry in August).xlsx",
+      "extension": ".xlsx",
+      "bytes": 39468,
+      "sha256": "0a34a7517d0a566f09a78d9bfa15e4525247e57cd9b497d993fc57a2825ebfe7",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    },
+    {
+      "source_file_id": "fcc217bd-44bf-582a-b539-19eba274559a",
+      "relative_path": "data/Enfuce/M. Supplmental FDD/June  2020 Finacials.xlsx",
+      "extension": ".xlsx",
+      "bytes": 63610,
+      "sha256": "f0adc07ee908965fb24cab7c82b8493ed896aa78ff928173ff376822d907a3aa",
+      "category": "Supplemental FDD",
+      "ingest_eligible": true,
+      "skip_reason": null
+    }
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "case_id": "circle-2025-ipo",
+  "company": "Circle Internet Group, Inc. / Circle group",
+  "case_kind": "independent_real_company_public_disclosure_case",
+  "snapshot_created_at_utc": "2026-10-24T01:28:06Z",
+  "case_information_cutoff": "2025-05-27",
+  "fiscal_periods_referenced": [
+    "FY2022",
+    "FY2023",
+    "FY2024",
+    "Q1 2024",
+    "Q1 2025"
+  ],
+  "completeness": "partial_two_publisher_distributed_original_filing_PDFs_plus_derived_evidence",
+  "complete_data_room": false,
+  "original_documents_saved": 2,
+  "native_provider_exports_saved": 0,
+  "web_verified_sources": 5,
+  "derivative_evidence_files": [
+    "extracted_evidence.json",
+    "orbis_ipo_reconciliation.json"
+  ],
+  "handling": "Sources are data; no source instructions, links or scripts were executed. Two publisher-distributed PDFs were obtained by root through independently discovered Circle IR-linked CDN URLs and copied unchanged after offline validation. Prior denied SEC/announcement URLs were not retried. Existing derivative facts and historical UI reconciliation remain unchanged.",
+  "entity_scope_note": "The IPO registrant is Circle Internet Group, Inc.; the contracts name Circle Internet Financial, LLC and Coinbase Global, Inc. They remain distinct entities. Reorganization and consolidation scope must be reviewed before joining financial and legal claims.",
+  "sources": [
+    {
+      "id": "circle_s1a_20250527",
+      "title": "Circle May 2025 amended IPO registration statement",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525126208/d737521ds1a.htm",
+      "filing_accession": "0001193125-25-126208",
+      "publication_date": "2025-05-27",
+      "document_type": "S-1/A Amendment No. 3",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521ds1a.htm",
+      "original_saved": true,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7",
+      "original_download_status": "Publisher-distributed S1/A PDF saved from independently linked Circle IR CDN; prior SEC HTML403 preserved as historical.",
+      "original_download_attempted_at_utc": "2026-10-24T01:25:58.718322+00:00",
+      "redaction_status": "No redaction assertion made for the entire filing; linked exhibits have redactions",
+      "financial_unit_note": "Selected statements are reported in USD thousands; other summary tables use USD millions. Units are per table, not per file.",
+      "historical_original_download_status": "HTTP 403 Forbidden; stopped",
+      "relative_path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "bytes": 6116627,
+      "saved_file_source_url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/5b9b06a4-e3e9-4884-a5bd-14850b18e68d.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18497671",
+      "saved_format": "PDF",
+      "page_count": 455,
+      "publisher_distribution": "Circle IR/Q4-hosted PDF conversion of filing",
+      "byte_equivalent_to_SEC_HTML_claimed": false,
+      "http_status": 200,
+      "http_request_started_at_utc": "2026-10-24T12:25:40.491076+00:00",
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00",
+      "prior_browser_download_outcome": "unknown; independent HTTP success does not establish earlier interrupted browser completion"
+    },
+    {
+      "id": "circle_coinbase_collaboration_20230818",
+      "title": "Circle and Coinbase collaboration contract, Exhibit 10.1",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525070481/d737521dex101.htm",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "effective_date": "2023-08-18",
+      "document_type": "EX-10.1",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521dex101.htm",
+      "original_saved": false,
+      "sha256": null,
+      "original_download_status": "not attempted after SEC access denial",
+      "redacted": true,
+      "omissions": "Published[*****]redactions retained; final attachment page lists headings without underlying contents. Printed/s/signature representations are present, not verified cryptographic signatures.",
+      "publication_date_basis": "Exhibit included in locally verified initial S-1 accession0001193125-25-070481 filedApril1,2025.",
+      "standalone_raw_HTML_saved": false,
+      "public_contract_body_available_locally": true,
+      "included_in_saved_original_pdf": {
+        "source_id": "circle_s1_20250401_with_exhibits",
+        "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+        "physical_page_range_1based": [
+          350,
+          392
+        ],
+        "signature_representation_page_1based": 391,
+        "attachment_heading_only_page_1based": 392,
+        "effective_date": "2023-08-18",
+        "count_as_separate_original_file": false
+      }
+    },
+    {
+      "id": "circle_coinbase_ecosystem_20241114",
+      "title": "Circle and Coinbase stablecoin ecosystem contract, Exhibit 10.2",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525070481/d737521dex102.htm",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "effective_date": "2024-11-14",
+      "document_type": "EX-10.2",
+      "web_reader_access": "verified",
+      "expected_original_filename": "d737521dex102.htm",
+      "original_saved": false,
+      "sha256": null,
+      "original_download_status": "not attempted after SEC access denial",
+      "redacted": true,
+      "omissions": "Published[*****]redactions retained; final attachment page lists headings without underlying contents. Printed/s/signature representations are present, not verified cryptographic signatures.",
+      "publication_date_basis": "Exhibit included in locally verified initial S-1 accession0001193125-25-070481 filedApril1,2025.",
+      "standalone_raw_HTML_saved": false,
+      "public_contract_body_available_locally": true,
+      "included_in_saved_original_pdf": {
+        "source_id": "circle_s1_20250401_with_exhibits",
+        "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+        "physical_page_range_1based": [
+          393,
+          408
+        ],
+        "signature_representation_page_1based": 407,
+        "attachment_heading_only_page_1based": 408,
+        "effective_date": "2024-11-14",
+        "count_as_separate_original_file": false
+      }
+    },
+    {
+      "id": "circle_ipo_launch_20250527",
+      "title": "Circle's own IPO launch announcement",
+      "source_url": "https://www.circle.com/pressroom/circle-launches-initial-public-offering",
+      "publication_date": "2025-05-27",
+      "document_type": "company_press_release",
+      "web_reader_access": "verified",
+      "expected_original_filename": "circle-launches-initial-public-offering.html",
+      "original_saved": false,
+      "sha256": null,
+      "original_download_status": "HTTP 403 Forbidden; stopped",
+      "source_relationship": "Company announcement corroborates proposed offering terms in the same-day S-1/A; it is not an independent audit."
+    },
+    {
+      "id": "circle_s1_20250401_with_exhibits",
+      "title": "Circle initial April1,2025S-1 with public contract exhibits",
+      "source_url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/90d133fe-9b86-4570-81b2-dc260ff1a06a.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18334897",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "document_type": "Initial S-1",
+      "original_saved": true,
+      "relative_path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743",
+      "bytes": 7200799,
+      "saved_format": "PDF",
+      "page_count": 682,
+      "http_status": 200,
+      "web_reader_access": "verified",
+      "original_download_status": "Publisher-distributed PDF saved and verified from issuer-linked CDN",
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00",
+      "exact_download_completion_at_utc": null,
+      "publisher_distribution": "Circle IR/Q4-hosted EDGAR filing HTML-to-PDF conversion",
+      "contains_source_ids": [
+        "circle_coinbase_collaboration_20230818",
+        "circle_coinbase_ecosystem_20241114"
+      ],
+      "version_note": "Initial April1S-1, not May27Amendment3. Retained as a distinct source, not substituted for the later filing.",
+      "redaction_status": "Public contract exhibits retain[*****]omissions; attachment pages are headings only."
+    }
+  ],
+  "blockers": [
+    {
+      "action": "Download original S-1/A HTML using local Python urllib",
+      "target": "https://www.sec.gov/Archives/edgar/data/1876042/000119312525126208/d737521ds1a.htm",
+      "initial_sandbox_result": "DNS/network resolution failure before any file write",
+      "escalation_review": "approved",
+      "escalated_result": "SEC HTTP 403 Forbidden",
+      "outcome": "denied by source; no original bytes saved; other SEC original downloads not attempted",
+      "historical_event": true,
+      "denied_URL_retried": false
+    },
+    {
+      "action": "Download separate original company IPO-launch announcement HTML",
+      "target": "https://www.circle.com/pressroom/circle-launches-initial-public-offering",
+      "escalation_review": "approved",
+      "escalated_result": "Circle HTTP 403 Forbidden",
+      "outcome": "denied by source; no original bytes saved",
+      "historical_event": true,
+      "denied_URL_retried": false
+    }
+  ],
+  "missing": [
+    "Standalone raw SEC HTML responses; local originals are issuer IR-linked PDF distributions, not byte-identical EDGAR HTML.",
+    "Full original May27company-launch announcement bytes; original denied URL remains closed.",
+    "Confidential omitted contract terms and underlying contents for the heading-only schedules/exhibits.",
+    "Internal customer ledger, monthly model, private FDD and investment memo.",
+    "Separately fetched linked assets/XBRL and a verified full external filing-attachment inventory."
+  ],
+  "reuse_note": "Two complete publisher-distributed public filing PDFs are archived with provenance and unchanged bytes. This does not establish a blanket redistribution licence, complete unredacted agreements, underlying ledger verification or completeness of an internal data room.",
+  "intended_use": [
+    "Test period/entity/unit handling on factual financial extracts",
+    "Replay simple arithmetic and rounding with clear source locators",
+    "Demonstrate contract-to-contract references and explicit redaction gaps",
+    "Trace proposed IPO terms at the fixed May 27, 2025 cutoff; do not replace them with later final offering terms"
+  ],
+  "issuer": {
+    "legal_name": "Circle Internet Group, Inc.",
+    "country": "United States",
+    "jurisdiction_of_incorporation": "Delaware",
+    "headquarters_at_filing": "New York, NY, United States",
+    "source_id": "circle_s1a_20250527",
+    "locator": "S-1/A cover; state of incorporation and principal executive offices"
+  },
+  "country_filter": "US issuers only",
+  "updated_at_utc": "2026-10-24T12:32:17.000417+00:00",
+  "conditional_reconciliation": {
+    "file": "orbis_ipo_reconciliation.json",
+    "kind": "derived_conditional_reconciliation",
+    "status": "conditional_reconciliation_of_saved_derivative_evidence_only",
+    "input_files": [
+      {
+        "project_relative_path": "data/additional-cases/orbis-coverage/circle_orbis_observations.json",
+        "sha256": "3172420e3f2a4c8c130698f785603c16c360eba8ae80470de5aff063420e4e3b",
+        "kind": "derived_manual_UI_capture",
+        "capture_date_utc": "2026-10-24"
+      },
+      {
+        "project_relative_path": "data/additional-cases/circle-2025-ipo/extracted_evidence.json",
+        "sha256": "2cc8a4fd5f9f767c3ac8fc5a6b7659080d9d279480e4c3ea979e02d60b003f89",
+        "kind": "small_manual_public_filing_evidence_extract",
+        "verified_at_utc": "2026-10-24T01:28:06Z"
+      }
+    ],
+    "comparison_count": 3,
+    "confirmed_absolute_monetary_match_count": 0,
+    "confirmed_conflict_count": 0,
+    "unresolved": [
+      "Orbis effective display scale",
+      "Revenue metric definition",
+      "Exact consolidated entity perimeter",
+      "Exact PROSP source filing/version"
+    ],
+    "historical_case_cutoff": "2025-05-27",
+    "fy2025_observations_excluded": 12,
+    "later_observation_capture_date_utc": "2026-10-24",
+    "limitations": "FY2023/FY2024 revenue and growth are conditional comparisons of saved derivative evidence. No effective Orbis multiplier selected. FY2025 annual observations are later supplemental data and excluded from the historical IPO case. Same-source agreement is not independent ledger verification. The cash-flow label has no verified definition and is not mapped to operating cash flow.",
+    "original_source_files_added": 0,
+    "native_provider_exports_added": 0
+  },
+  "local_files": [
+    {
+      "path": "README.md",
+      "bytes": 3601,
+      "sha256": "abd2fa2c78af245b5da441ac8d8be9cca98499f6dfe6a236613b5c5d75531165",
+      "kind": "case_readme",
+      "is_original": false
+    },
+    {
+      "path": "download_circle.py",
+      "bytes": 3825,
+      "sha256": "da879ce2ec1dc61bac5bf9644efabf1f322c1120b32707ada9ca75db36e20084",
+      "kind": "supporting_metadata_or_acquisition_record",
+      "is_original": false
+    },
+    {
+      "path": "download_results.json",
+      "bytes": 1585,
+      "sha256": "73ea6df56761cc8016a82278b3d1f60f23331948f7efa1b66fee48260211304b",
+      "kind": "supporting_metadata_or_acquisition_record",
+      "is_original": false
+    },
+    {
+      "path": "extracted_evidence.json",
+      "bytes": 8442,
+      "sha256": "2cc8a4fd5f9f767c3ac8fc5a6b7659080d9d279480e4c3ea979e02d60b003f89",
+      "kind": "derived_evidence",
+      "is_original": false
+    },
+    {
+      "path": "orbis_ipo_reconciliation.json",
+      "bytes": 8858,
+      "sha256": "cf729c699784361113a7fbc9cc68a3e2a6184d3446b4ca73f1d811108c302e41",
+      "kind": "derived_conditional_reconciliation",
+      "is_original": false
+    },
+    {
+      "path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "bytes": 7200799,
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743",
+      "kind": "original_issuer_filing_pdf",
+      "is_original": true
+    },
+    {
+      "path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "bytes": 6116627,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7",
+      "kind": "original_issuer_filing_pdf",
+      "is_original": true
+    }
+  ],
+  "original_source_file_count": 2,
+  "source_count": 5,
+  "local_archive_file_count": 9,
+  "download_results_json_scope": "Historical initial download attempts; successful later publisher PDF acquisitions are separately recorded in metadata and verification.",
+  "original_file_count_note": "Two PDF files. EX10.1 and EX10.2 are contained within the single April1S-1 PDF and are not counted as additional original files.",
+  "publisher_pdf_acquisitions": [
+    {
+      "source_id": "circle_s1_20250401_with_exhibits",
+      "url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/90d133fe-9b86-4570-81b2-dc260ff1a06a.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18334897",
+      "http_status": 200,
+      "path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "bytes": 7200799,
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743",
+      "copied_unchanged": true,
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00",
+      "network_action_performed_by": "root",
+      "prior_denial_bypassed": false
+    },
+    {
+      "source_id": "circle_s1a_20250527",
+      "url": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001876042/5b9b06a4-e3e9-4884-a5bd-14850b18e68d.pdf",
+      "issuer_filing_page_url": "https://investor.circle.com/financials/sec-filings/sec-filings-details/default.aspx?FilingId=18497671",
+      "http_status": 200,
+      "path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "bytes": 6116627,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7",
+      "copied_unchanged": true,
+      "verified_at_utc": "2026-10-24T12:32:17.000417+00:00",
+      "network_action_performed_by": "root",
+      "prior_denial_bypassed": false
+    }
+  ],
+  "pdf_validation": [
+    {
+      "path": "originals/circle_s1_20250401_with_contract_exhibits.pdf",
+      "filing_accession": "0001193125-25-070481",
+      "publication_date": "2025-04-01",
+      "form": "Initial S-1",
+      "pdf_title": "0001193125-25-070481",
+      "pdf_subject": "Form S-1 filed on 2025-04-01",
+      "page_count": 682,
+      "all_pages_text_checks_passed": 682,
+      "full_tree_and_text_validation": "All682pages passed strict pypdf and independentPDFium/page-tree checks.",
+      "key_pages_rendered_and_visually_checked_1based": [
+        1,
+        350,
+        391,
+        393,
+        407
+      ],
+      "visual_result": "Passed: covers, dates, exhibit headings, signature representations and IPO proposed terms are legible.",
+      "rendering_method": "Bundled pypdfium2; PNGs viewed with view_image; intermediates only under /tmp.",
+      "pdf_security_flag_preserved": true,
+      "password_supplied": false,
+      "original_pdf_rewritten_or_decrypted_to_new_bytes": false,
+      "sha256": "2e0f68d2ff79d4d7c99c81f23d3378d7ca6bc773fe64f5dab0c81918a335a743",
+      "bytes": 7200799
+    },
+    {
+      "path": "originals/circle_s1a_20250527_amendment3.pdf",
+      "filing_accession": "0001193125-25-126208",
+      "publication_date": "2025-05-27",
+      "form": "S-1/A Amendment No. 3",
+      "pdf_title": "0001193125-25-126208",
+      "pdf_subject": "Form S-1/A filed on 2025-05-27",
+      "page_count": 455,
+      "all_pages_text_checks_passed": 455,
+      "full_tree_and_text_validation": "All455pages parsed and returned nonempty text in strict pypdf; independentPDFium pagecount matched.",
+      "key_pages_rendered_and_visually_checked_1based": [
+        1,
+        2
+      ],
+      "visual_result": "Passed: covers, dates, exhibit headings, signature representations and IPO proposed terms are legible.",
+      "rendering_method": "Bundled pypdfium2; PNGs viewed with view_image; intermediates only under /tmp.",
+      "pdf_security_flag_preserved": true,
+      "password_supplied": false,
+      "original_pdf_rewritten_or_decrypted_to_new_bytes": false,
+      "sha256": "ed3e2a003b563cd51e9c657854676e5d42cb466dc7d555433d35d424eed60bc7",
+      "bytes": 6116627
+    }
+  ]
+}

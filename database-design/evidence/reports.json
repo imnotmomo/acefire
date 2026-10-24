@@ -1,0 +1,677 @@
+{
+  "inspection_scope": "Read-only OOXML text and native table extraction from2 user-supplied narrative files. No external upload, scripts/macros/formulas executed, or source edits.",
+  "source_files": [
+    {
+      "kind": "pptx",
+      "slide_count": 15,
+      "path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+      "sha256": "544944c53c983f703ac790644c4275777b676c89d4a1e2948c06b21c4f233a0e",
+      "source_original_unchanged": true
+    },
+    {
+      "kind": "docx",
+      "nonempty_top_level_body_paragraph_count": 90,
+      "native_table_count": 0,
+      "embedded_media": [
+        {
+          "zip_path": "word/media/image1.emf",
+          "bytes": 22720
+        },
+        {
+          "zip_path": "word/media/image2.png",
+          "bytes": 66317
+        },
+        {
+          "zip_path": "word/media/image3.emf",
+          "bytes": 15764
+        },
+        {
+          "zip_path": "word/media/image4.emf",
+          "bytes": 19096
+        }
+      ],
+      "path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+      "sha256": "cbd6e2b302adbe97eac6c10b5a2017db16f87162303e4c5bc041a4e261c8e0a9",
+      "source_original_unchanged": true
+    }
+  ],
+  "locator_policy": {
+    "pptx": "1-based slide/table/row/column from native OOXML tables; not rendered PDF page numbers.",
+    "docx": "1-based direct w:body/w:p index including empty paragraphs in word/document.xml. This is stable only for this file hash; no rendered page number inferred."
+  },
+  "entity_evidence": {
+    "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+    "slide_number": 9,
+    "raw_text": "股权架构9MgtMaki.VCTencentESOPEnfuce Financial Services63.9%19.7%10%6.4%Enfuce LicenseServicesEnfuce PaymentServicesEnfuce Sweden AB100%100%100%持有PSD2 AISP and PISP 牌照注：腾讯持有Maki.VC 2.7%的股份，LingGe是Maiki.VC的董事没有实际业务用于在瑞典招聘",
+    "observed_entities": [
+      "Enfuce Financial Services",
+      "Enfuce License Services",
+      "Enfuce Payment Services",
+      "Enfuce Sweden AB"
+    ],
+    "note": "The diagram shows100% affiliate ownership. Parent-vs-group consolidation scope of financial claims still needs source financial statements/workbook confirmation."
+  },
+  "native_financial_tables": [
+    {
+      "slide_number": 2,
+      "tables": [
+        [
+          [
+            "本轮轮次",
+            "B轮",
+            "上轮融资时间",
+            "2019年11月"
+          ],
+          [
+            "上轮融资额",
+            "Eur 5m",
+            "上轮投后估值",
+            "Eur31m"
+          ],
+          [
+            "本轮融资金额",
+            "Eur 7m",
+            "本轮投前估值",
+            "Eur 43m"
+          ],
+          [
+            "腾讯目标持股比例",
+            "~10%",
+            "腾讯投资金额",
+            "Eur 5m"
+          ]
+        ],
+        [
+          [
+            "业务介绍 ",
+            "Enfuce是一家成立于2016年的金融科技公司其总部位于芬兰，主要客户是位于北欧初创公司和企业目前Enfuce主要业务是支付服务，占营收超95%"
+          ],
+          [
+            "数据情况",
+            " 截至2020年6月末，公司总资产为€7.4m，净资产为€0.952019年总营收为€5.1m，净亏损€2m现存客户16家，第一大客户是ST1"
+          ],
+          [
+            "董事会架构",
+            "5席，腾讯1席，管理层3席，A轮投资者1席"
+          ]
+        ]
+      ]
+    },
+    {
+      "slide_number": 11,
+      "tables": [
+        [
+          [
+            "单位 k€",
+            "2017",
+            "2018",
+            "2019",
+            "2020F",
+            "19H1",
+            "20H1",
+            "YoY"
+          ],
+          [
+            "营业收入",
+            "3,320 ",
+            "4,136 ",
+            "5,096 ",
+            "7,499 ",
+            "2,559 ",
+            "3,453 ",
+            "35%"
+          ],
+          [
+            "营业成本",
+            "(574)",
+            "(259)",
+            "(1,536)",
+            "(2,734) ",
+            "(668)",
+            "(1,427) ",
+            "114%"
+          ],
+          [
+            "毛利润",
+            "2,796 ",
+            "3,927 ",
+            "3,609 ",
+            "4,765 ",
+            "1,926 ",
+            "2,026 ",
+            "5%"
+          ],
+          [
+            "毛利率",
+            "84%",
+            "95%",
+            "71%",
+            "64%",
+            "75%",
+            "59%",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "人力成本",
+            "(1,106)",
+            "(1,749)",
+            "(3,076)",
+            "(4,086)",
+            "(1,380)",
+            "(1,718)",
+            "24%"
+          ],
+          [
+            "营运成本",
+            "(797)",
+            "(1,770)",
+            "(1,730)",
+            "(1,610)",
+            "(746)",
+            "(615)",
+            "-18%"
+          ],
+          [
+            "EBITDA",
+            "893 ",
+            "409 ",
+            "(1,197)",
+            "(931)",
+            "(200)",
+            "(307)",
+            "54%"
+          ],
+          [
+            "折旧及摊销",
+            "(469)",
+            "(558)",
+            "(490)",
+            "(786)",
+            "(277)",
+            "(314)",
+            "13%"
+          ],
+          [
+            "财务费用",
+            "(2)",
+            "(33)",
+            "(272)",
+            "(308)",
+            "(129)",
+            "(165) ",
+            "30%"
+          ],
+          [
+            "净利润",
+            "423 ",
+            "(183)",
+            "(1,958)",
+            "(2,025)",
+            "(606)",
+            "(787)",
+            "-30%"
+          ],
+          [
+            "NP%",
+            "13%",
+            "-4%",
+            "-38%",
+            "-27%",
+            "-24%",
+            "-23%",
+            ""
+          ]
+        ],
+        [
+          [
+            "HC  #",
+            "2017",
+            "2018",
+            "2019",
+            "2020"
+          ],
+          [
+            "S&M",
+            "1",
+            "4",
+            "6",
+            "6"
+          ],
+          [
+            "R&D",
+            "9",
+            "21",
+            "31",
+            "33"
+          ],
+          [
+            "Admin",
+            "4",
+            "6",
+            "9",
+            "11"
+          ],
+          [
+            "Total",
+            "14",
+            "31",
+            "46",
+            "50"
+          ]
+        ]
+      ]
+    },
+    {
+      "slide_number": 12,
+      "tables": [
+        [
+          [
+            "　",
+            "Commit to growth",
+            "Pay as you grow"
+          ],
+          [
+            "一次性安装/注册费用： €100-150k/企业 ",
+            "最低月度费用（包含协议的账户数以及附加服务费用）：€ 26k (含100,000张卡)",
+            "最低月度费用（包含附加服务费用）： € 5k"
+          ],
+          [
+            "",
+            "超出协议账户数费用：€3,800/10,000 张；按照交易次数收取的反欺诈服务费：€8k/百万 交易次数；工时费；",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "slide_number": 15,
+      "tables": [
+        [
+          [
+            "　（单位：k€）",
+            "2017",
+            "2018",
+            "2019"
+          ],
+          [
+            "固定资产",
+            "942.4",
+            "2186.4",
+            "6099.2"
+          ],
+          [
+            "流动资产",
+            "134.4",
+            "510.3",
+            "1346.8"
+          ],
+          [
+            "总资产",
+            "1076.8",
+            "2696.7",
+            "7446.0"
+          ]
+        ],
+        [
+          [
+            "　（单位：k€）",
+            "2017",
+            "2018",
+            "2019"
+          ],
+          [
+            "短期有息负债",
+            "103",
+            "971",
+            "4306.3"
+          ],
+          [
+            "长期有息负债",
+            "0",
+            "146",
+            "966.6"
+          ],
+          [
+            "短期无息负债",
+            "561",
+            "1498",
+            "2077.5"
+          ],
+          [
+            "总负债",
+            "1077",
+            "2697",
+            "7445.5"
+          ]
+        ]
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "fdd_fy2019_revenue",
+      "metric_key": "revenue",
+      "value_raw": "5,096",
+      "numeric_value": "5096",
+      "currency": "EUR",
+      "scale": "1000",
+      "unit_label_raw": "k€",
+      "period_label_raw": "2019",
+      "period_kind": "annual",
+      "basis": "actual_as_presented",
+      "entity_label_raw": "Enfuce",
+      "entity_scope_status": "group_or_parent_not_resolved",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 2,
+          "column": 4
+        },
+        "raw_text": "5,096 "
+      },
+      "header_evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 1,
+          "column": 4
+        },
+        "raw_text": "2019"
+      },
+      "unit_evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 1,
+          "column": 1
+        },
+        "raw_text": "单位 k€"
+      }
+    },
+    {
+      "id": "memo_fy2019_revenue",
+      "metric_key": "revenue",
+      "value_raw": "€5.1m in FY19",
+      "numeric_value": "5.1",
+      "currency": "EUR",
+      "scale": "1000000",
+      "period_label_raw": "FY19",
+      "period_kind": "annual",
+      "basis": "actual_as_presented",
+      "entity_label_raw": "Enfuce",
+      "entity_scope_status": "group_or_parent_not_resolved",
+      "evidence": {
+        "file_path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+        "locator": {
+          "kind": "docx_top_level_body_paragraph",
+          "body_paragraph_index_1_based_including_empty": 8,
+          "ooxml_part": "word/document.xml"
+        },
+        "raw_text": "Revenues: €3.3m in FY17, €4.1m in FY18 (+25% YoY), €5.1m in FY19 (+23% YoY), €7.5m est. in FY20 (+47% YoY), €15m est. in FY21 (+100% YoY). Target break-even by 2022."
+      },
+      "comparison_note": "5,096 kEUR is5.096m; rounds to5.1m at memo precision. This is report-to-report consistency, not independent ledger verification."
+    },
+    {
+      "id": "fdd_2020f_revenue",
+      "metric_key": "revenue",
+      "value_raw": "7,499",
+      "numeric_value": "7499",
+      "currency": "EUR",
+      "scale": "1000",
+      "period_label_raw": "2020F",
+      "period_kind": "annual",
+      "basis": "forecast",
+      "entity_label_raw": "Enfuce",
+      "entity_scope_status": "group_or_parent_not_resolved",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 2,
+          "column": 5
+        },
+        "raw_text": "7,499 "
+      },
+      "header_evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 1,
+          "column": 5
+        },
+        "raw_text": "2020F"
+      }
+    },
+    {
+      "id": "fdd_h1_2019_revenue",
+      "metric_key": "revenue",
+      "numeric_value": "2559",
+      "currency": "EUR",
+      "scale": "1000",
+      "period_label_raw": "19H1",
+      "period_kind": "half_year",
+      "basis": "actual_as_presented",
+      "entity_label_raw": "Enfuce",
+      "entity_scope_status": "group_or_parent_not_resolved",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 2,
+          "column": 6
+        },
+        "raw_text": "2,559 "
+      },
+      "header_evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 1,
+          "column": 6
+        },
+        "raw_text": "19H1"
+      }
+    },
+    {
+      "id": "fdd_h1_2020_revenue",
+      "metric_key": "revenue",
+      "numeric_value": "3453",
+      "currency": "EUR",
+      "scale": "1000",
+      "period_label_raw": "20H1",
+      "period_kind": "half_year",
+      "basis": "actual_as_presented",
+      "entity_label_raw": "Enfuce",
+      "entity_scope_status": "group_or_parent_not_resolved",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 2,
+          "column": 7
+        },
+        "raw_text": "3,453 "
+      },
+      "header_evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 1,
+          "column": 7
+        },
+        "raw_text": "20H1"
+      }
+    },
+    {
+      "id": "fdd_h1_revenue_yoy",
+      "metric_key": "revenue_yoy_growth",
+      "numeric_value": "35",
+      "unit_label_raw": "%",
+      "period_label_raw": "20H1 vs19H1",
+      "basis": "reported_derived_metric",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_table_cell",
+          "slide_number": 11,
+          "table_index": 1,
+          "row": 2,
+          "column": 8
+        },
+        "raw_text": "35%"
+      }
+    },
+    {
+      "id": "fdd_payment_initiation_unit_fee",
+      "metric_key": "payment_initiation_unit_fee",
+      "numeric_value": "0.01",
+      "currency": "EUR",
+      "scale": "1",
+      "unit_label_raw": "次 支付发起",
+      "basis": "pricing_claim",
+      "period_label_raw": null,
+      "entity_label_raw": "Enfuce 开放银行服务",
+      "evidence": {
+        "file_path": "data/Enfuce/Enfuce_FDD_0910_v4.pptx",
+        "locator": {
+          "kind": "pptx_slide_text",
+          "slide_number": 13
+        },
+        "raw_text": "财务情况 – 收费标准13Enfuce开放银行服务业务的定价标准如下：最低月度收费€5,000 + 按交易次数收费（€0.09/次 账户信息调用+€0.01/次 支付发起）Enfuce“我的碳足迹”业务的定价标准如下：激活前最低月度收费€5,000激活前最低月度收费€7,000+按照账户承诺业务量的其他收费"
+      }
+    },
+    {
+      "id": "memo_payment_initiation_unit_fee",
+      "metric_key": "payment_initiation_unit_fee",
+      "numeric_value": "0.11",
+      "currency": "EUR",
+      "scale": "1",
+      "unit_label_raw": "payment initiation",
+      "basis": "pricing_claim",
+      "period_label_raw": null,
+      "entity_label_raw": "Enfuce open-banking API hub",
+      "evidence": {
+        "file_path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+        "locator": {
+          "kind": "docx_top_level_body_paragraph",
+          "body_paragraph_index_1_based_including_empty": 56,
+          "ooxml_part": "word/document.xml"
+        },
+        "raw_text": "Pricing: Min monthly fee of €5,000 + per transaction fees of €0.09/account information request + €0.11/payment initiation.   "
+      },
+      "comparison_note": "Different reported amount than PPTX. No contract checked, so open question, not an investment or truth conclusion."
+    },
+    {
+      "id": "memo_revenue_recurring_share_may2020",
+      "metric_key": "recurring_revenue_share",
+      "numeric_value": "77",
+      "unit_label_raw": "%",
+      "period_label_raw": "As of May2020",
+      "basis": "reported_ratio",
+      "evidence": {
+        "file_path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+        "locator": {
+          "kind": "docx_top_level_body_paragraph",
+          "body_paragraph_index_1_based_including_empty": 107,
+          "ooxml_part": "word/document.xml"
+        },
+        "raw_text": "As of May 2020, 77% of the total revenues are recurring with the rest coming from one-time set-up fees and other sources such as consultation. "
+      },
+      "comparison_note": "Do not treat total revenue run-rate as ARR; memo distinguishes recurring share and one-time setup/consultation."
+    },
+    {
+      "id": "memo_st1_arr_share",
+      "metric_key": "customer_arr_share",
+      "value_raw": "44%",
+      "numeric_value": "44",
+      "unit_label_raw": "%",
+      "period_label_raw": "as of May30th",
+      "basis": "reported_ratio",
+      "evidence": {
+        "file_path": "data/Enfuce/20200730 Enfuce Investment Memo-CLEAN.docx",
+        "locator": {
+          "kind": "docx_top_level_body_paragraph",
+          "body_paragraph_index_1_based_including_empty": 34,
+          "ooxml_part": "word/document.xml"
+        },
+        "raw_text": "Customer concentration: 40% or €2.4m of the last twelve-month revenues comes from Finnish gas station chain ST1’s payment services contract. On an ARR basis, ST1 makes up 44% while startups/neobanks make up 51% of ARR as of May 30th. Any decrease in commitments or loss of material contracts could create significant loss in total revenues. However, this can be mitigated as Enfuce continues to diversify its customer base through an increase in customer counts from a strong pipeline. "
+      },
+      "comparison_note": "Same paragraph also reports40% ofLTM revenues/€2.4m; ARR share vsLTM revenue share are different definitions."
+    }
+  ],
+  "candidate_demos": [
+    {
+      "name": "Reported revenue cross-source consistency",
+      "inputs": [
+        "fdd_fy2019_revenue",
+        "memo_fy2019_revenue"
+      ],
+      "calculation": "5096 *1000 =5,096,000 EUR; round at0.1m precision =5.1m EUR",
+      "expected_presentation": "Consistent after unit/precision normalization, conditional on same entity and annual period."
+    },
+    {
+      "name": "H1 revenue growth arithmetic",
+      "inputs": [
+        "fdd_h1_2019_revenue",
+        "fdd_h1_2020_revenue",
+        "fdd_h1_revenue_yoy"
+      ],
+      "formula": "(3453 /2559 -1)*100",
+      "result_percent": "34.93552168815943728018757330",
+      "reported_percent": "35",
+      "expected_presentation": "Reproduces35% after whole-percentage rounding; computed from reported aggregates, not independent source ledger."
+    },
+    {
+      "name": "Open Banking pricing discrepancy",
+      "inputs": [
+        "fdd_payment_initiation_unit_fee",
+        "memo_payment_initiation_unit_fee"
+      ],
+      "difference_eur_per_payment": "0.10",
+      "expected_presentation": "Show both quotes and ask which contract/version/effective date applies. Do not choose a true source without contract evidence."
+    }
+  ],
+  "modeling_implications": [
+    "Separate source assertions from calculations. Store reported, extracted, normalized and independently recalculated values distinctly.",
+    "Persist source file hash/version, location, exact quote, entity and entity scope, period/as-of date, actual/forecast, currency, unit scale, precision, sign and metric definition.",
+    "Store multiple claims for same metric rather than overwrite with one number. Link every comparison to the precise claim IDs and normalization assumptions.",
+    "The FDD cover says2019年5月 while its tables include2020H1 and2020F; filename0910 is not a verified publication date. Store date observations separately with confidence.",
+    "2019grossprofit3609 is49 kEUR higher than revenue5096 minusCOGS1536;2017/2018differences are50 kEUR. Otherincome/reclassification may explain it. Check workbook definitions; do not automatically call this wrong.",
+    "Memo monthly fee examples and recurring share are not enough to recomputeARR. Require contract/customer monthly underlying rows and ARR definition.",
+    "DOCX key financial/customer charts are embeddedEMF/PNG rather than native tables. Text extraction does not read those images; subsequent visual extraction must preserve image+paragraph anchors."
+  ],
+  "limitations": [
+    "No PDF statements inspected in this subtask.",
+    "No visual rendering was available/needed for textual structural inspection; no DOCX page numbers asserted.",
+    "Claims reflect historical source statements, not present-day financial or regulatory advice."
+  ]
+}

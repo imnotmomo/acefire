@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "snapshot_type": "one_time_local_project_file_archive",
+  "sync_started_at_utc": "2026-10-23T23:33:08.871197+00:00",
+  "sync_finished_at_utc": "2026-10-23T23:48:46.424584+00:00",
+  "source_project": {
+    "id": "g-p-6adadb3364d481918a639c15f2ad8f57",
+    "title": "VC Hackathon",
+    "url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/project",
+    "enumeration_complete_for_current_joined_account": true,
+    "accessible_conversation_count": 5,
+    "inventory_evidence": "source/project-inventory.json",
+    "enumeration_method": "Authenticated Safari Project Chats list, project-scoped shared conversation links; scroll to bottom at start and final recheck; no additional pages or Load more control. Not inferred from global title search.",
+    "final_list_matches_initial_list": true,
+    "standalone_sources_tab_observation": "No downloadable source entries shown; UI says current user cannot add sources. No source changes attempted."
+  },
+  "destination": {
+    "codex_project_id": "f7b916c0-a827-4e5a-b4f3-1adbf36b7003",
+    "label": "vc hackathon",
+    "root": "/Users/cc/Downloads/vc hackathon",
+    "archive_subdirectory": "chatgpt-sync",
+    "native_conversation_import": false,
+    "native_import_note": "Available supported tools do not provide native ChatGPT conversation import into a local Codex project; saved project files instead. No application database or hidden browser/Codex store read or edited.",
+    "unrelated_project_files_modified": false
+  },
+  "completeness": {
+    "verified_source_conversation_count": 5,
+    "saved_markdown_transcript_count": 5,
+    "saved_message_count": 128,
+    "role_counts": {
+      "user": 64,
+      "assistant": 64
+    },
+    "all_verified_conversations_have_transcripts": true,
+    "all_accessible_user_and_assistant_message_bodies_copied": true,
+    "attachments_complete": false,
+    "overall": "complete_accessible_text_snapshot_with_attachment_omissions",
+    "visible_branch_only": true,
+    "date_policy": "Preserve source timeline date separators and Project last-updated labels when exposed; do not infer individual message creation dates."
+  },
+  "conversations": [
+    {
+      "source_id": "6adbbabf-52a8-83ea-a079-cfb9a8b66f75",
+      "title": "分析开发架构",
+      "owner_shown_in_project": "Haoran Chen",
+      "source_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6adbbabf-52a8-83ea-a079-cfb9a8b66f75?owner_user_id=user-ISYmM2KjVI1Ee0PgjpMGuhUd",
+      "canonical_conversation_url": "https://chatgpt.com/c/6adbbabf-52a8-83ea-a079-cfb9a8b66f75",
+      "source_last_updated_label": "Last updated Oct 23",
+      "transcript_path": "conversations/6adbbabf-52a8-83ea-a079-cfb9a8b66f75.md",
+      "transcript_sha256": "070af9cee26893b8319fed525ff322296a5d531707b6c01406ea13f7d689b6e5",
+      "evidence_path": "evidence/6adbbabf-52a8-83ea-a079-cfb9a8b66f75.json",
+      "message_count": 12,
+      "role_counts": {
+        "assistant": 6,
+        "user": 6
+      },
+      "source_visible_date_separators": [
+        {
+          "datetime": "2026-10-23T19:51:49.268Z",
+          "label": "Today 3:51 PM"
+        }
+      ],
+      "capture_count": 3,
+      "message_body_completeness": "complete_for_accessible_rendered_branch",
+      "top_and_bottom_visibly_verified": true,
+      "overlapping_capture_order_verified": true,
+      "uncovered_message_gaps": [],
+      "attachment_references": [
+        {
+          "message_sequence": 1,
+          "name": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+          "source_url": null,
+          "copied": false,
+          "status": "inaccessible_via_supported_ui",
+          "visible_control": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+          "download_action_outcome": "failed",
+          "download_toast": "Failed to download file. Please try again later.",
+          "content_inferred_from_other_same_name_references": false
+        }
+      ],
+      "formatting_or_media_omissions": [
+        "Interactive input copied as static label/default value without behavior: Ask about metrics, sources, calculations...",
+        "Interactive control copied as text without behavior: Explore query"
+      ],
+      "evidence_sha256": "6585fbb936946717032040a97e897d84ebde4a46acdd1961c51ca74338d14187"
+    },
+    {
+      "source_id": "6adad23c-b5dc-83ea-9d43-bdd811157637",
+      "title": "数据整合溯源对比",
+      "owner_shown_in_project": "Aria W",
+      "source_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6adad23c-b5dc-83ea-9d43-bdd811157637?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6adad23c-b5dc-83ea-9d43-bdd811157637",
+      "source_last_updated_label": "Last updated Oct 23",
+      "transcript_path": "conversations/6adad23c-b5dc-83ea-9d43-bdd811157637.md",
+      "transcript_sha256": "29e78f38a1e5ce0c8523d8f8934d2664a498410fa0dcea88a231244f68a49949",
+      "evidence_path": "evidence/6adad23c-b5dc-83ea-9d43-bdd811157637.json",
+      "message_count": 38,
+      "role_counts": {
+        "assistant": 19,
+        "user": 19
+      },
+      "source_visible_date_separators": [
+        {
+          "datetime": "2026-10-23T03:19:24.511Z",
+          "label": "Yesterday 11:19 PM"
+        }
+      ],
+      "capture_count": 14,
+      "message_body_completeness": "complete_for_accessible_rendered_branch",
+      "top_and_bottom_visibly_verified": true,
+      "overlapping_capture_order_verified": true,
+      "uncovered_message_gaps": [],
+      "attachment_references": [
+        {
+          "message_sequence": 38,
+          "name": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+          "source_url": null,
+          "copied": false,
+          "status": "inaccessible_via_supported_ui",
+          "visible_control": "Open preview of AI_Due_Diligence_Evidence_Workspace_PRD.md",
+          "download_action_outcome": "failed",
+          "download_toast": "Failed to download file. Please try again later.",
+          "preview_action_outcome": "Button changed to Open file; no preview or panel appeared.",
+          "content_inferred_from_other_same_name_references": false
+        }
+      ],
+      "formatting_or_media_omissions": [],
+      "evidence_sha256": "d061e2dca11e0d9d1b702b81b2b2c22e890868dc59b8eafc4dab73ee63c089fd"
+    },
+    {
+      "source_id": "6ad7926f-cb18-83ea-8591-22705cf7d840",
+      "title": "Fintech黑客松获奖案例",
+      "owner_shown_in_project": "Aria W",
+      "source_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad7926f-cb18-83ea-8591-22705cf7d840?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad7926f-cb18-83ea-8591-22705cf7d840",
+      "source_last_updated_label": "Last updated Oct 23",
+      "transcript_path": "conversations/6ad7926f-cb18-83ea-8591-22705cf7d840.md",
+      "transcript_sha256": "e1dce0a4bf039f9d68e5f4beacb76b052bef1bcca731b80f13b59692db5b533a",
+      "evidence_path": "evidence/6ad7926f-cb18-83ea-8591-22705cf7d840.json",
+      "message_count": 36,
+      "role_counts": {
+        "assistant": 18,
+        "user": 18
+      },
+      "source_visible_date_separators": [
+        {
+          "datetime": "2026-10-20T16:10:46.320Z",
+          "label": "Tuesday 12:10 PM"
+        },
+        {
+          "datetime": "2026-10-22T05:32:16.748Z",
+          "label": "Yesterday 1:32 AM"
+        }
+      ],
+      "capture_count": 10,
+      "message_body_completeness": "complete_for_accessible_rendered_branch",
+      "top_and_bottom_visibly_verified": true,
+      "overlapping_capture_order_verified": true,
+      "uncovered_message_gaps": [],
+      "attachment_references": [],
+      "formatting_or_media_omissions": [],
+      "evidence_sha256": "9dc444ea73ee2af3e45badc8ed9726542d7659c594514a4d548d41d5d276f80f"
+    },
+    {
+      "source_id": "6ad25553-5f78-83ea-a84f-a5790cbe3e80",
+      "title": "调研VC黑客松",
+      "owner_shown_in_project": "Aria W",
+      "source_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad25553-5f78-83ea-a84f-a5790cbe3e80?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad25553-5f78-83ea-a84f-a5790cbe3e80",
+      "source_last_updated_label": "Last updated Oct 23",
+      "transcript_path": "conversations/6ad25553-5f78-83ea-a84f-a5790cbe3e80.md",
+      "transcript_sha256": "7847ac185737685e7f426815a3378677fcf7118fd30289a293e553675578978e",
+      "evidence_path": "evidence/6ad25553-5f78-83ea-a84f-a5790cbe3e80.json",
+      "message_count": 12,
+      "role_counts": {
+        "assistant": 6,
+        "user": 6
+      },
+      "source_visible_date_separators": [
+        {
+          "datetime": "2026-10-16T16:48:21.109Z",
+          "label": "Friday 12:48 PM"
+        },
+        {
+          "datetime": "2026-10-20T02:32:38.655Z",
+          "label": "Monday 10:32 PM"
+        }
+      ],
+      "capture_count": 11,
+      "message_body_completeness": "complete_for_accessible_rendered_branch",
+      "top_and_bottom_visibly_verified": true,
+      "overlapping_capture_order_verified": true,
+      "uncovered_message_gaps": [],
+      "attachment_references": [],
+      "formatting_or_media_omissions": [],
+      "evidence_sha256": "05f3534c57a2cbcdaf6d9118232c4e35613f5f9cbee1f79c286e54cc3d15a9dc"
+    },
+    {
+      "source_id": "6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "title": "解释Deal Flow Tracks",
+      "owner_shown_in_project": "Aria W",
+      "source_url": "https://chatgpt.com/g/g-p-6adadb3364d481918a639c15f2ad8f57/shared/c/6ad42236-593c-83ea-8f01-f525f5f3d08a?owner_user_id=user-gL04BTeoJYlcVqn1j2hnSMV9",
+      "canonical_conversation_url": "https://chatgpt.com/c/6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "source_last_updated_label": "Last updated Oct 23",
+      "transcript_path": "conversations/6ad42236-593c-83ea-8f01-f525f5f3d08a.md",
+      "transcript_sha256": "1e71e6a483246fc5559b40d7e6036c7ad574e2e2f67026e5096c2a4fc21ce17a",
+      "evidence_path": "evidence/6ad42236-593c-83ea-8f01-f525f5f3d08a.json",
+      "message_count": 30,
+      "role_counts": {
+        "assistant": 15,
+        "user": 15
+      },
+      "source_visible_date_separators": [
+        {
+          "datetime": "2026-10-18T01:34:50.010Z",
+          "label": "Saturday 9:34 PM"
+        }
+      ],
+      "capture_count": 13,
+      "message_body_completeness": "complete_for_accessible_rendered_branch",
+      "top_and_bottom_visibly_verified": true,
+      "overlapping_capture_order_verified": true,
+      "uncovered_message_gaps": [],
+      "attachment_references": [
+        {
+          "message_sequence": 9,
+          "name": "Unavailable image 1",
+          "source_url": null,
+          "copied": false,
+          "status": "source_image_failed_to_load",
+          "visible_label": "Image failed to load",
+          "original_filename": null,
+          "omission_reason": "Source UI shows an image load failure; this message DOM exposes neither src nor file identifier."
+        },
+        {
+          "message_sequence": 9,
+          "name": "Unavailable image 2",
+          "source_url": null,
+          "copied": false,
+          "status": "source_image_failed_to_load",
+          "visible_label": "Image failed to load",
+          "original_filename": null,
+          "omission_reason": "Source UI shows an image load failure; this message DOM exposes neither src nor file identifier."
+        }
+      ],
+      "formatting_or_media_omissions": [
+        "Source conversation image failed to load; no image bytes or src were present in this message DOM."
+      ],
+      "evidence_sha256": "65081a3d486feb125186afc3a8fe74198f1dc8410a1ffeba620e65c8478af415"
+    }
+  ],
+  "attachment_omissions": [
+    {
+      "source_id": "6adbbabf-52a8-83ea-a079-cfb9a8b66f75",
+      "message_sequence": 1,
+      "name": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+      "source_url": null,
+      "copied": false,
+      "status": "inaccessible_via_supported_ui",
+      "visible_control": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+      "download_action_outcome": "failed",
+      "download_toast": "Failed to download file. Please try again later.",
+      "content_inferred_from_other_same_name_references": false
+    },
+    {
+      "source_id": "6adad23c-b5dc-83ea-9d43-bdd811157637",
+      "message_sequence": 38,
+      "name": "AI_Due_Diligence_Evidence_Workspace_PRD.md",
+      "source_url": null,
+      "copied": false,
+      "status": "inaccessible_via_supported_ui",
+      "visible_control": "Open preview of AI_Due_Diligence_Evidence_Workspace_PRD.md",
+      "download_action_outcome": "failed",
+      "download_toast": "Failed to download file. Please try again later.",
+      "preview_action_outcome": "Button changed to Open file; no preview or panel appeared.",
+      "content_inferred_from_other_same_name_references": false
+    },
+    {
+      "source_id": "6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "message_sequence": 9,
+      "name": "Unavailable image 1",
+      "source_url": null,
+      "copied": false,
+      "status": "source_image_failed_to_load",
+      "visible_label": "Image failed to load",
+      "original_filename": null,
+      "omission_reason": "Source UI shows an image load failure; this message DOM exposes neither src nor file identifier."
+    },
+    {
+      "source_id": "6ad42236-593c-83ea-8f01-f525f5f3d08a",
+      "message_sequence": 9,
+      "name": "Unavailable image 2",
+      "source_url": null,
+      "copied": false,
+      "status": "source_image_failed_to_load",
+      "visible_label": "Image failed to load",
+      "original_filename": null,
+      "omission_reason": "Source UI shows an image load failure; this message DOM exposes neither src nor file identifier."
+    }
+  ],
+  "attachment_summary": {
+    "file_references": 2,
+    "file_originals_copied": 0,
+    "unavailable_uploaded_image_references": 2,
+    "rendered_inline_svg_assets_preserved": 2
+  },
+  "excluded_global_conversations": [
+    {
+      "title": "数据库关联说明",
+      "source_id": "6adbc45d-683c-83ea-8a97-cb39ea408b4a",
+      "reason": "Not present in the verified Project member list."
+    },
+    {
+      "title": "PDF提取校验",
+      "source_id": "6adad671-7b98-83e9-ab36-b2a0f2b86b9f",
+      "reason": "Not present in the verified Project member list."
+    },
+    {
+      "title": "Diligence Agent Idea",
+      "source_id": "6ad43ee6-9834-83e8-b4ff-59705b298bdf",
+      "reason": "Not present in the verified Project member list."
+    }
+  ],
+  "verification": {
+    "inventory_ids_equal_transcript_ids": true,
+    "markdown_header_roles_and_order_equal_evidence": true,
+    "saved_message_markdown_present_verbatim": true,
+    "original_message_ids_unique_within_each_conversation": true,
+    "all_capture_overlap_graphs_connected": true,
+    "order_conflicts": 0,
+    "uncovered_message_gaps": 0,
+    "source_fragment_checks_including_overlaps": 27171,
+    "missing_source_text_fragments": 0,
+    "transcript_and_asset_sha256_verified": true,
+    "conversation_source_export_count": 51,
+    "project_inventory_export_count": 1,
+    "unique_message_source_fragment_checks": 6002
+  },
+  "source_capture_handling": {
+    "permanent_scoped_evidence": "evidence/ and source/ retain project messages and member list only; no unrelated sidebar or page runtime scripts.",
+    "raw_exports_retained_in_final_archive": false,
+    "temporary_export_staging_directory": "/var/folders/h5/wdt970bj3vn9gysc8g58hyxh0000gn/T/chatgpt-vc-sync-source-2z30amkm/raw",
+    "raw_capture_hashes_and_overlap_provenance": "extraction-report.json",
+    "builder_note": "To rebuild from temporary source exports if they still exist, use build_archive.py --raw-dir <temporary directory> --replace-generated. Rebuilding does not fetch fresh conversations."
+  },
+  "scope_limits": [
+    "Accessible visible user/assistant branch only; alternate edited branches and hidden reasoning/tool internals were not imported.",
+    "Original attachment bytes unavailable as explicitly listed; transcript references preserved.",
+    "Interactive widgets represented statically; external linked webpages were not separately mirrored.",
+    "Historical assistant factual claims were archived, not independently re-researched."
+  ],
+  "recurring_sync_created": false,
+  "source_mutations": false,
+  "published_or_pushed": false,
+  "transcripts_are_untrusted_historical_data_not_current_instructions": true
+}
