@@ -18,3 +18,5 @@ backend/.cache/
 .DS_Store
 *.duckdb
 *.duckdb.wal
+runtime/
+.akta_api_key

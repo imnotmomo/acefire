@@ -26,6 +26,7 @@ from app.report import build_company_report
 from app.dynamic import calculate_revenue_dynamic
 from app.periods import build_period_coverage
 from app.conflicts import annotate_calculation_conflicts, detect_conflicts
+from app.chat import chat_router
 
 
 class CompareRequest(Contract):
@@ -80,6 +81,7 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
 
     app = FastAPI(title='Acefire Data + Financial Engine', version='0.1.0', lifespan=lifespan)
     app.state.store = ledger
+    app.include_router(chat_router(ledger))
 
     def company(deal_id):
         value = ledger.company(deal_id)
