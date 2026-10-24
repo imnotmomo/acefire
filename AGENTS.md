@@ -10,9 +10,9 @@ This repository is shared by four human teammates and their coding agents.
 | `imnotmomo` | C: DuckDB database, normalization, calculations, company reports, numeric provenance APIs | `.team/status/imnotmomo.md` |
 | `chr950331` | | `.team/status/chr950331.md` |
 | `xiangji1002-ashley` | | `.team/status/xiangji1002-ashley.md` |
-| `XINWENGAri` | | `.team/status/XINWENGAri.md` |
+| `XINWENGAri` | Frontend: Projects, Dashboard, metric lineage/evidence inspection, Report Builder / Review / Export, Data room, contextual chat and website framework documentation | `.team/status/XINWENGAri.md` |
 
-The three blank assignments are intentional. Do not infer a role from a name,
+The remaining blank assignments are intentional. Do not infer a role from a name,
 handle, prior commit, or another agent's guess. Fill an assignment when that
 teammate's human confirms it.
 
@@ -59,6 +59,12 @@ teammate's human confirms it.
 - `backend/app/financial.py`, `dynamic.py`, `source_replay.py`: approved calculations and period coverage rules.
 - `backend/app/report.py`, `lineage.py`, `main.py`: company reports, file-to-number graphs and APIs.
 - `backend/README.md`: setup, endpoint and handoff instructions.
+- `frontend/src/`: XINWENGAri's React/TypeScript workspace, report builder,
+  dashboard, evidence/lineage UI, data room and contextual chat.
+- `frontend/README.md`, `frontend/DESIGN.md`: frontend architecture, local setup,
+  implementation limits and visual direction. The current UI uses historical
+  Enfuce snapshots; consuming C's Circle report/lineage APIs is still pending.
+- `.team/status/XINWENGAri.md`: frontend completion, validation and integration handoff.
 
 ## Evidence and calculation rules
 
