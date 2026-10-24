@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { ENFUCE, emptyWorkspace, defaultConfig, generateSections, generateBackendSections, reorder, reportMarkdown, citedEvidenceIds, backendDraftEvidenceStatus, safeUrl } from '../src/domain.ts'
+import { ENFUCE, emptyWorkspace, defaultConfig, generateSections, generateBackendSections, generatedDraftToSections, reorder, reportMarkdown, citedEvidenceIds, backendDraftEvidenceStatus, safeUrl } from '../src/domain.ts'
 
 test('reordering preserves every module and does not mutate the source', () => {
   const source = ['overview', 'market', 'financials']
@@ -151,4 +151,88 @@ test('native metric brackets are text while unavailable backend source IDs still
   assert.deepEqual(backendDraftEvidenceStatus([section], 'same-report', 'same-report', []).missingIds, [calculationId])
   section.content += ` [field:missing-snapshot:/legal_name]`
   assert.deepEqual(backendDraftEvidenceStatus([section], 'same-report', 'same-report', [calculation]).missingIds, ['field:missing-snapshot:/legal_name'])
+})
+
+
+const statement = { ...profile, title: 'Company description', value: 'Circle provides programmable money services.', excerpt: 'Circle provides programmable money services.', citationText: 'Circle provides programmable money services.', quoteBasis: 'source_text', sources: [{ ...profile.sources[0], file_name: 'company.json', locator: { kind: 'json_pointer', pointer: '/response/data/firmographic/company_description_short' } }] }
+const numericNarrativeEvidence = { ...calculation, citationText: 'Stored revenue record: 9007199254740993.0123456789 USD for 2025-01-01 to 2025-06-30.', quoteBasis: 'structured_record' }
+function narrativeFixture() {
+  const workspace = emptyWorkspace(); workspace.order = ['overview', 'financials', 'market']
+  const report = { report_id: 'narrative-report-version', company: { deal_id: 'circle-2025-ipo' } }
+  const draft = { id: 'narrative-draft-id', deal_id: 'circle-2025-ipo', based_on_report_id: report.report_id, model: 'openai/gpt-6.1-sol', generated_at: '2026-10-24T17:00:00Z', status: 'model_generated_unverified', sections: [
+    { id: 'overview', title: 'Company overview', claims: [{ id: 'overview-claim', text: 'The saved company description presents Circle as a provider of programmable money services.', kind: 'reported_summary', citations: [{ evidence_id: profileId, kind: 'statement', quote: statement.excerpt }] }], gaps: [] },
+    { id: 'financials', title: 'Financials', claims: [{ id: 'financial-claim', text: 'The stored partial-period revenue record remains available for review.', kind: 'reported_summary', citations: [{ evidence_id: calculationId, kind: 'calculation', quote: numericNarrativeEvidence.citationText }] }], gaps: [] },
+    { id: 'market', title: 'Market', claims: [], gaps: ['No source-backed market sizing was supplied.'] },
+  ] }
+  return { workspace, report, draft }
+}
+
+test('model narrative sections retain claim-to-quote-to-file links and explicit unsupported gaps', () => {
+  const { workspace, report, draft } = narrativeFixture()
+  const before = JSON.stringify(workspace)
+  const sections = generatedDraftToSections(circle, workspace, report, [statement, numericNarrativeEvidence], draft)
+  assert.deepEqual(sections.map(section => section.id), workspace.order)
+  assert.match(sections[0].content, /saved company description/)
+  assert.match(sections[0].content, new RegExp(profileId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  assert.equal(sections[0].sourceClaims[0].citations[0].quote, statement.excerpt)
+  assert.equal(sections[0].sourceClaims[0].citations[0].source.locator.pointer, '/response/data/firmographic/company_description_short')
+  assert.equal(sections[1].sourceClaims[0].citations[0].quote_basis, 'structured_record')
+  assert.match(sections[2].content, /Evidence gap: No source-backed market sizing/)
+  assert.equal(JSON.stringify(workspace), before)
+  const markdown = reportMarkdown(circle, sections, [statement, numericNarrativeEvidence], { kind: 'backend', reportId: report.report_id, loadedReportId: report.report_id, draftId: draft.id, model: draft.model })
+  assert.match(markdown, /Claim-to-source quotations/)
+  assert.match(markdown, /Original model summary: The saved company description/)
+  assert.match(markdown, /> Circle provides programmable money services\./)
+  assert.match(markdown, /Stored numeric record \(structured backend evidence, not a verbatim document sentence\)/)
+  assert.match(markdown, /9007199254740993\.0123456789/)
+  assert.match(markdown, /company_description_short/)
+  assert.match(markdown, new RegExp('a'.repeat(64)))
+  assert.match(markdown, /narrative-draft-id/)
+})
+
+test('invalid narrative drafts cannot replace edits or introduce unbound quotations', () => {
+  const { workspace, report, draft } = narrativeFixture()
+  workspace.sections = [{ id: 'overview', title: 'Company overview', content: 'My existing edited draft.', evidenceIds: [], config: defaultConfig('overview') }]
+  const unchanged = JSON.stringify(workspace)
+  const badDrafts = [
+    { ...draft, deal_id: 'different-company' },
+    { ...draft, based_on_report_id: 'outdated-report' },
+    { ...draft, sections: draft.sections.slice(1) },
+    { ...draft, sections: [...draft.sections, draft.sections[0]] },
+    { ...draft, sections: draft.sections.map((section, index) => index ? section : { ...section, claims: [{ ...section.claims[0], citations: [] }] }) },
+    { ...draft, sections: draft.sections.map((section, index) => index ? section : { ...section, claims: [{ ...section.claims[0], citations: [{ evidence_id: 'invented-evidence', kind: 'statement', quote: statement.excerpt }] }] }) },
+    { ...draft, sections: draft.sections.map((section, index) => index ? section : { ...section, claims: [{ ...section.claims[0], citations: [{ evidence_id: profileId, kind: 'statement', quote: 'Invented source sentence.' }] }] }) },
+    { ...draft, sections: draft.sections.map((section, index) => index ? section : { ...section, claims: [{ ...section.claims[0], citations: [{ evidence_id: profileId, kind: 'statement', quote: statement.excerpt, source: { ...statement.sources[0], sha256: 'f'.repeat(64) } }] }] }) },
+  ]
+  for (const candidate of badDrafts) assert.throws(() => generatedDraftToSections(circle, workspace, report, [statement, numericNarrativeEvidence], candidate), /preserved/)
+  assert.equal(JSON.stringify(workspace), unchanged)
+})
+
+test('narrative export omits removed citation support and labels human-edited source relationships', () => {
+  const { workspace, report, draft } = narrativeFixture()
+  const sections = generatedDraftToSections(circle, workspace, report, [statement, numericNarrativeEvidence], draft)
+  sections[0].content = `Human wording retained. [${profileId}]`; sections[0].humanEdited = true
+  let output = reportMarkdown(circle, [sections[0]], [statement], { kind: 'backend', reportId: report.report_id, loadedReportId: report.report_id })
+  assert.match(output, /human edited/)
+  assert.match(output, /Original model summary/)
+  sections[0].content = 'Human wording with the old citation removed.'
+  output = reportMarkdown(circle, [sections[0]], [statement], { kind: 'backend', reportId: report.report_id, loadedReportId: report.report_id })
+  assert.doesNotMatch(output, /Claim-to-source quotations|Original model summary|> Circle provides/)
+})
+
+
+test('document-company narrative uses its own quoted claims and never inherits the legacy Enfuce fixture', () => {
+  const project = { ...ENFUCE, id: 'enfuce-2020', name: 'Enfuce · Document claims' }
+  const report = { report_id: 'document-report', company: { deal_id: 'enfuce-2020' } }
+  const workspace = emptyWorkspace(); workspace.order = ['customers']
+  const id = 'claim:33333333-3333-3333-3333-333333333333:evidence:0'
+  const documentEvidence = { ...statement, id, kind: 'statement', citationText: 'The company has 14 customers.', excerpt: 'The company has 14 customers.', sources: [{ ...statement.sources[0], file_name: 'Enfuce source.pdf', locator: { kind: 'pdf_page', page: 2 } }] }
+  const draft = { id: 'enfuce-document-draft', deal_id: 'enfuce-2020', based_on_report_id: 'document-report', model: 'test-model', generated_at: '2026-10-24T17:00:00Z', status: 'model_generated_unverified', sections: [{ id: 'customers', title: 'Customers', claims: [{ id: 'customer-claim', text: 'The supplied document reports 14 customers.', kind: 'reported_summary', citations: [{ evidence_id: id, kind: 'statement', quote: 'The company has 14 customers.' }] }], gaps: [] }] }
+  const sections = generatedDraftToSections(project, workspace, report, [documentEvidence], draft)
+  const text = reportMarkdown(project, sections, [documentEvidence], { kind: 'backend', reportId: report.report_id, loadedReportId: report.report_id })
+  assert.match(text, /14 customers/)
+  assert.match(text, /Enfuce source\.pdf/)
+  assert.doesNotMatch(text, /16 customers|ST1/)
+  const missing = backendDraftEvidenceStatus([{ ...sections[0], evidenceIds: [], content: `[${id}]` }], report.report_id, report.report_id, [])
+  assert.deepEqual(missing.missingIds, [id])
 })

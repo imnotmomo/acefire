@@ -2,6 +2,9 @@ import { useEffect, useId, useState } from 'react'
 import type { BackendEvidence, BackendGraph, BackendSource } from './backend'
 import { apiUrl, formatDecimal, formatLocator, humanize } from './backend'
 import { Badge, Dialog, Empty, Icon } from './ui'
+import { evidenceState, ReviewStateBadge } from './ReviewState'
+import SourceFileButton from './SourceFileButton'
+import './calculation-lab.css'
 
 type RecordValue = Record<string, unknown>
 const record = (value: unknown): RecordValue => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordValue : {}
@@ -16,29 +19,33 @@ export function SourceReference({ source }: { source: BackendSource }) {
     <div className="connected-source-title"><Icon name={/\.xlsx?$/i.test(source.file_name) ? 'sheet' : 'document'} size={20} /><div><strong>{source.file_name}</strong><small>{humanize(source.provider)} · {source.data_role === 'primary_company_data' ? 'Primary company source' : 'Supplemental evidence'}</small></div></div>
     <dl className="connected-reference-details"><dt>Location</dt><dd>{formatLocator(source.locator)}</dd><dt>SHA-256</dt><dd className="hash">{source.sha256 || 'Not supplied'}</dd></dl>
     {source.locator && <details className="connected-native-locator"><summary>Original locator details</summary><dl className="connected-reference-details">{Object.entries(source.locator).map(([key, value]) => <div key={key}><dt>{humanize(key)}</dt><dd>{display(value)}</dd></div>)}</dl></details>}
-    {source.preview_url && <a className="button secondary" href={apiUrl(source.preview_url)} target="_blank" rel="noopener noreferrer"><Icon name="external" size={15} />Open original file</a>}
+    <SourceFileButton source={source} />
   </div>
 }
 
 export function ConnectedEvidenceInspector({ evidence, onClose, notify }: { evidence: BackendEvidence; onClose: () => void; notify: (message: string) => void }) {
   const [tab, setTab] = useState('Evidence')
+  const execution = record(evidence.calculation?.parameters.agent_execution)
+  const hasExecution = Object.keys(execution).length > 0
   return <Dialog title="Evidence inspector" subtitle="Follow the number through its recorded inputs to the original file." onClose={onClose} className="evidence-dialog connected-evidence-dialog">
     <div className="dialog-body">
-      <div className="evidence-title"><span className={`module-icon ${evidence.conflictNumbers || evidence.status === 'Needs review' ? 'orange' : 'green'}`}><Icon name={evidence.kind === 'calculation' ? 'calculator' : 'fileCheck'} size={22} /></span><div><h3>{evidence.title}</h3><Badge tone={evidence.status === 'Reproduced' ? 'green' : evidence.status === 'Needs review' ? 'amber' : 'blue'}>{evidence.status}</Badge></div></div>
+      <div className="evidence-title"><span className={`module-icon ${evidence.conflictNumbers || evidence.status === 'Needs review' ? 'orange' : 'green'}`}><Icon name={evidence.kind === 'calculation' ? 'calculator' : 'fileCheck'} size={22} /></span><div><h3>{evidence.title}</h3><ReviewStateBadge state={evidenceState(evidence)} /></div></div>
       <div className="inspector-value connected-exact-value">{evidence.value}<small>{evidence.period} / {evidence.unit}</small></div>
       {evidence.conflictNumbers && <div className="connected-conflict-note" role="status"><Icon name="flag" size={18} /><span><strong>Conflict numbers</strong> Comparable values disagree. The stored result and original source values remain available.</span></div>}
-      <div className="tab-bar" role="tablist" aria-label="Evidence details">{['Evidence', 'Lineage', 'Source details'].map(item => <button key={item} role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
+      <div className="tab-bar" role="tablist" aria-label="Evidence details">{['Evidence', 'Lineage', ...(hasExecution ? ['Execution'] : []), 'Source details'].map(item => <button key={item} role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
       {tab === 'Evidence' && <>
         <p className="connected-evidence-excerpt">{evidence.excerpt}</p>
         {evidence.formula && <div className="connected-formula"><span>Stored formula</span><code>{evidence.formula}</code></div>}
         {evidence.calculation && <dl className="source-details"><dt>Function</dt><dd>{evidence.calculation.function_key}</dd><dt>Function version</dt><dd>{evidence.calculation.function_version}</dd><dt>Calculation status</dt><dd>{humanize(evidence.calculation.status)}</dd></dl>}
         <div className="table-scroll"><table className="source-table"><caption>{evidence.kind === 'calculation' ? 'Recorded calculation and inputs' : 'Recorded source details'}</caption><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>{evidence.rows.map(([name, value], index) => <tr key={`${name}:${index}`}><td>{name}</td><td>{value}</td></tr>)}</tbody></table></div>
         <div className="evidence-caveat"><Icon name="help" size={17} /><div><strong>Evidence context</strong><p>{evidence.note}</p></div></div>
+        {hasExecution && <CitedPremises execution={execution} />}
         {Boolean(evidence.explanationSteps?.some(step => step.kind === 'source_normalization')) && <details className="connected-normalization"><summary>How source inputs were normalized</summary><div className="table-scroll"><table className="source-table"><thead><tr><th>Source / location</th><th>Raw value</th><th>Scale multiplier</th><th>Recorded normalized value</th><th>Basis</th></tr></thead><tbody>{evidence.explanationSteps?.filter(step => step.kind === 'source_normalization').map((step, index) => { const source = record(step.source); return <tr key={index}><td>{display(source.file_name)}<small>{formatLocator(record(source.locator))}</small></td><td>{display(step.raw_value)}</td><td>{display(step.scale_multiplier)}</td><td>{formatDecimal(step.normalized_value == null ? null : String(step.normalized_value), typeof step.unit === 'string' ? step.unit : undefined)}</td><td>{display(step.normalization_basis)}</td></tr> })}</tbody></table></div></details>}
         {Boolean(evidence.conflicts?.length) && <div className="connected-inspector-conflicts"><h4>Differing recorded values</h4>{evidence.conflicts?.map((conflict, index) => <div className="connected-conflict-alternatives" key={String(conflict.id ?? index)}>{(Array.isArray(conflict.alternatives) ? conflict.alternatives : []).map((value, alternativeIndex) => { const alternative = record(value); return <div className="connected-conflict-alternative" key={alternativeIndex}><strong>{formatDecimal(typeof alternative.value === 'string' ? alternative.value : null, typeof alternative.unit === 'string' ? alternative.unit : undefined)}</strong>{(Array.isArray(alternative.sources) ? alternative.sources : []).map((value, sourceIndex) => { const source = record(value); return <small key={sourceIndex}>{display(source.file_name)} · {formatLocator(record(source.locator))}</small> })}</div> })}</div>)}</div>}
         <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} />)}</div>
       </>}
       {tab === 'Lineage' && (evidence.graph?.nodes.length ? <ConnectedLineage graph={evidence.graph} /> : <Empty icon="layers" title="No recorded graph" text="A lineage graph has not been supplied for this record." />)}
+      {tab === 'Execution' && hasExecution && <AgentExecutionAudit execution={execution} />}
       {tab === 'Source details' && <>
         <dl className="source-details"><dt>Record ID</dt><dd className="hash">{evidence.id}</dd><dt>Period</dt><dd>{evidence.period}</dd><dt>Unit</dt><dd>{evidence.unit}</dd><dt>Source locator</dt><dd>{evidence.locator}</dd></dl>
         <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} />)}</div>
@@ -47,6 +54,25 @@ export function ConnectedEvidenceInspector({ evidence, onClose, notify }: { evid
       </>}
     </div>
   </Dialog>
+}
+
+export function AgentExecutionAudit({ execution }: { execution: RecordValue }) {
+  const items = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+  const code = typeof execution.code === 'string' ? execution.code : ''
+  const output = (value: unknown, limit = 16000) => typeof value === 'string' ? value.length > limit ? `${value.slice(0, limit)}\n[Display truncated; the complete recorded output remains in the calculation.]` : value : 'Not supplied'
+  return <div className="connected-execution-audit"><Badge tone="amber">Model-generated · review context</Badge><h3>Generated code and execution</h3><p>The backend recorded the generated Python, selected source inputs and local worker output. Execution does not independently verify source definitions or assumptions.</p><dl className="source-details"><dt>Model</dt><dd>{display(execution.model)}</dd><dt>Generation provider</dt><dd>{display(execution.generation_provider)}</dd><dt>Execution</dt><dd>{execution.executor === 'local_python' || execution.mode === 'llm_local' ? 'Local Python worker' : display(execution.executor)}</dd><dt>Execution ID</dt><dd className="hash">{display(execution.execution_id)}</dd><dt>Executed at</dt><dd>{display(execution.executed_at)}</dd><dt>Exit code</dt><dd>{display(execution.exit_code)}</dd><dt>Worker cleanup</dt><dd>{execution.cleanup_succeeded === true ? 'Confirmed' : execution.cleanup_succeeded === false ? 'Not confirmed' : 'Not supplied'}</dd><dt>Code SHA-256</dt><dd className="hash">{display(execution.code_sha256)}</dd><dt>Input manifest SHA-256</dt><dd className="hash">{display(execution.input_manifest_sha256)}</dd></dl>{typeof execution.question === 'string' && <><h4>Calculation request</h4><p>{execution.question}</p></>}{typeof execution.explanation === 'string' && <><h4>Model explanation</h4><p>{execution.explanation}</p></>}<CitedPremises execution={execution} showSupplied />{items(execution.assumptions).length > 0 && <><h4>Model assumptions</h4><ul>{items(execution.assumptions).map((item, index) => <li key={index}>{item}</li>)}</ul></>}{items(execution.limitations).length > 0 && <><h4>Limitations</h4><ul>{items(execution.limitations).map((item, index) => <li key={index}>{item}</li>)}</ul></>}<h4>Generated Python</h4><pre aria-label="Generated calculation Python">{code ? output(code, 50000) : 'Code was not supplied in this record.'}</pre><h4>Standard output</h4><pre aria-label="Calculation standard output">{output(execution.stdout)}</pre><h4>Standard error</h4><pre aria-label="Calculation standard error">{output(execution.stderr)}</pre></div>
+}
+
+export function CitedPremises({ execution, showSupplied = false }: { execution: RecordValue; showSupplied?: boolean }) {
+  const premises = Array.isArray(execution.premises) ? execution.premises.filter(value => value && typeof value === 'object' && !Array.isArray(value)).map(record) : []
+  const supplied = Array.isArray(execution.supplied_text_evidence) ? execution.supplied_text_evidence.filter(value => value && typeof value === 'object' && !Array.isArray(value)).map(record) : []
+  if (!premises.length && !(showSupplied && supplied.length)) return null
+  return <section className="connected-cited-premises" aria-label="Cited source premises"><h4>Cited premises</h4><p className="connected-premise-intro">Source quotes are recorded separately from the model’s role and explanation.</p>{premises.map((premise, index) => {
+    const original = supplied.find(item => item.id === premise.evidence_id)
+    const source = record(premise.source ?? original?.source)
+    const preview = typeof source.preview_url === 'string' && /^\/sources\/[^/]+\/file$/.test(source.preview_url) ? apiUrl(source.preview_url) : null
+    return <article className="connected-quoted-premise" key={`${display(premise.evidence_id)}:${index}`}><span className="connected-quote-label">Source quote</span><blockquote>{typeof premise.quote === 'string' ? premise.quote : 'No source quote recorded.'}</blockquote><dl className="source-details"><dt>Source field ID</dt><dd className="hash">{display(premise.evidence_id)}</dd><dt>Source file</dt><dd>{display(source.file_name)}</dd><dt>Location</dt><dd>{formatLocator(record(source.locator))}</dd><dt>SHA-256</dt><dd className="hash">{display(source.sha256)}</dd><dt>Model role</dt><dd>{display(premise.role)}</dd><dt>Model explanation</dt><dd>{display(premise.reason)}</dd></dl>{original && typeof original.text === 'string' && <details><summary>Original source text</summary><p className="connected-original-text">{original.text}</p></details>}{preview && <a className="text-button" href={preview} target="_blank" rel="noopener noreferrer">Open premise source<Icon name="outward" size={13} /></a>}</article>
+  })}{showSupplied && supplied.length > 0 && <details className="connected-supplied-text"><summary>All supplied source text ({supplied.length})</summary>{supplied.map((item, index) => { const source = record(item.source); return <div key={`${display(item.id)}:${index}`}><blockquote>{typeof item.text === 'string' ? item.text : 'Text not supplied.'}</blockquote><small>{display(source.file_name)} · {formatLocator(record(source.locator))}</small><code>{display(item.id)}</code></div> })}</details>}</section>
 }
 
 export function ConnectedLineage({ graph }: { graph: BackendGraph }) {
@@ -66,6 +92,8 @@ export function ConnectedLineage({ graph }: { graph: BackendGraph }) {
   const observation = record(data.observation)
   const calculation = record(data.calculation)
   const source = record(data.source)
+  const selectedIsText = selected ? nodeKind(selected) === 'text_evidence' : false
+  const sourceQuote = data.text ?? data.quote
   const rawValue = data.display_value ?? data.value ?? observation.value ?? observation.raw_value
   const unit = display(data.unit ?? observation.unit ?? calculation.unit)
   return <div className="connected-lineage">
@@ -82,16 +110,16 @@ export function ConnectedLineage({ graph }: { graph: BackendGraph }) {
         const nodeData = record(node.data), nodeObservation = record(nodeData.observation), nodeCalculation = record(nodeData.calculation)
         const kind = nodeKind(node)
         const value = nodeData.display_value ?? nodeData.value ?? nodeObservation.value ?? nodeObservation.raw_value
-        return <button key={node.id} className={`connected-graph-node ${kind === 'calculation' ? 'formula' : kind === 'source_file' ? 'source' : 'number'} ${node.id === selectedId ? 'selected' : ''}`} style={{ left: node.x, top: node.y }} aria-pressed={node.id === selectedId} onClick={() => setSelectedId(node.id)}>
-          <span><Icon name={kind === 'calculation' ? 'calculator' : kind === 'source_file' ? 'document' : 'fileCheck'} size={14} />{humanize(kind)}</span>
+        return <button key={node.id} className={`connected-graph-node ${kind === 'calculation' ? 'formula' : kind === 'source_file' ? 'source' : kind === 'text_evidence' ? 'text' : 'number'} ${node.id === selectedId ? 'selected' : ''}`} style={{ left: node.x, top: node.y }} aria-pressed={node.id === selectedId} onClick={() => setSelectedId(node.id)}>
+          <span><Icon name={kind === 'calculation' ? 'calculator' : kind === 'source_file' || kind === 'text_evidence' ? 'document' : 'fileCheck'} size={14} />{humanize(kind)}</span>
           <strong>{display(nodeData.label ?? nodeData.file_name)}</strong>
-          <small>{kind === 'source_file' ? 'Original source file' : value !== undefined ? formatDecimal(typeof value === 'string' ? value : display(value), typeof nodeData.unit === 'string' ? nodeData.unit : typeof nodeObservation.unit === 'string' ? nodeObservation.unit : '') : display(nodeCalculation.status ?? nodeData.field_path)}</small>
+          <small>{kind === 'text_evidence' ? display(nodeData.text ?? nodeData.quote) : kind === 'source_file' ? 'Original source file' : value !== undefined ? formatDecimal(typeof value === 'string' ? value : display(value), typeof nodeData.unit === 'string' ? nodeData.unit : typeof nodeObservation.unit === 'string' ? nodeObservation.unit : '') : display(nodeCalculation.status ?? nodeData.field_path)}</small>
         </button>
       })}
     </div></div></div>
     {selected && <div className="connected-node-details" aria-live="polite"><h4>{display(data.label ?? data.file_name)}</h4><dl className="source-details">
       <dt>Record</dt><dd className="hash">{selected.id}</dd>
-      {rawValue !== undefined && <><dt>Value</dt><dd>{typeof rawValue === 'object' ? display(rawValue) : formatDecimal(rawValue === null ? null : String(rawValue), unit === 'Not supplied' ? undefined : unit)}</dd></>}
+      {selectedIsText && sourceQuote !== undefined ? <><dt>Source quote</dt><dd className="connected-node-quote">{display(sourceQuote)}</dd></> : rawValue !== undefined && <><dt>Value</dt><dd>{typeof rawValue === 'object' ? display(rawValue) : formatDecimal(rawValue === null ? null : String(rawValue), unit === 'Not supplied' ? undefined : unit)}</dd></>}
       {(data.formula ?? calculation.formula) !== undefined && <><dt>Formula</dt><dd><code>{display(data.formula ?? calculation.formula)}</code></dd><dt>Function version</dt><dd>{display(calculation.function_version)}</dd></>}
       {(source.file_name ?? data.file_name) !== undefined && <><dt>Source file</dt><dd>{display(source.file_name ?? data.file_name)}</dd></>}
       {(source.locator ?? data.locator ?? observation.locator) !== undefined && <><dt>Location</dt><dd>{formatLocator((source.locator ?? data.locator ?? observation.locator) as Record<string, unknown>)}</dd></>}

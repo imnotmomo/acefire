@@ -163,24 +163,55 @@ def build_calculation_lineage(
                 "data": {"relation": "calculation_input", **edge_data},
             },
         ])
-    response["nodes"] = [*file_nodes.values(), *number_nodes, {
+    text_nodes: list[dict[str, Any]] = []
+    execution = calculation.parameters.get('agent_execution', {}) if calculation.function_key == 'llm_local_python' else {}
+    for index, statement in enumerate(execution.get('supplied_text_evidence', []), start=1):
+        binding = statement['source']
+        snapshot = snapshot_index.get(binding['snapshot_id'])
+        if snapshot is None or snapshot.deal_id != calculation.deal_id or snapshot.sha256 != binding['sha256']:
+            raise ValueError('Saved text evidence has an invalid source binding')
+        source = _source(snapshot, binding.get('locator'))
+        if snapshot.id not in file_nodes:
+            file_source = _source(snapshot)
+            file_nodes[snapshot.id] = _file_node(file_source, len(file_nodes))
+            response['sources'].append(file_source)
+        declared_uses = [premise for premise in execution.get('premises', []) if premise['evidence_id'] == statement['id']]
+        text_id = f"text:{statement['id']}"
+        text_nodes.append({'id': text_id, 'type': 'default',
+            'position': {'x': 360, 'y': (len(number_nodes) + index - 1) * 180},
+            'data': {'kind': 'text_evidence', 'label': 'Cited source premise' if declared_uses else 'Supplied source text',
+                     'text': statement['text'], 'evidence_id': statement['id'], 'source': source,
+                     'declared_uses': declared_uses, 'lineage_basis': 'supplied_text_evidence_and_declared_quotes'}})
+        response['edges'].extend([
+            {'id': f'file-text:{calculation.id}:{index}', 'source': f'file:{snapshot.id}', 'target': text_id, 'type': 'smoothstep', 'data': {'relation': 'reports_text'}},
+            {'id': f'text-calculation:{calculation.id}:{index}', 'source': text_id, 'target': calculation_node_id, 'type': 'smoothstep',
+             'label': 'cited premise' if declared_uses else 'supplied context', 'data': {'relation': 'source_premise' if declared_uses else 'supplied_context'}},
+        ])
+        response['explanation_steps'].append({'kind': 'source_statement', 'evidence_id': statement['id'], 'text': statement['text'], 'source': source, 'declared_uses': declared_uses})
+    response["nodes"] = [*file_nodes.values(), *number_nodes, *text_nodes, {
         "id": calculation_node_id,
         "type": "output",
-        "position": {"x": 760, "y": (len(number_nodes) - 1) * 80},
+        "position": {"x": 760, "y": (len(number_nodes) + len(text_nodes) - 1) * 80},
         "data": {
             "kind": "calculation", "label": calculation.metric_key,
             "formula": calculation.formula, "value": calculated["value"],
             "unit": calculation.unit, "calculation": calculated,
         },
     }]
+    generated_locally = calculation.function_key == 'llm_local_python'
     response['explanation_steps'].extend([
-        {'step': len(calculation.input_ids) + 1, 'kind': 'reviewed_formula',
+        {'step': len(calculation.input_ids) + 1, 'kind': 'generated_formula' if generated_locally else 'reviewed_formula',
          'formula': calculation.formula, 'function_key': calculation.function_key,
          'function_version': calculation.function_version, 'parameters': calculation.parameters},
         {'step': len(calculation.input_ids) + 2, 'kind': 'stored_result',
          'value': calculated['value'], 'unit': calculation.unit,
          'status': calculation.status, 'reasons': list(calculation.reasons)},
     ])
+    if generated_locally:
+        response['execution'] = calculation.parameters.get('agent_execution', {})
+        response['input_lineage_basis'] = 'all_supplied_inputs'
+        response['verification'] = 'model_generated_unverified'
+        response['nodes'][-1]['data']['verification'] = 'model_generated_unverified'
     return response
 
 

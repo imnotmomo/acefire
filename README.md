@@ -10,7 +10,7 @@
 
 完整说明涵盖页面层级、Report 的 Build → Review → Export 流程、证据模型、代码与路由、本地存储、后端接入边界、运行验证和 Git 协作。
 
-Member B extracts PDF/Akta data. Member C stores it in local DuckDB, calculates metrics, and returns a source-bound company report to the frontend. Akta is the primary company source; Orbis and PitchBook files simulate private uploaded evidence.
+Member B extracts PDF/Akta data. Member C stores structured records in Firebase (with DuckDB imports/offline compatibility), calculates metrics, and returns a source-bound company report to the frontend. Akta is the primary company source; Orbis and PitchBook files simulate private uploaded evidence.
 
 - [Backend setup and API](backend/README.md)
 - [Current data schema](database-design/README.md)
@@ -24,3 +24,5 @@ status files. Remaining unconfirmed role assignments are intentionally blank.
 The first implementation uses the two saved Circle Akta responses in `data/akta/`, without requiring a live API connection. The Orbis/PitchBook files simulate supplemental private uploads. Every calculation can return a file → input number → result graph with exact cell/JSON locations and source preview links.
 
 The frontend reads Circle's stored company-report and source APIs; Enfuce retains its historical local evidence demo. New-document processing and Akta retrieval remain separate integration work. The marketing homepage and its Demo links preserve these existing platform routes.
+
+The current Firebase schema, safe DuckDB import, local startup and source-cited LLM workflows are documented in [Firebase integration](backend/FIREBASE_INTEGRATION.md).

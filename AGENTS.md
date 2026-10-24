@@ -7,7 +7,7 @@ This repository is shared by four human teammates and their coding agents.
 
 | GitHub handle | Confirmed responsibility | Status file |
 | --- | --- | --- |
-| `imnotmomo` | C: DuckDB database, normalization, calculations, company reports, numeric provenance APIs | `.team/status/imnotmomo.md` |
+| `imnotmomo` | C: Firebase storage, DuckDB handoff, normalization, calculations, reports and provenance APIs | `.team/status/imnotmomo.md` |
 | `chr950331` | B: document/PDF/Office extraction, Nicrron model integration, source-bound claims for C | `.team/status/chr950331.md` |
 | `xiangji1002-ashley` | | `.team/status/xiangji1002-ashley.md` |
 | `XINWENGAri` | Frontend: Projects, Dashboard, metric lineage/evidence inspection, Report Builder / Review / Export, Data room, contextual chat and website framework documentation | `.team/status/XINWENGAri.md` |
@@ -41,9 +41,11 @@ teammate's human confirms it.
 - Member B reads PDFs and retrieves/extracts Akta and other source data. B sends
   structured claims and original source locators to C. Do not build a competing
   extraction pipeline in the financial engine.
-- Member C owns the shared DuckDB store, deterministic normalization and
-  calculations, complete available company reports, and frontend-facing numeric
-  provenance. Use embedded DuckDB; no hosted database account is required.
+- Member C owns structured storage, normalization, calculations, company reports
+  and frontend-facing provenance. The human has now selected Firebase project
+  `acefire-50248`, named Firestore database `acefire`, for the running app.
+  DuckDB remains the import/handoff format and an offline compatibility backend.
+  Do not create another database or change billing without a human request.
 - Run one backend process for a DuckDB file. B and the frontend use its API/service
   contracts to share results.
 - Orbis/PitchBook files simulate private user-uploaded supplemental evidence.
@@ -58,7 +60,16 @@ teammate's human confirms it.
 - `backend/app/db_schema.py`: executable DuckDB schema source.
 - `database-design/schema.sql`: generated schema; run `python scripts/export_schema.py` from `backend/` after schema changes.
 - `backend/app/store.py`: transactions, identity and source integrity.
-- `backend/app/financial.py`, `dynamic.py`, `source_replay.py`: approved calculations and period coverage rules.
+- `backend/app/agent_calculation.py`, `agent_runtime.py`: Nicrron-generated Python
+  calculations and restricted local execution with source-bound audit records.
+- `backend/app/financial.py`, `dynamic.py`, `source_replay.py`: historical fixed
+  calculations and period checks; new UI calculations do not fall back to them.
+- `backend/app/firebase_store.py`, `backend/FIREBASE_INTEGRATION.md`: live storage
+  adapter, immutable record envelopes and current integration boundaries.
+- `backend/app/narrative.py`, `company_chat.py`, `evidence_catalog.py`,
+  `stored_narratives.py`: cited company drafts, whole-company chat, original
+  quotations and adaptation of B's imported reports. Generated paraphrases and
+  automated source checks are never human verification.
 - `backend/app/report.py`, `lineage.py`, `main.py`: company reports, file-to-number graphs and APIs.
 - `backend/README.md`: setup, endpoint and handoff instructions.
 - `frontend/src/`: XINWENGAri's React/TypeScript workspace, report builder,
@@ -143,6 +154,11 @@ exist remotely or overwrite C's files when synchronizing.
   investment recommendations, Invest/Pass outputs or invented numbers.
 
 ## B-to-C integration work remaining
+
+The numbered list below records B's earlier local handoff. C now consumes the
+provided `document_claims` and `narrative_reports` through Firestore and exposes
+company narrative/chat APIs; see `backend/FIREBASE_INTEGRATION.md`. New extraction
+and upload intake remain B integration work.
 
 Use C's existing `backend/app/intake.py::ExtractedClaim` and shared models;
 do not introduce another database/schema or competing calculation engine.

@@ -1,11 +1,13 @@
 # Member C：共享数据库、财务计算与公司报告 API
 
+**当前本地应用已接入 Firebase。** 项目 `acefire-50248`、数据库 `acefire`；最新 Enfuce DuckDB、两份报告与 Circle 资料均已导入。启动用 `python run_local.py`，配置、数据契约及队友交接见 [Firebase integration](FIREBASE_INTEGRATION.md)。下方 DuckDB 命令保留为离线导入/兼容流程。
+
 **Akta 是主要公司资料源；Orbis、PitchBook 等文件模拟用户通过网页上传的私有证据。** 两条通道共用 FastAPI、本地 DuckDB 文件及来源链，上传资料不能覆盖 Akta 主档。当前公司适配器只覆盖 Circle。
 
 ## B → C → 前端交接
 
 - **B 负责读取和提取**：PDF/图片内容、Akta 公司资料及其他补充数据，并输出原始值、单位、期间、实体口径和来源定位。实时供应商获取与 PDF 提取不属于 C 的生产职责。
-- **C 负责共享数据库与确定性处理**：登记原文件，接收 B 的结构化 Claim，按明确单位规范化，执行财务计算和可比性检查，保存完整来源链。
+- **C 负责共享数据库、规范化与可追溯执行**：登记原文件，接收 B 的结构化 Claim，按明确单位规范化，执行财务计算和可比性检查，保存完整来源链。
 - **前端读取完整结构化报告**：`GET /deals/{id}/report` 汇总可用主档、指标、计算、比较、覆盖情况、缺口和来源图；点击数字可回到具体文件与原始位置。
 
 B 将 `ExtractedClaim` 列表提交到 `POST /deals/{id}/claims/batch`，请求体为 `{"claims": [...]}`，具体字段见 `/docs`。每条 Claim 引用已经登记、属于当前 Deal 的来源快照；C 保存 B 提供的 page、line、sheet/cell 或 JSON pointer，保留原始值再做确定性规范化。来源没有行号时保持未知，不把后生成的文本行号称为原文件行号。
@@ -49,7 +51,7 @@ export DUCKDB_PATH='/absolute/path/to/acefire.duckdb'
 | `SOURCE_CACHE_DIR` | 后续 API 响应与上传文件的缓存根目录。 |
 | `AKTA_API_KEY` | 仅在选择实时 Akta 接入时于服务端提供。 |
 
-`.env.example` 只是配置示例，不会自动加载 `.env`。不要把实际密钥写入源码、README、提交记录或浏览器代码。
+`.env.example` 是配置示例；`python run_local.py` 加载允许的 `backend/.env` 配置，直接运行 uvicorn 时需导出存储环境变量。不要把实际密钥写入源码、README、提交记录或浏览器代码。
 
 ## 两条数据通道
 
@@ -94,7 +96,7 @@ export DUCKDB_PATH='/absolute/path/to/acefire.duckdb'
 
 真实示例：FY2024 Orbis 工作簿中的 `I49`（Non-current assets，$669,460,000）加 `I53`（Current assets，$45,164,949,000）得到 **$45,834,409,000**。这是同一来源的算术重现，保留未知 scenario，不声称完成跨来源或独立财务核验。
 
-`GET /deals/{id}/company-profile` 同样返回 Akta 字段与文件的绑定：例如估值区间回到财务 JSON 的 `/response/data/financial_estimate/valuation_estimate`，不同来源的冲突值分别保留。前端直接使用结构化值，不让 LLM 重新生成计算数字。
+`GET /deals/{id}/company-profile` 同样返回 Akta 字段与文件的绑定：例如估值区间回到财务 JSON 的 `/response/data/financial_estimate/valuation_estimate`，不同来源的冲突值分别保留。前端读取保存的结构化值。模型只生成计算代码，最终数值必须来自本地执行输出；不能直接把模型回答中的数字当作计算结果。
 
 前端可直接参考 `examples/circle_calculation_lineage.json`，这是用当前真实本地文件运行得到的 4 个节点、4 条边示例。
 
@@ -105,7 +107,7 @@ export DUCKDB_PATH='/absolute/path/to/acefire.duckdb'
 - Orbis 原生 XLSX 的 `th USD` 按明确单位规范化；旧人工观察的未决倍率不会被改写。`Cash flow [Net Income before D&A]` 不是经营现金流。
 - PitchBook 目前接入现有 observation JSON 并登记 PNG，不包含通用 OCR；保留 TTM、缺失值和分析师调整口径。
 - Akta 估计区间不变成精确金额、中点或历史财报。快照取得时间不是财务期间，2026 年视图不能回填为 Circle 2025-05-27 截止日已知信息。
-- ARR、Revenue、Monthly Net Burn、Runway 用 `Decimal` 白名单函数，并保存输入、版本和公式。缺少 active MRR、完整收入期间、月度经营现金流或非受限现金时返回 `insufficient_data`。
+- 当前网页的新计算使用 Nicrron `openai/gpt-6.1-sol` 生成 Python，在受限本地 worker 中执行；保留代码、输入、输出与来源。已有白名单函数及存量结果保留兼容，旧端点在 OpenAPI 中标为 deprecated，不作为新流程的自动回退。
 
 金额以十进制字符串保存在 JSON payload 和 DuckDB `VARCHAR` 字段中；计算时显式转换成 Python `Decimal`，不经过二进制浮点数。来源原值、规范化值和计算结果分别留存。
 
@@ -132,3 +134,30 @@ export DUCKDB_PATH='/absolute/path/to/acefire.duckdb'
 测试覆盖离线 Akta 主档、上传隔离、重复导入、原始文件 hash、计算输入与文件图、数据库外键和保守财务计算；新增交接与报告行为应以当前测试运行结果为准。
 
 修改 `app/db_schema.py` 中的原生 DuckDB Schema 后运行 `python scripts/export_schema.py`，从 `SCHEMA_SQL` 生成 `database-design/schema.sql`；共享 API 合约保存在 `app/schemas.py`。旧 `database-design/evidence/`、`demo_checks.py` 等是 Enfuce 留存资料，不是当前 Akta 主档或上传证据的入库结果。B/C 使用同一 DuckDB 数据库和合约；C 向前端及 LLM 提供报告和可追溯的结构化结果。
+
+## 当前计算流程：LLM → 本地 Python → 来源链
+
+在不修改已登记数据的前提下，从 Circle Dashboard 的计算工作区选择现有数值，输入计算问题，可额外选择原文句子作为证据/前提。模型使用 Nicrron 的 `openai/gpt-6.1-sol`，不需要 Solari 账户或密钥。
+
+把模型密钥放在忽略提交的 `backend/.env`，参考 `.env.example`。`GET /calculation-runtime` 只返回配置状态与模型名称，不返回密钥。
+
+`POST /deals/{id}/calculate/agent` 请求：
+
+```json
+{
+  "question": "Use these source components to calculate the total and explain its limits.",
+  "input_ids": ["registered-observation-id-1", "registered-observation-id-2"],
+  "premise_ids": ["field:registered-snapshot-id:/firmographic/company_description_short"],
+  "parameters": {}
+}
+```
+
+`premise_ids` 可省略。当前原文来自已有 Akta 主档字段、B 的 document claims，以及已保存报告的原文引用；`GET /deals/{id}/text-evidence` 返回这些已绑定的文本。PDF/私有文件的新提取仍由 B 负责，本功能不会竞争读取或伪造尚未提供的段落。
+
+模型返回 `calculate(inputs, parameters)` 的 Python 源码。服务器检查允许的数字处理语法，在无模型密钥的独立短生命周期子进程中执行，限制执行时间、资源和输出。该限制是本地执行策略，不声称具备容器或硬件 VM 的隔离级别。它不提供任意 shell、文件访问或网络工具。财务数据保持十进制字符串，代码使用 `Decimal`；结果为有限十进制字符串或明确的缺失状态。
+
+`Calculation.parameters.agent_execution` 保存模型/生成契约、源码与 hash、输入 manifest/hash、执行 ID/时间/退出码/stdout/stderr、声明使用的数值 ID、原文引用、假设与限制。每个原文引用必须逐字出现在所选的原始文本中；它继续指向原始文件 hash 与 JSON pointer 或 B 提供的位置。自由生成的解释与原文引用分开展示。
+
+图中全部已提供数值/文本输入保留，引用过的句子标为 premise，未引用的文本标为 supplied context。这是保守的输入来源链，不宣称已独立证明代码每一条动态数据流。模型生成的结果标记为需要核对，执行成功不等于财务口径经过独立验证。新指标使用 `agent.*` 命名空间，不能仅凭模型名称把它等同于已审定的 ARR/Revenue；已有来源冲突标记继续保留。
+
+执行完成后刷新存储报告，在计算的 Evidence / Lineage / Execution 中查看数字和句子的出处。API 不可用、代码不合格或执行失败时返回明确错误，不回退到固定财务公式生成数字。

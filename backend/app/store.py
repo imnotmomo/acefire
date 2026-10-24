@@ -213,6 +213,25 @@ class Store:
             rows = self._connect().execute('SELECT snapshot_id, provider, payload FROM company_profiles WHERE deal_id=? ORDER BY snapshot_id', [deal_id]).fetchall()
             return [{'snapshot_id': row[0], 'provider': row[1], 'profile': _json(row[2])} for row in rows]
 
+    def document_claims(self, deal_id: str) -> list[dict]:
+        """Read B's optional extension without creating or migrating its schema."""
+        with self._lock:
+            db = self._connect()
+            exists = db.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema='main' AND table_name='document_claims'").fetchone()[0]
+            if not exists:
+                return []
+            rows = db.execute('SELECT payload FROM document_claims WHERE deal_id=? ORDER BY id', [deal_id]).fetchall()
+            return [_json(row[0]) for row in rows]
+
+    def narrative_reports(self, deal_id: str) -> list[dict]:
+        with self._lock:
+            db = self._connect()
+            exists = db.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema='main' AND table_name='narrative_reports'").fetchone()[0]
+            if not exists:
+                return []
+            rows = db.execute('SELECT payload FROM narrative_reports WHERE deal_id=? ORDER BY created_at DESC, id', [deal_id]).fetchall()
+            return [_json(row[0]) for row in rows]
+
     def save_comparison(self, result: Comparison):
         with self.transaction() as db:
             payload = result.model_dump(mode='json')

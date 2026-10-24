@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { formatDecimal, humanize } from '../src/backend.ts'
+import { formatDecimal, humanize, reportEvidence } from '../src/backend.ts'
 
 const base = process.env.FRONTEND_BASE_URL || 'http://127.0.0.1:5173'
 const artifactDir = path.resolve('test-results/integration')
@@ -31,10 +31,20 @@ try {
   assert.equal(response.status(), 200, 'Start the C backend, prepare Circle, and configure the Vite API proxy first.')
   const report = await response.json()
   assert.equal(report.company.deal_id, 'circle-2025-ipo')
-  const calculated = report.calculations.find(item => item.calculation.status === 'succeeded')
+  const calculated = report.calculations.filter(item => item.calculation.status === 'succeeded').sort((a, b) => String(b.calculation.parameters.agent_execution?.executed_at ?? '').localeCompare(String(a.calculation.parameters.agent_execution?.executed_at ?? '')))[0]
   assert.ok(calculated, 'Prepare the Circle demo calculation for integration testing.')
   const calculation = calculated.calculation
   const calculationTitle = humanize(calculation.metric_key)
+  const evidence = reportEvidence(report)
+  const narrative = sourceReport => async route => {
+    // Deterministic UI fixture only: this suite never calls the live model.
+    const request = route.request().postDataJSON()
+    const sentence = evidence.find(item => item.kind === 'profile' && item.id.includes('company_description_short'))
+    const result = evidence.find(item => item.id === calculation.id)
+    const claims = item => [{ id: `fixture-${item.id}`, text: item.kind === 'calculation' ? `Stored asset-component sum: ${formatDecimal(calculation.value, calculation.unit)}.` : 'The stored company profile describes Circle.', kind: 'reported_summary', citations: [{ evidence_id: item.id, kind: item.kind === 'profile' ? 'statement' : item.kind, quote: item.citationText ?? item.excerpt, ...(item.kind === 'calculation' ? { sources: item.sources } : { source: item.sources[0] }) }] }]
+    await route.fulfill({ json: { id: 'integration-ui-draft', deal_id: sourceReport.company.deal_id, based_on_report_id: sourceReport.report_id, model: 'mock-ui-contract', generated_at: '2026-10-24T18:00:00Z', status: 'model_generated_unverified', sections: request.sections.map(section => ({ id: section.id, claims: section.id === 'overview' && sentence ? claims(sentence) : section.id === 'financials' ? claims(result) : [], gaps: ['overview', 'financials'].includes(section.id) ? [] : ['Supporting source evidence is unavailable.'] })) } })
+  }
+  await context.route('**/api/deals/circle-2025-ipo/report/draft', narrative(report))
 
   await check('Circle reads the real backend report with exact stored calculation and inventory', async () => {
     await page.goto(dashboard, { waitUntil: 'networkidle' })
@@ -135,12 +145,12 @@ try {
     assert.equal(await page.getByRole('button', { name: 'Uploads · pending', exact: true }).isDisabled(), true)
     assert.equal(await page.getByRole('button', { name: 'Akta · pending', exact: true }).isDisabled(), true)
     assert.equal(await page.locator('input[type=file]').count(), 0)
-    const original = page.getByRole('link', { name: 'Open original', exact: false }).first()
-    const sourceResponse = await context.request.get(new URL(await original.getAttribute('href'), base).href)
-    assert.equal(sourceResponse.status(), 200)
-    assert.ok((await sourceResponse.body()).length > 0)
+    const waiting = page.waitForEvent('download')
+    await page.getByRole('button', { name: 'Download original', exact: true }).first().click()
+    const downloaded = await waiting
+    assert.ok(downloaded.suggestedFilename().length > 0)
     await page.screenshot({ path: path.join(artifactDir, 'registered-sources.png'), fullPage: true })
-    assert.deepEqual(mutations, [])
+    assert.ok(mutations.every(item => item.url.endsWith('/report/draft')), 'Only mocked narrative requests are permitted; no backend records are mutated.')
   })
   await check('Circle and Enfuce stay isolated and mobile routes do not overflow', async () => {
     await page.goto(`${base}/#/project/enfuce/dashboard`, { waitUntil: 'networkidle' })
@@ -183,9 +193,10 @@ try {
     const alternative = { calculation_id: calculation.id, value: calculation.value, unit: calculation.unit, observation_ids: calculation.input_ids, sources: calculated.sources }
     const conflict = { id: 'integration-test-conflict', observation_ids: calculation.input_ids, kind: 'aggregate_value_conflict', status: 'conflict_numbers', alternatives: [alternative, { ...alternative, value: '45834409001' }] }
     flagged.conflicts = [conflict]
-    flagged.calculations[0].conflict_numbers = true
-    flagged.calculations[0].conflicts = [conflict]
+    flagged.calculations.find(item => item.calculation.id === calculation.id).conflict_numbers = true
+    flagged.calculations.find(item => item.calculation.id === calculation.id).conflicts = [conflict]
     await testPage.route(apiPattern, route => route.fulfill({ json: flagged }))
+    await testPage.route('**/api/deals/circle-2025-ipo/report/draft', narrative(flagged))
     await testPage.getByRole('button', { name: 'Retry connection', exact: true }).click(); await connected(testPage)
     const flags = testPage.getByRole('region', { name: 'Conflict numbers', exact: true })
     // A named section has region semantics through aria-label.
@@ -194,7 +205,8 @@ try {
     await testPage.getByRole('button', { name: 'Build report', exact: true }).click()
     await testPage.getByRole('button', { name: 'Generate report preview', exact: false }).click()
     await testPage.locator('.report-paper').waitFor()
-    assert.match(await testPage.locator('.report-paper').innerText(), /Conflict numbers/)
+    assert.match(await testPage.locator('.report-paper').innerText(), /45,834,409,000 USD/)
+    assert.match(await testPage.locator('.report-paper').innerText(), /Conflict/)
     await isolated.close()
   })
   await fs.writeFile(path.join(artifactDir, 'results.json'), JSON.stringify({ passed: results, happy_path_errors: errors, backend_mutations: mutations, report_id: report.report_id, source_count: report.source_files.length, observation_count: report.reported_metrics.length }, null, 2))

@@ -1,12 +1,16 @@
 import { MODULES, EVIDENCE, DEFAULT_MODULES, evidenceForModule } from './data.ts'
 import type { Evidence, ModuleId } from './data.ts'
-import type { CompanyReport, BackendEvidence } from './backend'
+import type { CompanyReport, BackendEvidence, BackendSource } from './backend'
+import { backendProjectId } from './backend.ts'
 
 export type Project = { id: string; name: string; sector: string; geography: string; created: string }
 export type ModuleConfig = { topics: string[]; depth: 'Brief' | 'Standard' | 'Deep'; geography: string; horizon: string; scope: 'Internal only' | 'Internal + external'; focus: string }
-export type Section = { id: ModuleId; title: string; content: string; evidenceIds: string[]; config: ModuleConfig }
+export type NarrativeCitation = { evidence_id: string; kind: 'statement' | 'observation' | 'calculation'; quote: string; quote_basis: 'source_text' | 'structured_record'; source?: BackendSource; sources?: BackendSource[] }
+export type NarrativeClaim = { id: string; text: string; kind: 'reported_summary' | 'inference'; citations: NarrativeCitation[]; reviewState?: 'missing' | 'verify' | 'conflict' }
+export type NarrativeGeneration = { draftId: string; model: string; generatedAt: string; status: 'model_generated_unverified' }
+export type Section = { id: ModuleId; title: string; content: string; evidenceIds: string[]; config: ModuleConfig; sourceClaims?: NarrativeClaim[]; gaps?: string[]; generation?: NarrativeGeneration; humanEdited?: boolean }
 export type Revision = { id: string; at: string; section: ModuleId; title: string; before: string; after: string; author: string }
-export type Workspace = { order: ModuleId[]; configs: Partial<Record<ModuleId, ModuleConfig>>; sections: Section[]; revisions: Revision[]; generatedAt: string | null; backendReportId?: string; backendReportVersion?: string }
+export type Workspace = { order: ModuleId[]; configs: Partial<Record<ModuleId, ModuleConfig>>; sections: Section[]; revisions: Revision[]; generatedAt: string | null; backendReportId?: string; backendReportVersion?: string; backendDraftId?: string; backendDraftModel?: string; backendDraftGeneratedAt?: string }
 export type LocalDocument = { id: string; projectId: string; name: string; type: string; size: number; category: string; added: string; url?: string }
 
 export const ENFUCE: Project = { id: 'enfuce', name: 'Enfuce', sector: 'Fintech', geography: 'Finland', created: '2026-10-24T12:00:00Z' }
@@ -117,6 +121,63 @@ export function generateBackendSections(project: Project, workspace: Workspace, 
   })
 }
 
+const narrativeObject = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+const narrativeString = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0
+const canonicalJson = (value: unknown): string => JSON.stringify(value && typeof value === 'object' ? Array.isArray(value) ? value.map(item => JSON.parse(canonicalJson(item))) : Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => [key, JSON.parse(canonicalJson(item))])) : value ?? null)
+
+/** Accept only a model draft bound to this report, its requested modules and exact evidence quotes. */
+export function generatedDraftToSections(project: Project, workspace: Workspace, report: CompanyReport, evidence: BackendEvidence[], payload: unknown): Section[] {
+  const invalid = (message = 'The report service returned an unsupported draft.') => { throw new Error(`${message} Your previous draft and edits are preserved.`) }
+  if (!narrativeObject(payload) || payload.deal_id !== report.company.deal_id || (backendProjectId(project.id) !== report.company.deal_id && project.id !== report.company.deal_id)) return invalid('The draft belongs to a different company.')
+  if (payload.based_on_report_id !== report.report_id) return invalid('The draft uses a different evidence version. Refresh the stored report before regenerating.')
+  if (!narrativeString(payload.id) || !narrativeString(payload.model) || !narrativeString(payload.generated_at) || payload.status !== 'model_generated_unverified' || !Array.isArray(payload.sections)) return invalid()
+  const byEvidence = new Map(evidence.map(item => [item.id, item]))
+  const bySection = new Map<ModuleId, Record<string, unknown>>()
+  const claimIds = new Set<string>()
+  for (const section of payload.sections) {
+    if (!narrativeObject(section) || typeof section.id !== 'string' || !workspace.order.includes(section.id as ModuleId) || bySection.has(section.id as ModuleId) || !Array.isArray(section.claims) || !Array.isArray(section.gaps) || !section.gaps.every(value => typeof value === 'string')) return invalid('The draft does not match the requested report modules.')
+    bySection.set(section.id as ModuleId, section)
+  }
+  if (bySection.size !== workspace.order.length) return invalid('The draft is missing a requested report module.')
+  const generation: NarrativeGeneration = { draftId: payload.id, model: payload.model, generatedAt: payload.generated_at, status: 'model_generated_unverified' }
+  return workspace.order.map(id => {
+    const module = MODULES.find(item => item.id === id)!
+    const input = bySection.get(id)!
+    const claims: NarrativeClaim[] = (input.claims as unknown[]).map(value => {
+      if (!narrativeObject(value) || !narrativeString(value.id) || claimIds.has(value.id) || !narrativeString(value.text) || !['reported_summary', 'inference'].includes(String(value.kind)) || !Array.isArray(value.citations) || !value.citations.length) return invalid('A generated claim has no traceable source support.')
+      claimIds.add(value.id)
+      const citations: NarrativeCitation[] = value.citations.map(citation => {
+        if (!narrativeObject(citation) || !narrativeString(citation.evidence_id) || !narrativeString(citation.quote)) return invalid('A generated claim has an invalid source quotation.')
+        const original = byEvidence.get(citation.evidence_id)
+        if (!original) return invalid('A generated claim references unavailable evidence.')
+        const originalKind: string = original.kind
+        const expectedKind = originalKind === 'profile' || originalKind === 'statement' ? 'statement' : originalKind
+        if (citation.kind !== expectedKind) return invalid('A generated claim uses the wrong evidence kind.')
+        const quoteSource = original as BackendEvidence & { citationText?: string; quoteBasis?: 'source_text' | 'structured_record' }
+        const sourceText = quoteSource.citationText ?? original.excerpt
+        if (!sourceText.includes(citation.quote)) return invalid('A generated quotation does not match the recorded evidence.')
+        const originals = original.sources
+        if (!originals.length) return invalid('A generated claim has no recorded source file.')
+        const supplied = [...(citation.source === undefined ? [] : [citation.source]), ...(citation.sources === undefined ? [] : Array.isArray(citation.sources) ? citation.sources : [null])]
+        for (const source of supplied) {
+          if (!narrativeObject(source) || !originals.some(candidate => candidate.snapshot_id === source.snapshot_id && candidate.sha256 === source.sha256 && candidate.file_name === source.file_name && (expectedKind === 'calculation' || canonicalJson(candidate.locator) === canonicalJson(source.locator)))) return invalid('A generated claim has a mismatched source file or location.')
+        }
+        const durableSource = (source: typeof originals[number]) => {
+          const result = structuredClone(source)
+          // Temporary signed download grants are read from the current report, never saved with a draft.
+          if (/^https:\/\//i.test(result.preview_url)) result.preview_url = ''
+          return result
+        }
+        return { evidence_id: citation.evidence_id, kind: expectedKind as NarrativeCitation['kind'], quote: citation.quote, quote_basis: quoteSource.quoteBasis ?? (expectedKind === 'statement' ? 'source_text' : 'structured_record'), ...(expectedKind === 'calculation' ? { sources: originals.map(durableSource) } : { source: durableSource(originals[0]) }) }
+      })
+      return { id: value.id, text: value.text, kind: value.kind as NarrativeClaim['kind'], citations, ...(['missing', 'verify', 'conflict'].includes(String(value.review_state)) ? { reviewState: value.review_state as NarrativeClaim['reviewState'] } : {}) }
+    })
+    const gaps = input.gaps as string[]
+    const content = [...claims.map(claim => `${claim.kind === 'inference' ? 'Inference: ' : ''}${claim.text} ${[...new Set(claim.citations.map(citation => citation.evidence_id))].map(evidenceId => `[${evidenceId}]`).join(' ')}`), ...gaps.map(gap => `Evidence gap: ${gap}`), ...(!claims.length && !gaps.length ? ['No supported claims were returned for this section.'] : [])].join('\n\n')
+    return { id, title: module.name, content, evidenceIds: [...new Set(claims.flatMap(claim => claim.citations.map(citation => citation.evidence_id)))], config: structuredClone(workspace.configs[id] ?? defaultBackendConfig(id)), sourceClaims: claims, gaps: [...gaps], generation: { ...generation }, humanEdited: false }
+  })
+}
+
 export function citedEvidenceIds(sections: Section[], evidence: Evidence[] = EVIDENCE): string[] {
   const allowed = new Set(evidence.map(item => item.id))
   return [...new Set(sections.flatMap(section => [...section.content.matchAll(/\[([^\]\n]+)\]/g)].map(match => match[1])).filter(id => allowed.has(id)))]
@@ -127,13 +188,13 @@ export function backendDraftEvidenceStatus(sections: Section[], draftReportId: s
   const backendUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
   const missingIds = [...new Set(sections.flatMap(section => {
     const declared = new Set(section.evidenceIds)
-    return [...section.content.matchAll(/\[([^\]\n]+)\]/g)].map(match => match[1]).filter(id => !allowed.has(id) && (declared.has(id) || backendUuid.test(id) || id.startsWith('field:')))
+    return [...section.content.matchAll(/\[([^\]\n]+)\]/g)].map(match => match[1]).filter(id => !allowed.has(id) && (declared.has(id) || backendUuid.test(id) || id.startsWith('field:') || id.startsWith('claim:')))
   }))]
   const stale = !draftReportId || draftReportId !== loadedReportId
   return { stale, missingIds, blocked: stale || missingIds.length > 0 }
 }
 
-export type ReportExportContext = { kind: 'backend' | 'snapshot'; reportId?: string; loadedReportId?: string; reportVersion?: string }
+export type ReportExportContext = { kind: 'backend' | 'snapshot'; reportId?: string; loadedReportId?: string; reportVersion?: string; draftId?: string; model?: string }
 
 export function reportMarkdown(project: Project, sections: Section[], evidence: Evidence[] = EVIDENCE, context: ReportExportContext = { kind: 'snapshot' }): string {
   if (context.kind === 'backend') {
@@ -155,9 +216,20 @@ export function reportMarkdown(project: Project, sections: Section[], evidence: 
     return reference
   }).join('\n')
   const basis = context.kind === 'backend'
-    ? `Backend evidence report. Report ID: ${context.reportId ?? 'Unknown'}; version: ${context.reportVersion ?? 'Unknown'}. Values and stored calculations retain their original source periods. Upload processing and Akta retrieval are pending. User edits have not been reverified.`
+    ? `Backend evidence report. Report ID: ${context.reportId ?? 'Unknown'}; version: ${context.reportVersion ?? 'Unknown'}.${context.draftId ? ` Model-generated narrative draft: ${context.draftId}; model: ${context.model ?? 'Unknown'}; status: unverified.` : ''} Values and stored calculations retain their original source periods. Upload processing and Akta retrieval are pending. User edits have not been reverified.`
     : 'Local evidence preview. Historical saved extracts; not live research or an investment recommendation. User edits have not been reverified.'
-  return `# ${project.name} — Diligence report\n\n${basis}\n\n${sections.map(s => `## ${s.title}\n\n${s.content}`).join('\n\n')}\n\n## Evidence references\n\n${sources || 'No cited evidence.'}\n`
+  const narrativeSupport = sections.flatMap(section => {
+    const retained = new Set(citedEvidenceIds([section], evidence))
+    return (section.sourceClaims ?? []).flatMap(claim => {
+      const citations = claim.citations.filter(citation => retained.has(citation.evidence_id))
+      if (!citations.length) return []
+      return [`### ${section.title} — ${claim.id}\n\nOriginal model ${claim.kind === 'inference' ? 'inference' : 'summary'}: ${claim.text}${section.humanEdited ? '\n\nThis section was human edited. The original model support below has not been reverified against those edits.' : ''}\n\n${citations.map(citation => {
+        const boundSources = citation.source ? [citation.source] : citation.sources ?? []
+        return `Evidence ID: ${citation.evidence_id}\n${citation.quote_basis === 'source_text' ? 'Original supporting text' : 'Stored numeric record (structured backend evidence, not a verbatim document sentence)'}:\n${citation.quote.split('\n').map(line => `> ${line}`).join('\n')}\n${boundSources.map(source => `Source: ${source.file_name}; snapshot: ${source.snapshot_id}; locator: ${source.locator ? JSON.stringify(source.locator) : 'Unknown'}; SHA-256: ${source.sha256}`).join('\n')}`
+      }).join('\n\n')}`]
+    })
+  }).join('\n\n')
+  return `# ${project.name} — Diligence report\n\n${basis}\n\n${sections.map(s => `## ${s.title}\n\n${s.content}`).join('\n\n')}${narrativeSupport ? `\n\n## Claim-to-source quotations\n\n${narrativeSupport}` : ''}\n\n## Evidence references\n\n${sources || 'No cited evidence.'}\n`
 }
 
 export function safeUrl(input: string): string | null {

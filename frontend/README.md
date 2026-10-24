@@ -464,3 +464,15 @@ Python 测试从仓库根目录运行，使用模拟上游响应：
 ### Circle 集成验证
 
 启动上述后端和前端后，在 `frontend/` 运行 `npm run test:integration`。该测试读取实际存储报告，验证 Circle 页面、来源文件、精确数值、UUID 引用、报告导出、项目隔离、失败重试和 pending 控件；它不调用新增上传或 Akta 获取。`npm test` 检查契约/精度与报告逻辑，`npm run test:e2e` 保留原有 Enfuce 浏览器回归。Chrome 可通过 `PLAYWRIGHT_BROWSER_PATH` 指定；否则使用 Playwright 的 Chromium。
+
+### 模型计算与句子来源追踪
+
+Circle Dashboard 的计算工作区使用现有已登记数据：选择数值观察、可选原文句子，输入自然语言计算问题。后端调用 Nicrron `openai/gpt-6.1-sol` 生成代码并在受限本地 Python worker 运行。配置状态来自 `/calculation-runtime`，执行请求发到 `/calculate/agent`。源码、执行输出、精确值、原始文件与来源位置在结果的 Evidence / Lineage / Execution 中可查。
+
+原文引用与模型解释分开；引用必须是所选文本中的逐字内容。当前句子来自已经保存的主档字段，保持原 JSON pointer 和文件 hash。没有新建 PDF 提取或上传/Akta 获取流程。模型结果保留为需核对的分析，不直接成为已审定指标；刷新后报告仍保留人工编辑与过期证据导出保护。
+
+### Firebase 公司数据、已存报告与全公司 Chat
+
+当前 API 使用 Firebase `acefire-50248` / `acefire`。进入 **Enfuce · Document claims**，在 Build 中可加载两份已存报告；原文句子、页码、文件 hash 可点击追踪。19 条未规范化数值仍为空，不由报告补齐。原 Enfuce 卡片保留历史演示，Circle 使用自己的独立数据。
+
+侧边 Company chat 调用 Nicrron 模型，服务端提供该公司的全部已存资料，超出当前页可见数据；每个返回的引用必须与公司原文/结构化记录匹配。生成报告同样调用模型并验证引用，人工编辑在失败或刷新时保留。所有 Missing / Verify / Conflict 中的 Verify 均表示需要核对。详细 API、存储与启动说明见 [Firebase integration](../backend/FIREBASE_INTEGRATION.md)。`npm run test:firebase` 验证真实存储报告；`LIVE_COMPANY_CHAT=1` 才执行浏览器中的真实模型调用。
