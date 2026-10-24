@@ -19,6 +19,7 @@ import { useEnglishWorkspace } from './useEnglishWorkspace'
 import { createCompany, listCompanies } from './workspaceApi'
 import { companyProject, connectLocalProject, mergeCompanyProjects, pendingConnectionKey, readProjects, recoverProjectConnections } from './workspaceProjects'
 import type { PendingCompanyConnection } from './workspaceProjects'
+import { parseWorkspaceRoute, withoutCompanyChatIntent } from './workspaceRoute'
 import './connected.css'
 import './connection.css'
 
@@ -31,11 +32,12 @@ export const go = (path: string) => { window.location.hash = path }
 function useRoute() {
   const [path, setPath] = useState(() => window.location.hash.slice(1) || '/projects')
   useEffect(() => { const listener = () => setPath(window.location.hash.slice(1) || '/projects'); window.addEventListener('hashchange', listener); return () => window.removeEventListener('hashchange', listener) }, [])
-  return path
+  const replacePath = useCallback((next: string) => { window.history.replaceState(null, '', `#${next}`); setPath(next) }, [])
+  return [path, replacePath] as const
 }
 
 export default function App() {
-  const path = useRoute()
+  const [path, replacePath] = useRoute()
   const [projects, setProjects] = useState<Project[]>(() => readProjects(readLocal<unknown>('acefire:projects:v1', INITIAL_PROJECTS), INITIAL_PROJECTS))
   const [newProject, setNewProject] = useState(false)
   const [toast, setToast] = useState('')
@@ -57,7 +59,9 @@ export default function App() {
   const connectController = useRef<AbortController | null>(null)
   const [help, setHelp] = useState(false)
   const [notifications, setNotifications] = useState(false)
-  const parts = path.split('/').filter(Boolean)
+  const route = parseWorkspaceRoute(path)
+  const parts = route.parts
+  const consumeChatIntent = useCallback(() => replacePath(withoutCompanyChatIntent(path)), [path, replacePath])
   const isProject = parts[0] === 'project'
   const project = projects.find(item => item.id === parts[1])
   const current = parts[2] === 'dashboard' ? 'Dashboard' : parts[2] === 'data-room' ? 'Data room' : 'Report'
@@ -138,7 +142,7 @@ export default function App() {
       {!isProject && companyListLoading && <div className="backend-connection" role="status"><Icon name="loading" size={16} />Loading shared company workspaces…</div>}
       {companyListError && <div className="backend-error" role="alert"><h2>Company list unavailable</h2><p>{companyListError} Your existing browser projects remain available.</p><button className="button secondary" disabled={companyListLoading} onClick={() => setCompanyAttempt(value => value + 1)}>Retry company list<Icon name="history" size={14} /></button></div>}
       {connectError && <div className="backend-error" role="alert"><h2>Company connection could not finish</h2><p>{connectError.message} The original project, drafts and browser files are unchanged.</p><button className="button secondary" disabled={Boolean(connectingId)} onClick={() => { const target = projects.find(item => item.id === connectError.id); if (target) void connectProject(target) }}>Retry company connection<Icon name="history" size={14} /></button></div>}
-      {!isProject ? <Projects projects={projects} onCreate={() => setNewProject(true)} onConnect={connectProject} connectingId={connectingId} /> : project ? <ProjectWorkspace key={project.id} project={project} page={current} stage={parts[3] && ['build', 'review', 'export'].includes(parts[3]) ? parts[3] : 'build'} notify={notify} onConnect={connectProject} connecting={connectingId === project.id} /> : companyListLoading ? <div className="backend-loading" role="status"><Icon name="loading" size={24} /><h2>Loading shared company workspace</h2></div> : <Empty title="Project not found" text="This project may belong to another browser or workspace."><button className="button primary" onClick={() => go('/projects')}>Back to projects</button></Empty>}
+      {!isProject ? <Projects projects={projects} onCreate={() => setNewProject(true)} onConnect={connectProject} connectingId={connectingId} /> : project ? <ProjectWorkspace key={project.id} project={project} page={current} stage={parts[3] && ['build', 'review', 'export'].includes(parts[3]) ? parts[3] : 'build'} notify={notify} onConnect={connectProject} connecting={connectingId === project.id} connectionError={connectError?.id === project.id ? connectError.message : undefined} requestCompanyChat={route.companyChat} onChatIntentConsumed={consumeChatIntent} /> : companyListLoading ? <div className="backend-loading" role="status"><Icon name="loading" size={24} /><h2>Loading shared company workspace</h2></div> : <Empty title="Project not found" text="This project may belong to another browser or workspace."><button className="button primary" onClick={() => go('/projects')}>Back to projects</button></Empty>}
     </main></div>
     {toast && <div className="toast" role="status"><Icon name="check" size={17} /><span>{toast}</span><button className="icon-button" onClick={() => setToast('')} aria-label="Dismiss notification"><Icon name="x" size={15} /></button></div>}
     {newProject && <Dialog title="Create a project" subtitle="Create a shared company workspace, then add its evidence." onClose={closeCreation}><form className="dialog-body" aria-busy={creating} onSubmit={event => { event.preventDefault(); void createProject() }}>
@@ -153,7 +157,7 @@ export default function App() {
   </div>
 }
 
-function ProjectWorkspace({ project, page, stage, notify, onConnect, connecting }: { project: Project; page: string; stage: string; notify: (message: string) => void; onConnect: (project: Project) => Promise<void>; connecting: boolean }) {
+function ProjectWorkspace({ project, page, stage, notify, onConnect, connecting, connectionError, requestCompanyChat, onChatIntentConsumed }: { project: Project; page: string; stage: string; notify: (message: string) => void; onConnect: (project: Project) => Promise<void>; connecting: boolean; connectionError?: string; requestCompanyChat: boolean; onChatIntentConsumed: () => void }) {
   const key = `acefire:workspace:v1:${project.id}`
   const [workspace, setWorkspace] = useState<Workspace>(() => { const stored = readLocal<Workspace>(key, emptyWorkspace()); return stored && Array.isArray(stored.order) && Array.isArray(stored.sections) && stored.configs && Array.isArray(stored.revisions) ? migrateLegacyEnglish(stored) : emptyWorkspace() })
   const [evidenceId, setEvidenceId] = useState<string | null>(null)
@@ -164,6 +168,7 @@ function ProjectWorkspace({ project, page, stage, notify, onConnect, connecting 
   const backendEvidence = useMemo(() => report ? reportEvidence(report) : [], [report])
   const selectedEvidence = backendEvidence.find(item => item.id === evidenceId)
   useEnglishWorkspace(project, report, workspace, setWorkspace, notify)
+  useEffect(() => { if (requestCompanyChat) { setChatOpen(true); onChatIntentConsumed() } }, [requestCompanyChat, onChatIntentConsumed])
   useEffect(() => { if (!saveLocal(key, workspace)) notify('Changes could not be saved. Export your work and check browser storage.') }, [key, workspace, notify])
   if (dealId && loading && !report) return <div className="backend-loading" role="status"><Icon name="loading" size={26} /><h2>Loading company evidence</h2><p>Reading the stored report, calculations and source references.</p></div>
   if (dealId && !report) return <div className="backend-error" role="alert"><h2>Company report unavailable</h2><p>{error || 'The backend did not return a company report.'}</p><p>Your browser drafts and saved files are preserved. Retry when the company service is available.</p><button className="button primary" onClick={refresh}>Retry connection<Icon name="arrow" size={15} /></button></div>
@@ -175,7 +180,7 @@ function ProjectWorkspace({ project, page, stage, notify, onConnect, connecting 
     <div className="assistant-dock">{report && <button className="dock-suggestion" onClick={() => setDocumentChatOpen(true)}><Icon name="document" size={13} />Search source files</button>}<button className="dock-suggestion" onClick={() => setChatOpen(true)}><Icon name="sparkles" size={12} /> {page === 'Dashboard' ? 'Where do these numbers come from?' : page === 'Report' ? 'What evidence supports this summary?' : 'What do these documents establish?'}</button><button className="assistant-launcher" onClick={() => setChatOpen(true)}><span className="assistant-spark"><Icon name="sparkles" size={19} /></span><span>Ask anything about your evidence</span><Icon name="chat" size={17} /></button></div>
     {evidenceId && (dealId ? selectedEvidence ? <ConnectedEvidenceInspector key={evidenceId} evidence={selectedEvidence} onClose={() => setEvidenceId(null)} notify={notify} /> : <Dialog title="Evidence unavailable" onClose={() => setEvidenceId(null)}><div className="dialog-body"><p>This reference is not present in the current stored report. Refresh the report or regenerate its sections to use current evidence.</p></div></Dialog> : <EvidenceInspector key={evidenceId} id={evidenceId} onClose={() => setEvidenceId(null)} notify={notify} />)}
     {documentChatOpen && report && <DocumentChat project={project} page={page} report={report} inspect={setEvidenceId} navigate={go} onClose={() => setDocumentChatOpen(false)} onCompanyChat={() => { setDocumentChatOpen(false); setChatOpen(true) }} />}
-    {chatOpen && (report ? <CompanyChat key={project.id} project={project} page={page} report={report} draftSections={workspace.sections} inspect={setEvidenceId} navigate={go} onClose={() => setChatOpen(false)} onRefresh={refresh} onSearchSources={() => { setChatOpen(false); setDocumentChatOpen(true) }} /> : <Chat project={project} page={page} inspect={setEvidenceId} navigate={go} onClose={() => setChatOpen(false)} />)}
+    {chatOpen && (report ? <CompanyChat key={project.id} project={project} page={page} report={report} draftSections={workspace.sections} inspect={setEvidenceId} navigate={go} onClose={() => setChatOpen(false)} onRefresh={refresh} onSearchSources={() => { setChatOpen(false); setDocumentChatOpen(true) }} /> : <Chat project={project} page={page} stage={stage} navigate={go} onClose={() => setChatOpen(false)} onConnect={onConnect} connecting={connecting} connectionError={connectionError} />)}
   </>
 }
 

@@ -1,7 +1,7 @@
 # imnotmomo
 
 - Role: C — structured storage, normalization, calculations, company reports and source traceability.
-- State: ready_for_review — deployed and verified.
+- State: in_progress — legacy chat launcher correction.
 - Updated: 2026-10-24
 - Working on: Full frontend/backend workflow repair and server update. B branch b-document-intake is merged as 9284893, with source chat isolated at /evidence-chat and C whole-company /chat preserved. Human explicitly requests deploying without messaging other chats and defers login.
 - Active paths: Final verification and deploy/. Completed repair paths include workspace upload/store/router, App/company adapters, report/reference/export and both side-chat drawers, source preview and focused tests. Agent edits are frozen for release; preserve the English manifest and existing PRISM drop-in.
@@ -71,3 +71,11 @@
 -15 real live workflow checks passed on a clearly synthetic QA company: APIcreate/retry, TXT/CSV upload, duplicatejob reuse, Nicrron PDF extraction/quotevalidation, imageOCR+Nicrron extraction, publicmultipartabove2MB, everyoriginal/reading-viewSHA, generatedPython partial-month sum300.580000USD with two CSVrow inputs, calculationlineage, English whole-companychat, Bsource-filechat and cited reportdrafting. The release stayed unchanged. These are live API/modelchecks, distinct from mocked providerconversiontests and frontendSSR.
 - Synthetic QA cloud records were backed up privately and removed using exact IDs/update preconditions; originalCircle/Enfuce records were untouched. Private QA audit artifacts remain outside public files under the release backup directory.
 - Fullnewbrowserclick-through was not run because this chat’s browser access was declined. No cross-chat messages were sent. Login remains deferred. Live Akta retrieval and the absent originalEnfucePDF remain explicitly unavailable; no replacement evidence was fabricated.
+
+## Legacy chat launcher correction — 2026-10-24
+
+- Human reported the historical launcher still says “Answers from saved extracts. No live model connected.” The live server model is configured; App still renders the canned local Chat for unconnected projects.
+- Active paths: frontend/src/App.tsx, frontend/src/Chat.tsx, frontend/src/workspaceRoute.ts, focused frontend tests and documentation. No backend/schema/data changes.
+- Replace canned answers with an explicit connection path. Historical Enfuce remains isolated and offers an explicitly labeled switch to the imported Enfuce company chat; local starters connect using the existing shared-company API. Loading/error states must never silently become a canned assistant. Commit/push/deploy remain authorized; no other-chat messaging or browser access.
+
+- Validation before release: all 90 frontend unit/SSR tests and TypeScript/Vite production build passed. Real public `/deals/enfuce-2020/chat` returned `openai/gpt-6.1-sol`, Verify and four checked source citations for a company-description question. No company records changed. Backend load failures retain explicit retry; no canned-response code remains. Browser access was not retried.

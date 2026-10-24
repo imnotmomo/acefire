@@ -493,3 +493,9 @@ Data room uploads use queued/processing/completed/failed receipts, preserve exac
 See [workspace upload API](../backend/WORKSPACE_UPLOADS.md). Documents require LibreOffice, images/scans require Tesseract. Akta retrieval is still unavailable separately. Imported Enfuce originals remain absent here; stored quotations/page references remain inspectable. Report edits stay browser-local; company evidence is shared through Firestore. PDF export includes a local, hash-checked Unicode font; DOCX/Markdown remain available.
 
 Browser access was declined in this chat, so these new flows are validated through API integration, unit/SSR, actual conversion/OCR, PDF extraction/rendering and production builds. Earlier browser results above belong to earlier snapshots.
+
+### Chat launcher connection (2026-10-24)
+
+The old canned-response assistant has been removed. Unconnected projects show a connection action; once the confirmed company report loads, the same launcher opens live Company chat. A failed company load shows Retry connection and never falls back to saved-answer chat.
+
+The historical `enfuce` workbook/FDD workspace remains separate from `enfuce-documents` (the imported April 2020 deck). Its chat launcher explicitly offers **Open Enfuce company chat**, discloses the evidence scope, and opens the model drawer there without migrating any historical drafts, sources or browser files. `?chat=company` is a one-time opening intent; it is consumed after latching the drawer and leaves the selected Dashboard/Data room/Report stage intact. The model still answers only from the selected company's stored evidence; missing evidence remains missing.
