@@ -1,5 +1,6 @@
 """Start the local API with private backend/.env configuration (never printed)."""
 import os
+import sys
 from pathlib import Path
 import uvicorn
 
@@ -10,6 +11,7 @@ ALLOWED = {'DATA_STORE', 'FIREBASE_PROJECT_ID', 'FIRESTORE_DATABASE_ID',
 
 if __name__ == '__main__':
     root = Path(__file__).resolve().parent
+    sys.path.insert(0, str(root.parent))
     path = root / '.env'
     if path.is_file():
         for line in path.read_text().splitlines():

@@ -33,7 +33,7 @@ try {
     assert.match(await page.locator('.report-narrative-mode').innerText(), /unverified/)
   })
   await check('Original quotations retain their source page and SHA-256', async () => {
-    await page.locator('#section-overview .citation').first().click()
+    await page.locator('#section-overview .report-claim.source-linked').first().click()
     await page.getByRole('button', { name: 'Open source evidence', exact: true }).first().click()
     const dialog = page.getByRole('dialog', { name: 'Evidence inspector', exact: true })
     await dialog.waitFor()
@@ -42,7 +42,7 @@ try {
     assert.match(await dialog.innerText(), /Original file unavailable here/)
     await page.keyboard.press('Escape')
     await page.locator('.findings-panel .report-source-support summary').click()
-    assert.ok((await page.locator('#section-overview .report-source-support').innerText()).includes(citation.quote))
+    assert.ok((await page.locator('.findings-panel .report-source-support').innerText()).includes(citation.quote))
     await page.screenshot({ path: `${output}/enfuce-source-report.png`, fullPage: true })
   })
   await check('Human edits and original support survive refresh and Markdown export', async () => {

@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import Any, Literal
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile, Query
 from fastapi.responses import FileResponse
 from pydantic import Field, model_validator
 
@@ -207,8 +207,7 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
         company(deal_id)
         return {'evidence': available_text_evidence(deal_id), 'basis': 'stored_primary_profile_and_document_quotations'}
 
-    @app.get('/sources/{snapshot_id}/file')
-    def source_file(snapshot_id: str):
+    def source_path(snapshot_id):
         source = ledger.snapshot(snapshot_id)
         if source is None:
             raise HTTPException(404, 'Source file is not registered.')
@@ -219,6 +218,25 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
             raise HTTPException(404, 'Registered source file is unavailable.')
         if hashlib.sha256(path.read_bytes()).hexdigest() != source.sha256:
             raise HTTPException(409, 'Source bytes changed; the recorded evidence version cannot be displayed.')
+        return source, path
+
+    @app.get('/sources/{snapshot_id}/preview')
+    def source_preview(snapshot_id: str, sheet: str | None = None, cell: str | None = None,
+                       row_start: int | None = Query(None, ge=1, le=1048576),
+                       column_start: int | None = Query(None, ge=1, le=16384)):
+        from app.source_preview import workbook_preview
+        from xml.etree.ElementTree import ParseError
+        from zipfile import BadZipFile
+        source, path = source_path(snapshot_id)
+        try:
+            return {'snapshot_id': source.id, 'sha256': source.sha256,
+                    **workbook_preview(path, sheet, cell, row_start, column_start)}
+        except (ValueError, KeyError, OSError, BadZipFile, ParseError, IndexError) as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.get('/sources/{snapshot_id}/file')
+    def source_file(snapshot_id: str):
+        source, path = source_path(snapshot_id)
         media_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
         # Active document formats are downloaded rather than executed in this origin.
         disposition = 'inline' if media_type in {'application/pdf','image/png','image/jpeg','application/json','text/plain'} else 'attachment'

@@ -4,6 +4,7 @@ import { apiUrl, formatDecimal, formatLocator, humanize } from './backend'
 import { Badge, Dialog, Empty, Icon } from './ui'
 import { evidenceState, ReviewStateBadge } from './ReviewState'
 import SourceFileButton from './SourceFileButton'
+import SourceFilePreview from './SourceFilePreview'
 import './calculation-lab.css'
 
 type RecordValue = Record<string, unknown>
@@ -14,27 +15,32 @@ const nodeKind = (node: BackendGraph['nodes'][number]): string => {
   return kind === 'source' ? 'source_file' : kind === 'observation' ? 'source_observation' : kind
 }
 
-export function SourceReference({ source }: { source: BackendSource }) {
+export function SourceReference({ source, onOpen }: { source: BackendSource; onOpen?: (source: BackendSource) => void }) {
   return <div className="connected-source-reference">
     <div className="connected-source-title"><Icon name={/\.xlsx?$/i.test(source.file_name) ? 'sheet' : 'document'} size={20} /><div><strong>{source.file_name}</strong><small>{humanize(source.provider)} · {source.data_role === 'primary_company_data' ? 'Primary company source' : 'Supplemental evidence'}</small></div></div>
     <dl className="connected-reference-details"><dt>Location</dt><dd>{formatLocator(source.locator)}</dd><dt>SHA-256</dt><dd className="hash">{source.sha256 || 'Not supplied'}</dd></dl>
     {source.locator && <details className="connected-native-locator"><summary>Original locator details</summary><dl className="connected-reference-details">{Object.entries(source.locator).map(([key, value]) => <div key={key}><dt>{humanize(key)}</dt><dd>{display(value)}</dd></div>)}</dl></details>}
-    <SourceFileButton source={source} />
+    <SourceFileButton source={source} onOpen={onOpen} />
   </div>
 }
 
 export function ConnectedEvidenceInspector({ evidence, onClose, notify }: { evidence: BackendEvidence; onClose: () => void; notify: (message: string) => void }) {
   const [tab, setTab] = useState('Evidence')
+  const [fileSource, setFileSource] = useState<BackendSource | null>(evidence.sources[0] ?? null)
+  const openFile = (source: BackendSource) => { setFileSource(source); setTab('File') }
   const execution = record(evidence.calculation?.parameters.agent_execution)
   const hasExecution = Object.keys(execution).length > 0
-  return <Dialog title="Evidence inspector" subtitle="Follow the number through its recorded inputs to the original file." onClose={onClose} className="evidence-dialog connected-evidence-dialog">
+  const textual = evidence.kind === 'statement' || evidence.kind === 'profile'
+  return <Dialog title="Evidence inspector" subtitle="Original quotations, source files and the recorded calculation path." onClose={onClose} className="evidence-dialog connected-evidence-dialog">
     <div className="dialog-body">
       <div className="evidence-title"><span className={`module-icon ${evidence.conflictNumbers || evidence.status === 'Needs review' ? 'orange' : 'green'}`}><Icon name={evidence.kind === 'calculation' ? 'calculator' : 'fileCheck'} size={22} /></span><div><h3>{evidence.title}</h3><ReviewStateBadge state={evidenceState(evidence)} /></div></div>
-      <div className="inspector-value connected-exact-value">{evidence.value}<small>{evidence.period} / {evidence.unit}</small></div>
+      {textual ? <blockquote className="connected-source-quotation">{evidence.value}</blockquote> : <div className="inspector-value connected-exact-value">{evidence.value}<small>{evidence.period} / {evidence.unit}</small></div>}
+      {fileSource && <div className="inspector-file-toolbar">{evidence.sources.length > 1 && <label>Source file and location<select aria-label="Inspect source file" value={evidence.sources.indexOf(fileSource)} onChange={e => setFileSource(evidence.sources[Number(e.target.value)])}>{evidence.sources.map((source, index) => <option key={index} value={index}>{source.file_name} · {formatLocator(source.locator)}</option>)}</select></label>}<SourceFileButton source={fileSource} onOpen={openFile} /></div>}
       {evidence.conflictNumbers && <div className="connected-conflict-note" role="status"><Icon name="flag" size={18} /><span><strong>Conflict numbers</strong> Comparable values disagree. The stored result and original source values remain available.</span></div>}
-      <div className="tab-bar" role="tablist" aria-label="Evidence details">{['Evidence', 'Lineage', ...(hasExecution ? ['Execution'] : []), 'Source details'].map(item => <button key={item} role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
+      <div className="tab-bar" role="tablist" aria-label="Evidence details">{['Evidence', ...(fileSource ? ['File'] : []), 'Lineage', ...(hasExecution ? ['Execution'] : []), 'Source details'].map(item => <button key={item} role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</button>)}</div>
+      {tab === 'File' && fileSource && (fileSource.preview_available === false ? <p className="source-file-unavailable">Original file unavailable here. The stored quotation and location remain available.</p> : <SourceFilePreview key={`${fileSource.snapshot_id}:${JSON.stringify(fileSource.locator)}`} source={fileSource} />)}
       {tab === 'Evidence' && <>
-        <p className="connected-evidence-excerpt">{evidence.excerpt}</p>
+        {!textual && <p className="connected-evidence-excerpt">{evidence.excerpt}</p>}
         {evidence.formula && <div className="connected-formula"><span>Stored formula</span><code>{evidence.formula}</code></div>}
         {evidence.calculation && <dl className="source-details"><dt>Function</dt><dd>{evidence.calculation.function_key}</dd><dt>Function version</dt><dd>{evidence.calculation.function_version}</dd><dt>Calculation status</dt><dd>{humanize(evidence.calculation.status)}</dd></dl>}
         <div className="table-scroll"><table className="source-table"><caption>{evidence.kind === 'calculation' ? 'Recorded calculation and inputs' : 'Recorded source details'}</caption><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>{evidence.rows.map(([name, value], index) => <tr key={`${name}:${index}`}><td>{name}</td><td>{value}</td></tr>)}</tbody></table></div>
@@ -42,13 +48,13 @@ export function ConnectedEvidenceInspector({ evidence, onClose, notify }: { evid
         {hasExecution && <CitedPremises execution={execution} />}
         {Boolean(evidence.explanationSteps?.some(step => step.kind === 'source_normalization')) && <details className="connected-normalization"><summary>How source inputs were normalized</summary><div className="table-scroll"><table className="source-table"><thead><tr><th>Source / location</th><th>Raw value</th><th>Scale multiplier</th><th>Recorded normalized value</th><th>Basis</th></tr></thead><tbody>{evidence.explanationSteps?.filter(step => step.kind === 'source_normalization').map((step, index) => { const source = record(step.source); return <tr key={index}><td>{display(source.file_name)}<small>{formatLocator(record(source.locator))}</small></td><td>{display(step.raw_value)}</td><td>{display(step.scale_multiplier)}</td><td>{formatDecimal(step.normalized_value == null ? null : String(step.normalized_value), typeof step.unit === 'string' ? step.unit : undefined)}</td><td>{display(step.normalization_basis)}</td></tr> })}</tbody></table></div></details>}
         {Boolean(evidence.conflicts?.length) && <div className="connected-inspector-conflicts"><h4>Differing recorded values</h4>{evidence.conflicts?.map((conflict, index) => <div className="connected-conflict-alternatives" key={String(conflict.id ?? index)}>{(Array.isArray(conflict.alternatives) ? conflict.alternatives : []).map((value, alternativeIndex) => { const alternative = record(value); return <div className="connected-conflict-alternative" key={alternativeIndex}><strong>{formatDecimal(typeof alternative.value === 'string' ? alternative.value : null, typeof alternative.unit === 'string' ? alternative.unit : undefined)}</strong>{(Array.isArray(alternative.sources) ? alternative.sources : []).map((value, sourceIndex) => { const source = record(value); return <small key={sourceIndex}>{display(source.file_name)} · {formatLocator(record(source.locator))}</small> })}</div> })}</div>)}</div>}
-        <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} />)}</div>
+        <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} onOpen={openFile} />)}</div>
       </>}
       {tab === 'Lineage' && (evidence.graph?.nodes.length ? <ConnectedLineage graph={evidence.graph} /> : <Empty icon="layers" title="No recorded graph" text="A lineage graph has not been supplied for this record." />)}
       {tab === 'Execution' && hasExecution && <AgentExecutionAudit execution={execution} />}
       {tab === 'Source details' && <>
         <dl className="source-details"><dt>Record ID</dt><dd className="hash">{evidence.id}</dd><dt>Period</dt><dd>{evidence.period}</dd><dt>Unit</dt><dd>{evidence.unit}</dd><dt>Source locator</dt><dd>{evidence.locator}</dd></dl>
-        <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} />)}</div>
+        <div className="connected-source-list">{evidence.sources.map((source, index) => <SourceReference key={`${source.snapshot_id}:${index}`} source={source} onOpen={openFile} />)}</div>
         <p className="muted">The original file opens in another tab or downloads in its native format. Locations are shown exactly as recorded; unavailable page or line numbers remain unknown.</p>
         <button className="button secondary" onClick={async () => { try { await navigator.clipboard.writeText(`${evidence.title}\n${evidence.id}\n${evidence.value} | ${evidence.period}\n${evidence.sources.map(source => `${source.file_name} | ${formatLocator(source.locator)} | SHA-256 ${source.sha256}`).join('\n')}\n${evidence.note}`); notify('Source reference copied.') } catch { notify('Clipboard access was denied. Select and copy the source details manually.') } }}><Icon name="copy" size={16} />Copy reference</button>
       </>}

@@ -12,7 +12,7 @@ install -d -m 0750 -o ingenium -g ingenium "$release"
 runuser -u ingenium -- git -C /srv/ingenium/app archive "$commit" | tar -x -C "$release" --no-same-owner
 chown -R ingenium:ingenium "$release"
 runuser -u ingenium -- python3 -m venv "$release/backend/.venv"
-runuser -u ingenium -- "$release/backend/.venv/bin/python" -m pip install --disable-pip-version-check -r "$release/backend/requirements-dev.txt" > "/var/log/ingenium-python-$release_id.log" 2>&1
+runuser -u ingenium -- "$release/backend/.venv/bin/python" -m pip install --disable-pip-version-check -r "$release/backend/requirements.lock" > "/var/log/ingenium-python-$release_id.log" 2>&1
 runuser -u ingenium -- "$release/backend/.venv/bin/python" -m pip check
 runuser -u ingenium -- "$release/backend/.venv/bin/python" -m pip freeze > "$release/backend/requirements.resolved.txt"
 runuser -u ingenium -- npm --prefix "$release/frontend" ci > "/var/log/ingenium-npm-$release_id.log" 2>&1

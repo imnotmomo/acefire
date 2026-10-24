@@ -34,7 +34,9 @@ limits. The generated Python worker retains its application-level restrictions;
 this is not a hardware sandbox.
 
 This deploys the existing demo access model. Team login, tenant authorization and
-new-document extraction are not added. Model requests are live provider calls.
+frontend upload-to-extraction wiring are not added. B's offline PDF/Office extraction
+code and stored-document read APIs are included; Office conversion also requires
+LibreOffice on the machine running extraction. Model requests are live provider calls.
 Original Enfuce PDF bytes were not supplied; quotations/page references remain
 available, while original-file preview is marked unavailable. Circle's 16 available
 source files are copied privately and checked against their registered SHA-256.
@@ -50,7 +52,7 @@ and ADC/source manifest files under `/etc/ingenium` with the permissions above.
 2. Copy the two release scripts, Caddyfile and unit into
    `/root/ingenium-deploy-staging/` over SSH.
 3. Run `prepare-release.sh RELEASE_ID FULL_COMMIT_SHA`. It archives the precise
-   revision, creates an isolated Linux venv, installs dependencies, freezes resolved
+   revision, creates an isolated Linux venv, installs `backend/requirements.lock`, freezes resolved
    Python versions, builds the locked frontend, runs backend/frontend tests and
    prepares the public static copy. It leaves the active release unchanged.
 4. Run `activate-release.sh RELEASE_ID`. It snapshots current links/configuration,

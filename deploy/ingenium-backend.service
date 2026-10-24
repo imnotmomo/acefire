@@ -13,6 +13,7 @@ WorkingDirectory=/srv/ingenium/current/backend
 EnvironmentFile=/etc/ingenium/backend.env
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONPATH=/srv/ingenium/current:/srv/ingenium/current/backend
 ExecStart=/srv/ingenium/current/backend/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8017 --workers 1 --root-path /api --proxy-headers --forwarded-allow-ips 127.0.0.1 --limit-concurrency 16 --timeout-keep-alive 5
 Restart=on-failure
 RestartSec=5
