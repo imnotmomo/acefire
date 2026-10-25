@@ -10,13 +10,16 @@ test('three pinned demos use the real Enfuce identity and two isolated illustrat
   assert.deepEqual(DEMO_PROJECTS.slice(1).map(p => backendProjectId(p.id)), [null, null])
   assert.equal(new Set(SCENARIOS.flatMap(s => s.evidence.map(e => e.id))).size, 8)
 })
-test('catalog migration replaces only pinned demos and preserves custom projects without mutating browser workspaces', () => {
+test('UI demos preserve every existing company identity, metadata and backend binding', () => {
   const custom = { id: 'custom', name: 'My company', sector: 'Other', geography: 'UK', created: '2026-10-01' }
-  const saved = [{ id: 'enfuce', name: 'Enfuce' }, { id: 'circle', name: 'Circle' }, { id: 'backerkit', name: 'BackerKit' }, custom]
+  const connected = { id: 'enfuce-documents', name: 'Original legal name', backendDealId: 'original-binding', sector: 'Original sector', geography: 'Original country' }
+  const saved = [{ id: 'enfuce', name: 'Historical Enfuce' }, { id: 'circle', name: 'Circle', backendDealId: 'circle-2025-ipo' }, { id: 'backerkit', name: 'BackerKit' }, connected, custom]
+  const before = structuredClone(saved)
   const result = migrateDemoProjects(saved)
-  assert.equal(result.length, 4)
-  assert.deepEqual(result[3], custom)
-  assert.equal(saved.length, 4)
+  assert.equal(result.length, 7)
+  for (const original of saved) assert.strictEqual(result.find(p => p.id === original.id), original)
+  assert.deepEqual(saved, before)
+  assert.deepEqual(migrateDemoProjects(result), result)
   assert.equal(migrateDemoProjects(null).length, 3)
 })
 test('illustrative reports and exported evidence cannot silently masquerade as retrieved company data', () => {

@@ -8,11 +8,10 @@ export const DEMO_PROJECTS: Project[] = [
   { id: 'healthtech-demo', name: 'HealthTech / Biotech', sector: 'HealthTech / Biotech', geography: 'US · illustrative', created: '2026-10-24T12:00:00Z' },
   { id: 'marketplace-demo', name: 'Consumer / Marketplace', sector: 'Consumer / Marketplace', geography: 'US · illustrative', created: '2026-10-24T12:00:00Z' },
 ]
-const OLD_DEMO_IDS = new Set(['enfuce', 'circle', 'backerkit', 'enfuce-documents', 'healthtech-demo', 'marketplace-demo'])
 export function migrateDemoProjects(stored: unknown): Project[] {
   const valid = Array.isArray(stored) ? stored.filter((p): p is Project => Boolean(p && typeof p.id === 'string' && typeof p.name === 'string')) : []
-  // Only replace the pinned catalog. Project workspaces/files and custom projects are preserved.
-  return [...DEMO_PROJECTS.map(project => ({ ...project })), ...valid.filter(project => !OLD_DEMO_IDS.has(project.id))]
+  // Add UI examples without removing or rewriting existing company identities or metadata.
+  return [...DEMO_PROJECTS.map(demo => valid.find(project => project.id === demo.id) ?? { ...demo }), ...valid.filter(project => !DEMO_PROJECTS.some(demo => demo.id === project.id))]
 }
 export type DemoStatus = 'Verified' | 'Unsupported' | 'Contradicted'
 export type ScenarioClaim = { id: string; title: string; claim: string; status: DemoStatus; internal: string; external: string; conclusion: string; evidenceId: string; module: ModuleId; channel: string }

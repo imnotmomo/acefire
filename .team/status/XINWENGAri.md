@@ -80,3 +80,14 @@ C has since implemented the Circle report/lineage connection described below; re
 - Integrated latest C workspace creation, source preview, English report and side-chat contracts. After integration, 89 frontend unit tests, production build and six scenario browser flows passed. Earlier browser suite results above describe the prior baseline.
 - Local Vite now proxies the existing deployed API to use its private English translation manifest; ignored runtime configuration is not published.
 - Production release metadata reports e7b3d2df5e41565b648cbdb833c08d7a487a0c1a. GitHub publication alone does not activate the VPS. This Windows profile has no .ssh directory or available SSH agent identity. Deployment access is pending; preserve C-owned release scripts and server configuration.
+
+## UI-only scope correction — 2026-10-24
+
+- State: in_progress. Human restricts work to three cover photographs, the two isolated illustrative scenarios, supplied branding and the single enlarged Create Project action. PPT copy and deployment are outside this correction.
+- Active paths: frontend/src/{App.tsx,Projects.tsx,scenarios.ts}, frontend/tests/scenarios.test.mjs, frontend/tests/scenarios.mjs, this status file.
+- Audit: baa86f7 changed no backend/ files, but its frontend catalog migration filtered existing known project identities and overwrote Enfuce metadata after API merge. Its generic connected-card owner label also incorrectly named Enfuce for every company. Remove those effects while preserving teammate API, storage, reports and calculation behavior. No cloud writes or runtime configuration changes.
+
+- Completed UI correction: existing company IDs, metadata and backend bindings survive demo initialization; API company merging is no longer filtered through demo replacement. Connected cards use their own company name and saved module count. Three covers, isolated HealthTech/Marketplace scenes, formal branding and one enlarged Create Project action remain.
+- Validation: 93 unit tests, production build and six scenario browser flows passed, including retention of all historical/custom cards and saved report bytes. Backend, database-design and deploy trees match the pre-UI baseline 97658f4 exactly.
+- Human supplied a replacement Firebase credential. Updated only ignored backend/.env to point to the new external file; checked JSON type/project without exposing secrets. No tracked backend code, cloud data, IAM keys or server runtime changed. Old credential is no longer referenced by that config.
+- State: ready_for_review; GitHub publication requested; deployment remains the teammate responsibility.

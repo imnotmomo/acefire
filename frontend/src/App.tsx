@@ -77,7 +77,7 @@ export default function App() {
           const value = readLocal<PendingCompanyConnection | null>(pendingConnectionKey(project.id), null)
           return value && typeof value === 'object' ? [value] : []
         })
-        return migrateDemoProjects(mergeCompanyProjects(recoverProjectConnections(previous, companies, pending), companies))
+        return mergeCompanyProjects(recoverProjectConnections(previous, companies, pending), companies)
       })
     }).catch(error => {
       if (!controller.signal.aborted) setCompanyListError(error instanceof Error ? error.message : 'Shared company workspaces could not be loaded.')
