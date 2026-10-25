@@ -1,7 +1,8 @@
 # Firebase and LLM workflow handoff
 
 The running local app uses project **acefire-50248**, named Firestore database
-**acefire**, in **us-east1**. The existing database reports `freeTier: true`.
+**acefire**, in **us-east1**, using **Standard edition**. The database reports
+`freeTier: true`; project billing is disabled and no billing account is linked.
 No billing upgrade, Cloud Functions deployment or Storage bucket was added.
 
 ## Imported data
@@ -128,3 +129,16 @@ saved reports, citations, edits and export. `LIVE_COMPANY_CHAT=1` additionally
 makes a paid model call through the real browser chat. Other browser contract
 tests mock model responses and do not claim live generation. Chrome can be
 selected with `PLAYWRIGHT_BROWSER_PATH`.
+
+
+## Standard edition replacement — 2026-10-24
+
+The human explicitly approved replacing the Enterprise database with Standard while keeping billing disabled. The project, database name and region remain unchanged, so existing application configuration and scoped service-account access still work.
+
+A consistent, typed backup was taken after application writers were paused and replicated privately. All 521 documents were restored with create-only writes, including both companies, 455 observations, 17 source snapshots, 39 document claims, three calculations, two profiles, two saved narrative reports and the import provenance marker. Independent field-hash/envelope verification and a complete recursive inventory found no missing, extra or changed records. Original system document creation/update times remain in the audit backup; the replacement has new system timestamps. Business/source timestamps and all persisted IDs are unchanged.
+
+The named security rules and project IAM policy were preserved. Standard index exemptions exclude the unqueried `record` map in the eight used collection groups. Billing remains disabled, free-tier eligibility is enabled and deletion protection is enabled. Private backups, credentials, source files, upload receipts and migration logs stay outside Git.
+
+Application checks verified both company reports, 16 available original files by SHA-256, two saved Enfuce drafts with 24 sections and 128 source citations, three calculation lineages and unchanged model runtime settings. The absent original Enfuce PDF remains unavailable. Standard returns collection records in a different order: Enfuce's generated report version is unchanged; Circle's generated inventory version changed because profile enumeration and graph layout changed. Its stored values, observations, source references, calculations and saved IDs did not change. Open Circle sessions may need Refresh/rebind using the existing reference-check flow.
+
+The website was reopened after verification. Its existing logo-only frontend and backend code/PRISM configuration were preserved. No new model calls or source extraction were required for this migration.
