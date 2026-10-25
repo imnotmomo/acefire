@@ -197,7 +197,7 @@ export function backendDraftEvidenceStatus(sections: Section[], draftReportId: s
   return { stale, missingIds, referencesRefreshed: refreshed.valid, referenceError: refreshed.error, blocked: (stale && !refreshed.valid) || missingIds.length > 0 }
 }
 
-export type ReportExportContext = { kind: 'backend' | 'snapshot' | 'scenario'; reportId?: string; loadedReportId?: string; reportVersion?: string; draftId?: string; model?: string; evidenceCheckedReportId?: string; evidenceCheckedAt?: string; referenceCheck?: EvidenceReferenceCheck }
+export type ReportExportContext = { kind: 'backend' | 'snapshot'; reportId?: string; loadedReportId?: string; reportVersion?: string; draftId?: string; model?: string; evidenceCheckedReportId?: string; evidenceCheckedAt?: string; referenceCheck?: EvidenceReferenceCheck }
 
 export function reportMarkdown(project: Project, sections: Section[], evidence: Evidence[] = EVIDENCE, context: ReportExportContext = { kind: 'snapshot' }): string {
   let referencesRefreshed = false
@@ -225,7 +225,7 @@ export function reportMarkdown(project: Project, sections: Section[], evidence: 
   }).join('\n')
   const basis = context.kind === 'backend'
     ? `Backend evidence report. Report ID: ${context.reportId ?? 'Unknown'}; version: ${context.reportVersion ?? 'Unknown'}.${context.draftId ? ` Model-generated narrative draft: ${context.draftId}; model: ${context.model ?? 'Unknown'}; status: unverified.` : ''}${referencesRefreshed ? ` Original draft generation basis remains ${context.reportId}. Source references refreshed against evidence report ${context.evidenceCheckedReportId} at ${context.evidenceCheckedAt}; retained quotations, source hashes and locators were matched. Report text and human judgment were not reverified or rewritten.` : ''} Values and stored calculations retain their original source periods. Source extraction and automated checks require human review. External retrieval is not implied. User edits have not been reverified.`
-    : context.kind === 'scenario' ? 'SIMULATED DEMO. Fictional company, claims, numeric examples and evidence excerpts. No live external retrieval or independent verification was performed. This report is a workflow illustration, not an investment or medical assessment.' : 'Local evidence preview. Historical saved extracts; not live research or an investment recommendation. User edits have not been reverified.'
+    : 'Local evidence preview. Historical saved extracts; not live research or an investment recommendation. User edits have not been reverified.'
   const narrativeSupport = sections.flatMap(section => {
     const retained = new Set(citedEvidenceIds([section], evidence))
     return (section.sourceClaims ?? []).flatMap(claim => {

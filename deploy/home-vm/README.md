@@ -1,5 +1,9 @@
 # Acefire home VM deployment
 
+For routine updates, use the [GitHub Actions CI/CD runbook](CI_CD.md). The helpers
+below document the original migration and first provisioning; do not rerun them
+for an ordinary application release.
+
 These helpers provision the existing `acefire` ESXi VM and attach Ingenium to its existing Cloudflare Tunnel origin. They do not provision a new network, tunnel, Firebase project or database. They are first-provisioning and operator-controlled cutover helpers, not a general release updater.
 
 ## Recorded state — October 24, 2026, New York

@@ -1,5 +1,9 @@
 # Ingenium VPS deployment
 
+The current application runs on the home VM through Cloudflare Tunnel. Use
+[home deployment](home-vm/README.md) and [GitHub CI/CD](home-vm/CI_CD.md).
+This document and its Caddy release scripts describe the retained legacy VPS.
+
 Target: `ingenium.linearproduct.co` / `159.89.53.226`, Ubuntu 24.04.
 SSH uses the human's existing root key. The web/API processes run as their
 separate `caddy` and `ingenium` system users.

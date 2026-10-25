@@ -47,9 +47,6 @@
 .report-review .activity-event pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f6f3ed;font:inherit;padding:9px;max-height:220px;overflow:auto}
 .activity-empty{font-size:12px;line-height:1.8;color:#8a8177}
 .review-footer{grid-column:1/-1;grid-row:5;padding:18px 24px;border-top:1px solid #e4dfd7;display:flex;justify-content:flex-end}
-.report-review .findings-panel,.report-review .activity-rail{max-height:calc(100vh - 40px);overflow-y:auto;overscroll-behavior:contain}
-.report-review .review-footer{position:relative;z-index:1;background:#f2f0ed}
-@media(max-width:1000px){.report-review .findings-panel,.report-review .activity-rail{max-height:none;overflow:visible}}
 @media(min-width:1201px){.report-review{grid-template-columns:minmax(340px,1fr) 300px 230px}.report-review .report-paper{padding:32px 27px}.report-review .activity-rail{padding:22px 15px}}
 @media(min-width:1650px){.report-review{grid-template-columns:minmax(420px,1fr) 340px 270px}.report-review .report-paper{padding:44px}}
 @media(max-width:1200px) and (min-width:1001px){.report-review{grid-template-columns:minmax(290px,1fr) 280px}.report-review .findings-panel{grid-column:2;grid-row:2 / 4}.report-review .activity-rail{grid-column:1;grid-row:3}}

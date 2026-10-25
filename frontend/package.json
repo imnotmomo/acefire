@@ -17,13 +17,12 @@
     "test:calculation": "node tests/calculation-lab.mjs",
     "test:narrative": "node tests/report-narrative.mjs",
     "test:chat": "node tests/company-chat.mjs",
-    "test:firebase": "node tests/firebase-integration.mjs",
-    "test:scenarios": "node tests/scenarios.mjs"
+    "test:firebase": "node tests/firebase-integration.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
     "docx": "^9.5.1",
-    "jspdf": "^3.0.4",
+    "jspdf": "4.2.1",
     "lucide-react": "^0.468.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

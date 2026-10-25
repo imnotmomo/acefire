@@ -1,0 +1,106 @@
+{
+  "source_commit": "552653f",
+  "purpose": "Preserve reverted illustrative scenario sources; excluded from active frontend build",
+  "files": [
+    {
+      "path": "frontend/README.md",
+      "bytes": 37977,
+      "sha256": "8078de95858eeab15e9dff0534597eaf91edd4947c57f5a4c59137c79fa19d3d"
+    },
+    {
+      "path": "frontend/package.json",
+      "bytes": 1144,
+      "sha256": "b617ed69d2b88439d39d2b67cb7f2943aa6474a7f9e80907952c2cdccb695445"
+    },
+    {
+      "path": "frontend/public/images/projects/README.md",
+      "bytes": 3760,
+      "sha256": "76d46967733d88cc105d91153e52380d79ca90ca4d50fc8436421fc8fd2e374f"
+    },
+    {
+      "path": "frontend/public/images/projects/claims.jpg",
+      "bytes": 8977761,
+      "sha256": "d1627443869b73cd70a20aaad09b5723f1059a2fc832000a1af07c7b8d2bbaca"
+    },
+    {
+      "path": "frontend/public/images/projects/narrative.jpg",
+      "bytes": 5106612,
+      "sha256": "5ed268c9944d98c2d3757990a34fd90e6bacee3e9b998a30cd5699ea0abd2829"
+    },
+    {
+      "path": "frontend/public/images/projects/numbers.jpg",
+      "bytes": 308434,
+      "sha256": "0f19513783571216591dfb8dabd13200b4739d0ab03b3ceb37940be5ef345c64"
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "bytes": 26001,
+      "sha256": "74de5eca9407178436bfcb6bd9736db3ab8cb07c1e00c3499f96d852ca996dff"
+    },
+    {
+      "path": "frontend/src/Projects.tsx",
+      "bytes": 6635,
+      "sha256": "52d75568b08e0f808614cce24460104b720d0d1308728e14b2eb8470deef6027"
+    },
+    {
+      "path": "frontend/src/Report.tsx",
+      "bytes": 31797,
+      "sha256": "35c6d4785142766fb24789b2352c4de35812f3c6348e9e6bd3eceb6464c47128"
+    },
+    {
+      "path": "frontend/src/ReportReview.tsx",
+      "bytes": 13750,
+      "sha256": "6e0578c8240b12b8532736b630ab7e66f7473289e71d37b232d5ece38fb9a3eb"
+    },
+    {
+      "path": "frontend/src/ScenarioWorkspace.tsx",
+      "bytes": 5689,
+      "sha256": "352a261407ed27b663e5a389dfdce0831a7eea76ede368a7dbfb14b7e1b94041"
+    },
+    {
+      "path": "frontend/src/brand.css",
+      "bytes": 1582,
+      "sha256": "633fbc803122803b9f73a51f0596ec781fac74a0ed200cbb04ea3e65a120fb99"
+    },
+    {
+      "path": "frontend/src/domain.ts",
+      "bytes": 28353,
+      "sha256": "518797d68aa63aa9ed4801cc1d8686fb677f739ad94742002da6f52b5bccad0f"
+    },
+    {
+      "path": "frontend/src/review.css",
+      "bytes": 11929,
+      "sha256": "939efd7329c5aa6ef6b784355ff62257310219e15b83c980a4fd1785a4f97a5f"
+    },
+    {
+      "path": "frontend/src/scenarios.css",
+      "bytes": 3975,
+      "sha256": "037f466fb84109052d6c9fb64d6165de60104b64468be83a72f25d4313552e29"
+    },
+    {
+      "path": "frontend/src/scenarios.ts",
+      "bytes": 9573,
+      "sha256": "ee71b4845379ae9269c4e1d83d535c03701b2043c326b4d9d86bc0cf4238258e"
+    },
+    {
+      "path": "frontend/tests/e2e.mjs",
+      "bytes": 13158,
+      "sha256": "04849e745e6116ee801922f0110384bd93ca033a242a04a42f0d6fabf298e178"
+    },
+    {
+      "path": "frontend/tests/landing.mjs",
+      "bytes": 9445,
+      "sha256": "88cf858273f7a5ab9ed8a2811474a2187a4566d7c7fb6c3f4ec959b686515878"
+    },
+    {
+      "path": "frontend/tests/scenarios.mjs",
+      "bytes": 8845,
+      "sha256": "1440c1333f7c443f16d497ad1921b919b905e07b3a590d90e16f931162232202"
+    },
+    {
+      "path": "frontend/tests/scenarios.test.mjs",
+      "bytes": 2537,
+      "sha256": "89c1b77be2872f032e81e7b6e2072bb2c91a88ba44dab8a5819574978c59112b"
+    }
+  ]
+}

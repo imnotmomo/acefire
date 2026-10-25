@@ -1,40 +1,32 @@
 # Shared team status
 
-Read the per-person status files before choosing files to edit. Each teammate's
-agent updates its own file; separate files reduce editing conflicts.
+Read [AGENTS.md](AGENTS.md) and the per-person records before choosing files to edit. Each agent updates only its human teammate’s record; separate files reduce conflicts.
 
-| Teammate | Role | Current status |
+| Teammate | Confirmed responsibility | Work record |
 | --- | --- | --- |
-| [imnotmomo](.team/status/imnotmomo.md) | Database, calculations, reports and numeric traceability | Shared Firebase workspaces, source uploads/extraction, calculations/reports, file tracing and both side chats integrated; live Akta retrieval separate |
-| [chr950331](.team/status/chr950331.md) | B: document/Akta extraction, sponsor model integration and source-bound handoff | Document extraction/intake and 12-module sourced narrative delivered; C imported Enfuce reports; B Chat upload deferred |
-| [xiangji1002-ashley](.team/status/xiangji1002-ashley.md) | Product scope, semantic layer, metric catalog and hackathon pitch | Integrating the latest product into a pitch-ready contract and demo narrative |
-| [XINWENGAri](.team/status/XINWENGAri.md) | Frontend workspace, report workflow, evidence/lineage UI and website documentation | Local prototype delivered and validated; C report/lineage API integration pending; see status file |
+| `imnotmomo` | C: storage, calculations, company reports, provenance and deployment integration | [Current C work](.team/status/imnotmomo.md) |
+| `chr950331` | B: document/Akta extraction and source-bound claims/report handoff | [B’s work record](.team/status/chr950331.md) |
+| `xiangji1002-ashley` | Product scope, semantic layer, metric catalog, demo and acceptance criteria | [PM’s work record](.team/status/xiangji1002-ashley.md) |
+| `XINWENGAri` | Frontend workspaces, evidence inspection, reports and contextual chat | [Frontend work record](.team/status/XINWENGAri.md) |
 
-The frontend owner's status records the earlier prototype handoff. Current Circle
-API integration and validation are recorded by C in `imnotmomo.md`; C has not
-modified another teammate's status file.
+## Current integration
 
-The remaining blank role assignments are intentional. Their owners can add confirmed
-work in their own status file. This index is a convenience; the per-person file
-is the detailed handoff.
+The home VM serves the approved Ingenium interface and FastAPI backend through Cloudflare Tunnel. Company creation, durable uploads, document/OCR extraction, source-linked calculations, saved/cited reports and both chat modes are integrated. The existing named Firebase database is Standard; DuckDB remains the offline/import format. Live Akta retrieval and the missing original Enfuce PDF remain separate unavailable inputs.
 
-Current product flow: **B extracts PDF/Akta data → C stores, calculates and
-returns traceable company reports → frontend renders reports and file graphs.**
+C’s current task is **repository cleanup and home-server CI/CD setup, in progress**. The detailed C record tracks its paths, checks and deployment state. This index does not change other teammates’ completion states; consult their own records and the human owner for overlapping work.
 
-PM product flow: **the investment firm defines a reusable semantic layer and
-metric catalog → each new project resolves those definitions against its own
-data room → C records the calculation and provenance → the frontend shows the
-result, evidence, assumptions and gaps.** The current code provides the generic
-calculation/evidence/report primitives; automatic catalog execution for every new
-project is the next productization layer, not a completed production claim.
+## Shared product flow
 
-B's validated source run uses the 31-page Enfuce April 2020 Deck. See
-`backend/B_WORKFLOW.md` for extraction, DuckDB handoff, source-bound narrative
-and status contracts. C's latest Firebase importer already preserves B's stored
-reports/claims; C's status and `FIREBASE_INTEGRATION.md` describe its own app work.
-Private runtime/source assets are not synchronized by Git. B's separate Chat
-feature is explicitly deferred from this publication.
+B supplies extracted claims and original locators → C stores evidence, calculates and returns reports/lineage → the frontend renders inspectable numbers and supporting sentences.
 
-These are repository records, not a live presence system. Other checkouts and
-agents see updates after normal Git synchronization. Do not infer that a task
-is idle merely because its status has not changed recently.
+The firm defines a reusable semantic layer and metric catalog. Each project resolves those definitions against its own data room and exposes formulas, assumptions, gaps and provenance. Generic calculation/report primitives are implemented; automatic catalog execution for every new project is a separate productization step. The exact metric definitions and evidence rules are in [engineering contracts](docs/engineering-contracts.md).
+
+## Reference guides
+
+- [Architecture and runtime ownership](docs/architecture.md)
+- [Development and validation](docs/development.md)
+- [Home deployment and CI/CD](deploy/home-vm/README.md)
+- [B extraction/handoff](backend/B_WORKFLOW.md)
+- [Firebase records and imports](backend/FIREBASE_INTEGRATION.md)
+
+These files are repository records, not a live presence system. Other checkouts see updates after normal Git synchronization. Preserve active ownership and distinguish historical handoffs from the current application state.

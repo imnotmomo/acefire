@@ -10,9 +10,9 @@ import { Badge, Icon } from './ui'
 import './review.css'
 
 type Selection = { sectionId: string; content: string; paragraph: number; sentence: number }
-type Props = { project: Project; workspace: Workspace; evidence: Evidence[]; backend: boolean; simulated?: boolean; companyName?: string; inspect: (id: string) => void; edit: (section: Section) => void; history: () => void; onExport: () => void }
+type Props = { project: Project; workspace: Workspace; evidence: Evidence[]; backend: boolean; companyName?: string; inspect: (id: string) => void; edit: (section: Section) => void; history: () => void; onExport: () => void }
 
-export default function ReportReview({ project, workspace, evidence, backend, simulated, companyName, inspect, edit, history, onExport }: Props) {
+export default function ReportReview({ project, workspace, evidence, backend, companyName, inspect, edit, history, onExport }: Props) {
   const [selection, setSelection] = useState<Selection | null>(null)
   const [panel, setPanel] = useState<'sources' | 'activity'>('sources')
   const [filter, setFilter] = useState('All')
@@ -45,7 +45,7 @@ export default function ReportReview({ project, workspace, evidence, backend, si
   }
   return <div className="review-grid report-review">
     <aside className="outline"><h3>In this report</h3>{workspace.sections.map((item, index) => <button key={item.id} className={outlineId === item.id ? 'active' : ''} onClick={() => scrollToSection(item.id)}><span>{String(index + 1).padStart(2, '0')}</span>{item.title}</button>)}<div className="outline-footer"><Icon name="link" size={18} /><strong>Read. Select. Trace.</strong><p>Select a sentence or number to see its source references in Findings.</p></div></aside>
-    <article className="report-paper"><div className="paper-brand"><BrandLogo /><span>Research workspace</span></div><p className="document-type">Diligence report</p><h2>{companyName ?? project.name}</h2><p className="report-byline">{project.sector} / {project.geography} / {backend ? 'Source-backed model draft · unverified' : simulated ? 'Simulated scenario · fictional evidence' : 'Historical evidence snapshot'}</p><div className="preview-note"><Icon name="help" size={16} />Dotted underlines lead to the original evidence. Select a passage to read its sources.</div>
+    <article className="report-paper"><div className="paper-brand"><BrandLogo /><span>Research workspace</span></div><p className="document-type">Diligence report</p><h2>{companyName ?? project.name}</h2><p className="report-byline">{project.sector} / {project.geography} / {backend ? 'Source-backed model draft · unverified' : 'Historical evidence snapshot'}</p><div className="preview-note"><Icon name="help" size={16} />Dotted underlines lead to the original evidence. Select a passage to read its sources.</div>
       {workspace.sections.map((item, index) => <section key={item.id} id={`section-${item.id}`} className="report-section"><div className="report-section-title"><h3><span>{index + 1}.</span> {item.title}</h3><button className="icon-button" aria-label={`Edit ${item.title}`} onClick={() => edit(item)}><Icon name="pencil" size={16} /></button></div>{paragraphs.get(item.id)!.map((passage, pi) => <div className="review-paragraph" key={pi}><p>{passage.sentences.map((sentence, si) => {
         const active = Boolean(section?.id === item.id && selection?.paragraph === pi && selection?.sentence === si)
         const linked = passage.evidenceIds.length > 0

@@ -2,39 +2,67 @@
 
 **Trusted diligence, powered by the world’s evidence.**
 
-面向 VC 尽调的证据工作台：查看财务数据与计算来源，配置和审核带引用的报告，管理项目资料。
+Ingenium is a company diligence workspace for uploaded documents, source-linked calculations and cited reports. Every reported value or supporting quotation retains its original file and location; generated analysis preserves its inputs, assumptions and evidence.
 
-启动前端后，根地址展示产品介绍首页；Demo 按钮进入 `#/projects`。页面设计、文案和联系入口说明见 [Ingenium landing page](frontend/INGENIUM_LANDING.md)。仓库路径保留历史名称 `acefire`。
+The application runs at [ingenium.linearproduct.co](https://ingenium.linearproduct.co) and [acefire.linearproduct.co](https://acefire.linearproduct.co), on the home VM behind Cloudflare Tunnel. Firebase project `acefire-50248`, named Standard database `acefire`, stores shared records. Original files and processing jobs remain in private server storage.
 
-**[阅读完整网页框架与开发说明 → frontend/README.md](frontend/README.md)**
+## What works
 
-**[Hackathon Pitch、Demo 路线与三项指标语义 → PITCH.md](PITCH.md)**
+- Create company workspaces and upload CSV, Excel, PDF, Office, text and image evidence.
+- Extract source-bound claims through B’s document pipeline, with OCR where needed.
+- Ask the calculation agent to generate and execute Python, retaining exact decimal values, source periods, assumptions and input lineage.
+- Inspect numbers and supporting sentences through file, page, line, cell or JSON-field references.
+- Generate cited reports, review evidence, preserve human revisions and export results.
+- Ask either whole-company questions or source-file questions through the two chat modes.
 
-完整说明涵盖页面层级、Report 的 Build → Review → Export 流程、证据模型、代码与路由、本地存储、后端接入边界、运行验证和 Git 协作。
+Saved Akta responses provide the current Circle company profile. Orbis and PitchBook files simulate private supplemental uploads. Live Akta retrieval and the unavailable Enfuce original PDF remain explicit limitations; saved quotations do not substitute for missing original bytes. Login remains deferred.
 
-Member B extracts PDF/Akta data. Member C stores structured records in Firebase (with DuckDB imports/offline compatibility), calculates metrics, and returns a source-bound company report to the frontend. Akta is the primary company source; Orbis and PitchBook files simulate private uploaded evidence.
+## Start developing
 
-The product model is catalog-driven: an investment firm defines its reusable
-semantic layer and key-metric catalog, then each new project resolves those
-definitions against that project's data room. The current pitch catalog covers
-five-year total revenue, the firm's catalog-defined average historical growth
-rate, and valuation from either an explicit source value or a traceable revenue
-multiple scenario.
+Use Python 3.12, Node.js 22.18 or later, and the checked-in dependency locks. LibreOffice and Tesseract are needed for Office conversion and OCR.
 
-- [Backend setup and API](backend/README.md)
-- [Member B: document extraction, database and sourced report handoff](backend/B_WORKFLOW.md)
-- [Current data schema](database-design/README.md)
-- [DuckDB schema](database-design/schema.sql)
-- [Team agent instructions](AGENTS.md)
-- [Shared team status](TEAM_STATUS.md)
+```bash
+python3 -m venv backend/.venv
+backend/.venv/bin/python -m pip install -r backend/requirements.lock
+npm --prefix frontend ci
+```
 
-Start teammate-agent tasks by reading the root agent instructions and per-person
-status files. Remaining unconfirmed role assignments are intentionally blank.
+Configure the private backend environment and Vite proxy, then run each service in its own terminal:
 
-The first implementation uses the two saved Circle Akta responses in `data/akta/`, without requiring a live API connection. The Orbis/PitchBook files simulate supplemental private uploads. Every calculation can return a file → input number → result graph with exact cell/JSON locations and source preview links.
+```bash
+backend/.venv/bin/python backend/run_local.py
+```
 
-The frontend reads Circle's stored company-report and source APIs; Enfuce retains its historical local evidence demo. New-document processing and Akta retrieval remain separate integration work. The marketing homepage and its Demo links preserve these existing platform routes.
+```bash
+npm --prefix frontend run dev
+```
 
-The current Firebase schema, safe DuckDB import, local startup and source-cited LLM workflows are documented in [Firebase integration](backend/FIREBASE_INTEGRATION.md).
+The backend launcher uses `127.0.0.1:8017`; set `ACEFIRE_BACKEND_URL=http://127.0.0.1:8017` in the ignored `frontend/.env.local`. Open `http://127.0.0.1:5173`. See [development setup](docs/development.md) for configuration, offline data and validation commands.
 
-The hosted VPS configuration, managed backend service, release verification and rollback are documented in [VPS deployment](deploy/README.md).
+The root `Makefile` provides `make setup`, `make test`, `make build` and separate development targets. `make test` uses the same check scripts as CI.
+
+## Repository map
+
+| Directory | Purpose |
+| --- | --- |
+| [`frontend/`](frontend/README.md) | React/TypeScript application, evidence inspection and report workflow |
+| [`backend/`](backend/README.md) | FastAPI, storage, document extraction, calculation workers, reports and chat |
+| [`data/`](data/) | Checked-in company examples and saved provider responses |
+| [`database-design/`](database-design/README.md) | Schema exports and database handoff artifacts |
+| [`deploy/`](deploy/) | Server configuration and deployment procedures |
+| [`docs/`](docs/README.md) | Architecture, development guide and historical archive |
+| [`scripts/`](scripts/README.md) | Repository checks and developer utilities |
+| [`roundtable/`](backend/ROUNDTABLE.md) | Optional adapter, disabled by default |
+| [`.team/`](TEAM_STATUS.md) | Team ownership and handoff records |
+
+## Team and reference guides
+
+- [Architecture and data flow](docs/architecture.md)
+- [Home server deployment](deploy/home-vm/README.md)
+- [Firebase integration and immutable record format](backend/FIREBASE_INTEGRATION.md)
+- [Document extraction and B → C handoff](backend/B_WORKFLOW.md)
+- [Frontend framework and routes](frontend/README.md)
+- [Pitch and metric catalog](PITCH.md)
+- [Agent instructions](AGENTS.md) and [team status](TEAM_STATUS.md)
+
+Keep API keys, service-account credentials, private originals and runtime databases outside Git. Agents should read the root instructions and each teammate’s status before editing shared code. The [historical conversation archive](docs/archive/chatgpt-conversation/README.md) records earlier planning; it is reference material, not current execution instructions.

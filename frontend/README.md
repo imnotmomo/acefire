@@ -4,24 +4,6 @@ Ingenium 面向 VC 尽调场景，将项目资料、财务指标、计算依据�
 
 **Trusted diligence, powered by the world’s evidence.**
 
-### 当前三个默认 Demo：Numbers → Claims → Narrative
-
-| 场景 | 路由 | 数据与交互 |
-| --- | --- | --- |
-| **Enfuce — Numbers / Financial traceability** | `#/project/enfuce-documents/dashboard` | 读取现有 C 后端 `enfuce-2020` 的原始声明、数字记录、来源和计算；Report Build 可加载全部已存报告；引用保留原文、页码与哈希。数值缺失保持缺失。 |
-| **HealthTech / Biotech — Claims / Internal vs External** | `#/project/healthtech-demo/dashboard` | 虚构 AI 诊断公司 Series A/B：94% 准确率、$10B 市场、医院 pilots、FDA 路径。点击声明，对照内部/外部模拟证据，展示 Verified / Unsupported / Contradicted 示例及判断边界。 |
-| **Consumer / Marketplace — Narrative vs Reality** | `#/project/marketplace-demo/dashboard` | 虚构 marketplace：150% GMV、补贴驱动增长、MAU 与付费转化差异、CAC、过时市场引用。沿 founder narrative → financials → user metrics → external evidence → risk 阅读。 |
-
-后两个场景是**明确标注的模拟演示**：没有实时检索 PubMed、ClinicalTrials、FDA、医院公告、App Store、Reddit、Similarweb 或市场研究。示例的 Verified 不代表真实公司、临床产品或投资结论获得验证。模拟来源不伪造文件 hash、DOI、试验编号或真实页面定位。Report 的人工编辑、版本历史与导出可使用；导出始终保留 SIMULATED DEMO 标识。
-
-`src/scenarios.ts` 管理三卡片目录、迁移和隔离的示例数据；`Projects.tsx` 展示目录，`ScenarioWorkspace.tsx` 展示声明/证据工作流并复用 Report 审核与导出。替换默认卡片只更新项目目录：用户创建的项目、旧 workspace、IndexedDB 文件和报告字节不被删除。原 `enfuce`、`circle`、`backerkit` 深链接继续可用，其中 `enfuce` 是历史快照，和真实后端 Enfuce 不混用。
-
-三张卡片使用用户提供的照片，出处及对应关系见 `public/images/projects/README.md`。正式 logo 原图在 `public/images/brand/ingenium-logo.png`；`Brand.tsx` 统一 landing、侧栏、报告和 AI 标识。功能图标保持原义。全局顶部提供一个放大的紫色 **Create Project** 按钮，Projects 不再重复展示黑色创建按钮。
-
-本机后端可运行 `../.venv/Scripts/python.exe ../backend/run_local.py`，默认 `127.0.0.1:8017`。私有 `backend/.env` 使用 `DATA_STORE=firestore`、`FIREBASE_PROJECT_ID=acefire-50248`、`FIRESTORE_DATABASE_ID=acefire`、`GOOGLE_APPLICATION_CREDENTIALS=<私有服务账号 JSON 路径>`；Vite 的私有 `.env.local` 设置 `ACEFIRE_BACKEND_URL=http://127.0.0.1:8017`。凭据和配置不在 Git 内，克隆仓库不会自动获得 Firebase 权限。读已存报告不需要重新调用生成模型；新生成、计算和聊天仍需 C 的独立模型配置。
-
-新增验证：`npm run test:scenarios` 覆盖三卡片/照片、正式标识、声明选择、模拟来源、人工修订/导出、响应式及旧目录迁移。`npm run test:firebase` 是独立的真实后端验证，默认只读公司数据；可选实时模型调用不由该场景变更启用。
-
 ### 产品介绍首页与 Demo
 
 网站根地址 `http://127.0.0.1:5173/` 展示 Ingenium landing page，内容包括 slogan、尽调痛点、三个工作区的真实预览、工作流程、目标用户、来源示例和联系入口。视觉主要参考 Keye，使用深海军蓝、蓝紫色原创立体 SVG 和本地 Manrope 字体。
@@ -268,9 +250,9 @@ Source viewer 的显示方式取决于文件类型：
 
 ### Contextual chat：跨工作区的提问入口
 
-Chat 位于项目页面底部。已连接项目打开调用 Nicrron 模型的 Company chat，使用该公司的已存资料、计算结果和报告，并提供可检查的引用；Source search 则检索公司的原始文件与来源记录。缺少证据或服务失败时显示缺口/重试，不返回预设财务答案。
+Chat 位于项目页面底部，携带当前项目和所在工作区信息。当前可回答收入、毛利润、MRR / ARR 缺口和客户数相关的有限快照问题，并提供证据按钮；也可以跳转到 Report Builder 或 Data room。
 
-未连接的项目先显示连接操作。历史 `enfuce` 工作簿/FDD 快照保持独立，需明确选择 **Open Enfuce company chat** 才进入 `enfuce-documents` 的 April 2020 deck 证据范围，旧草稿和文件不会转移。Company chat 的历史和未完成问题使用公司/报告范围内的 sessionStorage 保存；证据变化后重新校验引用。
+不受支持的问题会说明证据不足，不会补造数字。新建项目没有提取结果时，不会调用 Enfuce 的事实回答。当前对话保存在组件内存中，关闭聊天或重新加载页面后不会保留历史。
 
 <a id="evidence"></a>
 ## 7. 证据模型与示例数据

@@ -1,0 +1,122 @@
+name: Deploy home server
+
+on:
+  workflow_call:
+    secrets:
+      ACEFIRE_DEPLOY_SSH_KEY:
+        required: true
+      ACEFIRE_DEPLOY_KNOWN_HOSTS:
+        required: true
+      NICRRON_API_KEY:
+        required: true
+      FIREBASE_SERVICE_ACCOUNT_JSON:
+        required: true
+      PRISMTRACE_API_KEY:
+        required: true
+      PRISMTRACE_HOST:
+        required: true
+      PRISMTRACE_PROJECT_ID:
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: home-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'imnotmomo/acefire' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: home
+      url: https://ingenium.linearproduct.co
+    steps:
+      - name: Download the tested release from this run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: home-release-${{ github.sha }}
+          path: release
+      - name: Install verified Cloudflare SSH client
+        run: |
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/cloudflare/cloudflared/releases/download/2026.10.3/cloudflared-linux-amd64 \
+            --output "$RUNNER_TEMP/cloudflared"
+          echo '053b80b0a23031a038fdbf3c073f59f82b8f1f152aa67971d7383ffafc0dbab0  '"$RUNNER_TEMP/cloudflared" | sha256sum --check
+          chmod 0700 "$RUNNER_TEMP/cloudflared"
+      - name: Prepare private runtime bundle
+        env:
+          DEPLOY_KEY: ${{ secrets.ACEFIRE_DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ACEFIRE_DEPLOY_KNOWN_HOSTS }}
+          NICRRON_API_KEY: ${{ secrets.NICRRON_API_KEY }}
+          FIREBASE_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          PRISMTRACE_API_KEY: ${{ secrets.PRISMTRACE_API_KEY }}
+          PRISMTRACE_HOST: ${{ secrets.PRISMTRACE_HOST }}
+          PRISMTRACE_PROJECT_ID: ${{ secrets.PRISMTRACE_PROJECT_ID }}
+        run: |
+          python3 - <<'PY'
+          import io, json, os, pathlib, re, tarfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'home-deploy'
+          root.mkdir(mode=0o700)
+          def write(name, value):
+              path = root / name
+              path.write_text(value)
+              path.chmod(0o600)
+          for key in ['DEPLOY_KEY', 'KNOWN_HOSTS', 'NICRRON_API_KEY', 'FIREBASE_JSON', 'PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']:
+              if not os.environ.get(key):
+                  raise SystemExit('A required deployment secret is missing: ' + key)
+          if not re.fullmatch(r'[a-f0-9]{40}', os.environ['GITHUB_SHA']):
+              raise SystemExit('Invalid commit SHA')
+          host = os.environ['KNOWN_HOSTS'].strip()
+          if not re.fullmatch(r'ssh-acefire\.linearproduct\.co ssh-ed25519 [A-Za-z0-9+/=]+', host):
+              raise SystemExit('Unexpected pinned SSH host identity')
+          write('known_hosts', host + '\n')
+          write('deploy_key', os.environ['DEPLOY_KEY'].strip() + '\n')
+          backend = {
+              'NICRRON_API_KEY': os.environ['NICRRON_API_KEY'],
+              'LLM_MODEL': 'openai/gpt-6.1-sol', 'NICRRON_BASE_URL': 'https://api.nicrron.ai/v1',
+              'DATA_STORE': 'firestore', 'FIREBASE_PROJECT_ID': 'acefire-50248',
+              'FIRESTORE_DATABASE_ID': 'acefire',
+              'GOOGLE_APPLICATION_CREDENTIALS': '/etc/ingenium/firestore-runtime.json',
+              'SOURCE_FILE_MANIFEST': '/etc/ingenium/source-files.json',
+          }
+          prism = {key: os.environ[key] for key in ['PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']}
+          for filename, values in [('backend.env', backend), ('prism.env', prism)]:
+              if any(any(char in value for char in '\x00\r\n') for value in values.values()):
+                  raise SystemExit('Runtime environment values must be single-line strings')
+              write(filename, ''.join(key + '=' + json.dumps(value) + '\n' for key, value in values.items()))
+          credential = json.loads(os.environ['FIREBASE_JSON'])
+          if credential.get('project_id') != 'acefire-50248':
+              raise SystemExit('Unexpected Firebase project')
+          write('firestore-runtime.json', json.dumps(credential))
+          write('deployment.json', json.dumps({
+              'commit': os.environ['GITHUB_SHA'], 'run_id': int(os.environ['GITHUB_RUN_ID']),
+              'run_number': int(os.environ['GITHUB_RUN_NUMBER']), 'run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
+          }))
+          with tarfile.open(root / 'bundle.tar', 'w', format=tarfile.USTAR_FORMAT) as archive:
+              for name in ['release.tar.gz', 'manifest.json']:
+                  data = (pathlib.Path('release') / name).read_bytes()
+                  entry = tarfile.TarInfo(name)
+                  entry.size = len(data)
+                  archive.addfile(entry, io.BytesIO(data))
+              for name in ['backend.env', 'firestore-runtime.json', 'prism.env', 'deployment.json']:
+                  data = (root / name).read_bytes()
+                  entry = tarfile.TarInfo(name)
+                  entry.size = len(data)
+                  archive.addfile(entry, io.BytesIO(data))
+          (root / 'bundle.tar').chmod(0o600)
+          PY
+      - name: Deploy over restricted SSH
+        run: |
+          private="$RUNNER_TEMP/home-deploy"
+          ssh -i "$private/deploy_key" -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$private/known_hosts" \
+            -o ConnectTimeout=20 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
+            -o "ProxyCommand=$RUNNER_TEMP/cloudflared access ssh --hostname %h" \
+            ingenium-deploy@ssh-acefire.linearproduct.co "deploy $GITHUB_SHA" < "$private/bundle.tar"
+      - name: Remove private runner files
+        if: always()
+        run: rm -rf -- "$RUNNER_TEMP/home-deploy"

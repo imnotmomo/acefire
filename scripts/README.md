@@ -1,4 +1,23 @@
-# Automatic Git sync
+# Repository utilities
+
+Application deployment is configured by the repository’s CI/CD workflow and the
+[home server runbook](../deploy/home-vm/README.md). The Windows utility below is
+a local development convenience: it commits and pushes source changes. It does
+not install a server, manage runtime secrets or verify a production release.
+
+## CI checks
+
+- `ci/backend.sh` runs the backend suite with the repository’s fixture paths. Set
+  `PYTHON` to an installed Python environment containing `backend/requirements.lock`.
+  Node and the installed frontend dependencies are required for its PDF export
+  round-trip tests.
+- `ci/frontend.sh` installs locked frontend dependencies, runs frontend and
+  disabled-Roundtable tests, builds the frontend and checks deployment shell syntax.
+
+Use `make test` from the repository root to run both. Native LibreOffice/OCR tools
+must already be installed for the backend checks; the workflow prepares them.
+
+## Optional Windows frontend auto-push
 
 `auto-push.ps1` commits changes under `frontend/` and pushes to `origin/main`.
 Put new application code and assets in `frontend/`. Other directories are not
