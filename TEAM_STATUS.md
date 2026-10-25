@@ -13,7 +13,7 @@ Read [AGENTS.md](AGENTS.md) and the per-person records before choosing files to 
 
 The home VM serves the approved Ingenium interface and FastAPI backend through Cloudflare Tunnel. Company creation, durable uploads, document/OCR extraction, source-linked calculations, saved/cited reports and both chat modes are integrated. The existing named Firebase database is Standard; DuckDB remains the offline/import format. Live Akta retrieval and the missing original Enfuce PDF remain separate unavailable inputs.
 
-C’s current task is **repository cleanup and home-server CI/CD setup, in progress**. The detailed C record tracks its paths, checks and deployment state. This index does not change other teammates’ completion states; consult their own records and the human owner for overlapping work.
+C completed **repository cleanup and home-server CI/CD integration**. Pull requests run offline checks; successful trusted main pushes now deploy to the home VM with a dedicated restricted key, public release verification and automatic rollback. Configured API credentials are encrypted Actions secrets. The detailed C record tracks validation and deployment evidence. This index does not change other teammates’ completion states; consult their own records and the human owner for overlapping work.
 
 ## Shared product flow
 
