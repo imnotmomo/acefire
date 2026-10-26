@@ -3,7 +3,6 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-import fcntl
 import json
 import os
 from pathlib import Path
@@ -18,6 +17,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app.schemas import Company, IngestionResult
 from app.uploads import ingest_upload, MAX_UPLOAD_BYTES
+from app.upload_lease import try_lock, unlock
 from app.workspace_intake import SUPPORTED, atomic_json, process_upload, register_sources, upload_root
 
 _SAFE_ID=re.compile(r'^[a-z0-9][a-z0-9_-]{0,119}$')
@@ -86,14 +86,15 @@ class UploadJobs:
             if not re.fullmatch(r'[a-f0-9]{32}',str(job.get('id',''))):return False
             # The OS drops this lock on crash. Unlike a PID, it cannot be
             # mistaken for an unrelated later process or a restarted app.
-            with (self.jobs/f'{job["id"]}.lock').open('a') as lease:
-                try:fcntl.flock(lease.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
-                except BlockingIOError:return True
-                fcntl.flock(lease.fileno(),fcntl.LOCK_UN)
+            with (self.jobs/f'{job["id"]}.lock').open('a+b') as lease:
+                if not try_lock(lease):return True
+                unlock(lease)
                 return False
         # Preserve jobs owned by a still-running older release during handoff.
         owner=job.get('owner_pid')
-        if isinstance(owner,int) and owner>0 and owner!=os.getpid():
+        # Windows os.kill(pid, 0) can terminate the process. Legacy receipts
+        # without an OS lease cannot prove a live worker there; allow retry.
+        if os.name!='nt' and isinstance(owner,int) and owner>0 and owner!=os.getpid():
             try:os.kill(owner,0);return True
             except ProcessLookupError:pass
             except PermissionError:return True
@@ -169,8 +170,12 @@ class UploadJobs:
                     'filename':source.original_filename,'sha256':source.sha256,'observations':0,'claims':0,
                     'warnings':[],'created_at':datetime.now(timezone.utc).isoformat(),'owner_pid':os.getpid(),'lease_protocol':1}
                 path=self.jobs/f'{job["id"]}.json';atomic_json(path,job)
-                lease=(self.jobs/f'{job["id"]}.lock').open('a')
-                fcntl.flock(lease.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+                lease=(self.jobs/f'{job["id"]}.lock').open('a+b')
+                try:
+                    if not try_lock(lease):raise ValueError('Upload worker lease is busy. Re-upload the original file to retry.')
+                except BaseException:
+                    lease.close()
+                    raise
                 self.leases[job['id']]=lease
                 try:
                     future=self.executor.submit(self.run,path,job,company,source,incoming.observations)

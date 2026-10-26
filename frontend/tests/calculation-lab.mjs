@@ -61,10 +61,14 @@ try {
   await page.goto(`${base}/#/project/circle/dashboard`, { waitUntil: 'networkidle' })
   const lab = page.getByRole('region', { name: 'Calculation workspace', exact: true })
   await lab.waitFor()
-  await check('Pending model configuration is explicit and generation stays disabled', async () => {
+  await check('Pending model configuration is explicit and generation guides missing steps without submitting', async () => {
     await lab.getByText('Calculation service pending', { exact: true }).waitFor()
     assert.match(await lab.innerText(), /NICRRON_API_KEY/)
-    assert.equal(await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).isDisabled(), true)
+    assert.equal(await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).isEnabled(), true)
+    await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).click()
+    assert.match(await lab.getByRole('alert').innerText(), /Describe the calculation/)
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'calculation-question')
+    assert.equal(requests.length, 0)
     assert.equal(await lab.locator('input[type=password]').count(), 0)
   })
   await check('Selected inputs retain exact period and source locations', async () => {

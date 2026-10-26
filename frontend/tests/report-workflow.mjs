@@ -46,7 +46,7 @@ await context.route('**/api/**', async route => {
     const report = await page.evaluate(() => window.reportFixture.report)
     const evidence = reportEvidence(report)[0]
     const draft = { id: `generated-${currentAttempt}`, deal_id: 'fixture-company', based_on_report_id: submitted.based_on_report_id, model: 'fixture-model', generated_at: stamp, status: 'model_generated_unverified', persisted_version: 1, drafting_preferences: submitted.sections,
-      sections: submitted.sections.map(section => ({ id: section.id, title: section.title, claims: [{ id: `claim-${currentAttempt}-${section.id}`, text: `Generated summary ${currentAttempt}.`, kind: 'reported_summary', citations: [{ evidence_id: evidence.id, kind: 'statement', quote: evidence.citationText ?? evidence.excerpt, source: evidence.sources[0] }] }], gaps: [] })) }
+      sections: submitted.sections.map(section => ({ id: section.id, title: section.title, claims: [{ id: `claim-${currentAttempt}-${section.id}`, text: `Generated summary ${currentAttempt}.`, kind: 'reported_summary', review_state: 'conflict', citations: [{ evidence_id: evidence.id, kind: 'statement', quote: evidence.citationText ?? evidence.excerpt, source: evidence.sources[0] }] }], gaps: [] })) }
     records.set(draft.id, record(draft.id, null, draft))
     return route.fulfill({ json: draft }).catch(() => {})
   }
@@ -75,6 +75,48 @@ async function build() { await page.getByRole('button', { name: /^1 Build/ }).cl
 async function edit(text) { await page.getByRole('button', { name: 'Edit Company overview', exact: true }).click(); await page.getByLabel('Section content').fill(text); await page.getByRole('button', { name: 'Save revision', exact: true }).click() }
 try {
   await open()
+  await check('empty Review and Export stages provide working paths back to Build', async () => {
+    await page.getByRole('button', { name: /^2 Review/ }).click()
+    await page.getByRole('heading', { name: 'Your report starts in Build', exact: true }).waitFor()
+    await page.getByRole('button', { name: 'Build your report', exact: false }).click()
+    assert.equal(await page.getByLabel('Fixture route').innerText(), 'build')
+    await page.getByRole('button', { name: /^3 Export/ }).click()
+    await page.getByRole('heading', { name: 'Nothing to export yet', exact: true }).waitFor()
+    await page.getByRole('button', { name: 'Go to Build', exact: true }).click()
+    assert.equal(await page.getByLabel('Fixture route').innerText(), 'build')
+  })
+  await check('builder search, module add/remove, arrows, drag and preferences change the actual request state', async () => {
+    await page.keyboard.press('/')
+    assert.equal(await page.getByLabel('Search modules', { exact: true }).evaluate(element => document.activeElement === element), true)
+    await page.getByLabel('Search modules', { exact: true }).fill('nonexistent module')
+    await page.getByText('No modules match this search. Try another topic.', { exact: true }).waitFor()
+    await page.getByLabel('Search modules', { exact: true }).fill('Market')
+    await page.getByRole('button', { name: 'Add Market', exact: true }).click()
+    assert.deepEqual((await fixture()).order, ['overview', 'market'])
+    await page.getByRole('button', { name: 'Configure Market', exact: true }).click()
+    assert.deepEqual((await fixture()).order, ['overview', 'market'])
+    await page.getByRole('button', { name: 'Deep', exact: true }).click()
+    await page.getByLabel('Geography', { exact: true }).selectOption('US')
+    await page.getByLabel('Time horizon', { exact: true }).selectOption('3 years')
+    await page.getByLabel('Internal + external', { exact: true }).check()
+    await page.getByLabel('Market size', { exact: true }).uncheck()
+    await page.getByLabel('Additional focus', { exact: false }).fill('Focus retained for the model request')
+    const config = (await fixture()).configs.market
+    assert.equal(config.depth, 'Deep'); assert.equal(config.geography, 'US'); assert.equal(config.horizon, '3 years'); assert.equal(config.scope, 'Internal + external'); assert.ok(!config.topics.includes('Market size')); assert.equal(config.focus, 'Focus retained for the model request')
+    await page.getByRole('button', { name: 'Move Market up', exact: true }).click()
+    assert.deepEqual((await fixture()).order, ['market', 'overview'])
+    await page.getByRole('button', { name: 'Move Market down', exact: true }).click()
+    assert.deepEqual((await fixture()).order, ['overview', 'market'])
+    await page.locator('.structure-item').nth(1).dragTo(page.locator('.structure-item').nth(0))
+    assert.deepEqual((await fixture()).order, ['market', 'overview'])
+    await page.getByRole('button', { name: 'Remove Market', exact: true }).click()
+    assert.deepEqual((await fixture()).order, ['overview'])
+    await page.getByRole('button', { name: 'Add a module from the library', exact: true }).click()
+    assert.equal(await page.getByLabel('Search modules', { exact: true }).evaluate(element => document.activeElement === element), true)
+    await page.getByLabel('Search modules', { exact: true }).clear()
+    await page.getByRole('button', { name: 'Customize Company overview', exact: true }).click()
+    assert.match(await page.locator('.custom-module-name').innerText(), /Company overview/)
+  })
   await check('generation preserves settings edited while its delayed response is pending', async () => {
     mode = 'delay'
     await page.getByRole('button', { name: /^Generate report preview/ }).click()
@@ -113,6 +155,49 @@ try {
     assert.match(await page.locator('.report-claim-quotation').innerText(), /Original source company description/)
     await page.getByRole('button', { name: 'Inspect supporting evidence', exact: true }).click()
     assert.match(await page.getByLabel('Inspected evidence').innerText(), /field:fixture-source/)
+  })
+  await check('provider errors are visible at the Generate action and retain the editable saved draft', async () => {
+    const before = await fixture()
+    await build(); mode = 'failure'
+    await page.getByRole('button', { name: /^Regenerate preview/ }).click()
+    const alert = page.getByRole('alert').filter({ hasText: 'Fixture provider unavailable' })
+    await alert.waitFor()
+    await page.waitForFunction(() => { const alert = [...document.querySelectorAll('[role="alert"]')].find(element => element.textContent?.includes('Fixture provider unavailable')); if (!alert) return false; const box = alert.getBoundingClientRect(); return box.top >= 0 && box.top < innerHeight })
+    assert.deepEqual(await fixture(), before)
+    assert.equal(await page.getByRole('button', { name: /^Regenerate preview/ }).isEnabled(), true)
+    mode = 'success'
+    await page.getByRole('button', { name: /^2 Review/ }).click()
+    await page.locator('#section-overview .report-claim').first().click()
+  })
+  await check('review outline, source details, activity filters and advice navigate to real passages and edits', async () => {
+    await page.locator('.outline').getByRole('button', { name: /Company overview/ }).click()
+    assert.equal(await page.locator('.outline button').first().getAttribute('class'), 'active')
+    await page.getByRole('button', { name: 'Clear selected passage', exact: true }).click()
+    await page.getByRole('heading', { name: 'Select a sentence or number', exact: true }).waitFor()
+    await page.getByRole('tab', { name: /^Activity/ }).click()
+    await page.getByRole('button', { name: 'Human', exact: true }).click()
+    assert.ok(await page.locator('.activity-rail .human-revision').count() > 0)
+    await page.locator('.human-revision').first().getByText('Compare changes', { exact: true }).click()
+    assert.match(await page.locator('.human-revision').first().innerText(), /Human note: exact decimal/)
+    await page.getByRole('button', { name: 'Agent', exact: true }).click()
+    assert.ok(await page.locator('.activity-rail .agent-advice').count() > 0)
+    assert.equal(await page.locator('.activity-rail .human-revision').count(), 0)
+    await page.getByRole('button', { name: 'Review passage', exact: true }).first().click()
+    assert.equal(await page.getByRole('tab', { name: 'Sources', exact: true }).getAttribute('aria-selected'), 'true')
+    await page.locator('.finding-card').getByRole('button', { name: 'Open source evidence', exact: true }).click()
+    assert.match(await page.getByLabel('Inspected evidence').innerText(), /field:fixture-source/)
+    await page.getByRole('tab', { name: /^Activity/ }).click()
+    await page.getByRole('button', { name: 'Revise section', exact: true }).first().click()
+    await page.getByRole('dialog', { name: 'Edit Company overview', exact: true }).waitFor()
+    await page.getByRole('button', { name: 'Cancel', exact: true }).click()
+    await page.getByRole('button', { name: 'All', exact: true }).click()
+    assert.ok(await page.locator('.activity-rail .human-revision').count() > 0)
+    assert.ok(await page.locator('.activity-rail .agent-advice').count() > 0)
+    await page.getByRole('button', { name: 'Full revision history', exact: true }).click()
+    await page.getByRole('dialog', { name: 'Revision history', exact: true }).locator('.revision').first().getByText('Compare revision', { exact: true }).click()
+    assert.match(await page.getByRole('dialog', { name: 'Revision history', exact: true }).innerText(), /Before[\s\S]*After/)
+    await page.getByRole('button', { name: 'Close Revision history', exact: true }).click()
+    await page.getByRole('tab', { name: 'Sources', exact: true }).click()
   })
   await check('version conflict preserves local text; load latest keeps a restorable full local copy', async () => {
     const local = (await fixture()).sections[0].content + '\n\nMy local conflict copy.'
@@ -185,6 +270,10 @@ try {
       if (format === 'PDF') assert.equal(bytes.subarray(0, 5).toString(), '%PDF-')
       if (format === 'DOCX') assert.equal(bytes.subarray(0, 2).toString(), 'PK')
     }
+    await page.getByRole('button', { name: 'Return to review', exact: true }).click()
+    assert.equal(await page.getByLabel('Fixture route').innerText(), 'review')
+    await page.getByRole('button', { name: 'Continue to export', exact: true }).click()
+    assert.equal(await page.getByLabel('Fixture route').innerText(), 'export')
   })
   await check('shared reports reload after a fresh page without using the old local workspace', async () => {
     const id = (await fixture()).sharedDraftId
@@ -224,11 +313,25 @@ try {
     await page.screenshot({ path: path.join(output, 'report-mobile.png'), fullPage: true })
     await page.setViewportSize({ width: 1440, height: 1100 })
   })
+  await check('an empty report structure explains the requirement and focuses working module controls', async () => {
+    await build()
+    await page.getByRole('button', { name: 'Remove Company overview', exact: true }).click()
+    const count = writes.length
+    await page.getByRole('button', { name: /^Regenerate preview/ }).click()
+    await page.getByRole('alert').filter({ hasText: 'Choose at least one report module' }).waitFor()
+    assert.equal(await page.getByLabel('Search modules', { exact: true }).evaluate(element => document.activeElement === element), true)
+    assert.equal(writes.length, count)
+    await page.getByRole('button', { name: 'Add Company overview', exact: true }).click()
+  })
   await check('empty evidence blocks generation and links to the file upload workflow', async () => {
     await build(); await page.evaluate(() => window.reportFixture.clearEvidence())
     await page.getByRole('button', { name: 'Add source files', exact: true }).waitFor()
-    assert.equal(await page.getByRole('button', { name: /^Regenerate preview/ }).isDisabled(), true)
-    await page.getByRole('button', { name: 'Add source files', exact: true }).click()
+    const count = writes.length
+    await page.getByRole('button', { name: /^Regenerate preview/ }).click()
+    await page.getByRole('alert').filter({ hasText: 'No extracted company evidence is available yet' }).waitFor()
+    assert.equal(writes.length, count)
+    await page.waitForFunction(() => { const alert = [...document.querySelectorAll('[role="alert"]')].find(element => element.textContent?.includes('No extracted company evidence')); if (!alert) return false; const box = alert.getBoundingClientRect(); return box.top >= 0 && box.top < innerHeight })
+    await page.getByRole('button', { name: 'Open Data room', exact: true }).click()
     assert.equal(await page.getByLabel('Fixture route').innerText(), 'data-room')
   })
   assert.deepEqual(errors, [])

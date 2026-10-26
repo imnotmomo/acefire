@@ -17,12 +17,12 @@ for (const candidate of ['/Applications/Google Chrome.app/Contents/MacOS/Google 
 const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless:true })
 const context = await browser.newContext({ viewport:{ width:1440, height:1100 } })
 const errors = [], unexpected = [], results = [], reviewRequests = [], calculationRequests = []
-let reviewMode = 'failure', calculateMode = 'delay', releaseCalculation = null, releaseReview = null, reviewed
+let reviewMode = 'failure', calculateMode = 'delay', releaseCalculation = null, releaseReview = null, reviewed, configured = true
 const page = await context.newPage(); page.setDefaultTimeout(10000)
 page.on('pageerror', error => errors.push(error.message))
 await context.route('**/api/**', async route => {
   const endpoint = new URL(route.request().url()).pathname
-  if (endpoint === '/api/calculation-runtime') return route.fulfill({ json:{ mode:'llm_local', configured:true, model:'fixture-model', generation_provider:'fixture', executor:'local_python', maximum_inputs:100, missing:[] } })
+  if (endpoint === '/api/calculation-runtime') return route.fulfill({ json:{ mode:'llm_local', configured, model:'fixture-model', generation_provider:'fixture', executor:'local_python', maximum_inputs:100, missing:configured ? [] : ['NICRRON_API_KEY'] } })
   if (endpoint === '/api/deals/fixture-company/observations/raw-revenue/normalize') {
     const body = route.request().postDataJSON(); reviewRequests.push(body)
     if (reviewMode === 'failure') return route.fulfill({ status:503, json:{ detail:'Fixture review service unavailable. Your entries are safe.' } })
@@ -47,6 +47,22 @@ async function check(name, callback) { await callback(); results.push(name); con
 try {
   await page.goto(`${base}tests/normalization-workflow.html`, { waitUntil:'networkidle' })
   await lab().getByText('Calculation service ready', { exact:true }).waitFor()
+  await check('Generate is actionable while incomplete and guides focus to the precise missing step without a model call', async () => {
+    const generate = lab().getByRole('button', { name:'Generate and run calculation', exact:true })
+    assert.equal(await generate.isEnabled(), true)
+    await generate.click()
+    assert.match(await lab().getByRole('alert').innerText(), /Describe the calculation/)
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'calculation-question')
+    await lab().getByLabel('Calculation question', { exact:true }).fill('Explain this source amount without inventing its context.')
+    await generate.click()
+    assert.match(await lab().getByRole('alert').innerText(), /Select at least one source observation/)
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'calculation-input-heading')
+    await raw().getByRole('checkbox').check()
+    await generate.click()
+    assert.match(await lab().getByRole('alert').innerText(), /Review numeric context/)
+    assert.match(await page.locator('#calculation-readiness').innerText(), /review numeric context/)
+    assert.equal(calculationRequests.length, 0)
+  })
   await check('An ordinary raw spreadsheet value offers explicit review with immutable source provenance', async () => {
     await raw().getByRole('checkbox').check()
     await raw().getByRole('button', { name:/Review numeric context/ }).click()
@@ -95,6 +111,18 @@ try {
     assert.equal(await lab().locator('tbody input[type=checkbox]:checked').count(), 2)
     await page.screenshot({ path:path.join(output,'reviewed-inputs.png'), animations:'disabled', fullPage:true })
   })
+  await check('Unavailable model configuration explains recovery while leaving the complete calculation form intact', async () => {
+    configured = false
+    await lab().getByRole('button', { name:'Refresh configuration', exact:true }).click()
+    await lab().getByText('Calculation service pending', { exact:true }).waitFor()
+    await lab().getByRole('button', { name:'Generate and run calculation', exact:true }).click()
+    assert.match(await lab().getByRole('alert').innerText(), /NICRRON_API_KEY/)
+    assert.equal(await page.evaluate(() => document.activeElement.classList.contains('calculation-runtime')), true)
+    assert.equal(calculationRequests.length, 0)
+    configured = true
+    await lab().getByRole('button', { name:'Refresh configuration', exact:true }).click()
+    await lab().getByText('Calculation service ready', { exact:true }).waitFor()
+  })
   await check('Stopping calculation waiting preserves inputs and a late response cannot replace a newer run', async () => {
     await lab().getByLabel('Calculation question', { exact:true }).fill('Explain the selected raw and reviewed input without double counting.')
     await lab().getByRole('button', { name:'Generate and run calculation', exact:true }).click()
@@ -140,6 +168,35 @@ try {
     reviewMode = 'success'; releaseReview(); releaseReview = null
     await dialog().getByRole('button', { name:'Cancel', exact:true }).click()
     assert.equal(await lab().locator('tbody tr').count(), 2)
+  })
+  await check('Company-scoped calculation work survives tab navigation and filters stale or foreign selections', async () => {
+    const question = 'Retain this question and exact financial parameters while changing pages.'
+    const parameterText = '{"amount":"9007199254740993.0123456789","period_end":"2024-02-29"}'
+    await lab().getByLabel('Calculation question', { exact:true }).fill(question)
+    await lab().getByText('Optional calculation parameters', { exact:true }).click()
+    await lab().getByLabel('Calculation parameters JSON', { exact:true }).fill(parameterText)
+    await page.getByRole('button', { name:'Leave calculation page', exact:true }).click()
+    assert.equal(await lab().count(), 0)
+    await page.evaluate(() => {
+      const key = 'acefire:calculation-workspace:v1:fixture-company', value = JSON.parse(localStorage.getItem(key))
+      value.selectedIds.push('foreign-company-input'); value.premiseIds.push('foreign-premise')
+      localStorage.setItem(key, JSON.stringify(value))
+    })
+    await page.getByRole('button', { name:'Return to calculation page', exact:true }).click()
+    await lab().getByText('Calculation service ready', { exact:true }).waitFor()
+    assert.equal(await lab().getByLabel('Calculation question', { exact:true }).inputValue(), question)
+    await lab().getByText('Optional calculation parameters', { exact:true }).click()
+    assert.equal(await lab().getByLabel('Calculation parameters JSON', { exact:true }).inputValue(), parameterText)
+    assert.equal(await lab().locator('tbody input[type=checkbox]:checked').count(), 2)
+    const report = await page.evaluate(() => window.normalizationFixture.report)
+    const another = { ...structuredClone(report), report_id:'other-company-evidence', company:{ ...report.company, deal_id:'another-fixture-company' }, reported_metrics:[], source_files:[] }
+    await page.evaluate(value => window.normalizationFixture.setReport(value), another)
+    await page.waitForFunction(() => document.querySelector('#calculation-question')?.value === '')
+    assert.equal(await lab().locator('tbody input[type=checkbox]:checked').count(), 0)
+    await page.evaluate(value => window.normalizationFixture.setReport(value), report)
+    await page.waitForFunction(expected => document.querySelector('#calculation-question')?.value === expected, question)
+    assert.equal(await lab().getByLabel('Calculation parameters JSON', { exact:true }).inputValue(), parameterText)
+    assert.equal(calculationRequests.length, 2)
   })
   await check('The dashboard links to working uploads without claiming upload integration is pending', async () => {
     await page.getByRole('button', { name:'Open data room', exact:true }).click()

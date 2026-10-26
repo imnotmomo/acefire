@@ -14,7 +14,8 @@ const initial = { report_id:'evidence-v1', report_version:'1', generated_at_utc:
 const project: Project = { id:'fixture-company', name:'Numeric fixture', sector:'Fintech', geography:'Unknown', created:'2026-10-26T12:00:00Z', backendDealId:'fixture-company' }
 function Fixture() {
   const [report, setReport] = useState(initial), [refreshes, setRefreshes] = useState(0), [calculations, setCalculations] = useState(0), [route, setRoute] = useState('')
+  const [visible, setVisible] = useState(true)
   useEffect(() => { Object.assign(window, { normalizationFixture:{ report, refreshes, calculations, setReport } }) }, [report, refreshes, calculations])
-  return <main style={{ padding:24 }}><output aria-label="Review refreshes">{refreshes}</output><output aria-label="Completed calculations">{calculations}</output><output aria-label="Fixture route">{route}</output><ConnectedDashboard project={project} report={report} inspect={() => {}} navigate={setRoute} onCalculated={() => setCalculations(value => value+1)} onRefresh={() => setRefreshes(value => value+1)} /></main>
+  return <main style={{ padding:24 }}><button onClick={() => setVisible(value => !value)}>{visible ? 'Leave calculation page' : 'Return to calculation page'}</button><output aria-label="Review refreshes">{refreshes}</output><output aria-label="Completed calculations">{calculations}</output><output aria-label="Fixture route">{route}</output>{visible && <ConnectedDashboard project={project} report={report} inspect={() => {}} navigate={setRoute} onCalculated={() => setCalculations(value => value+1)} onRefresh={() => setRefreshes(value => value+1)} />}</main>
 }
 createRoot(document.getElementById('root')!).render(<React.StrictMode><Fixture /></React.StrictMode>)

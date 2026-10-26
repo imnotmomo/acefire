@@ -83,6 +83,23 @@ try {
     await upload.locator('.upload-job.completed').filter({ hasText: 'retry.csv' }).waitFor()
     assert.equal(posts.length, 4); assert.match(posts.at(-1), /filename="retry.csv"/); assert.match(posts.at(-1), /revenue,987.65/)
   })
+  await check('Drag and drop preserves selected source attribution and original bytes for multiple files', async () => {
+    await upload.getByLabel('Upload source attribution', { exact: true }).selectOption('pitchbook')
+    const transfer = await upload.evaluateHandle(() => {
+      const data = new DataTransfer()
+      data.items.add(new File(['metric,value\nrevenue,321.1250\n'], 'dropped-one.csv', { type: 'text/csv' }))
+      data.items.add(new File(['Synthetic second dropped source.'], 'dropped-two.txt', { type: 'text/plain' }))
+      return data
+    })
+    await upload.locator('.company-upload-drop').dispatchEvent('drop', { dataTransfer: transfer })
+    await upload.locator('.upload-job.completed').filter({ hasText: 'dropped-one.csv' }).waitFor()
+    await upload.locator('.upload-job.completed').filter({ hasText: 'dropped-two.txt' }).waitFor()
+    assert.equal(posts.length, 6)
+    assert.ok(posts.slice(-2).every(body => /name="provider"\r\n\r\npitchbook/.test(body)))
+    assert.match(posts.at(-2), /321.1250/)
+    assert.match(posts.at(-1), /Synthetic second dropped source/)
+    await transfer.dispose()
+  })
   let previewRequests = [], previewAttempts = 0
   const sheet = await workspace('workbook', async (route, url) => {
     if (url.pathname === '/api/sources/finance/preview') {
