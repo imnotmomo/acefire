@@ -7,6 +7,15 @@
   min-width: 0;
 }
 
+.loading-icon {
+  animation: ingenium-loading-spin 900ms linear infinite;
+  transform-origin: center;
+}
+
+@keyframes ingenium-loading-spin {
+  to { transform: rotate(360deg); }
+}
+
 .project-nav a,
 .report-subnav a {
   transition: background-color 160ms ease, color 160ms ease;
@@ -65,6 +74,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .loading-icon,
   .ingenium-site,
   .modal-backdrop,
   .sidebar-overlay,

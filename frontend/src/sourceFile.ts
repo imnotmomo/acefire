@@ -1,6 +1,9 @@
 import { apiFetch, sourceFileUrl } from './backend.ts'
 import type { BackendSource } from './backend'
 
+// Match the intake contract. Decimal 50,000,000 rejected valid 50 MiB uploads.
+export const MAX_SOURCE_FILE_BYTES = 50 * 1024 * 1024
+
 export function sourceFileKind(filename: string): 'pdf' | 'image' | 'text' | 'workbook' | 'download' {
   if (/\.pdf$/i.test(filename)) return 'pdf'
   if (/\.(png|jpe?g|gif|webp)$/i.test(filename)) return 'image'
@@ -18,9 +21,9 @@ export async function loadSourceFile(source: BackendSource, signal?: AbortSignal
     ? await apiFetch(source.preview_url, { signal, headers: { Accept: 'application/octet-stream' } })
     : await fetch(url, { signal, credentials: 'omit', redirect: 'error' })
   if (!response.ok) throw new Error('The original file is unavailable. Its saved quotation and location are still recorded.')
-  if (Number(response.headers.get('Content-Length')) > 50_000_000) throw new Error('This file is too large for an inline preview. Use its original download.')
+  if (Number(response.headers.get('Content-Length')) > MAX_SOURCE_FILE_BYTES) throw new Error('This original exceeds the supported 50 MiB file limit.')
   const bytes = await response.arrayBuffer()
-  if (bytes.byteLength > 50_000_000) throw new Error('This file exceeds the preview size limit.')
+  if (bytes.byteLength > MAX_SOURCE_FILE_BYTES) throw new Error('This original exceeds the supported 50 MiB file limit.')
   const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(x => x.toString(16).padStart(2, '0')).join('')
   if (digest !== source.sha256) throw new Error('The file does not match the version cited by this evidence. The preview was blocked.')
   const kind = sourceFileKind(source.file_name)

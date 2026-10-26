@@ -4,15 +4,16 @@ import type { CompanyReport, BackendEvidence, BackendSource } from './backend'
 import { backendProjectId } from './backend.ts'
 import { checkedReferenceStatus } from './reportReferences.ts'
 import type { EvidenceReferenceCheck } from './reportReferences'
+import type { CompanyLogo } from './companyLogoApi'
 
-export type Project = { id: string; name: string; sector: string; geography: string; created: string; backendDealId?: string }
+export type Project = { id: string; name: string; sector: string; geography: string; created: string; backendDealId?: string; companyLogo?: CompanyLogo }
 export type ModuleConfig = { topics: string[]; depth: 'Brief' | 'Standard' | 'Deep'; geography: string; horizon: string; scope: 'Internal only' | 'Internal + external'; focus: string }
 export type NarrativeCitation = { evidence_id: string; kind: 'statement' | 'observation' | 'calculation'; quote: string; quote_basis: 'source_text' | 'structured_record'; source?: BackendSource; sources?: BackendSource[] }
 export type NarrativeClaim = { id: string; text: string; kind: 'reported_summary' | 'inference'; citations: NarrativeCitation[]; reviewState?: 'missing' | 'verify' | 'conflict' }
 export type NarrativeGeneration = { draftId: string; model: string; generatedAt: string; status: 'model_generated_unverified' }
 export type Section = { id: ModuleId; title: string; content: string; evidenceIds: string[]; config: ModuleConfig; sourceClaims?: NarrativeClaim[]; gaps?: string[]; generation?: NarrativeGeneration; humanEdited?: boolean }
 export type Revision = { id: string; at: string; section: ModuleId; title: string; before: string; after: string; author: string }
-export type Workspace = { order: ModuleId[]; configs: Partial<Record<ModuleId, ModuleConfig>>; sections: Section[]; revisions: Revision[]; generatedAt: string | null; backendReportId?: string; backendReportVersion?: string; backendDraftId?: string; backendDraftModel?: string; backendDraftGeneratedAt?: string; backendEvidenceCheckedReportId?: string; backendEvidenceCheckedAt?: string; backendEvidenceReferenceCheck?: EvidenceReferenceCheck }
+export type Workspace = { order: ModuleId[]; configs: Partial<Record<ModuleId, ModuleConfig>>; sections: Section[]; revisions: Revision[]; generatedAt: string | null; backendReportId?: string; backendReportVersion?: string; backendDraftId?: string; backendDraftModel?: string; backendDraftGeneratedAt?: string; backendEvidenceCheckedReportId?: string; backendEvidenceCheckedAt?: string; backendEvidenceReferenceCheck?: EvidenceReferenceCheck; sharedDraftId?: string; sharedDraftVersion?: number; sharedSavedAt?: string }
 export type LocalDocument = { id: string; projectId: string; name: string; type: string; size: number; category: string; added: string; url?: string }
 
 export const ENFUCE: Project = { id: 'enfuce', name: 'Enfuce', sector: 'Fintech', geography: 'Finland', created: '2026-10-24T12:00:00Z' }

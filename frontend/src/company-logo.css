@@ -1,0 +1,5 @@
+.company-logo-cover{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;color:#7b879d;background:linear-gradient(140deg,#f3f5fc,#e9edf6)}
+.company-logo-cover>img{width:112px;height:112px;object-fit:contain;padding:14px;border-radius:16px;background:#fff;box-shadow:0 7px 24px #27344c0c}
+.company-logo-cover>span{font-size:15px;max-width:80%;text-align:center;overflow-wrap:anywhere}
+.company-logo-cover>small{display:flex;align-items:center;gap:6px;font-size:10px}
+.company-logo-setup{font-size:10px;margin-top:9px;text-align:left}

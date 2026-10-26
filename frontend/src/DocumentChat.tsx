@@ -3,20 +3,25 @@ import type { Project } from './domain'
 import type { BackendSource, CompanyReport } from './backend'
 import { apiFetch, formatLocator } from './backend'
 import { documentChatDeal, documentChatError, documentQuestionKey, pendingDocumentQuestion, parseDocumentReply } from './documentChatState'
-import type { DocumentChatReply } from './documentChatState'
+import { documentConversationKey, encodeDocumentConversation, readChatDraft, readDocumentConversation, saveChatDraft } from './chatPersistence'
+import type { DocumentMessage } from './chatPersistence'
 import SourceFileButton from './SourceFileButton'
 import SourceFilePreview from './SourceFilePreview'
 import { Badge, Dialog, Icon } from './ui'
 import './company-chat.css'
 import './document-chat.css'
 
-type Message = { id: string; role: 'user' | 'assistant'; text: string; reply?: DocumentChatReply }
 type Props = { project: Project; page: string; report?: CompanyReport; inspect?: (id: string) => void; navigate?: (path: string) => void; onClose: () => void; onCompanyChat?: () => void }
+function loadConversation(dealId: string | null, report?: CompanyReport): DocumentMessage[] {
+  try { return dealId ? readDocumentConversation(sessionStorage.getItem(documentConversationKey(dealId)), dealId, report) : [] }
+  catch { return [] }
+}
 
 export default function DocumentChat({ project, page, report, onClose, onCompanyChat }: Props) {
   const dealId = documentChatDeal(project)
-  const [input, setInput] = useState('')
-  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState(() => readChatDraft(dealId, 'sources'))
+  const [conversation, setConversation] = useState<{ dealId: string | null; messages: DocumentMessage[] }>(() => ({ dealId, messages: loadConversation(dealId, report) }))
+  const messages = conversation.dealId === dealId ? conversation.messages : []
   const [busy, setBusy] = useState(false)
   const [failure, setFailure] = useState('')
   const [preview, setPreview] = useState<BackendSource | null>(null)
@@ -30,14 +35,19 @@ export default function DocumentChat({ project, page, report, onClose, onCompany
 
   useEffect(() => {
     mounted.current = true; controller.current?.abort(); controller.current = null; inFlight.current = false
-    let previous = ''
-    if (dealId) try { previous = pendingDocumentQuestion(sessionStorage.getItem(documentQuestionKey(dealId))) } catch { /* The active dialog remains usable without browser storage. */ }
+    let previous = '', saved: DocumentMessage[] = []
+    if (dealId) try { previous = pendingDocumentQuestion(sessionStorage.getItem(documentQuestionKey(dealId))); saved = readDocumentConversation(sessionStorage.getItem(documentConversationKey(dealId)), dealId, report) } catch { /* The active dialog remains usable without browser storage. */ }
     pending.current = previous
-    setInput(''); setMessages(previous ? [{ id: crypto.randomUUID(), role: 'user', text: previous }] : []); setBusy(false)
+    if (previous && saved.at(-1)?.text !== previous) saved.push({ id: crypto.randomUUID(), role: 'user', text: previous })
+    setInput(readChatDraft(dealId, 'sources')); setConversation({ dealId, messages: saved.slice(-40) }); setBusy(false)
     setFailure(previous ? 'Your previous source question was interrupted. Retry it when you are ready.' : ''); setPreview(null)
     inputRef.current?.focus()
     return () => { mounted.current = false; controller.current?.abort() }
-  }, [dealId])
+  }, [dealId, report])
+  useEffect(() => {
+    if (!dealId || conversation.dealId !== dealId) return
+    try { sessionStorage.setItem(documentConversationKey(dealId), encodeDocumentConversation(dealId, conversation.messages)) } catch { /* The validated conversation remains available while open. */ }
+  }, [conversation, dealId])
   useEffect(() => { endRef.current?.scrollIntoView({ block: 'nearest' }) }, [messages.length, busy, failure])
 
   async function send(question: string, retry = false) {
@@ -45,8 +55,8 @@ export default function DocumentChat({ project, page, report, onClose, onCompany
     if (!dealId || !trimmed || trimmed.length > 4000 || inFlight.current) return
     const request = new AbortController(); controller.current = request; inFlight.current = true; pending.current = trimmed
     try { sessionStorage.setItem(documentQuestionKey(dealId), trimmed) } catch { /* In-memory retry remains available. */ }
-    if (!retry) setMessages(previous => [...previous, { id: crypto.randomUUID(), role: 'user' as const, text: trimmed }].slice(-40))
-    setInput(''); setBusy(true); setFailure('')
+    if (!retry) setConversation(previous => ({ dealId, messages: [...(previous.dealId === dealId ? previous.messages : []), { id: crypto.randomUUID(), role: 'user' as const, text: trimmed }].slice(-40) }))
+    setInput(''); saveChatDraft(dealId, 'sources', ''); setBusy(true); setFailure('')
     try {
       const response = await apiFetch(`/deals/${encodeURIComponent(dealId)}/evidence-chat`, { method: 'POST', signal: request.signal,
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ question: trimmed }) })
@@ -59,7 +69,7 @@ export default function DocumentChat({ project, page, report, onClose, onCompany
       if (!response.ok) throw new Error(documentChatError(response.status, payload))
       const reply = parseDocumentReply(payload, dealId, report)
       if (mounted.current && !request.signal.aborted && context.current === dealId) {
-        setMessages(previous => [...previous, { id: crypto.randomUUID(), role: 'assistant' as const, text: reply.answer, reply }].slice(-40)); pending.current = ''
+        setConversation(previous => ({ dealId, messages: [...(previous.dealId === dealId ? previous.messages : []), { id: crypto.randomUUID(), role: 'assistant' as const, text: reply.answer, reply }].slice(-40) })); pending.current = ''
         try { sessionStorage.removeItem(documentQuestionKey(dealId)) } catch { /* The validated answer is already in memory. */ }
       }
     } catch (error) {
@@ -87,7 +97,7 @@ export default function DocumentChat({ project, page, report, onClose, onCompany
         {failure && <div className="company-chat-error" role="alert"><Icon name="help" size={18} /><div><p>{failure}</p>{pending.current && <button className="button secondary" disabled={busy} onClick={() => void send(pending.current, true)}>Retry question<Icon name="arrow" size={14} /></button>}</div></div>}
         <div ref={endRef} />
       </div>
-      <form className="company-chat-input" onSubmit={event => { event.preventDefault(); void send(input) }}><input ref={inputRef} aria-label="Search company source files" placeholder="Ask about a number, a source, a gap…" value={input} onChange={event => setInput(event.target.value)} maxLength={4000} readOnly={busy} disabled={!dealId} /><button className="icon-button" type="submit" aria-label="Send source question" disabled={!dealId || !input.trim() || busy}><Icon name={busy ? 'loading' : 'send'} size={19} /></button></form>
+      <form className="company-chat-input" onSubmit={event => { event.preventDefault(); void send(input) }}><input ref={inputRef} aria-label="Search company source files" placeholder="Ask about a number, a source, a gap…" value={input} onChange={event => { setInput(event.target.value); saveChatDraft(dealId, 'sources', event.target.value) }} maxLength={4000} readOnly={busy} disabled={!dealId} /><button className="icon-button" type="submit" aria-label="Send source question" disabled={!dealId || !input.trim() || busy}><Icon name={busy ? 'loading' : 'send'} size={19} /></button></form>
       <div className="company-chat-footer"><span>Current question · company-scoped search · original source quotations preserved</span></div>
     </>}
   </Dialog>

@@ -179,11 +179,12 @@ def test_decimal_columns_and_json_keep_precision_beyond_fixed_scale(store):
     assert row == (str(precise), str(multiplier), 'VARCHAR', 'JSON')
 
 
-def test_native_schema_has_ten_tables_and_refuses_foreign_unversioned_db(tmp_path):
+def test_native_schema_keeps_baseline_and_adds_workspace_tables_without_accepting_foreign_db(tmp_path):
     with Store(':memory:') as memory:
         with memory.transaction() as db:
             names = {row[0] for row in db.execute('SHOW TABLES').fetchall()}
-        assert len(names) == 10 and 'schema_versions' in names
+        from app.db_schema import TABLE_NAMES
+        assert names == TABLE_NAMES | {'report_drafts', 'workspace_settings'}
     path = tmp_path / 'foreign.duckdb'
     with duckdb.connect(str(path)) as db:
         db.execute('CREATE TABLE unrelated (value INTEGER)')

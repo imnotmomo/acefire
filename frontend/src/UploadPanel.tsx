@@ -11,7 +11,14 @@ import './uploads.css'
 
 type LocalUpload = UploadHistoryEntry
 const storageKey = (dealId: string) => `ingenium:uploads:v1:${encodeURIComponent(dealId)}`
-const active = (job: LocalUpload) => job.status === 'queued' || job.status === 'processing'
+const dismissedKey = (dealId: string) => `ingenium:uploads-dismissed:v1:${encodeURIComponent(dealId)}`
+const active = (job: Pick<LocalUpload, 'status'>) => job.status === 'queued' || job.status === 'processing'
+function dismissedHistory(dealId: string): Set<string> {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(dismissedKey(dealId)) || '[]')
+    return new Set(Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string' && id.length <= 200).slice(-1000) : [])
+  } catch { return new Set() }
+}
 
 function readHistory(dealId: string): LocalUpload[] {
   try {
@@ -75,6 +82,7 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
   const mounted = useRef(true)
   const onCompleteRef = useRef(onComplete); onCompleteRef.current = onComplete
   const files = useRef(new Map<string, File>())
+  const dismissed = useRef(dismissedHistory(dealId))
   const uploadControllers = useRef(new Set<AbortController>())
   const input = useRef<HTMLInputElement>(null)
   const [provider, setProvider] = useState<UploadProvider>('uploaded')
@@ -101,7 +109,7 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
     save(historyRef.current.jobs.map(job => job.clientId === clientId ? transform(job) : job))
   }
   useEffect(() => {
-    mounted.current = true; files.current.clear(); setNotice(''); setStorageNotice(''); setRetrying(null)
+    mounted.current = true; files.current.clear(); dismissed.current = dismissedHistory(dealId); setNotice(''); setStorageNotice(''); setRetrying(null)
     const next = { dealId, jobs: readHistory(dealId) }; historyRef.current = next; setHistory(next)
     return () => { mounted.current = false; uploadControllers.current.forEach(controller => controller.abort()); uploadControllers.current.clear() }
   }, [dealId])
@@ -112,9 +120,10 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
     setHistoryLoading(true); setHistoryError('')
     listUploadJobs(dealId, controller.signal).then(receipts => {
       if (controller.signal.aborted || !mounted.current || companyRef.current !== dealId) return
+      const visible = receipts.filter(receipt => active(receipt) || !dismissed.current.has(receipt.id))
       const current = historyRef.current.dealId === dealId ? historyRef.current.jobs : []
-      const completed = receipts.some(receipt => receipt.status === 'completed' && !current.some(job => job.serverId === receipt.id && job.status === 'completed'))
-      save(mergeUploadReceipts(current, receipts, dealId, baseline))
+      const completed = visible.some(receipt => receipt.status === 'completed' && !current.some(job => job.serverId === receipt.id && job.status === 'completed'))
+      save(mergeUploadReceipts(current, visible, dealId, baseline))
       if (completed) onCompleteRef.current?.()
     }).catch(error => {
       if (!controller.signal.aborted && mounted.current && companyRef.current === dealId) setHistoryError(error instanceof Error ? error.message : 'Shared processing history could not be loaded. Local receipts are preserved.')
@@ -172,13 +181,15 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
   }
   async function choose(selected: FileList | File[] | null, legacyId?: string) {
     if (!selected?.length) return
+    // input.files is live: clearing the chooser first empties that FileList.
+    const selectedFiles = Array.from(selected)
     setNotice('')
     const available = 8 - historyRef.current.jobs.filter(job => active(job) || job.status === 'uploading').length
     if (input.current) input.current.value = ''
-    if (selected.length > available) { setNotice(`Up to eight files can be uploaded or processed at once. Choose ${Math.max(0, available)} or fewer, or wait for existing jobs.`); return }
+    if (selectedFiles.length > available) { setNotice(`Up to eight files can be uploaded or processed at once. Choose ${Math.max(0, available)} or fewer, or wait for existing jobs.`); return }
     const accepted: { job: LocalUpload; file: File }[] = []
     const rejected: string[] = []
-    for (const file of Array.from(selected)) {
+    for (const file of selectedFiles) {
       try {
         validateUploadFile(file)
         accepted.push({ file, job: { clientId: crypto.randomUUID(), dealId, name: file.name, size: file.size, type: file.type,
@@ -228,7 +239,7 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
     <div className="company-upload-options"><label>Source attribution<select aria-label="Upload source attribution" value={provider} onChange={event => setProvider(event.target.value as UploadProvider)}><option value="uploaded">Company / user document</option><option value="orbis">Orbis export</option><option value="pitchbook">PitchBook export</option></select></label><span>Attribution records the selected origin; it does not verify the source’s identity.</span></div>
     {notice && <p className="company-upload-notice" role="alert">{notice}</p>}
     {storageNotice && <p className="company-upload-notice" role="status">{storageNotice}</p>}
-    <div className="company-upload-options"><span role="status">{historyLoading ? 'Loading shared processing history…' : 'Processing receipts are shared across browsers; original retry copies stay in the browser that selected them.'}</span><button className="text-button" disabled={historyLoading} onClick={() => setHistoryAttempt(value => value + 1)}>Refresh processing history<Icon name="history" size={13} /></button></div>
+    <div className="company-upload-options"><span role="status">{historyLoading ? 'Loading shared processing history…' : 'Processing receipts are shared across browsers; original retry copies stay in the browser that selected them.'}</span>{dismissed.current.size > 0 && <button className="text-button" disabled={historyLoading} onClick={() => { dismissed.current.clear(); try { localStorage.removeItem(dismissedKey(dealId)) } catch { /* In-memory history can still be restored. */ }; setHistoryAttempt(value => value + 1) }}>Show dismissed receipts</button>}<button className="text-button" disabled={historyLoading} onClick={() => setHistoryAttempt(value => value + 1)}>Refresh processing history<Icon name="history" size={13} /></button></div>
     {historyError && <p className="company-upload-notice" role="alert">{historyError} Your existing upload receipts are preserved; refresh processing history to retry.</p>}
     {legacy.length > 0 && <section className="legacy-source-bridge" aria-label="Preserved browser sources"><h3>Previously saved in this browser</h3><p>These files and links were kept with your original project. Add a file to the company evidence explicitly; your browser copy remains available.</p>{legacy.map(document => {
       const submitted = jobs.find(job => job.legacyId === document.id)
@@ -245,7 +256,7 @@ export default function UploadPanel({ dealId, onComplete, legacyProjectId }: { d
         {job.warnings.length > 0 && <details><summary>Source warnings ({job.warnings.length})</summary><ul>{job.warnings.map((warning, index) => <li key={index}>{warning}</li>)}</ul></details>}
       </div>
       {job.status === 'failed' && <button className="button secondary" disabled={Boolean(retrying) || pending >= 8} onClick={() => { if (job.remoteOnly) { setNotice(`${job.name}: select the original file using Upload files. The server receipt does not contain a browser retry copy.`); input.current?.click() } else void retry(job) }}><Icon name={retrying === job.clientId ? 'loading' : 'history'} size={14} />{job.remoteOnly ? 'Select original file' : 'Retry file'}</button>}
-      {!active(job) && job.status !== 'uploading' && <button className="icon-button" aria-label={`Dismiss ${job.name} processing history`} onClick={() => { save(historyRef.current.jobs.filter(item => item.clientId !== job.clientId)); files.current.delete(job.clientId); void cachedFile(fileKey(job), 'delete').catch(() => {}) }}><Icon name="x" size={14} /></button>}
+      {!active(job) && job.status !== 'uploading' && <button className="icon-button" aria-label={`Dismiss ${job.name} processing history`} title="Hide this receipt in this browser. Company evidence is preserved." onClick={() => { if (job.serverId) { dismissed.current.add(job.serverId); try { localStorage.setItem(dismissedKey(dealId), JSON.stringify([...dismissed.current].slice(-1000))) } catch { /* Current-page dismissal still works. */ } }; save(historyRef.current.jobs.filter(item => item.clientId !== job.clientId)); files.current.delete(job.clientId); void cachedFile(fileKey(job), 'delete').catch(() => {}) }}><Icon name="x" size={14} /></button>}
     </article>)}</div>}
   </section>
 }

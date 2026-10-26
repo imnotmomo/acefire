@@ -1,10 +1,12 @@
 import { apiFetch } from './backend.ts'
+import { normalizeCompanyWebsite } from './companyLogoApi.ts'
+import type { CompanyLogo } from './companyLogoApi'
 
 export type WorkspaceCompany = {
   deal_id: string; entity_key: string; legal_name: string; domain: string; country: string;
-  sector?: string; geography?: string; created_at?: string; identifiers?: Record<string, string>;
+  sector?: string; geography?: string; created_at?: string; identifiers?: Record<string, string>; company_logo?: CompanyLogo;
 }
-export type CreateCompanyInput = { name: string; sector?: string; geography?: string; deal_id?: string }
+export type CreateCompanyInput = { name: string; sector?: string; geography?: string; deal_id?: string; website?: string }
 export type UploadProvider = 'uploaded' | 'orbis' | 'pitchbook'
 export type UploadStatus = 'queued' | 'processing' | 'completed' | 'failed'
 export type UploadJob = {
@@ -65,9 +67,10 @@ export async function listCompanies(signal?: AbortSignal): Promise<WorkspaceComp
 export async function createCompany(input: CreateCompanyInput, signal?: AbortSignal): Promise<WorkspaceCompany> {
   const name = input.name.trim()
   if (!name || name.length > 100) throw new Error('Enter a company name of 1–100 characters.')
+  const website = input.website ? normalizeCompanyWebsite(input.website) : undefined
   let payload: unknown
   try {
-    const response = await apiFetch('/deals', { method: 'POST', signal, headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ ...input, name }) })
+    const response = await apiFetch('/deals', { method: 'POST', signal, headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ ...input, name, ...(website ? { website } : {}) }) })
     payload = await jsonResponse(response)
     if (response.status !== 201) throw new Error('The service did not confirm creation of the company workspace. Retry without changing the company details.')
   } catch (error) {
@@ -76,6 +79,7 @@ export async function createCompany(input: CreateCompanyInput, signal?: AbortSig
       // Recover only the same immutable ID and the same human-supplied metadata.
       const existing = (await listCompanies(signal)).find(row => row.deal_id === input.deal_id)
       if (existing?.legal_name === name
+        && (!website || existing.domain === website)
         && (!input.sector || existing.identifiers?.workspace_sector === input.sector || existing.sector === input.sector)
         && (!input.geography || existing.identifiers?.workspace_geography === input.geography || existing.geography === input.geography || existing.country === input.geography)) return existing
     }

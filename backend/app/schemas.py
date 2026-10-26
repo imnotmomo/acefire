@@ -4,7 +4,7 @@ from decimal import Decimal
 from typing import Any, Literal
 from uuid import NAMESPACE_URL, uuid5
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_serializer
 
 
 def stable_id(*parts: object) -> str:
@@ -70,6 +70,7 @@ class Observation(Contract):
     scale_multiplier: Decimal | None = None
     normalization_status: Literal['confirmed', 'unresolved', 'missing'] = 'unresolved'
     normalization_basis: str | None = None
+    reviewed_from_id: str | None = None
     definition_key: str | None = None
     scope: str | None = None
     accounting_basis: str | None = None
@@ -83,6 +84,15 @@ class Observation(Contract):
     locator: dict[str, Any]
     quarantined: bool = False
     notes: list[str] = Field(default_factory=list)
+
+    @model_serializer(mode='wrap')
+    def preserve_historical_payload(self, handler):
+        record = handler(self)
+        if self.reviewed_from_id is None:
+            # Keep existing immutable payloads byte-equivalent on replay, also
+            # on the supported older Pydantic releases without exclude_if.
+            record.pop('reviewed_from_id', None)
+        return record
 
 
 class IngestionResult(Contract):

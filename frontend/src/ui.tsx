@@ -8,7 +8,7 @@ const icons = { activity: Activity, down: ArrowDown, back: ArrowLeft, arrow: Arr
 export function Icon({ name, size = 18, className = '' }: { name: string; size?: number; className?: string }) {
   if (['sparkles', 'wand', 'zap'].includes(name)) return <BrandMark size={size} className={className} />
   const Component = icons[name as keyof typeof icons] ?? FileText
-  return <Component size={size} strokeWidth={1.7} aria-hidden="true" className={className} />
+  return <Component size={size} strokeWidth={1.7} aria-hidden="true" className={[className, name === 'loading' ? 'loading-icon' : ''].filter(Boolean).join(' ')} />
 }
 export function Badge({ children, tone = 'neutral' }: { children: ReactNode; tone?: string }) {
   return <span className={`badge ${tone}`}>{children}</span>

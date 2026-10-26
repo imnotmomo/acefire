@@ -14,7 +14,7 @@ from pathlib import Path
 from threading import RLock
 from time import monotonic
 
-from google.api_core.exceptions import AlreadyExists
+from google.api_core.exceptions import AlreadyExists, FailedPrecondition
 from google.cloud import firestore
 
 from app.schemas import Company, SourceSnapshot, Observation, Calculation, Comparison, IngestionResult
@@ -76,11 +76,42 @@ class FirebaseStore:
         self.client.close()
 
     def companies(self):
-        return [Company.model_validate(unpack(doc)) for doc in self.client.collection('companies').stream(timeout=30)]
+        from app.workspace_settings import overlay
+        companies = [Company.model_validate(unpack(doc)) for doc in self.client.collection('companies').stream(timeout=30)]
+        return [overlay(company, self._workspace_settings(company.deal_id)) for company in companies]
 
     def company(self, deal_id):
+        from app.workspace_settings import overlay
         record = unpack(self.client.collection('companies').document(identifier(deal_id)).get(timeout=30))
-        return Company.model_validate(record) if record else None
+        return overlay(Company.model_validate(record), self._workspace_settings(deal_id)) if record else None
+
+    def _workspace_settings(self, deal_id):
+        record = unpack(self._collection(deal_id, 'workspace_settings').document('current').get(timeout=30))
+        if record and record.get('deal_id') != deal_id:
+            raise ValueError('Workspace settings belong to another company.')
+        return record.get('settings', {}) if record else {}
+
+    def patch_workspace(self, deal_id, values):
+        from app.workspace_settings import patch_settings
+        if self.company(deal_id) is None:
+            return None
+        doc = self._collection(deal_id, 'workspace_settings').document('current')
+        for _ in range(3):
+            snapshot = doc.get(timeout=30)
+            record = unpack(snapshot)
+            if record and record.get('deal_id') != deal_id:
+                raise ValueError('Workspace settings belong to another company.')
+            updated = {'deal_id': deal_id, 'settings': patch_settings(record.get('settings', {}) if record else {}, values)}
+            try:
+                if snapshot.exists:
+                    doc.update(envelope(updated), option=firestore.LastUpdateOption(snapshot.update_time), timeout=30)
+                else:
+                    doc.create(envelope(updated), timeout=30)
+                self._invalidate(deal_id)
+                return self.company(deal_id)
+            except (AlreadyExists, FailedPrecondition):
+                continue
+        raise ValueError('Workspace settings changed concurrently. Refresh and retry the update.')
 
     def create_company(self, company):
         company = Company.model_validate(company.model_dump(mode='json'))
@@ -102,7 +133,8 @@ class FirebaseStore:
         """
         result = IngestionResult.model_validate(result.model_dump(mode='json'))
         company = self.company(result.company.deal_id)
-        if company is None or company.model_dump(mode='json') != result.company.model_dump(mode='json'):
+        from app.workspace_settings import identity
+        if company is None or identity(company) != identity(result.company):
             raise ValueError('Source intake cannot create or change a selected company identity.')
         sources = {s.id: s for s in self.snapshots(company.deal_id)}
         pending = []
@@ -238,6 +270,70 @@ class FirebaseStore:
 
     def narrative_reports(self, deal_id):
         return sorted(self.bundle(deal_id)['narrative_reports'], key=lambda x: (x.get('created_at', ''), x['id']), reverse=True)
+
+    def report_drafts(self, deal_id):
+        from app.report_storage import record_for_listing, unavailable_record
+        from app.report_drafts import summary
+        records=[]
+        for doc in self._collection(deal_id, 'report_drafts').stream(timeout=30):
+            draft_id=getattr(doc,'id',None)
+            try:
+                records.append(summary(record_for_listing(unpack(doc),deal_id=deal_id,draft_id=draft_id)))
+            except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+                data=doc.to_dict()
+                stored=data.get('record') if isinstance(data,dict) else None
+                records.append(summary(unavailable_record(stored,deal_id=deal_id,draft_id=draft_id)))
+        return sorted(records, key=lambda record: (record['updated_at'], record['id']), reverse=True)
+
+    def report_draft(self, deal_id, draft_id):
+        from app.report_storage import decode_scoped_record
+        try:
+            record = unpack(self._collection(deal_id, 'report_drafts').document(identifier(draft_id)).get(timeout=30))
+        except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+            raise ValueError('Shared report storage failed its envelope integrity check.') from None
+        if record and record.get('deal_id') != deal_id:
+            raise ValueError('Stored report draft belongs to another company.')
+        return decode_scoped_record(record,deal_id=deal_id,draft_id=draft_id) if record is not None else None
+
+    def create_report_draft(self, record):
+        from app.report_storage import encode_record, decode_scoped_record
+        stored=encode_record(record)
+        deal_id=record['deal_id']
+        if self.company(deal_id) is None:
+            raise ValueError('Shared report belongs to an unknown company.')
+        doc=self._collection(deal_id,'report_drafts').document(identifier(record['id']))
+        try:
+            doc.create(envelope(stored),timeout=30)
+        except AlreadyExists:
+            previous=decode_scoped_record(unpack(doc.get(timeout=30)),deal_id=deal_id,draft_id=record['id'])
+            if previous != record:
+                raise ValueError('Existing immutable shared report has different content.') from None
+        self._invalidate(deal_id)
+        return record
+
+    def update_report_draft(self, deal_id, draft_id, expected_version, workspace):
+        from app.report_drafts import DraftVersionConflict, updated_record
+        from app.report_storage import decode_scoped_record, encode_record
+        doc = self._collection(deal_id, 'report_drafts').document(identifier(draft_id))
+        snapshot = doc.get(timeout=30)
+        try:
+            record = unpack(snapshot)
+        except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+            raise ValueError('Shared report storage failed its envelope integrity check.') from None
+        if record is None:
+            return None
+        if record.get('deal_id') != deal_id:
+            raise ValueError('Stored report draft belongs to another company.')
+        record = decode_scoped_record(record,deal_id=deal_id,draft_id=draft_id)
+        if record['version'] != expected_version:
+            raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.')
+        updated = updated_record(record, workspace)
+        try:
+            # A document update precondition is atomic across server processes.
+            doc.update(envelope(encode_record(updated)), option=firestore.LastUpdateOption(snapshot.update_time), timeout=30)
+        except FailedPrecondition:
+            raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.') from None
+        return updated
 
     def calculations(self, deal_id):
         return [Calculation.model_validate(x) for x in self.bundle(deal_id)['calculations']]

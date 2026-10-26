@@ -59,12 +59,17 @@ try {
     return route.fulfill({ json: calculation })
   })
   await page.goto(`${base}/#/project/circle/dashboard`, { waitUntil: 'networkidle' })
+  await page.getByRole('button', { name: 'New calculation', exact: true }).click()
   const lab = page.getByRole('region', { name: 'Calculation workspace', exact: true })
   await lab.waitFor()
-  await check('Pending model configuration is explicit and generation stays disabled', async () => {
+  await check('Pending model configuration is explicit and generation guides missing steps without submitting', async () => {
     await lab.getByText('Calculation service pending', { exact: true }).waitFor()
     assert.match(await lab.innerText(), /NICRRON_API_KEY/)
-    assert.equal(await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).isDisabled(), true)
+    assert.equal(await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).isEnabled(), true)
+    await lab.getByRole('button', { name: 'Generate and run calculation', exact: true }).click()
+    assert.match(await lab.getByRole('alert').innerText(), /Describe the calculation/)
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'calculation-question')
+    assert.equal(requests.length, 0)
     assert.equal(await lab.locator('input[type=password]').count(), 0)
   })
   await check('Selected inputs retain exact period and source locations', async () => {
@@ -135,6 +140,7 @@ try {
   await check('Mobile calculation workspace remains usable without upload or Akta calls', async () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto(`${base}/#/project/circle/dashboard`, { waitUntil: 'networkidle' })
+    await page.getByRole('button', { name: 'New calculation', exact: true }).click()
     await page.getByRole('region', { name: 'Calculation workspace', exact: true }).waitFor()
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), true)
     await page.screenshot({ path: path.join(output, 'calculation-mobile.png'), animations: 'disabled', fullPage: true })

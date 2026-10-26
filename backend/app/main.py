@@ -17,7 +17,7 @@ from app.akta_saved import ingest_saved_akta_circle
 from app.config import akta_data_root, cache_root, data_root, database_path
 from app.financial import calculate, compare_observations
 from app.local_sources import ingest_local_circle
-from app.schemas import CIRCLE, Contract
+from app.schemas import CIRCLE, Contract, IngestionResult
 from app.store import Store
 from app.uploads import ingest_upload
 from app.lineage import build_calculation_lineage, build_profile_lineage
@@ -36,6 +36,10 @@ from app.stored_narratives import source_claims as stored_source_claims, summari
 from app.document_routes import document_router
 from app.chat import chat_router
 from app.workspace_routes import workspace_router
+from app.company_logos import CompanyLogoService
+from app.logo_routes import company_logo_router
+from app.normalization_review import NormalizationReview, reviewed_observation
+from app.report_drafts import DraftWorkspaceCreate, DraftWorkspaceUpdate, DraftVersionConflict, new_record, summary as draft_summary
 
 
 class CompareRequest(Contract):
@@ -74,7 +78,7 @@ class ClaimsBatchRequest(Contract):
     claims: list[ExtractedClaim] = Field(min_length=1, max_length=2000)
 
 
-def create_app(store: Store | None = None, source_root: Path | None = None, akta_factory=None, saved_akta_root: Path | None = None, agent_factory=None, narrative_factory=None, chat_factory=None) -> FastAPI:
+def create_app(store: Store | None = None, source_root: Path | None = None, akta_factory=None, saved_akta_root: Path | None = None, agent_factory=None, narrative_factory=None, chat_factory=None, logo_service=None) -> FastAPI:
     if store is None and os.getenv('DATA_STORE', 'duckdb') == 'firestore':
         from app.firebase_store import FirebaseStore
         ledger = FirebaseStore()
@@ -83,6 +87,7 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
     root = source_root or data_root()
     akta_root = saved_akta_root or akta_data_root()
     factory = akta_factory or AktaClient
+    logos = logo_service if logo_service is not None else CompanyLogoService()
 
     @asynccontextmanager
     async def lifespan(_):
@@ -90,13 +95,16 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
         try:
             yield
         finally:
+            logos.close()
             ledger.close()
 
     app = FastAPI(title='Acefire Data + Financial Engine', version='0.1.0', lifespan=lifespan)
     app.state.store = ledger
     app.include_router(document_router(ledger))
     app.include_router(chat_router(ledger, route="/deals/{deal_id}/evidence-chat"))
-    workspace_api = workspace_router(ledger)
+    app.state.company_logos = logos
+    app.include_router(company_logo_router(ledger, logos))
+    workspace_api = workspace_router(ledger, logos=logos)
     app.include_router(workspace_api)
 
     def company(deal_id):
@@ -256,6 +264,16 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
         disposition = 'inline' if media_type in {'application/pdf','image/png','image/jpeg','application/json','text/plain'} else 'attachment'
         return FileResponse(path, media_type=media_type, filename=source.original_filename or path.name, content_disposition_type=disposition, headers={'X-Content-Type-Options':'nosniff'})
 
+    @app.get('/sources/{snapshot_id}/pdf-preview')
+    def pdf_page_preview(snapshot_id: str, page: int = Query(1, ge=1, le=2000)):
+        from app.pdf_preview import PdfPreviewError, render_pdf_preview
+        source, path = source_path(snapshot_id)
+        try:
+            return {'snapshot_id': source.id, 'sha256': source.sha256,
+                    **render_pdf_preview(path, page, source.sha256)}
+        except PdfPreviewError as error:
+            raise HTTPException(error.status_code, str(error), headers={'Retry-After':'1'} if error.status_code == 429 else None) from None
+
     @app.get('/deals/{deal_id}/observations')
     @app.get('/deals/{deal_id}/claims')
     def observations(deal_id: str, provider: str | None = None, metric: str | None = None):
@@ -336,9 +354,68 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
             raise HTTPException(409, {'code': 'stale_report', 'message': 'The company evidence changed. Refresh the stored report before generating a draft.'})
         try:
             engine = narrative_factory() if narrative_factory else NarrativeGenerator(AgentSettings.from_environment())
-            return engine.generate(deal_id, request, report['narrative_evidence'])
+            draft = engine.generate(deal_id, request, report['narrative_evidence'])
+            draft.setdefault('drafting_preferences', [section.model_dump(mode='json') for section in request.sections])
+            record = new_record(deal_id, request.based_on_report_id, draft=draft)
+            ledger.create_report_draft(record)
+            return {**draft, 'persisted_version': record['version']}
         except NarrativeError as error:
             raise HTTPException(error.status_code, {'code': error.code, 'message': error.message}) from None
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.get('/deals/{deal_id}/report-drafts')
+    def list_report_drafts(deal_id: str):
+        company(deal_id)
+        return {'drafts': [draft_summary(record) for record in ledger.report_drafts(deal_id)]}
+
+    @app.get('/deals/{deal_id}/report-drafts/{draft_id}')
+    def load_report_draft(deal_id: str, draft_id: str):
+        company(deal_id)
+        try:
+            record = ledger.report_draft(deal_id, draft_id)
+        except ValueError as error:
+            raise HTTPException(409, {'code': 'draft_storage_integrity', 'message': str(error)}) from None
+        if record is None:
+            raise HTTPException(404, 'Shared report draft not found in this company.')
+        return {**record, **draft_summary(record)}
+
+    @app.post('/deals/{deal_id}/report-drafts', status_code=201)
+    def create_report_workspace(deal_id: str, request: DraftWorkspaceCreate):
+        report = company_report(deal_id)
+        if report['report_id'] != request.based_on_report_id:
+            raise HTTPException(409, {'code': 'stale_report', 'message': 'The company evidence changed. Refresh before saving this as a new shared report.'})
+        try:
+            record = ledger.create_report_draft(new_record(deal_id, request.based_on_report_id, workspace=request.workspace))
+            return {**record, **draft_summary(record)}
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.put('/deals/{deal_id}/report-drafts/{draft_id}')
+    def save_report_workspace(deal_id: str, draft_id: str, request: DraftWorkspaceUpdate):
+        company(deal_id)
+        try:
+            record = ledger.update_report_draft(deal_id, draft_id, request.expected_version, request.workspace)
+        except DraftVersionConflict as error:
+            raise HTTPException(409, {'code': 'draft_version_conflict', 'message': str(error)}) from None
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+        if record is None:
+            raise HTTPException(404, 'Shared report draft not found in this company.')
+        return {**record, **draft_summary(record)}
+
+    @app.post('/deals/{deal_id}/observations/{observation_id}/normalize')
+    def normalize_observation(deal_id: str, observation_id: str, request: NormalizationReview):
+        selected = company(deal_id)
+        original = observation(deal_id, observation_id)
+        try:
+            reviewed = reviewed_observation(selected, original, ledger.snapshots(deal_id), request)
+            existing = ledger.observation(reviewed.id)
+            ledger.ingest(IngestionResult(
+                company=selected, snapshots=[], observations=[reviewed]))
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+        return {'observation': reviewed, 'reviewed_from_id': original.id, 'created': existing is None}
 
     @app.post('/deals/{deal_id}/chat')
     def company_chat(deal_id: str, request: CompanyChatRequest):
