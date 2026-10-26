@@ -2,38 +2,45 @@ name: Deploy home server
 
 on:
   workflow_call:
+    inputs:
+      target:
+        description: Trusted deployment target; must match the source branch.
+        required: true
+        type: string
     secrets:
       ACEFIRE_DEPLOY_SSH_KEY:
-        required: true
+        required: false
+      ACEFIRE_QA_DEPLOY_SSH_KEY:
+        required: false
       ACEFIRE_DEPLOY_KNOWN_HOSTS:
         required: true
       NICRRON_API_KEY:
         required: true
       FIREBASE_SERVICE_ACCOUNT_JSON:
-        required: true
+        required: false
       PRISMTRACE_API_KEY:
-        required: true
+        required: false
       PRISMTRACE_HOST:
-        required: true
+        required: false
       PRISMTRACE_PROJECT_ID:
-        required: true
+        required: false
 
 permissions:
   contents: read
   actions: read
 
 concurrency:
-  group: home-production
+  group: home-${{ inputs.target }}
   cancel-in-progress: false
 
 jobs:
   deploy:
-    if: github.repository == 'imnotmomo/acefire' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.repository == 'imnotmomo/acefire' && github.event_name != 'pull_request' && ((inputs.target == 'production' && github.ref == 'refs/heads/main') || (inputs.target == 'qa' && github.ref == 'refs/heads/qa'))
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment:
-      name: home
-      url: https://ingenium.linearproduct.co
+      name: ${{ inputs.target == 'qa' && 'qa' || 'home' }}
+      url: ${{ inputs.target == 'qa' && 'https://qa.linearproduct.co' || 'https://ingenium.linearproduct.co' }}
     steps:
       - name: Download the tested release from this run
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
@@ -49,13 +56,15 @@ jobs:
           chmod 0700 "$RUNNER_TEMP/cloudflared"
       - name: Prepare private runtime bundle
         env:
-          DEPLOY_KEY: ${{ secrets.ACEFIRE_DEPLOY_SSH_KEY }}
+          DEPLOY_TARGET: ${{ inputs.target }}
+          PRODUCTION_DEPLOY_KEY: ${{ inputs.target == 'production' && secrets.ACEFIRE_DEPLOY_SSH_KEY || '' }}
+          QA_DEPLOY_KEY: ${{ inputs.target == 'qa' && secrets.ACEFIRE_QA_DEPLOY_SSH_KEY || '' }}
           KNOWN_HOSTS: ${{ secrets.ACEFIRE_DEPLOY_KNOWN_HOSTS }}
           NICRRON_API_KEY: ${{ secrets.NICRRON_API_KEY }}
-          FIREBASE_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
-          PRISMTRACE_API_KEY: ${{ secrets.PRISMTRACE_API_KEY }}
-          PRISMTRACE_HOST: ${{ secrets.PRISMTRACE_HOST }}
-          PRISMTRACE_PROJECT_ID: ${{ secrets.PRISMTRACE_PROJECT_ID }}
+          FIREBASE_JSON: ${{ inputs.target == 'production' && secrets.FIREBASE_SERVICE_ACCOUNT_JSON || '' }}
+          PRISMTRACE_API_KEY: ${{ inputs.target == 'production' && secrets.PRISMTRACE_API_KEY || '' }}
+          PRISMTRACE_HOST: ${{ inputs.target == 'production' && secrets.PRISMTRACE_HOST || '' }}
+          PRISMTRACE_PROJECT_ID: ${{ inputs.target == 'production' && secrets.PRISMTRACE_PROJECT_ID || '' }}
           GH_API_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
@@ -66,7 +75,14 @@ jobs:
               path = root / name
               path.write_text(value)
               path.chmod(0o600)
-          for key in ['DEPLOY_KEY', 'KNOWN_HOSTS', 'NICRRON_API_KEY', 'FIREBASE_JSON', 'PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID', 'GH_API_TOKEN']:
+          target = os.environ['DEPLOY_TARGET']
+          if target not in ('production', 'qa') or os.environ['GITHUB_REF'] != {'production': 'refs/heads/main', 'qa': 'refs/heads/qa'}[target]:
+              raise SystemExit('Deployment target does not match the trusted source branch')
+          key_name = 'QA_DEPLOY_KEY' if target == 'qa' else 'PRODUCTION_DEPLOY_KEY'
+          required = [key_name, 'KNOWN_HOSTS', 'NICRRON_API_KEY', 'GH_API_TOKEN']
+          if target == 'production':
+              required += ['FIREBASE_JSON', 'PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']
+          for key in required:
               if not os.environ.get(key):
                   raise SystemExit('A required deployment secret is missing: ' + key)
           if not re.fullmatch(r'[a-f0-9]{40}', os.environ['GITHUB_SHA']):
@@ -75,24 +91,41 @@ jobs:
           if not re.fullmatch(r'ssh-acefire\.linearproduct\.co ssh-ed25519 [A-Za-z0-9+/=]+', host):
               raise SystemExit('Unexpected pinned SSH host identity')
           write('known_hosts', host + '\n')
-          write('deploy_key', os.environ['DEPLOY_KEY'].strip() + '\n')
+          write('deploy_key', os.environ[key_name].strip() + '\n')
           backend = {
               'NICRRON_API_KEY': os.environ['NICRRON_API_KEY'],
               'LLM_MODEL': 'openai/gpt-6.1-sol', 'NICRRON_BASE_URL': 'https://api.nicrron.ai/v1',
-              'DATA_STORE': 'firestore', 'FIREBASE_PROJECT_ID': 'acefire-50248',
-              'FIRESTORE_DATABASE_ID': 'acefire',
-              'GOOGLE_APPLICATION_CREDENTIALS': '/etc/ingenium/firestore-runtime.json',
-              'SOURCE_FILE_MANIFEST': '/etc/ingenium/source-files.json',
           }
-          prism = {key: os.environ[key] for key in ['PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']}
-          for filename, values in [('backend.env', backend), ('prism.env', prism)]:
+          if target == 'production':
+              backend.update({
+                  'DATA_STORE': 'firestore', 'FIREBASE_PROJECT_ID': 'acefire-50248',
+                  'FIRESTORE_DATABASE_ID': 'acefire',
+                  'GOOGLE_APPLICATION_CREDENTIALS': '/etc/ingenium/firestore-runtime.json',
+                  'SOURCE_FILE_MANIFEST': '/etc/ingenium/source-files.json',
+              })
+          else:
+              backend.update({
+                  'DATA_STORE': 'duckdb', 'DUCKDB_PATH': '/var/lib/ingenium-qa/acefire.duckdb',
+                  'SOURCE_CACHE_DIR': '/var/lib/ingenium-qa/sources',
+                  'UPLOAD_CACHE_ROOT': '/var/lib/ingenium-qa/uploads',
+                  'DATA_ROOT': '/var/lib/ingenium-qa/fixtures/additional-cases',
+                  'AKTA_DATA_ROOT': '/var/lib/ingenium-qa/fixtures/akta',
+              })
+          environment_files = [('backend.env', backend)]
+          if target == 'production':
+              prism = {key: os.environ[key] for key in ['PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']}
+              environment_files.append(('prism.env', prism))
+          for filename, values in environment_files:
               if any(any(char in value for char in '\x00\r\n') for value in values.values()):
                   raise SystemExit('Runtime environment values must be single-line strings')
               write(filename, ''.join(key + '=' + json.dumps(value) + '\n' for key, value in values.items()))
-          credential = json.loads(os.environ['FIREBASE_JSON'])
-          if credential.get('project_id') != 'acefire-50248':
-              raise SystemExit('Unexpected Firebase project')
-          write('firestore-runtime.json', json.dumps(credential))
+          runtime_files = [name for name, _ in environment_files]
+          if target == 'production':
+              credential = json.loads(os.environ['FIREBASE_JSON'])
+              if credential.get('project_id') != 'acefire-50248':
+                  raise SystemExit('Unexpected Firebase project')
+              write('firestore-runtime.json', json.dumps(credential))
+              runtime_files.append('firestore-runtime.json')
           token = os.environ['GH_API_TOKEN']
           if not re.fullmatch(r'[A-Za-z0-9_.-]{20,8192}', token):
               raise SystemExit('Invalid workflow API token')
@@ -107,7 +140,7 @@ jobs:
                   entry = tarfile.TarInfo(name)
                   entry.size = len(data)
                   archive.addfile(entry, io.BytesIO(data))
-              for name in ['backend.env', 'firestore-runtime.json', 'prism.env', 'deployment.json', 'github-api-token']:
+              for name in [*runtime_files, 'deployment.json', 'github-api-token']:
                   data = (root / name).read_bytes()
                   entry = tarfile.TarInfo(name)
                   entry.size = len(data)
@@ -115,13 +148,15 @@ jobs:
           (root / 'bundle.tar').chmod(0o600)
           PY
       - name: Deploy over restricted SSH
+        env:
+          DEPLOY_USER: ${{ inputs.target == 'qa' && 'ingenium-qa-deploy' || 'ingenium-deploy' }}
         run: |
           private="$RUNNER_TEMP/home-deploy"
           ssh -i "$private/deploy_key" -o IdentitiesOnly=yes -o BatchMode=yes \
             -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$private/known_hosts" \
             -o ConnectTimeout=20 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
             -o "ProxyCommand=$RUNNER_TEMP/cloudflared access ssh --hostname %h" \
-            ingenium-deploy@ssh-acefire.linearproduct.co "deploy $GITHUB_SHA" < "$private/bundle.tar"
+            "$DEPLOY_USER@ssh-acefire.linearproduct.co" "deploy $GITHUB_SHA" < "$private/bundle.tar"
       - name: Remove private runner files
         if: always()
         run: rm -rf -- "$RUNNER_TEMP/home-deploy"
