@@ -52,6 +52,7 @@ const raw = () => lab().locator('tbody tr').filter({ hasText:'Raw: 100.123400000
 async function check(name, callback) { await callback(); results.push(name); console.log(`PASS ${name}`) }
 try {
   await page.goto(`${base}tests/normalization-workflow.html`, { waitUntil:'networkidle' })
+  await page.getByRole('button', { name:'New calculation', exact:true }).click()
   await lab().getByText('Calculation service ready', { exact:true }).waitFor()
   await check('Generate is actionable while incomplete and guides focus to the precise missing step without a model call', async () => {
     const generate = lab().getByRole('button', { name:'Generate and run calculation', exact:true })
@@ -189,6 +190,7 @@ try {
       localStorage.setItem(key, JSON.stringify(value))
     })
     await page.getByRole('button', { name:'Return to calculation page', exact:true }).click()
+    await page.getByRole('button', { name:'New calculation', exact:true }).click()
     await lab().getByText('Calculation service ready', { exact:true }).waitFor()
     assert.equal(await lab().getByLabel('Calculation question', { exact:true }).inputValue(), question)
     await lab().getByText('Optional calculation parameters', { exact:true }).click()
@@ -214,6 +216,8 @@ try {
 } catch (error) {
   await page.screenshot({ path:path.join(output,'failure.png'), animations:'disabled' }).catch(() => {})
   const pageState = await page.evaluate(() => ({
+    viewport_width:innerWidth, document_width:document.documentElement.scrollWidth,
+    overflowing:[...document.querySelectorAll('body *')].map(element=>({element,rect:element.getBoundingClientRect()})).filter(({element,rect})=>rect.width>0&&rect.right>innerWidth+1&&getComputedStyle(element).position!=='fixed').slice(0,15).map(({element,rect})=>({tag:element.tagName,class:element.className,left:rect.left,right:rect.right,width:rect.width,text:element.textContent?.slice(0,120)})),
     alerts:[...document.querySelectorAll('[role="alert"]')].map(element => element.textContent?.slice(0,1500)),
     runtime:document.querySelector('.calculation-runtime')?.textContent?.slice(0,1500),
     selected_inputs:document.querySelectorAll('.calculation-lab tbody input[type="checkbox"]:checked').length,
