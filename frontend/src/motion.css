@@ -1,0 +1,70 @@
+/* Keep navigation quick and let the content, rather than the shell, change. */
+:root {
+  --motion-enter: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ingenium-site {
+  animation: ingenium-page-enter 220ms var(--motion-enter);
+}
+
+.modal-backdrop,
+.sidebar-overlay {
+  animation: ingenium-backdrop-enter 180ms ease-out;
+}
+
+.dialog {
+  animation: ingenium-dialog-enter 220ms var(--motion-enter);
+  transform-origin: 50% 45%;
+}
+
+.dialog.company-chat-dialog {
+  animation-name: ingenium-drawer-enter;
+  animation-duration: 260ms;
+}
+
+.app-shell details[open] > :not(summary),
+.dialog details[open] > :not(summary),
+.dashboard-hero > .source-table,
+.review-context > aside:not([hidden]),
+.finding-card {
+  animation: ingenium-content-enter 190ms var(--motion-enter);
+}
+
+@keyframes ingenium-page-enter {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+@keyframes ingenium-backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ingenium-dialog-enter {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes ingenium-drawer-enter {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes ingenium-content-enter {
+  from { opacity: 0.4; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ingenium-site,
+  .modal-backdrop,
+  .sidebar-overlay,
+  .dialog,
+  .app-shell details[open] > :not(summary),
+  .dialog details[open] > :not(summary),
+  .dashboard-hero > .source-table,
+  .review-context > aside:not([hidden]),
+  .finding-card {
+    animation: none !important;
+  }
+}
