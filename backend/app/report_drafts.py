@@ -1,12 +1,12 @@
 """Shared editable report workspaces, separate from immutable imported evidence."""
 from datetime import datetime, timezone
-import json
 from typing import Any
 from uuid import uuid4
 
 from pydantic import Field, field_validator
 
 from app.schemas import Contract
+from app.report_storage import MAX_LOGICAL_BYTES, MAX_WORKSPACE_BYTES, canonical_bytes, section_count
 
 MODULE_IDS = frozenset({'overview', 'market', 'financials', 'customers', 'product', 'competition',
                         'gtm', 'economics', 'team', 'legal', 'clinical', 'questions'})
@@ -53,8 +53,8 @@ def validate_workspace(value):
             raise ValueError('Report revisions need an ID, timestamp, module and original/editor text fields.')
     if 'generatedAt' not in value or not (value['generatedAt'] is None or isinstance(value['generatedAt'], str)):
         raise ValueError('Report workspace generatedAt must be a string or null.')
-    if len(json.dumps(value, ensure_ascii=False, allow_nan=False).encode()) > 450_000:
-        raise ValueError('Report workspace exceeds the supported 450 KB size.')
+    if len(canonical_bytes(value)) > MAX_WORKSPACE_BYTES:
+        raise ValueError('Report workspace exceeds the 5 MB UTF-8 size limit. Your local draft is preserved.')
     return value
 
 
@@ -95,11 +95,31 @@ def new_record(deal_id, based_on_report_id, *, draft=None, workspace=None):
 
 
 def validate_record(record):
+    validate_metadata(record)
+    if ('draft' not in record or 'workspace' not in record or record['draft'] is None and record['workspace'] is None
+            or record['draft'] is not None and not isinstance(record['draft'],dict)):
+        raise ValueError('Shared report has no supported draft or editor workspace.')
+    if record['draft'] is not None and 'sections' in record['draft']:
+        sections=record['draft']['sections']
+        if not isinstance(sections,list) or len(sections)>12 or not all(isinstance(section,dict) for section in sections):
+            raise ValueError('Shared report has invalid section metadata.')
     if record.get('workspace') is not None:
         validate_workspace(record['workspace'])
-    # Keep the API equally usable on DuckDB and Firestore's bounded documents.
-    if len(json.dumps(record, ensure_ascii=False, allow_nan=False).encode()) > 750_000:
-        raise ValueError('Shared report exceeds the supported 750 KB size; reduce revision history or report sections before saving.')
+    if len(canonical_bytes(record)) > MAX_LOGICAL_BYTES:
+        raise ValueError('The complete shared report exceeds the 5 MB UTF-8 size limit, including its original draft and history. Your local draft is preserved.')
+
+
+def validate_metadata(record):
+    if not isinstance(record,dict) or type(record.get('version')) is not int or not 1<=record['version']<=9007199254740991:
+        raise ValueError('Shared report has invalid version metadata.')
+    for key in ('id','deal_id','created_at','updated_at','based_on_report_id'):
+        if not isinstance(record.get(key),str) or not record[key].strip() or len(record[key])>(100 if key in ('created_at','updated_at') else 2048):
+            raise ValueError('Shared report has incomplete identity or date metadata.')
+    for key in ('created_at','updated_at'):
+        try:datetime.fromisoformat(record[key].replace('Z','+00:00'))
+        except ValueError:raise ValueError('Shared report has invalid date metadata.') from None
+    if 'model' not in record or record.get('model') is not None and (not isinstance(record['model'],str) or not record['model'].strip() or len(record['model'])>2048):
+        raise ValueError('Shared report has invalid model metadata.')
 
 
 def updated_record(record, workspace):
@@ -109,10 +129,7 @@ def updated_record(record, workspace):
 
 
 def summary(record):
-    content = record.get('workspace') if isinstance(record.get('workspace'), dict) else record.get('draft')
-    sections = content.get('sections') if isinstance(content, dict) else []
-    # A malformed older record must not make every company's saved draft list 500.
-    count = len(sections) if isinstance(sections, list) else 0
     return {**{key: record[key] for key in ('id', 'deal_id', 'version', 'created_at',
                                            'updated_at', 'based_on_report_id', 'model')},
-            'section_count': count}
+            'section_count': section_count(record),
+            **({'unavailable': True} if record.get('unavailable') else {})}

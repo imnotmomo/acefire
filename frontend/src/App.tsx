@@ -17,6 +17,7 @@ import { backendProjectId, reportEvidence, useCompanyReport } from './backend'
 import { migrateLegacyEnglish } from './english'
 import { useEnglishWorkspace } from './useEnglishWorkspace'
 import { createCompany } from './workspaceApi'
+import { normalizeCompanyWebsite } from './companyLogoApi'
 import type { WorkspaceCompany } from './workspaceApi'
 import { allCompanies, companyArchived, updateCompany } from './companyManagement'
 import type { CompanyLabels } from './companyManagement'
@@ -55,6 +56,7 @@ export default function App() {
   const [name, setName] = useState('')
   const [sector, setSector] = useState('Fintech')
   const [geography, setGeography] = useState('United States')
+  const [website, setWebsite] = useState('')
   const [nameError, setNameError] = useState('')
   const [creating, setCreating] = useState(false)
   const [companyListLoading, setCompanyListLoading] = useState(true)
@@ -144,17 +146,19 @@ export default function App() {
     const trimmed = name.trim()
     if (!trimmed) { setNameError('Enter a project name.'); return }
     const place = geography.trim() || 'Unknown'
-    const signature = JSON.stringify([trimmed, sector, place])
+    let companyWebsite: string | undefined
+    try { companyWebsite = website.trim() ? normalizeCompanyWebsite(website) : undefined } catch (error) { setNameError(error instanceof Error ? error.message : 'Enter a public company website.'); return }
+    const signature = JSON.stringify([trimmed, sector, place, companyWebsite ?? ''])
     if (creation.current?.signature !== signature) creation.current = { signature, id: `deal-${crypto.randomUUID()}` }
     const controller = new AbortController(); createController.current = controller
     setCreating(true); setNameError('')
     try {
-      const company = await createCompany({ name: trimmed, sector, geography: place, deal_id: creation.current.id }, controller.signal)
+      const company = await createCompany({ name: trimmed, sector, geography: place, deal_id: creation.current.id, website: companyWebsite }, controller.signal)
       if (controller.signal.aborted) return
       const next = companyProject(company)
       setProjects(previous => mergeCompanyProjects(previous, [company]))
       acceptCompany(company)
-      setNewProject(false); setName(''); setNameError(''); creation.current = null
+      setNewProject(false); setName(''); setWebsite(''); setNameError(''); creation.current = null
       go(`/project/${next.id}/data-room`)
       notify('Company workspace created. Upload its source files to start the analysis.')
     } catch (error) {
@@ -197,6 +201,7 @@ export default function App() {
       <label>Project name<input value={name} disabled={creating} onChange={event => { setName(event.target.value); setNameError('') }} placeholder="e.g. Acme diligence" maxLength={100} aria-invalid={Boolean(nameError)} aria-describedby={nameError ? 'name-error' : undefined} autoFocus /></label>
       {nameError && <p className="form-error" id="name-error" role="alert">{nameError}</p>}
       <div className="field-pair"><label>Sector<select value={sector} disabled={creating} onChange={event => setSector(event.target.value)}>{['Fintech', 'Enterprise software', 'Healthcare', 'Consumer', 'Climate', 'Crowdfunding', 'Other'].map(item => <option key={item}>{item}</option>)}</select></label><label>Geography<input value={geography} disabled={creating} onChange={event => setGeography(event.target.value)} placeholder="Country or region" maxLength={100} /></label></div>
+      <label>Company website <small>Optional</small><input aria-label="Company website" value={website} disabled={creating} onChange={event => { setWebsite(event.target.value); setNameError('') }} placeholder="example.com" maxLength={2048} /><small className="subtle-label">A public website lets us find and cache its icon once. A company name alone is not used to guess a logo.</small></label>
       <div className="preview-note"><Icon name="shield" size={16} />The company starts without claims or metrics. Uploaded source files provide the evidence for calculations, reports and chat.</div>
       <div className="dialog-actions"><button type="button" className="button secondary" onClick={closeCreation}>{creating ? 'Stop waiting' : 'Cancel'}</button><button type="submit" className="button primary" disabled={creating}><Icon name={creating ? 'loading' : 'plus'} size={16} />{creating ? 'Creating workspace…' : 'Create project'}</button></div>
     </form></Dialog>}

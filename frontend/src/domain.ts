@@ -4,8 +4,9 @@ import type { CompanyReport, BackendEvidence, BackendSource } from './backend'
 import { backendProjectId } from './backend.ts'
 import { checkedReferenceStatus } from './reportReferences.ts'
 import type { EvidenceReferenceCheck } from './reportReferences'
+import type { CompanyLogo } from './companyLogoApi'
 
-export type Project = { id: string; name: string; sector: string; geography: string; created: string; backendDealId?: string }
+export type Project = { id: string; name: string; sector: string; geography: string; created: string; backendDealId?: string; companyLogo?: CompanyLogo }
 export type ModuleConfig = { topics: string[]; depth: 'Brief' | 'Standard' | 'Deep'; geography: string; horizon: string; scope: 'Internal only' | 'Internal + external'; focus: string }
 export type NarrativeCitation = { evidence_id: string; kind: 'statement' | 'observation' | 'calculation'; quote: string; quote_basis: 'source_text' | 'structured_record'; source?: BackendSource; sources?: BackendSource[] }
 export type NarrativeClaim = { id: string; text: string; kind: 'reported_summary' | 'inference'; citations: NarrativeCitation[]; reviewState?: 'missing' | 'verify' | 'conflict' }

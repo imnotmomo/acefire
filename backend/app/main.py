@@ -36,6 +36,8 @@ from app.stored_narratives import source_claims as stored_source_claims, summari
 from app.document_routes import document_router
 from app.chat import chat_router
 from app.workspace_routes import workspace_router
+from app.company_logos import CompanyLogoService
+from app.logo_routes import company_logo_router
 from app.normalization_review import NormalizationReview, reviewed_observation
 from app.report_drafts import DraftWorkspaceCreate, DraftWorkspaceUpdate, DraftVersionConflict, new_record, summary as draft_summary
 
@@ -76,7 +78,7 @@ class ClaimsBatchRequest(Contract):
     claims: list[ExtractedClaim] = Field(min_length=1, max_length=2000)
 
 
-def create_app(store: Store | None = None, source_root: Path | None = None, akta_factory=None, saved_akta_root: Path | None = None, agent_factory=None, narrative_factory=None, chat_factory=None) -> FastAPI:
+def create_app(store: Store | None = None, source_root: Path | None = None, akta_factory=None, saved_akta_root: Path | None = None, agent_factory=None, narrative_factory=None, chat_factory=None, logo_service=None) -> FastAPI:
     if store is None and os.getenv('DATA_STORE', 'duckdb') == 'firestore':
         from app.firebase_store import FirebaseStore
         ledger = FirebaseStore()
@@ -85,6 +87,7 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
     root = source_root or data_root()
     akta_root = saved_akta_root or akta_data_root()
     factory = akta_factory or AktaClient
+    logos = logo_service if logo_service is not None else CompanyLogoService()
 
     @asynccontextmanager
     async def lifespan(_):
@@ -92,13 +95,16 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
         try:
             yield
         finally:
+            logos.close()
             ledger.close()
 
     app = FastAPI(title='Acefire Data + Financial Engine', version='0.1.0', lifespan=lifespan)
     app.state.store = ledger
     app.include_router(document_router(ledger))
     app.include_router(chat_router(ledger, route="/deals/{deal_id}/evidence-chat"))
-    workspace_api = workspace_router(ledger)
+    app.state.company_logos = logos
+    app.include_router(company_logo_router(ledger, logos))
+    workspace_api = workspace_router(ledger, logos=logos)
     app.include_router(workspace_api)
 
     def company(deal_id):
@@ -366,7 +372,10 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
     @app.get('/deals/{deal_id}/report-drafts/{draft_id}')
     def load_report_draft(deal_id: str, draft_id: str):
         company(deal_id)
-        record = ledger.report_draft(deal_id, draft_id)
+        try:
+            record = ledger.report_draft(deal_id, draft_id)
+        except ValueError as error:
+            raise HTTPException(409, {'code': 'draft_storage_integrity', 'message': str(error)}) from None
         if record is None:
             raise HTTPException(404, 'Shared report draft not found in this company.')
         return {**record, **draft_summary(record)}

@@ -16,6 +16,8 @@ from pydantic import Field, BaseModel, ConfigDict, field_validator
 from starlette.concurrency import run_in_threadpool
 
 from app.schemas import Company, IngestionResult
+from app.company_logos import normalize_public_domain
+from app.logo_routes import public_company
 from app.uploads import ingest_upload, MAX_UPLOAD_BYTES
 from app.upload_lease import try_lock, unlock
 from app.workspace_intake import SUPPORTED, atomic_json, process_upload, register_sources, upload_root
@@ -29,6 +31,13 @@ class WorkspaceRequest(BaseModel):
     sector:str|None=Field(default=None,max_length=120)
     geography:str|None=Field(default=None,max_length=120)
     deal_id:str|None=Field(default=None,max_length=120)
+    website:str|None=Field(default=None,max_length=2048)
+
+    @field_validator('website')
+    @classmethod
+    def public_website(cls,value):
+        if value is None or not value.strip():return None
+        return normalize_public_domain(value)
 
     @field_validator('name')
     @classmethod
@@ -75,8 +84,8 @@ def listed_companies(store):
 
 
 class UploadJobs:
-    def __init__(self,store,processor=None):
-        self.store=store;self.processor=processor or process_upload
+    def __init__(self,store,processor=None,*,logos=None):
+        self.store=store;self.processor=processor or process_upload;self.logos=logos
         self.root=upload_root();self.jobs=self.root/'jobs';self.jobs.mkdir(parents=True,exist_ok=True,mode=0o700)
         self.executor=ThreadPoolExecutor(max_workers=2,thread_name_prefix='workspace-upload')
         self.capacity=BoundedSemaphore(8);self.lock=RLock();self.closed=False;self.leases={}
@@ -197,6 +206,11 @@ class UploadJobs:
             else:
                 result=self.processor(self.store,company,source,self.root/'runs'/job['id'])
             job.update(result,status='completed',finished_at=datetime.now(timezone.utc).isoformat())
+            if self.logos is not None:
+                try:self.logos.after_source(company,source)
+                except Exception:
+                    # Branding cannot turn durably saved evidence into a failed upload.
+                    job.setdefault('warnings',[]).append('Company logo lookup is unavailable. Uploaded evidence was saved.')
         except Exception as error:
             # Provider/OS exceptions may contain keys or private paths. Public
             # status is deliberately generic; the original stays registered.
@@ -210,8 +224,8 @@ class UploadJobs:
             finally:self.capacity.release()
 
 
-def workspace_router(store,*,processor=None):
-    jobs=UploadJobs(store,processor)
+def workspace_router(store,*,processor=None,logos=None):
+    jobs=UploadJobs(store,processor,logos=logos)
     @asynccontextmanager
     async def lifespan(_):
         jobs.start()
@@ -222,7 +236,7 @@ def workspace_router(store,*,processor=None):
 
     @router.get('/deals')
     def list_workspaces(include_archived: bool = False):
-        return {'companies':[company for company in listed_companies(store)
+        return {'companies':[public_company(company,logos) for company in listed_companies(store)
                              if include_archived or company.identifiers.get('workspace_archived') != 'true']}
 
     @router.patch('/deals/{deal_id}')
@@ -236,7 +250,7 @@ def workspace_router(store,*,processor=None):
             raise HTTPException(409, str(error)) from None
         if company is None:
             raise HTTPException(404, 'Company workspace not found.')
-        return {'company': company}
+        return {'company': public_company(company,logos)}
 
     @router.post('/deals',status_code=201)
     def create_workspace(request:WorkspaceRequest):
@@ -245,21 +259,33 @@ def workspace_router(store,*,processor=None):
             values=company.identifiers
             return (company.legal_name==request.name and values.get('workspace_identity_status')=='user_supplied_unverified'
                 and values.get('workspace_sector')==(request.sector or 'Other')
-                and values.get('workspace_geography')==(request.geography or 'Unknown'))
+                and values.get('workspace_geography')==(request.geography or 'Unknown')
+                and company.domain==(request.website or ''))
         existing=store.company(key)
         if existing is not None:
-            if matches(existing):return {'company':existing}
+            if matches(existing):
+                if logos is not None:logos.commit(existing)
+                return {'company':public_company(existing,logos)}
             raise HTTPException(409,'This company workspace ID already exists with different metadata.')
-        company=Company(deal_id=key,entity_key='workspace-'+key,legal_name=request.name,domain='',country=request.geography or 'Unknown',
+        company=Company(deal_id=key,entity_key='workspace-'+key,legal_name=request.name,domain=request.website or '',country=request.geography or 'Unknown',
             identifiers={'workspace_identity_status':'user_supplied_unverified','workspace_sector':request.sector or 'Other','workspace_geography':request.geography or 'Unknown','workspace_created_at':datetime.now(timezone.utc).isoformat(),'akta_lookup_status':'not_requested'})
+        if logos is not None:
+            try:logos.prepare(company)
+            except OSError:
+                raise HTTPException(503,'The company cache is unavailable. Your project details are preserved; retry creation shortly.') from None
+            except ValueError as error:raise HTTPException(409,str(error)) from None
         try:
             if hasattr(store,'create_company'):store.create_company(company)
             else:store.ingest(IngestionResult(company=company,snapshots=[],observations=[]))
         except ValueError as error:
             existing=store.company(key)
-            if existing is not None and matches(existing):return {'company':existing}
+            if existing is not None and matches(existing):
+                if logos is not None:logos.commit(existing)
+                return {'company':public_company(existing,logos)}
+            if logos is not None:logos.discard(company)
             raise HTTPException(409,str(error)) from None
-        return {'company':company}
+        if logos is not None:logos.commit(company)
+        return {'company':public_company(company,logos)}
 
     @router.post('/deals/{deal_id}/uploads',status_code=202)
     async def upload(deal_id:str,file:UploadFile=File(...),provider:Literal['orbis','pitchbook','uploaded']=Form('uploaded')):

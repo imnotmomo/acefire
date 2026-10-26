@@ -2,7 +2,7 @@ import { MODULES } from './data.ts'
 import type { ModuleId } from './data.ts'
 import type { ModuleConfig, NarrativeCitation, Section, Workspace } from './domain'
 
-export type SharedReportSummary = { id: string; version: number; created_at: string; updated_at: string; based_on_report_id: string; model: string | null; section_count: number }
+export type SharedReportSummary = { id: string; version: number; created_at: string; updated_at: string; based_on_report_id: string; model: string | null; section_count: number; unavailable?: boolean }
 export type SharedReportRecord = SharedReportSummary & { deal_id: string; draft: unknown; workspace: Workspace | null }
 const object = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 const text = (value: unknown, maximum = 2048): value is string => typeof value === 'string' && value.length <= maximum
@@ -45,9 +45,9 @@ function section(value: unknown, dealId: string): value is Section {
 }
 
 /** A saved UI workspace is data, not a trusted React prop tree. */
-export function checkedSharedWorkspace(value: unknown, dealId: string, maximumBytes = 450000): Workspace {
+export function checkedSharedWorkspace(value: unknown, dealId: string, maximumBytes = 5_000_000): Workspace {
   const invalid = () => { throw new Error('The saved report has an unsupported workspace format. Your local draft is preserved.') }
-  if (object(value) && new TextEncoder().encode(JSON.stringify(value)).length > maximumBytes) throw new Error('This report exceeds the shared report size limit. Your local draft is preserved; export a complete copy before shortening its text or history.')
+  if (object(value) && new TextEncoder().encode(JSON.stringify(value)).length > maximumBytes) throw new Error('This workspace exceeds the 5 MB UTF-8 size limit. Your local draft is preserved; export a complete copy before saving separate reports.')
   if (!object(value) || !Array.isArray(value.order)
     || value.order.length > 12 || !value.order.every(moduleId) || new Set(value.order).size !== value.order.length
     || !object(value.configs) || Object.entries(value.configs).some(([id, item]) => !moduleId(id) || !config(item))
@@ -66,10 +66,15 @@ export function checkedSharedWorkspace(value: unknown, dealId: string, maximumBy
 }
 
 function summary(value: unknown): value is SharedReportSummary {
+  if (object(value) && value.unavailable === true) return nonempty(value.id)
+    && Number.isSafeInteger(value.version) && Number(value.version) >= 0
+    && text(value.created_at, 100) && text(value.updated_at, 100) && text(value.based_on_report_id)
+    && (value.model === null || nonempty(value.model)) && value.section_count === 0
   return object(value) && nonempty(value.id) && Number.isSafeInteger(value.version) && Number(value.version) > 0
     && timestamp(value.created_at) && timestamp(value.updated_at) && nonempty(value.based_on_report_id)
     && (value.model === null || nonempty(value.model)) && Number.isSafeInteger(value.section_count)
     && Number(value.section_count) >= 0 && Number(value.section_count) <= 12
+    && (value.unavailable === undefined || typeof value.unavailable === 'boolean')
 }
 export function checkedSharedReportList(payload: unknown): SharedReportSummary[] {
   if (!object(payload) || !Array.isArray(payload.drafts) || payload.drafts.length > 1000 || !payload.drafts.every(summary)
@@ -85,7 +90,8 @@ export function sharedReportError(payload: unknown, status: number): { message: 
   const detail = object(payload) ? payload.detail : null
   const code = object(detail) ? detail.code : null
   const message = typeof detail === 'string' ? detail : object(detail) && typeof detail.message === 'string' ? detail.message : null
-  return { conflict: status === 409 && code !== 'stale_report', message: status === 409 && code !== 'stale_report'
+  const conflict = status === 409 && !['stale_report', 'draft_storage_integrity'].includes(String(code))
+  return { conflict, message: conflict
     ? 'Another shared version exists. Your local copy is preserved. Load the latest shared version, or save as a new report to keep both.'
     : (message?.slice(0, 500) || `The shared report request failed (HTTP ${status}). Your local draft is preserved.`) }
 }

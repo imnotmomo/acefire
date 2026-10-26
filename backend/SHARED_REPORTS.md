@@ -39,6 +39,45 @@ using the existing checksum envelope. Updates use an atomic document update
 precondition; simultaneous backend processes cannot overwrite a competing save.
 No new service, paid feature or billing change is required.
 
-Editor state is capped at 450 KB and each complete shared record at 750 KB for
-consistent DuckDB/Firestore behavior. Oversized edits return 422 and preserve
-the existing shared record. Explicit Save changes avoids writes on each keypress.
+The complete logical report is bounded at **5 MB (5,000,000 UTF-8 bytes)**,
+including its immutable generated draft, editable workspace, every revision and
+metadata. The workspace is also bounded at 5 MB; the combined record limit is
+authoritative. The physical stored record remains bounded at **750,000 bytes**, below
+the existing Firestore envelope guard of 800,000 bytes and document limit.
+Small records remain ordinary JSON. Larger records use a versioned
+`canonical-json-zlib-base64-v1` representation in the same table/collection.
+The API still returns the original complete JSON shape.
+
+This is lossless storage, not pruning: all supplied evidence-manifest entries,
+source graphs, exact decimal strings, quotations, hashes, locators, generated
+sections and human revisions remain in the decoded record. Canonical UTF-8 JSON
+is compressed, checksummed and stored with its exact decoded byte count and
+summary/version metadata. Reads bound decompression output, reject trailing or
+truncated streams, verify the checksum and metadata, and enforce company/document
+scope. Firestore's outer checksum envelope and atomic version precondition are
+unchanged. No new collection, index, storage account or paid feature is required.
+
+Incompressible content that cannot fit the physical bound, excessive decoded
+data, malformed structure and invalid metadata return a recoverable error
+without replacing the existing shared version. Damaged records remain visible
+as unavailable entries while other reports still load. Explicit Save changes
+avoids writes on each keypress. Browser-local recovery remains subject to browser
+storage quota and reports its existing failure message when a copy cannot be kept.
+
+## Compatibility and rollback
+
+This reader supports both existing plain JSON and the new compressed format.
+It does not migrate or rewrite old records merely by reading them. Original
+evidence collections and their hashes are unchanged.
+
+**An older backend cannot read or safely update a compressed report.** After the
+first compressed write, do not activate an old binary against writable shared
+report data. Before any rollback, pause shared-report writes and preserve a
+current database backup/export. With this reader still running, the existing
+GET detail API exports each report as its complete logical JSON, including
+history and source provenance; retain these copies privately. Keep the compatible
+storage reader in a rollback release, or roll forward to this reader to recover
+compressed reports. Do not restore an older database snapshot over reports
+written after deployment or silently delete compressed records to make an old
+binary appear compatible. A real downgrade requires a separately reviewed data
+migration; some large reports cannot fit in the legacy single-document format.

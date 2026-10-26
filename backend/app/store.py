@@ -219,40 +219,54 @@ class Store:
             return Observation.model_validate_json(row[0]) if row else None
 
     def report_drafts(self, deal_id):
+        from app.report_storage import record_for_listing
+        from app.report_drafts import summary
         with self._lock:
-            rows = self._connect().execute('SELECT payload FROM report_drafts WHERE deal_id=?', [deal_id]).fetchall()
-            return sorted((_json(row[0]) for row in rows), key=lambda row: (row['updated_at'], row['id']), reverse=True)
+            rows = self._connect().execute('SELECT id, version, payload FROM report_drafts WHERE deal_id=?', [deal_id]).fetchall()
+            values=[]
+            for record_id, version, payload in rows:
+                try:stored=_json(payload)
+                except (ValueError,RecursionError,TypeError):stored=None
+                values.append(summary(record_for_listing(stored, deal_id=deal_id, draft_id=record_id, version=version)))
+            return sorted(values, key=lambda row: (row['updated_at'], row['id']), reverse=True)
 
     def report_draft(self, deal_id, draft_id):
+        from app.report_storage import decode_scoped_record
         with self._lock:
-            row = self._connect().execute('SELECT payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
-            return _json(row[0]) if row else None
+            row = self._connect().execute('SELECT version,payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
+            if row is None:return None
+            try:stored=_json(row[1])
+            except (RecursionError,TypeError):raise ValueError('Shared report storage has invalid or excessively nested JSON.') from None
+            return decode_scoped_record(stored,deal_id=deal_id,draft_id=draft_id,version=row[0])
 
     def create_report_draft(self, record):
-        from app.report_drafts import validate_record
-        validate_record(record)
+        from app.report_storage import encode_record, decode_record
+        stored = encode_record(record)
         with self.transaction() as db:
             previous = db.execute('SELECT payload FROM report_drafts WHERE id=?', [record['id']]).fetchone()
             if previous:
-                if _json(previous[0]) != record:
+                if decode_record(_json(previous[0])) != record:
                     raise ValueError('Report draft ID already exists with different content.')
                 return record
             self._insert(db, 'report_drafts', {'id': record['id'], 'deal_id': record['deal_id'],
-                         'version': record['version'], 'payload': _dump(record)})
+                         'version': record['version'], 'payload': _dump(stored)})
         return record
 
     def update_report_draft(self, deal_id, draft_id, expected_version, workspace):
         from app.report_drafts import DraftVersionConflict, updated_record
+        from app.report_storage import decode_scoped_record, encode_record
         with self.transaction() as db:
-            row = db.execute('SELECT payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
+            row = db.execute('SELECT version,payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
             if row is None:
                 return None
-            record = _json(row[0])
+            try:stored=_json(row[1])
+            except (RecursionError,TypeError):raise ValueError('Shared report storage has invalid or excessively nested JSON.') from None
+            record = decode_scoped_record(stored,deal_id=deal_id,draft_id=draft_id,version=row[0])
             if record['version'] != expected_version:
                 raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.')
             updated = updated_record(record, workspace)
             db.execute('UPDATE report_drafts SET version=?, payload=? WHERE deal_id=? AND id=?',
-                       [updated['version'], _dump(updated), deal_id, draft_id])
+                       [updated['version'], _dump(encode_record(updated)), deal_id, draft_id])
             return updated
 
     def snapshots(self, deal_id: str) -> list[SourceSnapshot]:

@@ -22,6 +22,20 @@ test('shared report round trip preserves exact decimal tokens, sentences and sou
   assert.equal(checked.workspace.sections[0].sourceClaims[0].citations[0].quote, '9007199254740993.0123456789')
 })
 
+test('large sourced workspaces retain all revisions and citations above the old450KB limit', () => {
+  const saved = workspace()
+  const exact = 'Human history preserves 9007199254740993.0123456789 and the original quotation. '.repeat(800)
+  saved.revisions = Array.from({ length: 35 }, (_, index) => ({ id: `history-${index}`, at: date, section: 'financials', title: 'Financials', before: exact + 'Before', after: exact + 'After', author: 'You' }))
+  const bytes = new TextEncoder().encode(JSON.stringify(saved)).length
+  assert.ok(bytes > 4000000 && bytes < 5_000_000)
+  const checked = checkedSharedReport(JSON.parse(JSON.stringify(record(saved))), 'circle')
+  assert.deepEqual(checked.workspace, saved)
+  assert.equal(checked.workspace.revisions.length, 35)
+  assert.equal(checked.workspace.sections[0].sourceClaims[0].citations[0].source.sha256, 'a'.repeat(64))
+  const oversized = structuredClone(saved); oversized.revisions.push(...structuredClone(saved.revisions))
+  assert.throws(() => checkedSharedWorkspace(oversized, 'circle'), /5 MB/)
+})
+
 test('saved workspaces reject foreign companies, malformed settings and missing quotation provenance before replacement', () => {
   const changes = [
     w => { w.sections[0].sourceClaims[0].citations[0].source.deal_id = 'other' },
@@ -57,6 +71,8 @@ test('optimistic version conflicts and stale evidence provide distinct recovery 
   assert.match(sharedReportError({}, 409).message, /keep both/)
   assert.equal(sharedReportError({ detail: { code: 'stale_report', message: 'Refresh evidence' } }, 409).conflict, false)
   assert.match(sharedReportError({ detail: { message: 'Temporary outage' } }, 503).message, /Temporary outage/)
+  assert.equal(sharedReportError({ detail: { code: 'draft_storage_integrity', message: 'Storage integrity failed' } }, 409).conflict, false)
+  assert.match(sharedReportError({ detail: { code: 'draft_storage_integrity', message: 'Storage integrity failed' } }, 409).message, /integrity/)
 })
 
 test('generation and loading detect settings, text and evidence races while accepting unchanged copies', () => {

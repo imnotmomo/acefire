@@ -98,3 +98,11 @@
   .report-recovery-note { flex-wrap:wrap; }
   .report-recovery-note>span { flex-basis:100%; }
 }
+
+.report-request-status>span { display:grid; flex:1; gap:4px; }
+.report-request-status small { font-size:11px; line-height:1.6; }
+.report-request-elapsed { font-variant-numeric:tabular-nums; }
+@media(max-width:600px) {
+  .report-request-status { flex-wrap:wrap; }
+  .report-request-status>span { min-width:0; }
+}

@@ -1,5 +1,6 @@
 import type { Project } from './domain'
 import type { WorkspaceCompany } from './workspaceApi'
+import { parseCompanyLogo } from './companyLogoApi.ts'
 
 const aliases = new Map([['circle-2025-ipo', 'circle'], ['enfuce-2020', 'enfuce-documents']])
 const knownDeals = new Map([['circle', 'circle-2025-ipo'], ['enfuce-documents', 'enfuce-2020']])
@@ -7,12 +8,17 @@ const text = (value: unknown, fallback: string) => typeof value === 'string' && 
 export type PendingCompanyConnection = { projectId: string; dealId: string; name: string; sector: string; geography: string }
 export const pendingConnectionKey = (projectId: string) => `ingenium:pending-company-connection:v1:${encodeURIComponent(projectId)}`
 
+function companyLogoFields(company: WorkspaceCompany): Pick<Project, 'companyLogo'> {
+  try { const logo = parseCompanyLogo(company.company_logo, company.deal_id); return logo ? { companyLogo: logo } : {} } catch { return {} }
+}
+
 export function companyProject(company: WorkspaceCompany): Project {
   return { id: aliases.get(company.deal_id) ?? company.deal_id, backendDealId: company.deal_id,
     name: text(company.identifiers?.workspace_display_name, company.legal_name),
     sector: text(company.identifiers?.workspace_sector ?? company.sector, 'Other'),
     geography: text(company.identifiers?.workspace_geography ?? company.geography ?? company.country, 'Unknown'),
-    created: text(company.identifiers?.workspace_created_at ?? company.created_at, '') }
+    created: text(company.identifiers?.workspace_created_at ?? company.created_at, ''),
+    ...companyLogoFields(company) }
 }
 
 /** Add shared companies while retaining browser project IDs, human labels and historical fixtures. */
@@ -28,7 +34,7 @@ export function mergeCompanyProjects(projects: Project[], companies: WorkspaceCo
       result[index] = { ...canonical, ...existing, backendDealId: company.deal_id,
         name: company.identifiers?.workspace_display_name ? canonical.name : text(existing.name, canonical.name),
         sector: company.identifiers?.workspace_display_name ? canonical.sector : text(existing.sector, canonical.sector),
-        geography: company.identifiers?.workspace_display_name ? canonical.geography : text(existing.geography, canonical.geography), created: text(existing.created, canonical.created) }
+        geography: company.identifiers?.workspace_display_name ? canonical.geography : text(existing.geography, canonical.geography), created: text(existing.created, canonical.created), companyLogo: canonical.companyLogo }
     }
   }
   return result
@@ -36,7 +42,7 @@ export function mergeCompanyProjects(projects: Project[], companies: WorkspaceCo
 
 /** Explicit connection keeps workspace/document storage keys and original draft content unchanged. */
 export function connectLocalProject(project: Project, company: WorkspaceCompany): Project {
-  return { ...project, backendDealId: company.deal_id }
+  return { ...project, backendDealId: company.deal_id, ...companyLogoFields(company) }
 }
 
 /** Recover a confirmed company after its previous create response was interrupted. */
