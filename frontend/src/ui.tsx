@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { BrandMark } from './Brand'
 import { Activity, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BarChart3, Bell, BookOpen, Building2, Calculator, ChartNoAxesCombined, Check, ChevronDown, ChevronRight, CircleHelp, Clock3, Contact, Copy, Download, ExternalLink, File, FileCheck2, FileSpreadsheet, FileText, Flag, Folder, FolderOpen, Globe2, GripVertical, History, Layers3, LayoutDashboard, Link2, ListFilter, LoaderCircle, Maximize2, Menu, MessageCircle, MoreHorizontal, Pencil, Plus, Rocket, Scale, Search, Send, Settings2, ShieldCheck, Sparkles, Trash2, Upload, Users, WandSparkles, X, Zap } from 'lucide-react'
 
@@ -17,10 +18,12 @@ export function Empty({ icon = 'folder', title, text, children }: { icon?: strin
 }
 export function Dialog({ title, subtitle, onClose, children, className = '' }: { title: string; subtitle?: string; onClose: () => void; children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
+  // Capture before React commits autoFocus inputs inside the new dialog.
+  const opener = useRef(typeof document === 'undefined' ? null : document.activeElement as HTMLElement | null)
   const closeRef = useRef(onClose)
   closeRef.current = onClose
   useEffect(() => {
-    const before = document.activeElement as HTMLElement | null
+    const before = opener.current
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     ref.current?.querySelector<HTMLElement>('button, input, select, textarea, [tabindex="0"]')?.focus()
@@ -36,8 +39,10 @@ export function Dialog({ title, subtitle, onClose, children, className = '' }: {
     document.addEventListener('keydown', keydown)
     return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', keydown); before?.focus() }
   }, [])
-  return <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}><div className={`dialog ${className}`} ref={ref} role="dialog" aria-modal="true" aria-label={title}>
+  const dialog = <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}><div className={`dialog ${className}`} ref={ref} role="dialog" aria-modal="true" aria-label={title}>
     <div className="dialog-heading"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div><button className="icon-button" onClick={onClose} aria-label={`Close ${title}`}><Icon name="x" /></button></div>
     {children}
   </div></div>
+  // Page opacity creates a stacking context; overlays belong above the shell.
+  return typeof document === 'undefined' ? dialog : createPortal(dialog, document.body)
 }
