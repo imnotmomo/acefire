@@ -42,7 +42,8 @@ async function createPage(options = {}) {
     const animate = Element.prototype.animate
     Element.prototype.animate = function (...args) {
       const animation = Reflect.apply(animate, this, args)
-      window.__motionAnimations.push({ animation, element: this })
+      const phase = this.matches('.backend-loading') || this.querySelector('.backend-loading') ? 'loading' : this.querySelector('.calculation-lab') ? 'company-ready' : 'content'
+      window.__motionAnimations.push({ animation, element: this, phase, startedAt: performance.now() })
       return animation
     }
   }, { workspace })
@@ -55,7 +56,12 @@ async function createPage(options = {}) {
       await route.fulfill({ status: 405, json: { detail: 'Motion tests never write to the backend.' } }); return
     }
     if (url.pathname === '/api/deals') { await route.fulfill({ json: { companies: [] } }); return }
-    if (url.pathname === '/api/deals/circle-2025-ipo/report') { await route.fulfill({ json: report }); return }
+    if (url.pathname === '/api/deals/circle-2025-ipo/report') {
+      await new Promise(resolve => setTimeout(resolve, 350))
+      await route.fulfill({ json: report }).catch(() => {})
+      return
+    }
+    if (url.pathname === '/api/deals/circle-2025-ipo/uploads') { await route.fulfill({ json: { uploads: [] } }); return }
     if (url.pathname === '/api/calculation-runtime') {
       await route.fulfill({ json: { mode: 'llm_local', configured: false, model: 'motion-ui-fixture', executor: 'local_python', generation_provider: 'fixture', missing: ['UI-only fixture'], maximum_inputs: 100 } }); return
     }
@@ -69,18 +75,23 @@ async function createPage(options = {}) {
   return { page, context }
 }
 async function runningPageMotion(page) {
-  await page.waitForFunction(id => document.getElementById('main-content')?.getAnimations().some(animation => animation.id === id && animation.playState === 'running'), pageAnimationId)
-  const state = await page.locator('#main-content').evaluate((main, id) => {
-    const animation = main.getAnimations().find(item => item.id === id)
-    return { transform: getComputedStyle(main).transform, opacity: Number(getComputedStyle(main).opacity), duration: animation?.effect?.getTiming().duration }
+  await page.waitForFunction(id => Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running')), pageAnimationId)
+  const state = await page.locator('.page-transition').first().evaluate((region, id) => {
+    const animation = region.getAnimations().find(item => item.id === id)
+    const transform = getComputedStyle(region).transform
+    return { transform, translateY: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42, opacity: Number(getComputedStyle(region).opacity), duration: animation?.effect?.getTiming().duration }
   }, pageAnimationId)
-  assert.equal(state.transform, 'none', 'Page motion must not create a containing block for fixed overlays.')
+  assert.notEqual(state.transform, 'none', 'Visible route content should move during its entrance.')
+  assert.ok(state.translateY >= 0 && state.translateY <= 13, 'Route motion stays small and vertical.')
   assert.ok(state.opacity > 0 && state.opacity <= 1, 'Visible content must remain readable while entering.')
-  assert.ok(Number(state.duration) > 0 && Number(state.duration) <= 350, 'Page transition should be brief.')
+  assert.ok(Number(state.duration) > 0 && Number(state.duration) <= 400, 'Page transition should be brief.')
+  assert.equal(await page.locator('#main-content').evaluate(main => getComputedStyle(main).transform), 'none', 'The fixed-overlay ancestor must never move.')
+  assert.equal(await page.locator('.assistant-dock').evaluateAll(docks => docks.every(dock => !dock.closest('.page-transition'))), true, 'The fixed assistant dock must stay outside the moving content.')
 }
 async function settled(page) {
-  await page.waitForFunction(id => !document.getElementById('main-content')?.getAnimations().some(animation => animation.id === id && animation.playState === 'running'), pageAnimationId)
-  assert.equal(await page.locator('#main-content').evaluate(main => getComputedStyle(main).opacity), '1')
+  await page.waitForFunction(id => !Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running')), pageAnimationId)
+  assert.equal(await page.locator('.page-transition').first().evaluate(region => getComputedStyle(region).opacity), '1')
+  assert.equal(await page.locator('.page-transition').first().evaluate(region => getComputedStyle(region).transform), 'none')
   assert.equal(await page.locator('#main-content').evaluate(main => getComputedStyle(main).transform), 'none')
 }
 async function navigate(page, route, selector) {
@@ -96,6 +107,7 @@ async function assertOverlayBounds(page) {
   })
   assert.ok(Math.abs(bounds.top) < 1 && Math.abs(bounds.left) < 1)
   assert.ok(Math.abs(bounds.width - bounds.viewportWidth) < 1 && Math.abs(bounds.height - bounds.viewportHeight) < 1)
+  assert.equal(await page.locator('.modal-backdrop').last().evaluate(element => element.parentElement === document.body && !element.closest('.page-transition')), true, 'Dialogs stay outside the animated route region.')
 }
 async function assertOverlayOnTop(page) {
   const intercepted = await page.evaluate(() => {
@@ -122,6 +134,24 @@ try {
       ['/project/enfuce/report/review', '.report-paper'], ['/project/enfuce/report/export', '.export-layout'],
       ['/project/enfuce/data-room', '.sources-table'], ['/projects', '.project-card'],
     ]) await navigate(page, route, selector)
+  })
+  await check('Actual company-card and Dashboard, Report and Data room links animate visible company content', async () => {
+    const before = await page.evaluate(() => window.__motionAnimations.length)
+    await page.getByRole('link', { name: 'Open Circle dashboard', exact: true }).click()
+    await runningPageMotion(page)
+    await page.locator('.calculation-lab').waitFor()
+    await runningPageMotion(page)
+    const phases = await page.evaluate(start => window.__motionAnimations.slice(start).filter(item => item.element.classList.contains('page-transition')).map(item => ({ phase: item.phase, startedAt: item.startedAt })), before)
+    assert.ok(phases.some(item => item.phase === 'loading'), 'Company-card navigation must animate the loading region.')
+    assert.ok(phases.some(item => item.phase === 'company-ready'), 'Loaded company content needs a fresh entrance after the delayed report arrives.')
+    assert.ok(phases.find(item => item.phase === 'company-ready').startedAt - phases.find(item => item.phase === 'loading').startedAt >= 300, 'The fixture must exercise a real asynchronous company load.')
+    await settled(page)
+    const navigation = page.getByRole('navigation', { name: 'Project workspace', exact: true })
+    for (const [label, selector] of [['Report', '.builder-grid'], ['Data room', '.company-uploads'], ['Dashboard', '.calculation-lab']]) {
+      await navigation.getByRole('link', { name: label, exact: true }).click()
+      await runningPageMotion(page); await page.locator(selector).waitFor(); await settled(page)
+    }
+    await navigate(page, '/projects', '.project-card')
   })
   await check('Rapid navigation and browser history never leave dimmed or stale page content', async () => {
     await page.evaluate(async () => {
@@ -194,7 +224,7 @@ try {
     const stillEntering = await page.locator('.metric-card').filter({ hasText: '2019 gross profit' }).evaluate(async (button, id) => {
       button.click()
       await new Promise(resolve => requestAnimationFrame(resolve))
-      return document.getElementById('main-content').getAnimations().some(animation => animation.id === id && animation.playState === 'running')
+      return Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running'))
     }, pageAnimationId)
     assert.equal(stillEntering, true, 'The overlay check must run during the page transition.')
     await assertOverlayBounds(page); await assertOverlayOnTop(page)
