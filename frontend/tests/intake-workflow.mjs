@@ -131,6 +131,42 @@ try {
     const [download] = await Promise.all([native.waitForEvent('download'), native.getByRole('button', { name: 'Download original', exact: true }).click()])
     assert.equal(download.suggestedFilename(), 'original.docx'); assert.deepEqual(await fs.readFile(await download.path()), nativeBytes); assert.equal(downloads, 1)
   })
+  const readingRequests = []
+  const readingRoom = await workspace('reading-views', async (route, url) => {
+    if (url.pathname === '/api/deals/fixture-company/uploads') { await route.fulfill({ json: { uploads: [] } }); return true }
+    const preview = /^\/api\/sources\/([^/]+)\/pdf-preview$/.exec(url.pathname)
+    if (preview) {
+      readingRequests.push(preview[1])
+      const rendered = await readingRoom.evaluate(id => { const source = window.readingFixture.report.source_files.find(item => item.snapshot_id === id); const canvas = document.createElement('canvas'); canvas.width = 1; canvas.height = 1; canvas.getContext('2d').fillRect(0, 0, 1, 1); return { snapshot_id: id, sha256: source.sha256, page: 1, page_count: 1, width: 1, height: 1, png_base64: canvas.toDataURL('image/png').split(',')[1] } }, preview[1])
+      await route.fulfill({ json: rendered }); return true
+    }
+    const match = /^\/api\/sources\/([^/]+)\/file$/.exec(url.pathname)
+    if (match) { const originals = await readingRoom.evaluate(() => window.readingFixture.originals); readingRequests.push(match[1]); await route.fulfill({ body: originals[match[1]], headers: { 'Content-Type': match[1].endsWith('-reading') ? 'application/pdf' : 'application/octet-stream' } }); return true }
+  })
+  await check('Native Office and OCR originals expose company-bound reading evidence and distinct reading-copy labels', async () => {
+    for (const filename of ['overview.docx', 'overview.pptx', 'overview.png']) {
+      const row = readingRoom.getByRole('row').filter({ has: readingRoom.getByText(filename, { exact: true }) })
+      assert.match(await row.innerText(), /Reading view evidence/); assert.match(await row.innerText(), /Verify/)
+      assert.equal(await row.getByRole('button', { name: `Open reading view of ${filename}`, exact: true }).count(), 1)
+      assert.equal(await readingRoom.getByText(`Reading view of ${filename}`, { exact: true }).count(), 1)
+    }
+    assert.equal(await readingRoom.getByRole('button', { name: 'Open reading view of overview.docx', exact: true }).count(), 1, 'The changed-hash context must not create a second native reading link.')
+    await readingRoom.getByLabel('Search sources', { exact: true }).fill('overview.pptx'); assert.equal(await readingRoom.locator('.backend-source-table tbody tr').count(), 2)
+    await readingRoom.getByLabel('Search sources', { exact: true }).fill('')
+    const output = path.resolve('test-results/intake-workflow'); await fs.mkdir(output, { recursive: true })
+    await readingRoom.screenshot({ path: path.join(output, 'data-room-reading-views.png'), fullPage: true, animations: 'disabled' })
+  })
+  await check('Open reading view selects the registered PDF while original Open and Download preserve native bytes and hashes', async () => {
+    const row = readingRoom.getByRole('row').filter({ has: readingRoom.getByText('overview.docx', { exact: true }) })
+    await row.getByRole('button', { name: 'Open reading view of overview.docx', exact: true }).click()
+    const view = readingRoom.getByRole('dialog', { name: 'Reading view', exact: true }); await view.getByRole('img', { name: /Original PDF page 1 of/ }).waitFor()
+    assert.match(await view.innerText(), /Reading view of overview.docx/); assert.match(await view.innerText(), /untouched original/); assert.equal(readingRequests.at(-1), 'native-reading')
+    await readingRoom.keyboard.press('Escape'); await row.getByRole('button', { name: 'Open file', exact: true }).click()
+    const original = readingRoom.getByRole('dialog', { name: 'Original source file', exact: true }); assert.match(await original.innerText(), /native application/); assert.match(await original.innerText(), /overview.docx/)
+    await readingRoom.keyboard.press('Escape')
+    const [download] = await Promise.all([readingRoom.waitForEvent('download'), row.getByRole('button', { name: 'Download original', exact: true }).click()])
+    assert.equal(download.suggestedFilename(), 'overview.docx'); assert.equal(await fs.readFile(await download.path(), 'utf8'), 'Native original fixture bytes.'); assert.equal(readingRequests.at(-1), 'native')
+  })
   let sourceCalls = 0
   const chat = await workspace('chat', async (route, url) => {
     if (url.pathname === '/api/deals/fixture-company/evidence-chat') {

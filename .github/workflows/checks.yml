@@ -36,8 +36,13 @@ jobs:
         run: npm --prefix frontend ci
       - name: Install document and OCR tools
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends \
+          # Use the official HTTPS archive; the image's Azure HTTP mirror has
+          # intermittently taken minutes to transfer small dependency packages.
+          if [[ -f /etc/apt/sources.list.d/ubuntu.sources ]]; then
+            sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list.d/ubuntu.sources
+          fi
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::https::Timeout=30 update -qq
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::https::Timeout=30 install -y --no-install-recommends \
             libreoffice-writer libreoffice-impress fonts-liberation fonts-noto-cjk \
             tesseract-ocr tesseract-ocr-eng tesseract-ocr-chi-sim tesseract-ocr-chi-tra
       - name: Install locked Python dependencies
@@ -66,6 +71,21 @@ jobs:
           node-version: '24.22.1'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+      - name: Install browser test dependencies
+        timeout-minutes: 12
+        working-directory: frontend
+        run: |
+          npm ci
+          if command -v google-chrome >/dev/null; then
+            browser_path=$(command -v google-chrome)
+          elif command -v chromium >/dev/null; then
+            browser_path=$(command -v chromium)
+          else
+            npx playwright install --with-deps chromium
+            browser_path=$(node --input-type=module -e 'import { chromium } from "playwright"; process.stdout.write(chromium.executablePath())')
+          fi
+          "$browser_path" --version
+          echo "PLAYWRIGHT_BROWSER_PATH=$browser_path" >> "$GITHUB_ENV"
       - name: Test and build the frontend
         run: bash scripts/ci/frontend.sh
       - name: Retain failed browser workflow evidence

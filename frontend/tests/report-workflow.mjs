@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { spawn } from 'node:child_process'
+import { waitForFixtureGate } from './workflowGuards.mjs'
 import { reportEvidence } from '../src/backend.ts'
 
 // Fully intercepted API fixtures: exercises actual Report UI without provider calls or server writes.
@@ -32,7 +33,12 @@ if (!executablePath) {
 const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless: true }).catch(error => { vite?.kill(); throw error })
 const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, acceptDownloads: true })
 const errors = [], writes = [], records = new Map(), results = []
-let mode = 'success', release = null, attempt = 0
+let mode = 'success', release = null, attempt = 0, waitingGate = null
+async function requestGate(name) {
+  waitingGate = name
+  await waitForFixtureGate(name, () => release)
+  waitingGate = null
+}
 const stamp = '2026-10-26T12:00:00Z'
 function summary(record) { const { draft, workspace, deal_id, ...rest } = record; return rest }
 function record(id, workspace = null, draft = null) { return { id, deal_id: 'fixture-company', version: 1, created_at: stamp, updated_at: stamp, based_on_report_id: 'report-v1', model: draft?.model ?? null, section_count: workspace?.sections.length ?? draft?.sections.length ?? 0, workspace, draft } }
@@ -122,7 +128,7 @@ try {
     await page.getByRole('button', { name: /^Generate report preview/ }).click()
     await page.getByLabel('Additional focus', { exact: false }).fill('Changed during the request')
     await page.waitForFunction(() => document.querySelector('[role=status]')?.textContent !== '')
-    while (!release) await new Promise(resolve => setTimeout(resolve, 10))
+    await requestGate('report generation request after settings edit')
     release(); release = null
     await page.getByRole('alert').filter({ hasText: 'settings changed' }).waitFor()
     const w = await fixture(); assert.equal(w.sections.length, 0); assert.equal(w.configs.overview.focus, 'Changed during the request')
@@ -130,7 +136,7 @@ try {
   await check('stopping a request retains draft/settings and permits a new successful request', async () => {
     mode = 'delay'
     await page.getByRole('button', { name: /^Generate report preview/ }).click()
-    while (!release) await new Promise(resolve => setTimeout(resolve, 10))
+    await requestGate('report generation request before cancellation')
     await page.getByRole('button', { name: 'Stop waiting', exact: true }).click()
     mode = 'success'; release(); release = null
     await page.getByRole('button', { name: /^Generate report preview/ }).click()
@@ -286,7 +292,7 @@ try {
   await check('a delayed shared load cannot overwrite settings changed while it is pending', async () => {
     await open(); mode = 'delay-load'
     await page.locator('.stored-report-row').first().getByRole('button', { name: 'Load shared report', exact: true }).click()
-    while (!release) await new Promise(resolve => setTimeout(resolve, 10))
+    await requestGate('shared report load request before settings edit')
     await page.getByLabel('Additional focus', { exact: false }).fill('Keep my settings during the shared load')
     release(); release = null; mode = 'success'
     await page.getByRole('alert').filter({ hasText: 'settings changed' }).waitFor()
@@ -338,5 +344,10 @@ try {
   await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ results, writes: writes.map(({method, endpoint}) => ({method, endpoint})), errors }, null, 2))
 } catch (error) {
   await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {})
-  await fs.writeFile(path.join(output, 'failure.json'), JSON.stringify({ results, error: String(error), errors }, null, 2)); throw error
+  const pageState = await page.evaluate(() => ({ route: document.querySelector('[aria-label="Fixture route"]')?.textContent,
+    alerts: [...document.querySelectorAll('[role="alert"]')].map(element => element.textContent?.slice(0, 1500)),
+    report: { report_id: window.reportFixture?.report?.report_id, source_count: window.reportFixture?.report?.source_files?.length, order: window.reportFixture?.workspace?.order, section_count: window.reportFixture?.workspace?.sections?.length },
+    buttons: [...document.querySelectorAll('button')].filter(button => /Generate|Regenerate|Stop waiting/.test(button.textContent)).map(button => ({ text: button.textContent, disabled: button.disabled }))
+  })).catch(reason => ({ diagnostic_error: String(reason) }))
+  await fs.writeFile(path.join(output, 'failure.json'), JSON.stringify({ results, error: String(error), mode, waiting_gate: waitingGate, attempts: attempt, page_state: pageState, errors }, null, 2)); throw error
 } finally { await browser.close(); vite?.kill() }

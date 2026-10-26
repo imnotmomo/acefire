@@ -66,3 +66,21 @@ The first QA PR CI run (40331990295) passed backend tests and all new product wo
 - Transition regression now passes with 4x CPU throttling and a 700 ms observation delay, preserving production’s 320 ms motion, visible effect assertions and reduced-motion behavior.
 
 - Upload lease initialization was made portable: real Unix contention/release is tested, and Windows import/byte-lock behavior is simulated. Actual Windows execution was not performed. Full backend suite now passes 436 tests with no skips.
+
+## Final source-control and CI follow-up
+
+Feature PR #12 merged only into `qa` as d95bda2 after passing CI40334960490. The long green run spent 9 minutes 10 seconds downloading Ubuntu browser packages from a slow mirror; no product tests hung. Browser installation is now a separate stage which prefers the runner’s installed Chrome and falls back to Playwright. Named fixture gates and 180-second suite deadlines prevent unrelated future tests from waiting forever.
+
+The additional evidence-control audit reproduced an authenticated premise link returning 401 because it opened a raw URL. It now uses the standard checked file action, opens the exact source in the inspector’s File tab, and rejects changed or foreign bindings. Thirteen new browser groups cover dashboard searches/filters/paging, coverage, all inspector tabs, graph selection/zoom, clipboard permission success/failure, download/hash retry, original premise locators and mobile layout. The combined local gate is 73 browser workflow groups, 110 unit/SSR tests, TypeScript/build, 436 backend tests and 53 deployment tests.
+
+Seven synthetic file formats were submitted only to the isolated QA company: CSV, XLSX, text, PDF, image, Word and PowerPoint. All completed; document/image processing used the actual configured model, native Office conversion and OCR. Missing units stay unresolved until explicit normalization; OCR results remain Verify. Both configured company and source models returned cited live answers against the earlier synthetic smoke workspace. New-release UI generation/calculation checks remain pending activation.
+
+## Live source-viewer findings and correction
+
+The real in-app browser displayed a blank native PDF frame despite valid source bytes. PDF viewing now renders a single static PNG page from the existing locked PDFium dependency in an isolated, credential-free worker. Page navigation, exact cited-page selection, retry, 75–400% zoom and mobile panning work without a browser PDF plug-in. Original PDFs remain unchanged and downloadable; annotations are preserved as pixels, while interactive fields/attachments require the original. Page size, memory, output, time and concurrency are bounded.
+
+Word, PowerPoint and image originals previously appeared Missing when their claims were attached to derived reading PDFs. Company-bound original/reading relationships now produce an explicit Reading view evidence · Verify label and a direct reading-view action. Repeated reading-view.pdf rows identify their registered original filename. Foreign or changed source bindings cannot create these links.
+
+The combined frozen local gate passes 86 browser workflow groups, 114 unit/SSR tests, TypeScript, 442 backend tests (no skips) and the unchanged 53 deployment checks. Actual two-page and annotated PDFs were rasterized in backend tests; browser renderer fixtures exercise timeouts, corrupt/truncated/oversized images, response identity, original download integrity and source-switch races.
+
+QA push run40337180975 never activated: its backend job exhausted the 20-minute limit downloading LibreOffice from the Azure HTTP package mirror. The workflow now uses Ubuntu’s official HTTPS archive with bounded network retries and retains the full native Office/OCR tests. Production was not modified. The pending PR13 carries these corrections; successful publication and real Generate/Calculate UI proof are still required.

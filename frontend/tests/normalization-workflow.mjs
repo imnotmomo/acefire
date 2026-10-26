@@ -4,6 +4,7 @@ import { createServer } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { waitForFixtureGate } from './workflowGuards.mjs'
 
 const output = path.resolve('test-results/normalization-workflow')
 await fs.mkdir(output, { recursive:true })
@@ -17,7 +18,12 @@ for (const candidate of ['/Applications/Google Chrome.app/Contents/MacOS/Google 
 const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless:true })
 const context = await browser.newContext({ viewport:{ width:1440, height:1100 } })
 const errors = [], unexpected = [], results = [], reviewRequests = [], calculationRequests = []
-let reviewMode = 'failure', calculateMode = 'delay', releaseCalculation = null, releaseReview = null, reviewed, configured = true
+let reviewMode = 'failure', calculateMode = 'delay', releaseCalculation = null, releaseReview = null, reviewed, configured = true, waitingGate = null
+async function requestGate(name, current) {
+  waitingGate = name
+  await waitForFixtureGate(name, current)
+  waitingGate = null
+}
 const page = await context.newPage(); page.setDefaultTimeout(10000)
 page.on('pageerror', error => errors.push(error.message))
 await context.route('**/api/**', async route => {
@@ -127,7 +133,7 @@ try {
     await lab().getByLabel('Calculation question', { exact:true }).fill('Explain the selected raw and reviewed input without double counting.')
     await lab().getByRole('button', { name:'Generate and run calculation', exact:true }).click()
     await page.waitForFunction(() => document.querySelector('.calculation-submit-actions')?.textContent?.includes('Stop waiting'))
-    while (!releaseCalculation) await new Promise(resolve => setTimeout(resolve, 10))
+    await requestGate('calculation API request before cancellation', () => releaseCalculation)
     await lab().getByRole('button', { name:'Stop waiting', exact:true }).click()
     assert.match(await lab().getByRole('alert').innerText(), /server may still finish/)
     assert.equal(await lab().locator('tbody input[type=checkbox]:checked').count(), 2)
@@ -160,7 +166,7 @@ try {
     await dialog().getByRole('textbox', { name:'Exact scale multiplier', exact:true }).fill('1000')
     await dialog().getByRole('textbox', { name:'Normalization basis', exact:true }).fill('Keep this explicit review rationale while stopping the request.')
     await dialog().getByRole('button', { name:'Save reviewed input', exact:true }).click()
-    while (!releaseReview) await new Promise(resolve => setTimeout(resolve, 10))
+    await requestGate('numeric review API request before cancellation', () => releaseReview)
     await dialog().getByRole('button', { name:'Stop waiting', exact:true }).click()
     assert.match(await dialog().getByRole('alert').innerText(), /entered metadata is preserved/)
     assert.equal(await dialog().getByRole('textbox', { name:'Exact scale multiplier', exact:true }).inputValue(), '1000')
@@ -207,6 +213,12 @@ try {
   await fs.writeFile(path.join(output,'results.json'), JSON.stringify({ passed:results, simulation:'All API requests intercepted; no provider or existing server calls.', review_requests:reviewRequests, calculation_requests:calculationRequests, errors, unexpected },null,2))
 } catch (error) {
   await page.screenshot({ path:path.join(output,'failure.png'), animations:'disabled' }).catch(() => {})
-  await fs.writeFile(path.join(output,'failure.json'), JSON.stringify({ passed:results, message:String(error), errors, unexpected },null,2))
+  const pageState = await page.evaluate(() => ({
+    alerts:[...document.querySelectorAll('[role="alert"]')].map(element => element.textContent?.slice(0,1500)),
+    runtime:document.querySelector('.calculation-runtime')?.textContent?.slice(0,1500),
+    selected_inputs:document.querySelectorAll('.calculation-lab tbody input[type="checkbox"]:checked').length,
+    buttons:[...document.querySelectorAll('button')].filter(button => /Generate|Save reviewed|Stop waiting/.test(button.textContent)).map(button => ({ text:button.textContent, disabled:button.disabled }))
+  })).catch(reason => ({ diagnostic_error:String(reason) }))
+  await fs.writeFile(path.join(output,'failure.json'), JSON.stringify({ passed:results, message:String(error), review_mode:reviewMode, calculation_mode:calculateMode, configured, waiting_gate:waitingGate, review_requests:reviewRequests.length, calculation_requests:calculationRequests.length, page_state:pageState, errors, unexpected },null,2))
   throw error
 } finally { await context.close(); await browser.close(); await server.close() }
