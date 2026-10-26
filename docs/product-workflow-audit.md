@@ -84,3 +84,13 @@ Word, PowerPoint and image originals previously appeared Missing when their clai
 The combined frozen local gate passes 86 browser workflow groups, 114 unit/SSR tests, TypeScript, 442 backend tests (no skips) and the unchanged 53 deployment checks. Actual two-page and annotated PDFs were rasterized in backend tests; browser renderer fixtures exercise timeouts, corrupt/truncated/oversized images, response identity, original download integrity and source-switch races.
 
 QA push run40337180975 never activated: its backend job exhausted the 20-minute limit downloading LibreOffice from the Azure HTTP package mirror. The workflow now uses Ubuntu’s official HTTPS archive with bounded network retries and retains the full native Office/OCR tests. Production was not modified. The pending PR13 carries these corrections; successful publication and real Generate/Calculate UI proof are still required.
+
+## Effective CI mirror correction
+
+Completed runner logs showed that the initial HTTPS edit missed `mirror+file` resolution through `/etc/apt/apt-mirrors.txt`; 68 package GETs still used the HTTP Azure mirror. The correction now rewrites effective Ubuntu mirror lists as well as direct source files, preserving suites/components and signing keys. Two fixture tests cover current and alternate image formats, direct URIs, idempotence and non-Ubuntu preservation. Both HTTP and HTTPS operations have bounded retries/timeouts. QA run40343039619 reached its setup timeout before the cancellation check; no cancellation command was issued and publication was skipped. A fresh feature branch from current QA carries this CI-only correction; production remains held.
+
+The actual Generate report button returned a cited report for the synthetic company. A generated passage traces to overview.txt line2 with its exact quotation/hash, and its real Markdown download contains the source references. PDF/Word export and all new-release controls still require served-release validation; no completion claim is made for those yet.
+
+## Current CI readiness regression
+
+Run40355792681 confirmed the effective mirror correction: 68 package GETs used Ubuntu HTTPS, zero used HTTP Azure, and all444 backend tests passed. Its frontend failed because a test read a newly opened native-file dialog while it was still loading. The test now awaits the ready message; related tests await actual history responses, decoded images and clipboard completion. Functional assertions remain intact. Intake and evidence suites each passed two consecutive 4x CPU runs (52 group executions total). These changes affect tests only.
