@@ -113,3 +113,14 @@ C has since implemented the Circle report/lineage connection described below; re
 - Paths: frontend/src/App.tsx, Brand.tsx, brand.css, public/images/brand/README.md, tests/ui-showcase.mjs and this record. Replace existing editable SVG wrapper bitmap/filter implementation with native geometric SVG and serif text. No raster editing or generated image required for this code-native logo system. No backend/API/report/storage/deploy changes.
 
 - Completed: corrected company-image bindings and replaced runtime bitmap/filter branding with transparent SVG paths and serif text; landing uses direct white fill via currentColor. Original raster retained as reference. Production build and focused Projects browser check passed. Light/dark logos inspected at 3x device scale; no bitmap/filter nodes, correct white landing text, no residual tagline or white halo. No backend changes.
+
+## Logo-shaped landing sculpture — 2026-10-25
+
+- State: in_progress. User requests replacing the landing hero arch with the Ingenium mark while preserving the existing navy/periwinkle dimensional illustration style.
+- Paths: frontend/src/Landing.tsx and this record. Native SVG redraw of four existing brand facets with extrusion, gradient lighting and floor shadow; existing layout, labels, copy and interactions retained. No backend or product workspace changes.
+
+- Additional user scope: show all three target personas at the same level rather than tabs; refresh three workspace marketing screenshots from current rendered frontend. Additional paths: frontend/src/landing.css, frontend/scripts/capture-landing-previews.mjs, frontend/public/images/workspace-*.jpg, frontend/tests/landing.mjs. Screenshots use only existing historical Enfuce demo, no live company data or cloud writes.
+
+- Additional styling request: frontend/src/styles.css changes only .assistant-spark background from green to white; chatbot behavior unchanged.
+
+- Completed: logo-shaped extruded SVG hero, three equal-level persona columns (stacked on mobile), refreshed 1440x1000 screenshots of current historical-demo Dashboard/Report Builder/Data room, reusable screenshot capture script, white chatbot mark background. Native screenshots are captured at refresh time, not live company-data feeds. Production build and all 10 landing browser flows passed, including four responsive widths, reduced motion, navigation and all three images; explicit white-background check and desktop visual inspection passed. Existing scheduled frontend sync published the primary source/assets as 09758e2; this handoff includes final CSS cleanup, test and refresh documentation. No backend/API or deployment code edits.

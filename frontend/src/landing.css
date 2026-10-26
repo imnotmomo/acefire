@@ -155,15 +155,6 @@ html[data-screen='landing'] body { background: #111629; }
 .ig-proof-principles > span { color: #73809b; font-size: 11px; display: flex; align-items: center; gap: 7px; }
 .ig-proof-principles svg { color: #677ea6; }
 .ig-teams { padding-block: 107px 95px; }
-.ig-persona-tabs { display: flex; gap: 33px; border-bottom: 1px solid #394360; margin-top: 40px; }
-.ig-persona-tabs > button { font-size: 12px; display: flex; align-items: center; gap: 9px; color: #91a0c1; padding: 15px 0 17px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.ig-persona-tabs > button[aria-selected='true'] { color: #dce4ff; border-color: #a5b6f2; }
-.ig-persona-panel { display: grid; grid-template-columns: 1.1fr 1fr; gap: 90px; padding: 39px 0 10px; min-height: 233px; align-items: start; }
-.ig-persona-panel h3 { font-size: 27px; letter-spacing: -.9px; line-height: 1.4; font-weight: 430; margin-bottom: 16px; max-width: 400px; }
-.ig-persona-panel p { color: #a6b2cc; font-size: 13px; max-width: 480px; line-height: 1.9; margin-bottom: 20px; }
-.ig-persona-panel > ul { list-style: none; padding: 0; padding-top: 10px; margin: 0; }
-.ig-persona-panel li { display: flex; align-items: flex-start; gap: 12px; color: #b0bcd6; font-size: 13px; line-height: 1.8; margin-bottom: 18px; }
-.ig-persona-panel li > svg { margin-top: 4px; color: #a6b6ed; }
 .ig-faq { border-top: 1px solid #39436080; display: grid; grid-template-columns: .75fr 1.25fr; gap: 105px; padding-block: 85px 100px; }
 .ig-faq > div:first-child > p:last-child { color: #9baaca; margin-top: 23px; font-size: 13px; line-height: 1.9; }
 .ig-faq h2 { font-size: 38px; }
@@ -271,8 +262,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-evidence-panel { padding: 30px; }
   .ig-evidence-panel-heading { font-size: 10px; }
   .ig-sample-tag { font-size: 8px; }
-  .ig-persona-panel { gap: 50px; }
-  .ig-persona-panel h3 { font-size: 25px; }
   .ig-faq { gap: 65px; }
   .ig-contact h2 { font-size: 44px; }
   .ig-contact-orbit { right: -210px; opacity: .75; }
@@ -359,11 +348,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-proof-principles { gap: 25px; }
   .ig-proof-principles > span { font-size: 9px; }
   .ig-teams { padding-block: 85px 70px; }
-  .ig-persona-tabs { gap: 23px; }
-  .ig-persona-tabs > button { font-size: 10px; gap: 7px; }
-  .ig-persona-panel { gap: 40px; }
-  .ig-persona-panel h3 { font-size: 23px; }
-  .ig-persona-panel p, .ig-persona-panel li { font-size: 11px; }
   .ig-faq { gap: 45px; padding-block: 75px; }
   .ig-faq h2 { font-size: 33px; }
   .ig-faq-item h3 > button { font-size: 12px; }
@@ -494,15 +478,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-proof-principles { flex-direction: column; align-items: flex-start; gap: 13px; padding-left: 2px; margin-top: 25px; }
   .ig-proof-principles > span { font-size: 11px; gap: 9px; }
   .ig-teams { padding-block: 66px 56px; }
-  .ig-persona-tabs { gap: 15px; margin-top: 25px; }
-  .ig-persona-tabs > button { flex: 1; flex-direction: column; font-size: 9px; line-height: 1.6; text-align: center; gap: 7px; padding: 10px 0 14px; }
-  .ig-persona-tabs > button > svg { width: 17px; }
-  .ig-persona-panel { grid-template-columns: 1fr; gap: 20px; padding-top: 27px; }
-  .ig-persona-panel h3 { font-size: 26px; max-width: 400px; }
-  .ig-persona-panel p { font-size: 12px; }
-  .ig-persona-panel .ig-text-link { font-size: 11px; }
-  .ig-persona-panel > ul { padding-top: 0; }
-  .ig-persona-panel li { font-size: 12px; gap: 10px; margin-bottom: 14px; }
   .ig-faq { grid-template-columns: 1fr; gap: 28px; padding-block: 60px; }
   .ig-faq h2 { font-size: 32px; }
   .ig-faq > div:first-child > p:last-child { margin-top: 17px; font-size: 12px; }

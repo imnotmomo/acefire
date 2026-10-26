@@ -499,3 +499,7 @@ Browser access was declined in this chat, so these new flows are validated throu
 The old canned-response assistant has been removed. Unconnected projects show a connection action; once the confirmed company report loads, the same launcher opens live Company chat. A failed company load shows Retry connection and never falls back to saved-answer chat.
 
 The historical `enfuce` workbook/FDD workspace remains separate from `enfuce-documents` (the imported April 2020 deck). Its chat launcher explicitly offers **Open Enfuce company chat**, discloses the evidence scope, and opens the model drawer there without migrating any historical drafts, sources or browser files. `?chat=company` is a one-time opening intent; it is consumed after latching the drawer and leaves the selected Dashboard/Data room/Report stage intact. The model still answers only from the selected company's stored evidence; missing evidence remains missing.
+
+### Refresh landing workspace screenshots
+
+Start the current frontend with `npm run dev`, then run `node scripts/capture-landing-previews.mjs` from `frontend/`. This captures the current Dashboard, Report Builder and Data room at 1440×1000 into `public/images/workspace-*-current.jpg`. The script uses the public historical Enfuce fixture and blocks live API access; no customer data or credentials are photographed. Commit the refreshed images with UI changes. These are real screenshots captured at refresh time, not a live iframe or live customer-data feed.

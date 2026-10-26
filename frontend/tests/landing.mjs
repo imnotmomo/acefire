@@ -7,6 +7,7 @@ const out = 'test-results/landing'
 await fs.mkdir(out, { recursive: true })
 const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_BROWSER_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true })
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } })
+await context.route('**/api/deals', route => route.fulfill({ json: { companies: [] } }))
 const page = await context.newPage()
 const errors = [], failed = [], passed = []
 page.on('pageerror', error => errors.push(error.message))
@@ -116,7 +117,7 @@ try {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto(`${base}/#teams`, { waitUntil: 'networkidle' })
     await page.locator('#teams').waitFor()
-    await page.getByRole('tab', { name: 'Senior Associates, VPs & Principals', exact: true }).click()
+    assert(await page.getByRole('heading', { name: 'Senior Associates, VPs & Principals', exact: true }).isVisible())
     assert.equal(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches), true)
     await page.goto(`${base}/#/project/enfuce/report/build`, { waitUntil: 'networkidle' })
     await page.locator('.builder-grid').waitFor()
