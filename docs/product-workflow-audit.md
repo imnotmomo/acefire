@@ -1,6 +1,6 @@
 # Product workflow repair: QA review
 
-**QA is deployed and verified; production promotion still requires explicit human approval.** The served release is `d18a5563f4e285b1de2b0efc7c2625a61881c931` at [qa.linearproduct.co](https://qa.linearproduct.co). [QA CI/CD run 40359088969](https://github.com/imnotmomo/acefire/actions/runs/40359088969) passed checks and deployment. Production has not been promoted by this audit.
+**QA is deployed and verified; production promotion still requires explicit human approval.** The live acceptance baseline was `d18a5563f4e285b1de2b0efc7c2625a61881c931` at [qa.linearproduct.co](https://qa.linearproduct.co). [QA CI/CD run 40359088969](https://github.com/imnotmomo/acefire/actions/runs/40359088969) passed checks and deployment. Production has not been promoted by this audit.
 
 ## Current acceptance evidence
 
@@ -8,7 +8,7 @@
 | --- | --- |
 | Automated backend gate | **444 passing tests**, no skips; actual LibreOffice conversion, Tesseract OCR and PDFium rendering are included. Model/provider responses are mocked in offline tests. |
 | Automated frontend gate | **114 unit/SSR tests**, TypeScript and production build passed. |
-| Browser workflow gate | **86 groups** using actual controls with intercepted APIs and synthetic evidence: 13 intake/chat, 19 report, 10 number-review, 9 workspace, 13 evidence, 11 PDF viewer, 10 motion and 1 landing sample. |
+| Browser workflow gate | **88 groups** using actual controls with intercepted APIs and synthetic evidence: 13 intake/chat, 19 report, 10 number-review, 11 workspace, 13 evidence, 11 PDF viewer, 10 motion and 1 landing sample. |
 | Deployment gate | **53 boundary/archive/controller tests** passed. The deploy job consumes this run’s `home-release-d18a5563f4e285b1de2b0efc7c2625a61881c931` artifact, containing `release.tar.gz` and `manifest.json`. |
 | Served report generation | The actual Generate report control returned a cited **two-section** model report. Its source quotation opens `overview.txt`, **line 2**, with the exact recorded quotation and SHA-256. |
 | Served calculation | The actual calculation workflow saved **3000.3750 USD**. The stored result is available through the served UI. |
@@ -107,3 +107,10 @@ Original/reading-view links now resolve through registered company IDs and hashe
 [Run 40355792681](https://github.com/imnotmomo/acefire/actions/runs/40355792681) confirmed the mirror repair: 68 package GETs used Ubuntu HTTPS, zero used HTTP Azure, and all 444 backend tests passed. Frontend then read a native-file dialog before it finished loading. Tests now await its ready message, actual history responses, decoded images and completed clipboard operations. Functional assertions were retained; intake and evidence each passed two consecutive 4× CPU runs, totaling 52 group executions.
 
 The final [QA CI/CD run 40359088969](https://github.com/imnotmomo/acefire/actions/runs/40359088969) passed and deployed `d18a556`. The served UI acceptance and export evidence at the top refer to that release, rather than a local build or an earlier synthetic smoke deployment. Production promotion remains held for human approval.
+
+
+## Final mouse-target follow-up
+
+A final 860 × 731 browser check found that empty space beside the floating chat suggestion buttons intercepted a report’s Open source evidence click. Keyboard activation opened the correct evidence, confirming the source binding and action worked; DOM hit testing identified the dock wrapper as the mouse target. The dock background now passes pointer events through while its three real buttons remain interactive. Two full-application regressions reproduce the exact overlap at 860 × 731 and 390 × 844: the old CSS fails, while a direct mouse click opens the real evidence inspector and its hash-checked File tab after the repair. All three dock buttons still open their real dialogs, restore focus and preserve the report route. The tests do not force-click, activate with a keyboard, or scroll the source button away from the failure position. All 11 workspace groups, 114 unit/SSR tests, TypeScript and the production build pass locally.
+
+The documentation-only follow-up [run 40364162051](https://github.com/imnotmomo/acefire/actions/runs/40364162051) also passed checks and deployment as `9cc464f`. Its 35 served files matched the exact artifact. The pointer repair follows on a new feature branch from that QA commit; its PR and Actions run provide the subsequent publication record. Main and both production domains remain held at `152d212` until explicit human approval.

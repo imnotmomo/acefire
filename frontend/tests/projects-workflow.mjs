@@ -4,6 +4,8 @@ import { createServer } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { createHash } from 'node:crypto'
+import { defaultBackendConfig } from '../src/domain.ts'
 
 // The real application, real browser interactions, and only local API fixtures.
 const server = await createServer({ configFile: false, plugins: [react()], server: { host: '127.0.0.1', port: 5301 } })
@@ -26,7 +28,35 @@ function report(dealId) {
     primary_profile: { available: false, provider: 'akta', records: [], field_lineage: { fields: [], sources: [], nodes: [], edges: [] } }, reported_metrics: [], calculations: [], comparisons: [], source_files: [], coverage: [], summary: {}, gaps: dealId === 'circle-2025-ipo' ? [{ message: 'Circle source period is missing.', code: 'fixture_gap' }] : [],
     data_period_coverage: [], source_graph: { nodes: [], edges: [] }, conflict_numbers: dealId === 'circle-2025-ipo', conflicts: [], flags: [], document_claims: [] }
 }
-async function workspace(options = {}) {
+const dockQuote = 'The synthetic source describes this company and its recorded business.'
+const dockOriginal = `Fixture document heading\n${dockQuote}\n`
+const dockSource = { snapshot_id: 'dock-original', file_name: 'overview.txt', sha256: createHash('sha256').update(dockOriginal).digest('hex'), provider: 'fixture_upload', ingestion_channel: 'user_upload', data_role: 'supplemental_evidence', visibility: 'deal_private', preview_url: '/sources/dock-original/file', locator: { kind: 'text_lines', line_start: 2, line_end: 2 } }
+function dockReport() {
+  const saved = report('circle-2025-ipo')
+  saved.primary_profile = { available: true, provider: 'akta', records: [], field_lineage: { fields: [{ field_path: '/company_description', value: dockQuote, source: dockSource }], sources: [dockSource], nodes: [], edges: [] } }
+  saved.source_files = [dockSource]
+  return saved
+}
+const dockEvidenceId = 'field:dock-original:/company_description'
+async function sourceButtonBehindEmptyDock(page) {
+  const button = page.locator('.finding-card').getByRole('button', { name: 'Open source evidence', exact: true })
+  await button.scrollIntoViewIfNeeded()
+  const point = await page.evaluate(() => {
+    const button = document.querySelector('.finding-card>button'), dock = document.querySelector('.assistant-dock'), pill = dock?.querySelector('button')
+    if (!button || !dock || !pill) throw new Error('The report source button and dock must be rendered before positioning.')
+    const target = button.getBoundingClientRect(), first = pill.getBoundingClientRect()
+    window.scrollBy({ top: target.y + target.height / 2 - (first.y + first.height / 2), behavior: 'instant' })
+    const positioned = button.getBoundingClientRect(), frame = dock.getBoundingClientRect()
+    const x = positioned.x + positioned.width / 2, y = positioned.y + positioned.height / 2
+    const inside = rectangle => x > rectangle.left && x < rectangle.right && y > rectangle.top && y < rectangle.bottom
+    return { x, y, withinDock: inside(frame), overDockButton: [...dock.querySelectorAll('button')].some(element => inside(element.getBoundingClientRect())),
+      hit: document.elementFromPoint(x, y)?.className, target: { x: positioned.x, y: positioned.y, width: positioned.width, height: positioned.height }, dock: { x: frame.x, y: frame.y, width: frame.width, height: frame.height } }
+  })
+  assert.equal(point.withinDock, true, 'the source-button centre must reproduce the actual dock overlap')
+  assert.equal(point.overDockButton, false, 'the source-button centre must be behind blank space, not a chat control')
+  return { button, point }
+}
+async function workspace(options = {}, reportOverride = null) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1024 }, ...options }); contexts.push(context)
   await context.route('**/api/**', async route => {
     const request = route.request(), url = new URL(request.url()), method = request.method()
@@ -47,11 +77,12 @@ async function workspace(options = {}) {
         for (const [key, value] of Object.entries(body)) company.identifiers[`workspace_${key}`] = String(value)
         await route.fulfill({ json: { company } }); return
       }
-      if (method === 'GET' && suffix === '/report') { await route.fulfill({ json: report(dealId) }); return }
+      if (method === 'GET' && suffix === '/report') { await route.fulfill({ json: reportOverride?.company.deal_id === dealId ? reportOverride : report(dealId) }); return }
       if (method === 'GET' && suffix === '/uploads') { await route.fulfill({ json: { uploads: ['circle-2025-ipo', 'enfuce-2020'].includes(dealId) ? jobs(dealId) : [] } }); return }
       if (method === 'GET' && suffix.startsWith('/uploads/')) { await route.fulfill({ json: jobs(dealId)[0] }); return }
       if (method === 'GET' && suffix === '/report-drafts') { await route.fulfill({ json: { drafts: [] } }); return }
     }
+    if (method === 'GET' && url.pathname === '/api/sources/dock-original/file' && reportOverride) { await route.fulfill({ body: dockOriginal, headers: { 'Content-Type': 'text/plain' } }); return }
     if (method === 'GET' && url.pathname === '/api/calculation-runtime') { await route.fulfill({ json: { mode: 'llm_local', configured: false, model: 'UI-fixture', executor: 'local_python', generation_provider: 'fixture', missing: ['Offline fixture'], maximum_inputs: 100 } }); return }
     unexpected.push(`${method} ${url.pathname}`); await route.fulfill({ status: 501, json: { detail: 'No live API permitted in project regression fixtures.' } })
   })
@@ -150,6 +181,45 @@ try {
     await page.getByRole('button', { name: 'Toggle navigation', exact: true }).click(); await page.getByRole('button', { name: 'Close navigation', exact: true }).waitFor(); await page.keyboard.press('Escape')
     assert.equal(await page.getByRole('button', { name: 'Close navigation', exact: true }).count(), 0, 'Escape closes the mobile navigation.')
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true)
+  })
+  for (const viewport of [{ width: 860, height: 731 }, { width: 390, height: 844 }]) await check(`Blank dock space passes a real report source click through at ${viewport.width}×${viewport.height}; all three chat controls keep pointer/focus behavior`, async () => {
+    const saved = dockReport(), current = await workspace({ viewport }, saved), config = defaultBackendConfig('overview')
+    const local = { order: ['overview'], configs: { overview: config }, sections: [{ id: 'overview', title: 'Company overview', content: `${dockQuote} [${dockEvidenceId}]`, evidenceIds: [dockEvidenceId], config }], revisions: [], generatedAt: '2026-10-26T12:00:00Z', backendReportId: saved.report_id }
+    await current.evaluate(value => localStorage.setItem('acefire:workspace:v1:circle', JSON.stringify(value)), local)
+    await current.evaluate(() => { location.hash = '/project/circle/report/review' })
+    await current.locator('#section-overview .report-claim').first().click()
+    await current.locator('.finding-card').waitFor()
+    const route = current.url(), beforeMutations = mutations.length
+    const { button, point } = await sourceButtonBehindEmptyDock(current)
+    await fs.writeFile(path.join(output, `dock-overlap-${viewport.width}.json`), JSON.stringify(point, null, 2))
+    // Normal pointer action: no force click, keyboard activation or handler invocation.
+    await current.mouse.click(point.x, point.y)
+    const inspector = current.getByRole('dialog', { name: 'Evidence inspector', exact: true })
+    await inspector.waitFor({ timeout: 3_000 })
+    assert.equal(await inspector.evaluate(element => element.parentElement?.parentElement === document.body), true, 'inspector remains a body-level portal')
+    assert.equal(await inspector.locator('.connected-source-quotation').innerText(), dockQuote)
+    await inspector.getByRole('tab', { name: 'Source details', exact: true }).click()
+    assert.match(await inspector.innerText(), /field:dock-original:\/company_description/)
+    await inspector.getByRole('tab', { name: 'File', exact: true }).click()
+    await inspector.locator('.source-preview-text').waitFor()
+    assert.equal(await inspector.locator('.source-preview-text').innerText(), dockOriginal)
+    await inspector.getByRole('button', { name: 'Close Evidence inspector', exact: true }).click()
+    assert.equal(await button.evaluate(element => document.activeElement === element), true)
+    assert.equal(current.url(), route)
+    for (const [name, title] of [['Search source files', 'Search source files'], ['What evidence supports this summary?', 'Company chat'], ['Ask anything about your evidence', 'Company chat']]) {
+      const control = current.locator('.assistant-dock').getByRole('button', { name, exact: true })
+      assert.equal(await control.evaluate(element => { const rectangle = element.getBoundingClientRect(); const hit = document.elementFromPoint(rectangle.x + rectangle.width / 2, rectangle.y + rectangle.height / 2); return hit === element || element.contains(hit) }), true, `${name} keeps its actual pointer hit target`)
+      await control.click()
+      const dialog = current.getByRole('dialog', { name: title, exact: true }); await dialog.waitFor()
+      assert.equal(await dialog.evaluate(element => element.parentElement?.parentElement === document.body), true)
+      const input = dialog.getByRole('textbox', { name: title === 'Company chat' ? 'Ask about this company' : 'Search company source files', exact: true })
+      await input.fill('Retain this unsent pointer-regression draft.')
+      await dialog.getByRole('button', { name: `Close ${title}`, exact: true }).click()
+      assert.equal(await control.evaluate(element => document.activeElement === element), true)
+      assert.equal(current.url(), route)
+    }
+    assert.equal(mutations.length, beforeMutations, 'opening evidence and chat controls must not send model calls or writes')
+    await current.screenshot({ path: path.join(output, `dock-pointer-${viewport.width}.png`), fullPage: true })
   })
   assert.deepEqual(unexpected, []); assert.deepEqual(errors, [])
   await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, real_browser: true, mocked_api: true, live_writes: 0, live_model_calls: 0, unexpected_api: unexpected, browser_errors: errors, mocked_mutations: mutations.length }, null, 2))
