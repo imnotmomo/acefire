@@ -55,13 +55,14 @@ async function createPage(options = {}) {
       mutations.push(`${request.method()} ${url.pathname}`)
       await route.fulfill({ status: 405, json: { detail: 'Motion tests never write to the backend.' } }); return
     }
-    if (url.pathname === '/api/deals') { await route.fulfill({ json: { companies: [] } }); return }
+    if (url.pathname === '/api/deals') { await route.fulfill({ json: { companies: [{ deal_id: 'circle-2025-ipo', entity_key: 'circle', legal_name: 'Circle', domain: 'circle.com', country: 'USA', identifiers: { workspace_sector: 'Fintech', workspace_geography: 'United States' } }] } }); return }
     if (url.pathname === '/api/deals/circle-2025-ipo/report') {
       await new Promise(resolve => setTimeout(resolve, 350))
       await route.fulfill({ json: report }).catch(() => {})
       return
     }
     if (url.pathname === '/api/deals/circle-2025-ipo/uploads') { await route.fulfill({ json: { uploads: [] } }); return }
+    if (url.pathname === '/api/deals/circle-2025-ipo/report-drafts') { await route.fulfill({ json: { drafts: [] } }); return }
     if (url.pathname === '/api/calculation-runtime') {
       await route.fulfill({ json: { mode: 'llm_local', configured: false, model: 'motion-ui-fixture', executor: 'local_python', generation_provider: 'fixture', missing: ['UI-only fixture'], maximum_inputs: 100 } }); return
     }

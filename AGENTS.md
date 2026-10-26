@@ -16,7 +16,8 @@ Read this file, `TEAM_STATUS.md`, and `.team/status/*.md` before starting work. 
 3. Treat another owner’s `in_progress` paths as active. Coordinate overlaps through the human owner; do not infer that old status records mean an idle task.
 4. Document shared API/model/schema changes and affected consumers. Keep existing contracts and persisted IDs compatible.
 5. Record actual changes, checks, limits and handoff in your own status. Do not mark another teammate’s work complete. Keep dated notes clearly historical.
-6. Commit/push only within the human's authorized task. Every change, including docs and configuration, needs a new feature branch and the QA-first process below. `main` is protected: never push to it directly or bypass its protection. The human authorizes agents to open a short promotion PR and enable auto-merge after deployed-QA validation succeeds. Repository status files synchronize through Git; they are not permission to message other chats.
+6. A later human instruction to hold production or await approval overrides the default auto-promotion below. Record that hold in your status, publish only QA, and do not open or enable auto-merge on a production PR until the human approves.
+7. Commit/push only within the human's authorized task. Every change, including docs and configuration, needs a new feature branch and the QA-first process below. `main` is protected: never push to it directly or bypass its protection. The human authorizes agents to open a short promotion PR and enable auto-merge after deployed-QA validation succeeds. Repository status files synchronize through Git; they are not permission to message other chats.
 
 ## Runtime and evidence boundaries
 

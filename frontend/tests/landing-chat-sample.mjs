@@ -2,7 +2,11 @@ import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 
-const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_BROWSER_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true })
+let executablePath = process.env.PLAYWRIGHT_BROWSER_PATH
+for (const candidate of ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium', 'C:/Program Files/Google/Chrome/Application/chrome.exe']) {
+  if (!executablePath && await fs.access(candidate).then(() => true, () => false)) executablePath = candidate
+}
+const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless: true })
 const base = process.env.FRONTEND_BASE_URL || 'http://127.0.0.1:5173'
 await fs.mkdir('test-results/landing-chat', { recursive: true })
 try {
@@ -21,14 +25,15 @@ try {
   await page.waitForTimeout(400)
   assert.equal(await page.locator('.ig-chat-question p').innerText(), frozen)
   await sample.getByRole('button', { name: 'Resume demo' }).click()
-  await page.locator('.ig-chat-source.is-ready').waitFor({ timeout: 15000 })
+  assert.equal(await sample.locator('.ig-chat-source').getAttribute('aria-disabled'), null, 'Source navigation stays available while the sample types.')
+  await sample.getByRole('status').filter({ hasText: '€3,452,682.81' }).waitFor({ timeout: 15000 })
   assert.match(await sample.getByRole('status').innerText(), /€3,452,682.81/)
   await page.screenshot({ path: 'test-results/landing-chat/desktop.png' })
   await sample.getByRole('button', { name: 'Challenge a claim' }).click()
   await page.waitForTimeout(200)
   await sample.getByRole('button', { name: 'Build a report' }).click()
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.locator('.ig-chat-source.is-ready').waitFor()
+  await sample.getByRole('status').filter({ hasText: 'Open Report Builder' }).waitFor()
   assert.match(await sample.getByRole('status').innerText(), /Open Report Builder/)
   assert.equal(await sample.getByRole('button', { name: 'Pause demo' }).count(), 0)
   assert.equal(await sample.getByRole('link', { name: 'Open Report Builder', exact: true }).getAttribute('href'), '#/project/enfuce/report/build')

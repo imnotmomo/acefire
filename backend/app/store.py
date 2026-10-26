@@ -83,8 +83,12 @@ class Store:
                 versions = [row[0] for row in db.execute('SELECT version FROM schema_versions ORDER BY version').fetchall()]
                 if versions != [SCHEMA_VERSION] or not TABLE_NAMES.issubset(existing):
                     raise ValueError('Unsupported or incomplete DuckDB schema version. Use a reviewed migration or a fresh file.')
-                return
-            db.execute(SCHEMA_SQL)
+            else:
+                db.execute(SCHEMA_SQL)
+            db.execute('''CREATE TABLE IF NOT EXISTS report_drafts (
+                id VARCHAR PRIMARY KEY, deal_id VARCHAR NOT NULL, version INTEGER NOT NULL, payload JSON NOT NULL)''')
+            db.execute('''CREATE TABLE IF NOT EXISTS workspace_settings (
+                deal_id VARCHAR PRIMARY KEY, payload JSON NOT NULL)''')
 
     @staticmethod
     def _insert(db, table, fields):
@@ -103,8 +107,24 @@ class Store:
             if row is None:
                 return None
             identifiers = db.execute('SELECT namespace, identifier FROM entity_identifiers WHERE deal_id=? AND entity_key=? ORDER BY namespace, identifier', [deal_id, row[1]]).fetchall()
-            return Company(deal_id=row[0], entity_key=row[1], legal_name=row[2], domain=row[3], country=row[4],
-                           historical_cutoff=row[5], identifiers=dict(identifiers), primary_provider=row[6], primary_company_id=row[7])
+            from app.workspace_settings import overlay
+            settings = db.execute('SELECT payload FROM workspace_settings WHERE deal_id=?', [deal_id]).fetchone()
+            return overlay(Company(deal_id=row[0], entity_key=row[1], legal_name=row[2], domain=row[3], country=row[4],
+                           historical_cutoff=row[5], identifiers=dict(identifiers), primary_provider=row[6], primary_company_id=row[7]),
+                           _json(settings[0]) if settings else {})
+
+    def patch_workspace(self, deal_id, values):
+        from app.workspace_settings import patch_settings
+        with self.transaction() as db:
+            if db.execute('SELECT 1 FROM deals WHERE id=?', [deal_id]).fetchone() is None:
+                return None
+            row = db.execute('SELECT payload FROM workspace_settings WHERE deal_id=?', [deal_id]).fetchone()
+            settings = patch_settings(_json(row[0]) if row else {}, values)
+            if row:
+                db.execute('UPDATE workspace_settings SET payload=? WHERE deal_id=?', [_dump(settings), deal_id])
+            else:
+                self._insert(db, 'workspace_settings', {'deal_id': deal_id, 'payload': _dump(settings)})
+        return self.company(deal_id)
 
     def ingest(self, result: IngestionResult) -> dict:
         added = {'snapshots_added': 0, 'observations_added': 0}
@@ -197,6 +217,43 @@ class Store:
         with self._lock:
             row = self._connect().execute('SELECT payload FROM source_observations WHERE id=?', [record_id]).fetchone()
             return Observation.model_validate_json(row[0]) if row else None
+
+    def report_drafts(self, deal_id):
+        with self._lock:
+            rows = self._connect().execute('SELECT payload FROM report_drafts WHERE deal_id=?', [deal_id]).fetchall()
+            return sorted((_json(row[0]) for row in rows), key=lambda row: (row['updated_at'], row['id']), reverse=True)
+
+    def report_draft(self, deal_id, draft_id):
+        with self._lock:
+            row = self._connect().execute('SELECT payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
+            return _json(row[0]) if row else None
+
+    def create_report_draft(self, record):
+        from app.report_drafts import validate_record
+        validate_record(record)
+        with self.transaction() as db:
+            previous = db.execute('SELECT payload FROM report_drafts WHERE id=?', [record['id']]).fetchone()
+            if previous:
+                if _json(previous[0]) != record:
+                    raise ValueError('Report draft ID already exists with different content.')
+                return record
+            self._insert(db, 'report_drafts', {'id': record['id'], 'deal_id': record['deal_id'],
+                         'version': record['version'], 'payload': _dump(record)})
+        return record
+
+    def update_report_draft(self, deal_id, draft_id, expected_version, workspace):
+        from app.report_drafts import DraftVersionConflict, updated_record
+        with self.transaction() as db:
+            row = db.execute('SELECT payload FROM report_drafts WHERE deal_id=? AND id=?', [deal_id, draft_id]).fetchone()
+            if row is None:
+                return None
+            record = _json(row[0])
+            if record['version'] != expected_version:
+                raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.')
+            updated = updated_record(record, workspace)
+            db.execute('UPDATE report_drafts SET version=?, payload=? WHERE deal_id=? AND id=?',
+                       [updated['version'], _dump(updated), deal_id, draft_id])
+            return updated
 
     def snapshots(self, deal_id: str) -> list[SourceSnapshot]:
         with self._lock:

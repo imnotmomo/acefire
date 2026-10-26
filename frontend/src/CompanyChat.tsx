@@ -6,6 +6,7 @@ import type { DataState } from './dataState'
 import { ChatResponseError, chatScope, chatRequestError, chatWorkingDraft, checkedReply, encodeRecovery, readConversation, recoverChat, recoveryKey, storedMessages } from './companyChatState'
 import type { Conversation, Failure, Message, Question, RecoveryState } from './companyChatState'
 import { dataStateLabel } from './dataState'
+import { readChatDraft, saveChatDraft } from './chatPersistence'
 import { Badge, Dialog, Icon } from './ui'
 import './company-chat.css'
 
@@ -29,7 +30,7 @@ export default function CompanyChat({ project, page, report, draftSections, insp
   const [conversation, setConversation] = useState<Conversation>(() => loadConversation(scope, catalog))
   const conversationRef = useRef(conversation); conversationRef.current = conversation
   const recoveryRef = useRef<string | null>(null)
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState(() => readChatDraft(report.company.deal_id, 'company'))
   const [busy, setBusy] = useState(false)
   const [failure, setFailure] = useState<Failure | null>(null)
   const messages = conversation.scope === scope ? conversation.messages : []
@@ -60,6 +61,7 @@ export default function CompanyChat({ project, page, report, draftSections, insp
     const next = recovered?.conversation ?? loadConversation(scope, catalog)
     conversationRef.current = next
     setConversation(next); setBusy(false); setFailure(recovered?.failure ?? null); questionRef.current = recovered?.question ?? null
+    setInput(readChatDraft(report.company.deal_id, 'company'))
   }, [scope])
   useEffect(() => {
     if (conversation.scope !== scope) return
@@ -119,7 +121,7 @@ export default function CompanyChat({ project, page, report, draftSections, insp
     const userMessage: Message = { id: crypto.randomUUID(), role: 'user', content: text }
     const next: Conversation = { scope, messages: [...messages, userMessage].slice(-40) }
     conversationRef.current = next; setConversation(next)
-    setInput(''); void perform({ scope, question: text, history })
+    setInput(''); saveChatDraft(report.company.deal_id, 'company', ''); void perform({ scope, question: text, history })
   }
 
   return <Dialog title="Company chat" subtitle={`${project.name} · ${page}`} onClose={onClose} className="company-chat-dialog">
@@ -135,7 +137,7 @@ export default function CompanyChat({ project, page, report, draftSections, insp
       {failure && <div className="company-chat-error" role="alert"><Icon name="help" size={18} /><div><p>{failure.message}</p>{!failure.stale && questionRef.current && <button className="button secondary" onClick={() => { if (questionRef.current) void perform(questionRef.current) }} disabled={busy}>Retry question<Icon name="arrow" size={14} /></button>}{failure.stale && <button className="button secondary" onClick={() => { if (onRefresh) onRefresh(); else window.location.reload() }}>Refresh company evidence<Icon name="history" size={14} /></button>}</div></div>}
       <div ref={endRef} />
     </div>
-    <form className="company-chat-input" onSubmit={event => { event.preventDefault(); send(input) }}><label className="sr-only" htmlFor="company-chat-question">Ask about this company</label><input id="company-chat-question" ref={inputRef} aria-label="Ask about this company" placeholder={`Ask about ${project.name}…`} value={input} onChange={event => setInput(event.target.value)} maxLength={4000} readOnly={busy || Boolean(failure?.stale)} autoComplete="off" /><button className="icon-button" type="submit" aria-label="Send company question" disabled={busy || Boolean(failure?.stale) || !input.trim()}><Icon name={busy ? 'loading' : 'send'} size={19} /></button></form>
+    <form className="company-chat-input" onSubmit={event => { event.preventDefault(); send(input) }}><label className="sr-only" htmlFor="company-chat-question">Ask about this company</label><input id="company-chat-question" ref={inputRef} aria-label="Ask about this company" placeholder={`Ask about ${project.name}…`} value={input} onChange={event => { setInput(event.target.value); saveChatDraft(report.company.deal_id, 'company', event.target.value) }} maxLength={4000} readOnly={busy || Boolean(failure?.stale)} autoComplete="off" /><button className="icon-button" type="submit" aria-label="Send company question" disabled={busy || Boolean(failure?.stale) || !input.trim()}><Icon name={busy ? 'loading' : 'send'} size={19} /></button></form>
     <div className="company-chat-footer"><span>Verify means needs review. Your working draft is unverified context.</span><button className="text-button" onClick={() => { onClose(); navigate(`/project/${project.id}/data-room`) }}>View company sources<Icon name="outward" size={12} /></button></div>
   </Dialog>
 }

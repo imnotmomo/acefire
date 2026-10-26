@@ -4,7 +4,15 @@
 DuckDB and Firebase. Include it in the existing FastAPI application; it adds no
 login requirement and does not replace C's report/calculation/chat routes.
 
-- `GET /deals` → `{companies: [Company, ...]}`.
+- `GET /deals` → `{companies: [Company, ...]}`. Archived workspaces are hidden;
+  `?include_archived=true` includes them for restoring.
+- `PATCH /deals/{deal_id}` accepts any nonempty subset of
+  `{display_name, sector, geography, archived}` and returns `{company}`.
+  Labels must be nonblank strings; `archived` is a boolean. These are mutable
+  workspace labels stored separately in `workspace_settings`, overlaid in
+  `Company.identifiers.workspace_display_name/workspace_sector/workspace_geography/workspace_archived`.
+  Legal name, legal entity, original sources, observations and reports remain
+  intact. Archive is reversible and existing report/source URLs remain usable.
 - `POST /deals` body `{name, sector?, geography?, deal_id?}` → HTTP 201 `{company}`.
   Omitted IDs become `deal-<UUID>`. Supplied IDs allow lowercase letters, digits,
   underscores and hyphens. Retrying the same ID and name/sector/geography returns
@@ -24,8 +32,11 @@ successful empty result. The source file remains available for inspection/retry.
 Two local worker threads handle at most eight accepted jobs; overflow returns
 429. An identical company/provider/filename/content upload reuses its active or
 completed job ID, so Office/OCR rendering and model extraction run once. Failed
-jobs may be retried with the same original. PDF/Office rendering is serialized. Restarted unfinished jobs are explicitly
-marked failed. Jobs/status and the source index are local durable files; this is
+jobs may be retried with the same original. PDF/Office rendering is serialized.
+An OS file lease identifies each queued/running worker; process ID reuse cannot
+leave a crashed job permanently processing. Startup fails abandoned jobs while
+preserving a live worker's lease. Shutdown marks cancelled queued jobs failed.
+Jobs/status and the source index are local durable files; this is
 not a distributed queue and must run in a single backend process.
 
 ## Source formats and numeric boundaries
@@ -82,3 +93,23 @@ prefix records and a failed job. Re-uploading identical content safely reuses
 its timestamp/identities and retries without overwriting originals. Newly
 persisted claims/observations immediately feed C's report, lineage and chat
 catalog; calculation still requires compatible normalized source inputs.
+
+## Reviewing ordinary spreadsheet numbers
+
+`POST /deals/{deal_id}/observations/{observation_id}/normalize` creates an
+immutable reviewed observation from an existing raw value. It accepts
+`metric_key`, `unit`, exact decimal-string `scale_multiplier`, nonblank
+`normalization_basis`, required `period_kind` (`unknown`, `instant`, `duration`),
+and optional `currency` (ISO3), `definition_key` from the reviewed registry,
+`scope`, `accounting_basis`, `period_start`, `period_end`, `period_label` and
+`scenario` (`unknown`, `actual`, `forecast`). Instant periods require only an
+end; durations require both ordered dates; unknown periods have no dates.
+
+The API does not accept a replacement raw or final value. Decimal arithmetic
+uses the source's existing raw value and the supplied explicit scale. Ambiguous
+tokens and Akta estimates remain unresolved. A successful response is
+`{observation, reviewed_from_id, created}`; identical retries reuse the same
+review ID. The new observation includes `reviewed_from_id`, exact original
+source/hash/locator/raw value, and `verification_status: needs_review`.
+Original records and previous calculations are retained. Select the new input
+explicitly and rerun a calculation; no result is silently replaced.

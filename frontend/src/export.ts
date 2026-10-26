@@ -2,17 +2,21 @@ import type { Project, Section, ReportExportContext } from './domain'
 import type { Evidence } from './data'
 import { EVIDENCE } from './data'
 import { reportMarkdown } from './domain'
+import { reportFilename } from './reportOperations'
 
 export function downloadBlob(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url; link.download = name; link.click()
+  link.href = url; link.download = name
+  // Safari and embedded browsers require the download anchor to be connected.
+  document.body.appendChild(link)
+  try { link.click() } finally { link.remove() }
   setTimeout(() => URL.revokeObjectURL(url), 10000)
 }
 
 export async function exportReport(format: 'Markdown' | 'PDF' | 'DOCX', project: Project, sections: Section[], evidence: Evidence[] = EVIDENCE, context: ReportExportContext = { kind: 'snapshot' }) {
   const text = reportMarkdown(project, sections, evidence, context)
-  const filename = `${project.name.replace(/[^a-z0-9-]/gi, '-')}-diligence-report`
+  const filename = reportFilename(project.name)
   if (format === 'Markdown') return downloadBlob(new Blob([text], { type: 'text/markdown;charset=utf-8' }), `${filename}.md`)
   if (format === 'PDF') {
     const { createReportPdf } = await import('./pdfReport')
