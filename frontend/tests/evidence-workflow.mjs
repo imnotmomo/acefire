@@ -44,7 +44,8 @@ try {
     assert.match(await page.getByRole('region', { name: 'Report inventory', exact: true }).innerText(), /25/)
     await page.getByRole('button', { name: 'Build report', exact: true }).click(); assert.equal(await page.getByLabel('Fixture route').innerText(), '/project/fixture-evidence-company/report/build')
     await page.getByRole('button', { name: 'Open data room', exact: true }).click(); assert.equal(await page.getByLabel('Fixture route').innerText(), '/project/fixture-evidence-company/data-room')
-    await page.getByRole('button', { name: 'Refresh stored calculations', exact: true }).click(); assert.equal(await page.getByLabel('Fixture refreshes').innerText(), '1')
+    await page.getByRole('button', { name: 'New calculation', exact: true }).click()
+    await page.getByRole('region', { name: 'Calculation workspace', exact: true }).getByRole('button', { name: 'Refresh stored calculations', exact: true }).click(); assert.equal(await page.getByLabel('Fixture refreshes').innerText(), '1')
   })
   await check('Reported values support paging, metric search, provider and Missing/Verify/Conflict filters without zero substitution', async () => {
     const region = page.locator('.connected-observations'), rows = region.locator('tbody tr')

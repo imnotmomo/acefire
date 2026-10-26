@@ -51,7 +51,7 @@ async function createPage(options = {}) {
     const animate = Element.prototype.animate
     Element.prototype.animate = function (...args) {
       const animation = Reflect.apply(animate, this, args)
-      const phase = this.matches('.backend-loading') || this.querySelector('.backend-loading') ? 'loading' : this.querySelector('.calculation-lab') ? 'company-ready' : 'content'
+      const phase = this.matches('.backend-loading') || this.querySelector('.backend-loading') ? 'loading' : this.querySelector('.connected-dashboard') ? 'company-ready' : 'content'
       const entry = { animation, element: this, phase, startedAt: performance.now(), sample: null, timer: null }
       if (this.matches('.page-transition')) {
         // Test-side clock control: observe the real effect at its midpoint even
@@ -196,7 +196,7 @@ try {
     const before = await page.evaluate(() => window.__motionAnimations.length)
     await page.getByRole('link', { name: 'Open Circle dashboard', exact: true }).click()
     await runningPageMotion(page)
-    await page.locator('.calculation-lab').waitFor()
+    await page.locator('.connected-dashboard').waitFor()
     await runningPageMotion(page)
     const phases = await page.evaluate(start => window.__motionAnimations.slice(start).filter(item => item.element.classList.contains('page-transition')).map(item => ({ phase: item.phase, startedAt: item.startedAt, sample: item.sample })), before)
     assert.ok(phases.some(item => item.phase === 'loading'), 'Company-card navigation must animate the loading region.')
@@ -205,7 +205,7 @@ try {
     assert.ok(phases.find(item => item.phase === 'company-ready').startedAt - phases.find(item => item.phase === 'loading').startedAt >= 300, 'The fixture must exercise a real asynchronous company load.')
     await settled(page)
     const navigation = page.getByRole('navigation', { name: 'Project workspace', exact: true })
-    for (const [label, selector] of [['Report', '.builder-grid'], ['Data room', '.company-uploads'], ['Dashboard', '.calculation-lab']]) {
+    for (const [label, selector] of [['Report', '.builder-grid'], ['Data room', '.company-uploads'], ['Dashboard', '.connected-dashboard']]) {
       await navigation.getByRole('link', { name: label, exact: true }).click()
       await runningPageMotion(page); await page.locator(selector).waitFor(); await settled(page)
     }
@@ -294,7 +294,7 @@ try {
     await page.keyboard.press('Escape'); await settled(page)
   })
   await check('Company and source drawers open independently without a live backend or model call', async () => {
-    await navigate(page, '/project/circle/dashboard', '.calculation-lab')
+    await navigate(page, '/project/circle/dashboard', '.connected-dashboard')
     await page.locator('.assistant-launcher').click()
     const company = page.getByRole('dialog', { name: 'Company chat', exact: true })
     await assertOpeningMotion(company); await assertOverlayBounds(page)
@@ -326,7 +326,7 @@ try {
   })
   await check('Mobile page, navigation and drawer motion preserve viewport bounds and readable content', async () => {
     await page.setViewportSize({ width: 390, height: 844 })
-    await navigate(page, '/project/circle/dashboard', '.calculation-lab')
+    await navigate(page, '/project/circle/dashboard', '.connected-dashboard')
     await page.locator('.assistant-launcher').click()
     const drawer = page.getByRole('dialog', { name: 'Company chat', exact: true })
     await assertOverlayBounds(page)

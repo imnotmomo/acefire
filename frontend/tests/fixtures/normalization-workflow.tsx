@@ -6,6 +6,7 @@ import type { Project } from '../../src/domain'
 import '../../src/styles.css'
 import '../../src/motion.css'
 import '../../src/connection.css'
+import '../../src/connected.css'
 
 const source = { snapshot_id:'original-file', file_name:'revenue.csv', sha256:'a'.repeat(64), provider:'uploaded', ingestion_channel:'user_upload', data_role:'supplemental_evidence', visibility:'deal_private', preview_url:'/sources/original-file/file', locator:{ kind:'csv_row', row:2, column:'Amount', quote:'Revenue,100.123400000000000006' } }
 const original = { id:'raw-revenue', deal_id:'fixture-company', entity_key:'fixture-company', snapshot_id:source.snapshot_id, provider:'uploaded', metric_key:'uploaded.amount', raw_label:'Revenue', raw_value:'100.123400000000000006', value:null, unit:null, currency:null, scale_multiplier:null, normalization_status:'unresolved', normalization_basis:null, definition_key:null, scope:null, accounting_basis:null, period_kind:'unknown', period_start:null, period_end:null, period_label:null, scenario:'unknown', verification_status:'source_located', locator:source.locator, quarantined:false, notes:[] }
