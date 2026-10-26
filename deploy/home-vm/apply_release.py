@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 import traceback
+import urllib.error
 import urllib.request
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -107,10 +108,59 @@ def validate_runtime(bundle):
         raise ValueError('Missing PRISM runtime configuration')
 
 
-def require_branch_head(commit):
-    with urllib.request.urlopen('https://api.github.com/repos/imnotmomo/acefire/git/ref/heads/main', timeout=20) as response:
-        if json.load(response)['object']['sha'] != commit:
-            raise ValueError('A newer main commit superseded this release')
+class BranchHeadError(RuntimeError):
+    """A deliberately sanitized error that is safe for Actions logs."""
+
+
+class NoApiRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, request, fp, code, msg, headers, newurl):
+        # Never forward the job credential to a redirected destination.
+        return None
+
+
+def validate_github_token(value):
+    if isinstance(value, bytes):
+        try:
+            value = value.decode('ascii')
+        except UnicodeDecodeError:
+            value = None
+    if not isinstance(value, str) or not re.fullmatch(r'[A-Za-z0-9_.-]{20,8192}', value):
+        raise BranchHeadError('A current workflow GitHub token is required; start a new workflow run.')
+    return value
+
+
+def require_branch_head(commit, github_token):
+    token = validate_github_token(github_token)
+    request = urllib.request.Request(
+        'https://api.github.com/repos/imnotmomo/acefire/git/ref/heads/main',
+        headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json',
+                 'X-GitHub-Api-Version': '2026-03-10', 'User-Agent': 'Ingenium-Deployment'},
+    )
+    opener = urllib.request.build_opener(NoApiRedirect())
+    try:
+        with opener.open(request, timeout=20) as response:
+            current = json.load(response)['object']['sha']
+            if not isinstance(current, str) or not SHA.fullmatch(current):
+                raise ValueError('Invalid GitHub reference response')
+    except urllib.error.HTTPError as error:
+        error.close()
+        message = f'GitHub branch verification failed (HTTP {error.code})'
+        if error.code in (403, 429) and error.headers.get('X-RateLimit-Remaining') == '0':
+            message += ': the authenticated workflow API quota is exhausted'
+            reset = error.headers.get('X-RateLimit-Reset', '')
+            if reset.isdecimal():
+                message += f' (reset epoch {reset})'
+        elif error.code == 401:
+            message += ': the job token was rejected; start a new workflow run'
+        elif error.code == 403:
+            message += ': check the job token contents:read permission'
+        elif 300 <= error.code < 400:
+            message += ': redirects are not permitted for credentialed requests'
+        raise BranchHeadError(message + '. Live activation was not attempted.') from None
+    except (OSError, ValueError, KeyError, TypeError):
+        raise BranchHeadError('GitHub branch verification could not complete. Live activation was not attempted.') from None
+    if current != commit:
+        raise BranchHeadError('A newer main commit superseded this release; live activation was not attempted.')
 
 
 def freeze_application(app):
@@ -159,13 +209,19 @@ def deploy(commit):
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         raw = sys.stdin.buffer.read(180 * 1024 * 1024 + 1)
         bundle = archive_files(raw, limit=180 * 1024 * 1024)
-        if set(bundle) != {'release.tar.gz', 'manifest.json', 'deployment.json', *RUNTIME_FILES}:
+        required = {'release.tar.gz', 'manifest.json', 'deployment.json', *RUNTIME_FILES}
+        if not required <= set(bundle) or set(bundle) - required - {'github-api-token'}:
             raise ValueError('Unexpected deployment bundle files')
+        # This short-lived read-only token stays in process memory. It never
+        # enters application files, runtime snapshots, state or audit metadata.
+        github_token = validate_github_token(bundle.pop('github-api-token', b''))
         if any(len(bundle[name]) > 100000 for name in (*RUNTIME_FILES, 'deployment.json')):
             raise ValueError('Runtime configuration exceeds limit')
         if len(bundle['manifest.json']) > 3 * 1024 * 1024:
             raise ValueError('Release manifest exceeds limit')
         deployment = json.loads(bundle['deployment.json'])
+        if set(deployment) != {'commit', 'run_number', 'run_id', 'run_attempt'}:
+            raise ValueError('Unexpected workflow metadata fields')
         for key in ('run_number', 'run_id', 'run_attempt'):
             if type(deployment.get(key)) is not int or deployment[key] < 1:
                 raise ValueError('Invalid workflow identity')
@@ -175,7 +231,7 @@ def deploy(commit):
         if deployment['run_number'] < previous_state.get('run_number', 0):
             raise ValueError('Refusing a deployment older than the active workflow')
         # The source of a deployment must still be the trusted branch head.
-        require_branch_head(commit)
+        require_branch_head(commit, github_token)
         files = verify_release(bundle['release.tar.gz'], json.loads(bundle['manifest.json']), commit)
         validate_runtime(bundle)
         if previous_state.get('commit') == commit and deployment['run_number'] == previous_state.get('run_number'):
@@ -219,7 +275,7 @@ def deploy(commit):
                 freeze_application(app)
                 # No artifact-supplied scripts, units or Nginx configs run as root.
                 # Current systemd hardening, PRISM bootstrap and private file caches stay in place.
-                require_branch_head(commit)
+                require_branch_head(commit, github_token)
                 switched = True
                 command(['/usr/bin/systemctl', 'stop', 'ingenium-backend'], log)
                 for name in RUNTIME_FILES:
@@ -232,7 +288,7 @@ def deploy(commit):
                 state = {**deployment, 'release_id': release_id, 'previous_app': str(old_app), 'previous_public': str(old_public)}
                 atomic_file(STATE / 'state.json', json.dumps(state).encode())
                 succeeded = True
-            except BaseException:
+            except BaseException as error:
                 log.write(traceback.format_exc().encode())
                 if switched and not succeeded:
                     command(['/usr/bin/systemctl', 'stop', 'ingenium-backend'], log)
@@ -245,6 +301,8 @@ def deploy(commit):
                 if app != (APP / 'current').resolve() and public != (PUBLIC / 'current').resolve():
                     shutil.rmtree(app, ignore_errors=True)
                     shutil.rmtree(public, ignore_errors=True)
+                if isinstance(error, BranchHeadError):
+                    raise BranchHeadError(f'{error} Private audit: {backup}') from None
                 raise RuntimeError(f'Deployment failed; private audit: {backup}') from None
         prune_releases({app, old_app})
         print(json.dumps({'status': 'deployed', 'commit': commit, 'release_id': release_id}))

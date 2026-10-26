@@ -40,6 +40,15 @@ The Cloudflare SSH route currently needs no Access service token. Its transport
 was checked using an empty client configuration. The runner uses the pinned
 official `cloudflared` binary over HTTPS and normal SSH public-key authentication.
 
+Latest-main verification uses the deployment job's built-in, short-lived
+`github.token` with `contents: read`. It travels only in the private SSH bundle
+and stays in the controller's memory, outside application artifacts, runtime
+files, rollback snapshots, state and logs. This avoids the anonymous GitHub API
+quota shared by the VM's WARP exit IP. No additional stored GitHub credential is
+required. Missing or rejected tokens fail before activation with a sanitized
+diagnostic; the controller never falls back to anonymous requests or follows
+API redirects.
+
 ## One-time host bootstrap
 
 Generate a dedicated key outside the repository. Transfer only its `.pub` file
@@ -63,6 +72,10 @@ The installed gateway/controller live under `/usr/local/libexec/`; their update
 requires a reviewed administrative bootstrap. A release cannot replace privileged
 scripts, systemd units, Nginx or tunnel configuration by supplying them in its
 artifact.
+
+Install a protocol-changing controller update before dispatching its matching
+workflow. Older workflow revisions without the job-token bundle member must be
+replaced by a new run of current `main`, rather than rerun unchanged.
 
 ## Release behavior
 

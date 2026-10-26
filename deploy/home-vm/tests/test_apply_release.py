@@ -20,6 +20,7 @@ spec = importlib.util.spec_from_file_location(
 controller = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(controller)
 COMMIT = 'ab' * 20
+GITHUB_TOKEN = 'synthetic_head_check_token_123456789'
 
 
 def tar_bytes(files, mode='w'):
@@ -83,14 +84,16 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
             }).encode(),
             'prism.env': b'PRISMTRACE_API_KEY="synthetic-test-key"\n',
         }
-        self.bundle = tar_bytes({
+        self.bundle_files = {
             'release.tar.gz': release,
             'manifest.json': json.dumps(manifest).encode(),
             'deployment.json': json.dumps({
                 'commit': COMMIT, 'run_number': 1, 'run_id': 123, 'run_attempt': 1,
             }).encode(),
             **self.new_runtime,
-        })
+            'github-api-token': GITHUB_TOKEN.encode(),
+        }
+        self.bundle = tar_bytes(self.bundle_files)
 
     def patched_host(self, ready, branch=None):
         """Keep file operations real; replace only host/root process boundaries."""
@@ -113,7 +116,7 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
             controller.pwd, 'getpwnam', return_value=SimpleNamespace(pw_gid=os.getgid()),
         ))
         stack.enter_context(patch.object(controller.sys, 'stdin', SimpleNamespace(buffer=io.BytesIO(self.bundle))))
-        stack.enter_context(patch.object(controller, 'require_branch_head', side_effect=branch))
+        self.head_checks = stack.enter_context(patch.object(controller, 'require_branch_head', side_effect=branch))
         stack.enter_context(patch.object(controller, 'ready', side_effect=ready))
         stack.enter_context(patch.object(controller, 'freeze_application'))
         commands = stack.enter_context(patch.object(controller, 'command'))
@@ -125,6 +128,11 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         for name, content in self.old_runtime.items():
             self.assertEqual((self.etc / name).read_bytes(), content)
         self.assertFalse((self.state / 'state.json').exists())
+
+    def assert_workflow_token_not_persisted(self):
+        for path in self.root.rglob('*'):
+            if path.is_file() and not path.is_symlink():
+                self.assertNotIn(GITHUB_TOKEN.encode(), path.read_bytes(), str(path.relative_to(self.root)))
 
     def test_failed_public_check_restores_links_and_every_private_runtime_file(self):
         observed_new_release = []
@@ -143,6 +151,9 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
             controller.deploy(COMMIT)
         self.assertEqual(observed_new_release, [True])
         self.assert_previous_release_intact()
+        self.assert_workflow_token_not_persisted()
+        self.assertEqual(self.head_checks.call_args_list,
+                         [unittest.mock.call(COMMIT, GITHUB_TOKEN)] * 2)
         service_calls = [call.args[0] for call in commands.call_args_list
                          if call.args[0][0] == '/usr/bin/systemctl']
         self.assertEqual(service_calls, [
@@ -160,6 +171,7 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         with stack, self.assertRaisesRegex(RuntimeError, 'Deployment failed'):
             controller.deploy(COMMIT)
         self.assert_previous_release_intact()
+        self.assert_workflow_token_not_persisted()
         self.assertFalse(any(call.args[0][0] == '/usr/bin/systemctl'
                              for call in commands.call_args_list))
 
@@ -192,12 +204,66 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         for name, content in self.new_runtime.items():
             self.assertEqual((self.etc / name).read_bytes(), content)
         self.assertEqual(json.loads(output.getvalue())['status'], 'deployed')
+        self.assertNotIn(GITHUB_TOKEN, output.getvalue())
+        self.assert_workflow_token_not_persisted()
+        self.assertEqual(self.head_checks.call_args_list,
+                         [unittest.mock.call(COMMIT, GITHUB_TOKEN)] * 2)
         service_calls = [call.args[0] for call in commands.call_args_list
                          if call.args[0][0] == '/usr/bin/systemctl']
         self.assertEqual(service_calls, [
             ['/usr/bin/systemctl', 'stop', 'ingenium-backend'],
             ['/usr/bin/systemctl', 'start', 'ingenium-backend'],
         ])
+
+    def test_missing_or_invalid_workflow_token_stops_before_network_and_preparation(self):
+        for token in (None, b'', b'too-short', GITHUB_TOKEN.encode() + b'\n'):
+            with self.subTest(token_present=token is not None):
+                files = dict(self.bundle_files)
+                if token is None:
+                    files.pop('github-api-token')
+                else:
+                    files['github-api-token'] = token
+                self.bundle = tar_bytes(files)
+                stack, commands = self.patched_host(ready=lambda *args, **kwargs: None)
+                with stack, self.assertRaises(controller.BranchHeadError):
+                    controller.deploy(COMMIT)
+                self.head_checks.assert_not_called()
+                commands.assert_not_called()
+                self.assert_previous_release_intact()
+                self.assert_workflow_token_not_persisted()
+
+    def test_workflow_metadata_cannot_smuggle_the_token_into_a_backup_or_state(self):
+        files = dict(self.bundle_files)
+        metadata = json.loads(files['deployment.json'])
+        metadata['github_token'] = GITHUB_TOKEN
+        files['deployment.json'] = json.dumps(metadata).encode()
+        self.bundle = tar_bytes(files)
+        stack, commands = self.patched_host(ready=lambda *args, **kwargs: None)
+        with stack, self.assertRaisesRegex(ValueError, 'Unexpected workflow metadata'):
+            controller.deploy(COMMIT)
+        self.head_checks.assert_not_called()
+        commands.assert_not_called()
+        self.assert_previous_release_intact()
+        self.assert_workflow_token_not_persisted()
+
+    def test_second_authenticated_head_failure_preserves_safe_diagnostics_without_activation(self):
+        message = 'GitHub branch verification failed (HTTP 403): authenticated API quota exhausted.'
+        stack, commands = self.patched_host(
+            ready=lambda *args, **kwargs: self.fail('Rejected preparation cannot reach readiness'),
+            branch=[None, controller.BranchHeadError(message)],
+        )
+        output = io.StringIO()
+        with stack, redirect_stdout(output), self.assertRaises(controller.BranchHeadError) as caught:
+            controller.deploy(COMMIT)
+        self.assertIn('HTTP 403', str(caught.exception))
+        self.assertIn('Private audit:', str(caught.exception))
+        self.assertNotIn(GITHUB_TOKEN, str(caught.exception) + output.getvalue())
+        self.assertEqual(self.head_checks.call_args_list,
+                         [unittest.mock.call(COMMIT, GITHUB_TOKEN)] * 2)
+        self.assertFalse(any(call.args[0][0] == '/usr/bin/systemctl'
+                             for call in commands.call_args_list))
+        self.assert_previous_release_intact()
+        self.assert_workflow_token_not_persisted()
 
 
 if __name__ == '__main__':

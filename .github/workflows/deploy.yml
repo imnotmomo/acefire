@@ -56,6 +56,7 @@ jobs:
           PRISMTRACE_API_KEY: ${{ secrets.PRISMTRACE_API_KEY }}
           PRISMTRACE_HOST: ${{ secrets.PRISMTRACE_HOST }}
           PRISMTRACE_PROJECT_ID: ${{ secrets.PRISMTRACE_PROJECT_ID }}
+          GH_API_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
           import io, json, os, pathlib, re, tarfile
@@ -65,7 +66,7 @@ jobs:
               path = root / name
               path.write_text(value)
               path.chmod(0o600)
-          for key in ['DEPLOY_KEY', 'KNOWN_HOSTS', 'NICRRON_API_KEY', 'FIREBASE_JSON', 'PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID']:
+          for key in ['DEPLOY_KEY', 'KNOWN_HOSTS', 'NICRRON_API_KEY', 'FIREBASE_JSON', 'PRISMTRACE_API_KEY', 'PRISMTRACE_HOST', 'PRISMTRACE_PROJECT_ID', 'GH_API_TOKEN']:
               if not os.environ.get(key):
                   raise SystemExit('A required deployment secret is missing: ' + key)
           if not re.fullmatch(r'[a-f0-9]{40}', os.environ['GITHUB_SHA']):
@@ -92,6 +93,10 @@ jobs:
           if credential.get('project_id') != 'acefire-50248':
               raise SystemExit('Unexpected Firebase project')
           write('firestore-runtime.json', json.dumps(credential))
+          token = os.environ['GH_API_TOKEN']
+          if not re.fullmatch(r'[A-Za-z0-9_.-]{20,8192}', token):
+              raise SystemExit('Invalid workflow API token')
+          write('github-api-token', token)
           write('deployment.json', json.dumps({
               'commit': os.environ['GITHUB_SHA'], 'run_id': int(os.environ['GITHUB_RUN_ID']),
               'run_number': int(os.environ['GITHUB_RUN_NUMBER']), 'run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
@@ -102,7 +107,7 @@ jobs:
                   entry = tarfile.TarInfo(name)
                   entry.size = len(data)
                   archive.addfile(entry, io.BytesIO(data))
-              for name in ['backend.env', 'firestore-runtime.json', 'prism.env', 'deployment.json']:
+              for name in ['backend.env', 'firestore-runtime.json', 'prism.env', 'deployment.json', 'github-api-token']:
                   data = (root / name).read_bytes()
                   entry = tarfile.TarInfo(name)
                   entry.size = len(data)
