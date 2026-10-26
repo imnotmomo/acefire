@@ -15,7 +15,7 @@ try {
   assert.equal(await page.locator('.ui-demo-showcase').count(), 0)
   assert.equal(await page.getByText('Numbers. Claims. Narrative.', { exact: true }).count(), 0)
   assert.equal(await page.locator('.project-card a[href="#/project/enfuce-documents/dashboard"]').count(), 0)
-  assert.deepEqual(await page.locator('.project-cover-image').evaluateAll(images => images.map(image => image.getAttribute('src'))), ['/images/projects/claims.jpg', '/images/projects/narrative.jpg', '/images/projects/numbers.jpg'])
+  assert.deepEqual(await page.locator('.project-cover-image').evaluateAll(images => images.map(image => image.getAttribute('src'))), ['/images/projects/narrative.jpg', '/images/projects/claims.jpg', '/images/projects/numbers.jpg'])
   await page.locator('.project-cover-image').evaluateAll(images => Promise.all(images.map(image => image.decode())))
   assert.equal(await page.locator('.nav-count').innerText(), '3')
   assert.equal(await page.getByRole('button', { name: 'Create Project', exact: true }).count(), 1)

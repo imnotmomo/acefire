@@ -204,8 +204,8 @@ function Projects({ projects, onCreate, onConnect, connectingId }: { projects: P
 }
 
 const PROJECT_COVERS: Record<string, { src: string; alt: string }> = {
-  enfuce: { src: '/images/projects/claims.jpg', alt: 'Healthcare professional reviewing medical imaging' },
-  circle: { src: '/images/projects/narrative.jpg', alt: 'Customer paying by card at a retail counter' },
+  enfuce: { src: '/images/projects/narrative.jpg', alt: 'Customer paying by card at a retail counter' },
+  circle: { src: '/images/projects/claims.jpg', alt: 'Healthcare professional reviewing medical imaging' },
   backerkit: { src: '/images/projects/numbers.jpg', alt: 'Laptop displaying financial analytics' },
 }
 

@@ -8,7 +8,8 @@
 .paper-brand .ingenium-logo>.ingenium-wordmark{height:28px}
 .ig-wordmark .ingenium-logo{width:180px;height:44px}
 .ig-wordmark .ingenium-logo>.ingenium-mark{width:29px;height:42px}
-.ig-wordmark .ingenium-wordmark{filter:brightness(0) invert(1)}
+.ingenium-wordmark{color:#302064}
+.ig-wordmark .ingenium-wordmark{color:#fff}
 .ig-footer .ig-wordmark .ingenium-logo{width:205px;height:48px}
 @media(max-width:1200px){.sidebar .ingenium-logo{width:139px;gap:7px}.sidebar .ingenium-logo>.ingenium-mark{width:22px}.sidebar .ingenium-logo>.ingenium-wordmark{width:110px}}
 @media(max-width:650px){.ig-wordmark .ingenium-logo{width:145px}.paper-brand .ingenium-logo{width:116px}}
