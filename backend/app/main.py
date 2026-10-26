@@ -258,6 +258,16 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
         disposition = 'inline' if media_type in {'application/pdf','image/png','image/jpeg','application/json','text/plain'} else 'attachment'
         return FileResponse(path, media_type=media_type, filename=source.original_filename or path.name, content_disposition_type=disposition, headers={'X-Content-Type-Options':'nosniff'})
 
+    @app.get('/sources/{snapshot_id}/pdf-preview')
+    def pdf_page_preview(snapshot_id: str, page: int = Query(1, ge=1, le=2000)):
+        from app.pdf_preview import PdfPreviewError, render_pdf_preview
+        source, path = source_path(snapshot_id)
+        try:
+            return {'snapshot_id': source.id, 'sha256': source.sha256,
+                    **render_pdf_preview(path, page, source.sha256)}
+        except PdfPreviewError as error:
+            raise HTTPException(error.status_code, str(error), headers={'Retry-After':'1'} if error.status_code == 429 else None) from None
+
     @app.get('/deals/{deal_id}/observations')
     @app.get('/deals/{deal_id}/claims')
     def observations(deal_id: str, provider: str | None = None, metric: str | None = None):
