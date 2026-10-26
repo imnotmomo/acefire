@@ -39,6 +39,15 @@ Detailed evidence rules, the three PM metric definitions, schema paths, narrativ
 - Preserve rollback and bounded readiness checks. Verify public health, release metadata and served asset hashes after activation; loopback success alone does not prove publication. A failed check must stop activation or invoke rollback.
 - CI/CD must not initialize/import company data, recreate Firestore, change billing or rewrite evidence. Follow [the home runbook](deploy/home-vm/README.md).
 
+## Before and after an authorized push
+
+1. Fetch the latest remote state and inspect your branch/diff before committing. Preserve teammates' commits and uncommitted work. Current `main` is the deployment source of truth; dated status notes describe historical layouts and releases.
+2. Run the checks appropriate to your changes and update your own work record. **Every push to `main`, including documentation changes, starts CI and automatically deploys after backend/frontend checks pass while `HOME_CD_ENABLED=true`.** PRs run checks without deployment; ordinary feature-branch pushes do not publish the site.
+3. Follow the `CI` run for the exact pushed SHA in [Actions](https://github.com/imnotmomo/acefire/actions), or use `gh run list --repo imnotmomo/acefire --workflow ci.yml --commit <full-SHA>` and `gh run view <run-id> --repo imnotmomo/acefire`. Check backend, frontend/artifact and publication results before reporting completion. Inspect failed steps with `gh run view <run-id> --repo imnotmomo/acefire --log-failed`.
+4. After successful publication, verify `/api/health` and `/release.json` on **both** `https://ingenium.linearproduct.co` and `https://acefire.linearproduct.co`. Health must identify the existing Firestore project/database; release metadata must match the intended `commit`, `backend_commit` and workflow run. Compare served frontend hashes with that run's artifact. Report the verified commit and run link; a push alone does not establish deployment.
+5. If deployment says a newer `main` superseded it, follow the newest main run and confirm it retains your changes. Preserve the latest-main guard and do not cancel a deployment during activation. Retry a genuine failure using a fresh run of current main (`gh workflow run ci.yml --ref main --repo imnotmomo/acefire`), after diagnosing its failed step.
+6. Latest-main checks require the existing short-lived, read-only `github.token`. Keep it confined to transient private transport/controller memory; never replace it with anonymous requests or persist it in application files, artifacts, snapshots or logs. The earlier shared-WARP-IP quota failure is documented in [the CI/CD runbook](deploy/home-vm/CI_CD.md). Controller/protocol changes require the reviewed administrative host bootstrap **before** publishing their matching workflow; rerunning an older revision without the token will fail.
+
 ## Validation
 
 Install both locked dependency sets and native Office/OCR tools before running checks. Backend PDF tests also require Node and the installed frontend packages.

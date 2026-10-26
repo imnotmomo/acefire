@@ -110,3 +110,11 @@
 - Change: both main-head checks now authenticate with the existing job-scoped contents:read token. It is carried only in transient private SSH transport and held in controller memory; tests prove it never enters artifacts, runtime files, snapshots, state or logs. Redirects and anonymous fallback are refused; authentication/quota failures return sanitized diagnostics.
 - Paths: .github/workflows/deploy.yml; deploy/home-vm/apply_release.py; head-check/rollback tests; CI_CD.md; this C record. Frontend owner commit a6f7cc5 is preserved. No application API/schema, Firestore, source file, model credential or network changes.
 - Validation: all 29 deployment tests pass on Python 3.12 and 3.15; both workflows pass actionlint; whitespace checks pass. Updated root-owned controller installed before publishing the matching workflow protocol. New main pushes use the normal tested deployment path; older workflow revisions without the transient-token member require a new run of current main.
+
+## Agent push/deployment handoff — 2026-10-25
+
+- State: completed documentation; publication is tracked by Actions for this commit. Human requested root agent instructions so teammates' agents understand the automatic deployment when pushing.
+- Paths: AGENTS.md and this C record only. Shared contracts: documentation only; no application, workflow, database or credential changes. Existing unrelated uncommitted historical C notes are preserved.
+- Confirmed baseline: CI/CD run 40253613079 passed backend, frontend/artifact and publication for main commit 6f9af9ad64200e275dfa3685e4e5f2146ed81004. Both public domains serve that release; all 35 frontend files match the exact artifact. Original-file hashes, saved reports/citations and calculation lineages were preserved.
+- Handoff: root AGENTS.md now explains PR/main triggers, current-main ownership, exact pushed-SHA run tracking, both public release checks, superseded-release handling, safe retries, transient token handling and controller bootstrap order. The detailed CI/CD runbook remains the operational reference.
+- Validation: independently checked against workflow/controller behavior and installed GitHub CLI flags; local Markdown links and whitespace checks passed. No additional application tests were needed for this documentation-only change.
