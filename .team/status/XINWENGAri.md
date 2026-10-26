@@ -106,3 +106,10 @@ C has since implemented the Circle report/lineage connection described below; re
 - Paths: frontend/src/App.tsx, Brand CSS, removed DemoShowcase files, updated focused browser check; this record. Display-only filtering retains all stored project identities, data, reports and direct routes. No backend/API/deploy edits.
 
 - Completed: showcase component/styles removed; larger Create Project styles retained in brand.css. All projects and sidebar counts exclude only enfuce-documents; existing stored record and direct route retained. Cover order is claims/narrative/numbers for enfuce/circle/backerkit. Production build and focused browser check passed, including three responsive sizes, decoded covers, retained project record and no API writes. Existing browser count expectations updated.
+
+## Clean vector branding and corrected covers — 2026-10-25
+
+- State: in_progress. User corrects cover mapping to enfuce=narrative.jpg, circle=claims.jpg, backerkit=numbers.jpg and requests clean sharp logos on light/dark surfaces.
+- Paths: frontend/src/App.tsx, Brand.tsx, brand.css, public/images/brand/README.md, tests/ui-showcase.mjs and this record. Replace existing editable SVG wrapper bitmap/filter implementation with native geometric SVG and serif text. No raster editing or generated image required for this code-native logo system. No backend/API/report/storage/deploy changes.
+
+- Completed: corrected company-image bindings and replaced runtime bitmap/filter branding with transparent SVG paths and serif text; landing uses direct white fill via currentColor. Original raster retained as reference. Production build and focused Projects browser check passed. Light/dark logos inspected at 3x device scale; no bitmap/filter nodes, correct white landing text, no residual tagline or white halo. No backend changes.
