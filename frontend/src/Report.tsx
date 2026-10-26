@@ -15,6 +15,7 @@ import { checkedSharedReport, checkedSharedReportList, checkedSharedWorkspace, s
 import type { SharedReportSummary } from './sharedReports'
 
 const REPORT_WAIT_MS = 180_000
+type ReportOperation = 'generate' | 'save' | 'load'
 async function reportResponse(response: Response): Promise<unknown> {
   if (!response.headers.get('content-type')?.includes('application/json')) throw new Error(`The report API returned an unreadable response (HTTP ${response.status}). Check the backend connection and retry; your local draft is preserved.`)
   return response.json()
@@ -32,7 +33,9 @@ export default function Report(props: Props) {
   const [active, setActive] = useState<ModuleId>(workspace.order[0] ?? 'market')
   const [moduleSearch, setModuleSearch] = useState('')
   const [dragged, setDragged] = useState<number | null>(null)
-  const [generating, setGenerating] = useState(false)
+  const [reportOperation, setReportOperation] = useState<ReportOperation | null>(null)
+  const generating = reportOperation !== null
+  const [requestStartedAt, setRequestStartedAt] = useState<number | null>(null)
   const [generationError, setGenerationError] = useState('')
   const [draftingProblem, setDraftingProblem] = useState<'modules' | 'sources' | null>(null)
   const generationErrorRef = useRef<HTMLDivElement>(null)
@@ -61,7 +64,7 @@ export default function Report(props: Props) {
   const [saveConflict, setSaveConflict] = useState(false)
   const recoveryKey = `acefire:report-recovery:v1:${project.id}`
   const [recovery, setRecovery] = useState<Workspace | null>(() => {
-    try { const value = readLocal<unknown>(recoveryKey, null); return value ? checkedSharedWorkspace(value, backendReport?.company.deal_id ?? '', 4_000_000) : null } catch { return null }
+    try { const value = readLocal<unknown>(recoveryKey, null); return value ? checkedSharedWorkspace(value, backendReport?.company.deal_id ?? '') : null } catch { return null }
   })
   const dealId = backendReport?.company.deal_id
   useEffect(() => {
@@ -121,10 +124,11 @@ export default function Report(props: Props) {
     generationController.current = null
     if (generationTimer.current) clearTimeout(generationTimer.current)
     generationTimer.current = null
-    setGenerating(false); setGenerationError(message)
+    setReportOperation(null); setRequestStartedAt(null); setGenerationError(message)
   }
-  function startReportRequest() {
+  function startReportRequest(operation: ReportOperation) {
     setDraftingProblem(null)
+    setReportOperation(operation); setRequestStartedAt(Date.now())
     const controller = new AbortController()
     generationController.current = controller
     generationTimer.current = setTimeout(() => {
@@ -137,7 +141,7 @@ export default function Report(props: Props) {
     generationController.current = null
     if (generationTimer.current) clearTimeout(generationTimer.current)
     generationTimer.current = null
-    setGenerating(false)
+    setReportOperation(null); setRequestStartedAt(null)
   }
   function focusModuleLibrary() {
     const search = document.querySelector<HTMLInputElement>('[aria-label="Search modules"]')
@@ -159,9 +163,9 @@ export default function Report(props: Props) {
       return
     }
     setDraftingProblem(null)
-    const controller = startReportRequest()
+    const controller = startReportRequest('generate')
     const requestedWorkspace = structuredClone(workspace)
-    setGenerating(true); setGenerationError(''); setReferenceError(''); setStaleEvidence(false)
+    setGenerationError(''); setReferenceError(''); setStaleEvidence(false)
     try {
       let nextSections: Section[]
       let persistedVersion: number | undefined
@@ -200,9 +204,9 @@ export default function Report(props: Props) {
   }
   async function loadStored(id: string) {
     if (!backendReport || generationController.current) return
-    const controller = startReportRequest()
+    const controller = startReportRequest('load')
     const previous = structuredClone(workspace)
-    setGenerating(true); setGenerationError(''); setReferenceError('')
+    setGenerationError(''); setReferenceError('')
     try {
       const response = await apiFetch(`/deals/${encodeURIComponent(backendReport.company.deal_id)}/stored-reports/${encodeURIComponent(id)}/draft`, { signal: controller.signal, headers: { Accept: 'application/json' } })
       if (!response.ok) throw new Error(`The saved report could not be loaded (HTTP ${response.status}).`)
@@ -232,9 +236,9 @@ export default function Report(props: Props) {
   }
   async function saveShared(asNew = false) {
     if (!backendReport || generationController.current || !workspace.sections.length) return
-    const controller = startReportRequest()
+    const controller = startReportRequest('save')
     const copy = structuredClone(workspace)
-    setGenerating(true); setGenerationError(''); setSaveConflict(false); setStaleEvidence(false)
+    setGenerationError(''); setSaveConflict(false); setStaleEvidence(false)
     try {
       checkedSharedWorkspace(copy, backendReport.company.deal_id)
       const update = !asNew && Boolean(copy.sharedDraftId && copy.sharedDraftVersion)
@@ -258,9 +262,9 @@ export default function Report(props: Props) {
   }
   async function loadShared(id: string) {
     if (!backendReport || generationController.current) return
-    const controller = startReportRequest()
+    const controller = startReportRequest('load')
     const before = structuredClone(workspace)
-    setGenerating(true); setGenerationError(''); setSaveConflict(false)
+    setGenerationError(''); setSaveConflict(false)
     try {
       const response = await apiFetch(`/deals/${encodeURIComponent(backendReport.company.deal_id)}/report-drafts/${encodeURIComponent(id)}`, { signal: controller.signal, headers: { Accept: 'application/json' } })
       const payload: unknown = await reportResponse(response)
@@ -319,14 +323,14 @@ export default function Report(props: Props) {
   }
 
   return <>
-    <div className="page-heading"><div><div className="heading-line"><h1>Report</h1><Badge tone="green">Draft</Badge></div></div><div className="heading-actions"><span className="autosave"><Icon name="check" size={14} /> Saved in this browser</span>{backendReport && <button className="button secondary" disabled={generating || !workspace.sections.length} onClick={() => saveShared()}><Icon name="check" size={15} />Save changes</button>}<button className="button secondary" onClick={() => setHistory(true)}><Icon name="history" size={16} /><span>Version history</span>{workspace.revisions.length > 0 && <span className="button-count">{workspace.revisions.length}</span>}</button></div></div>
+    <div className="page-heading"><div><div className="heading-line"><h1>Report</h1><Badge tone="green">Draft</Badge></div></div><div className="heading-actions"><span className="autosave"><Icon name="check" size={14} /> Saved in this browser</span>{backendReport && <button className="button secondary" disabled={generating || !workspace.sections.length} onClick={() => saveShared()}><Icon name={reportOperation === 'save' ? 'loading' : 'check'} size={15} />{reportOperation === 'save' ? 'Saving changes…' : 'Save changes'}</button>}<button className="button secondary" onClick={() => setHistory(true)}><Icon name="history" size={16} /><span>Version history</span>{workspace.revisions.length > 0 && <span className="button-count">{workspace.revisions.length}</span>}</button></div></div>
     <div className="report-steps" aria-label="Report stages">{[['build', 'Build', 'Choose & customize'], ['review', 'Review', 'Read & verify'], ['export', 'Export', 'Ready to share']].map(([id, label, subtitle], index) => <button key={id} className={`step ${stage === id ? 'active' : ''}`} onClick={() => navigate(base + id)} aria-current={stage === id ? 'step' : undefined}><span className="step-number">{index + 1}</span><span><strong>{label}</strong><small>{subtitle}</small></span>{index < 2 && <Icon name="chevron" size={16} className="step-divider" />}</button>)}</div>
     {backendReport && workspace.sections.length > 0 && exportBlocked && <div className="build-changes-note" role="status"><Icon name="help" size={15} /><span>{draftEvidenceStatus?.stale ? 'Backend evidence has changed since this draft was generated.' : 'Some source citations are unavailable in the loaded backend report.'} Your edits are preserved. Refresh unchanged source references to keep your draft, or explicitly regenerate in Build.{Boolean(draftEvidenceStatus?.missingIds.length) && ` Restore or remove ${draftEvidenceStatus!.missingIds.length} unavailable source reference(s) before refreshing.`}</span><button className="button secondary" disabled={generating} onClick={refreshReferences}>Refresh source references<Icon name="link" size={14} /></button><button className="button secondary" onClick={() => navigate(base + 'build')}>Return to Build</button></div>}
     {draftEvidenceStatus?.referencesRefreshed && <div className="build-changes-note" role="status"><Icon name="link" size={15} /><span>Source references were checked against the current evidence at {workspace.backendEvidenceCheckedAt}. The original draft basis is retained. Your wording and human edits were not rewritten or reverified.</span></div>}
     {referenceError && <div className="calculation-error" role="alert"><Icon name="help" size={17} /><span>{referenceError}</span></div>}
     {generationError && <div ref={generationErrorRef} className="calculation-error" role="alert"><Icon name="help" size={17} /><span>{generationError}</span>{draftingProblem === 'sources' && <button className="button secondary" onClick={() => navigate(`/project/${project.id}/data-room`)}>Open Data room<Icon name="upload" size={14} /></button>}{draftingProblem === 'modules' && <button className="button secondary" onClick={focusModuleLibrary}>Choose report modules</button>}{staleEvidence && props.onRefresh && <button className="button secondary" onClick={() => { props.onRefresh?.(); setStaleEvidence(false) }}>Refresh company evidence</button>}</div>}
-    {generating && <div className="build-changes-note" role="status"><Icon name="loading" size={17} /><span>Working on your report. Your existing draft remains available while the request runs.</span><button className="button secondary" onClick={() => stopWaiting()}>Stop waiting</button></div>}
-    {backendReport && <section className="stored-report-list" aria-label="Shared report versions"><div><h3>Shared reports</h3><p>{workspace.sharedDraftId ? `Connected to shared version ${workspace.sharedDraftVersion}. ` : ''}Draft edits save in this browser. Use Save changes to share the current text and settings with your team.</p></div><div className="shared-report-actions"><button className="button secondary" disabled={sharedLoading} onClick={() => setSharedRefresh(value => value + 1)}><Icon name="history" size={14} />{sharedLoading ? 'Checking saved reports…' : 'Refresh shared reports'}</button>{workspace.sections.length > 0 && <button className="button secondary" disabled={generating} onClick={() => saveShared(true)}>Save as new report</button>}</div><details className="shared-report-browser" open={stage === 'build'}><summary>Browse shared reports ({sharedDrafts.length})</summary>{sharedListError && <p className="form-error" role="alert">{sharedListError}</p>}{!sharedLoading && !sharedListError && !sharedDrafts.length && <p className="muted">No shared reports yet. Generated reports save automatically; save edits when ready.</p>}{sharedDrafts.map(report => <div className="stored-report-row" key={report.id}><span><strong>Version {report.version} · {report.section_count} sections{report.id === workspace.sharedDraftId ? ' · current report' : ''}</strong><small>Report {report.id.slice(0, 12)} · {new Date(report.updated_at).toLocaleString()} · {report.model || 'Team report'}</small></span><button className="button secondary" disabled={generating} onClick={() => loadShared(report.id)}>Load shared report<Icon name="document" size={15} /></button></div>)}</details></section>}
+    {reportOperation && !(stage === 'build' && reportOperation === 'generate') && <ReportRequestStatus operation={reportOperation} startedAt={requestStartedAt} onStop={() => stopWaiting()} />}
+    {backendReport && <section className="stored-report-list" aria-label="Shared report versions"><div><h3>Shared reports</h3><p>{workspace.sharedDraftId ? `Connected to shared version ${workspace.sharedDraftVersion}. ` : ''}Draft edits save in this browser. Use Save changes to share the current text and settings with your team.</p></div><div className="shared-report-actions"><button className="button secondary" disabled={sharedLoading} onClick={() => setSharedRefresh(value => value + 1)}><Icon name={sharedLoading ? 'loading' : 'history'} size={14} />{sharedLoading ? 'Checking saved reports…' : 'Refresh shared reports'}</button>{workspace.sections.length > 0 && <button className="button secondary" disabled={generating} onClick={() => saveShared(true)}>Save as new report</button>}</div><details className="shared-report-browser" open={stage === 'build'}><summary>Browse shared reports ({sharedDrafts.length})</summary>{sharedListError && <p className="form-error" role="alert">{sharedListError}</p>}{!sharedLoading && !sharedListError && !sharedDrafts.length && <p className="muted">No shared reports yet. Generated reports save automatically; save edits when ready.</p>}{sharedDrafts.map(report => <div className="stored-report-row" key={report.id}><span><strong>{report.unavailable ? 'Unavailable · integrity check failed' : <>Version {report.version} · {report.section_count} sections{report.id === workspace.sharedDraftId ? ' · current report' : ''}</>}</strong><small>Report {report.id.slice(0, 12)} · {Number.isFinite(Date.parse(report.updated_at)) && <>{new Date(report.updated_at).toLocaleString()} · </>}{report.model || 'Team report'}</small></span><button className="button secondary" disabled={generating || report.unavailable === true} onClick={() => loadShared(report.id)}>Load shared report<Icon name="document" size={15} /></button></div>)}</details></section>}
     {saveConflict && <div className="build-changes-note" role="status"><span>Your edits are still here. Load the latest shared version to compare, or save a separate report to retain both versions.</span>{workspace.sharedDraftId && <button className="button secondary" disabled={generating} onClick={() => loadShared(workspace.sharedDraftId!)}>Load latest shared version</button>}<button className="button secondary" disabled={generating} onClick={() => saveShared(true)}>Save a separate report</button></div>}
     {recovery && <div className="build-changes-note report-recovery-note" role="status"><span>A previous local report copy is available in this browser. Restoring swaps it with your current local draft; shared versions stay saved.</span><button className="button secondary" disabled={generating} onClick={restoreLocalCopy}>Restore previous local copy</button></div>}
     {stage === 'build' && Boolean(backendReport?.stored_reports?.length) && <section className="stored-report-list" aria-label="Saved company reports"><div><h3>Saved company reports</h3><p>Imported drafts retain their original quotations. Automated source checks still need human review. Loading saves your previous text in version history.</p></div>{backendReport!.stored_reports!.map(report => <div key={report.id} className="stored-report-row"><span><strong>{report.language} · {report.section_count} sections</strong><small>{report.created_at} · {report.model}</small></span><button className="button secondary" disabled={generating} onClick={() => loadStored(report.id)}>Load saved report<Icon name="document" size={15} /></button></div>)}</section>}
@@ -355,7 +359,8 @@ export default function Report(props: Props) {
           <label className="focus-field">Additional focus <span>Optional</span><textarea value={config.focus} onChange={e => updateConfig({ focus: e.target.value })} placeholder={active === 'market' ? 'e.g. Focus on Gen Z purchasing behavior…' : 'What should this section pay special attention to?'} rows={3} maxLength={2000} /></label><div className="config-note"><Icon name="help" size={14} /><span>Preferences shape the draft. Generation uses stored evidence; it does not perform new research.</span></div>
         </aside>
       </div>
-      <div className="build-bottom"><div><Icon name="shield" size={19} /><span><strong>Built on evidence, with room for your judgment.</strong><small>{backendReport ? 'Stored source sentences and numbers · linked quotations · explicit gaps' : 'Historical snapshot · missing sources stay visible · no investment conclusions'}</small></span></div><button className="button primary" disabled={generating} onClick={generate}><Icon name={generating ? 'loading' : 'sparkles'} size={17} />{generating ? 'Preparing report…' : workspace.sections.length ? 'Regenerate preview' : 'Generate report preview'}<Icon name="arrow" size={16} /></button></div>
+      {reportOperation === 'generate' && <ReportRequestStatus operation={reportOperation} startedAt={requestStartedAt} onStop={() => stopWaiting()} />}
+      <div className="build-bottom"><div><Icon name="shield" size={19} /><span><strong>Built on evidence, with room for your judgment.</strong><small>{backendReport ? 'Stored source sentences and numbers · linked quotations · explicit gaps' : 'Historical snapshot · missing sources stay visible · no investment conclusions'}</small></span></div><button className="button primary" disabled={generating} onClick={generate}><Icon name={reportOperation === 'generate' ? 'loading' : 'sparkles'} size={17} />{reportOperation === 'generate' ? 'Generating report…' : workspace.sections.length ? 'Regenerate preview' : 'Generate report preview'}<Icon name="arrow" size={16} /></button></div>
     </>}
     {stage === 'review' && (workspace.sections.length === 0 ? <Empty icon="book" title="Your report starts in Build" text="Choose your modules and generate an evidence preview before reviewing."><button className="button primary" onClick={() => navigate(base + 'build')}>Build your report <Icon name="arrow" /></button></Empty> : <ReportReview project={project} workspace={workspace} evidence={evidenceCatalog} backend={Boolean(backendReport)} companyName={backendReport?.company.legal_name} inspect={inspect} edit={section => { setEditing(section); setEditText(section.content) }} history={() => setHistory(true)} onExport={() => navigate(base + 'export')} />)}
     {stage === 'export' && (workspace.sections.length === 0 ? <Empty title="Nothing to export yet" text="Generate and review your report first."><button className="button primary" onClick={() => navigate(base + 'build')}>Go to Build</button></Empty> : <div className="export-layout"><div className="export-card"><div className="export-icon"><Icon name="document" size={34} /></div><h2>Take the evidence with you.</h2><p>Export your report with source references, unresolved questions, and your revisions.</p><div className="format-options">{(['PDF', 'DOCX', 'Markdown'] as const).map(item => <button key={item} aria-pressed={format === item} className={format === item ? 'selected' : ''} onClick={() => setFormat(item)}><Icon name={item === 'DOCX' ? 'pencil' : item === 'Markdown' ? 'file' : 'document'} size={24} /><strong>{item}</strong><small>{item === 'PDF' ? 'Ready to read' : item === 'DOCX' ? 'Ready to edit' : 'Ready to reuse'}</small><span className="format-radio">{format === item && <Icon name="check" size={12} />}</span></button>)}</div>{format === 'PDF' && <p className="export-format-note">PDF preserves original source text; the bundled font loads on the first Unicode export.</p>}<button className="button primary full" disabled={exporting || exportBlocked} aria-describedby={exportBlocked ? 'export-evidence-block' : undefined} onClick={async () => { if (exportBlocked) { notify('Refresh unchanged source references or regenerate explicitly before exporting; current source bindings are required.'); return }; setExportError(''); setExporting(true); try { await exportReport(format, project, workspace.sections, evidenceCatalog, exportContext); notify(`${format} report downloaded.`) } catch (error) { const message = error instanceof Error ? error.message.slice(0, 500) : 'Export failed. Try another format or check browser download permissions.'; setExportError(message); notify(message) } finally { setExporting(false) } }}><Icon name={exporting ? 'loading' : 'download'} size={18} />Download {format}</button>{exportBlocked && <p id="export-evidence-block" className="export-format-note">Export requires current source bindings. Refresh unchanged source references above to retain your wording, or regenerate explicitly in Build.</p>}{exportError && <p className="form-error" role="alert">{exportError}</p>}<small className="export-private"><Icon name="shield" size={13} /> Generated in your browser. No file is uploaded.</small></div><div className="export-checklist"><h3>Included in your export</h3>{[`${workspace.sections.length} report sections`, `${citedEvidenceIds(workspace.sections, evidenceCatalog).length} cited evidence extracts`, 'Source names and exact locators', 'Current human-edited content', 'Missing evidence and limitations'].map(text => <p key={text}><Icon name="check" size={17} />{text}</p>)}<div className="preview-note"><Icon name="help" size={17} /><span>Review edited statements against their sources before sharing. Edits are saved locally and have not been automatically reverified.</span></div><button className="text-button" onClick={() => navigate(base + 'review')}><Icon name="back" size={16} /> Return to review</button></div></div>)}
@@ -366,4 +371,21 @@ export default function Report(props: Props) {
     })}<p className="muted">Restoring creates a new human revision. Review its source references before sharing.</p></div></Dialog>}
 
   </>
+}
+
+/** Keep the real elapsed clock local so large cited reports do not rerender each second. */
+function ReportRequestStatus({ operation, startedAt, onStop }: { operation: ReportOperation; startedAt: number | null; onStop: () => void }) {
+  const [waitingSeconds, setWaitingSeconds] = useState(0)
+  useEffect(() => {
+    const update = () => setWaitingSeconds(startedAt === null ? 0 : Math.max(0, Math.floor((Date.now() - startedAt) / 1000)))
+    update()
+    const timer = setInterval(update, 1000)
+    return () => clearInterval(timer)
+  }, [startedAt])
+  const status = operation === 'generate'
+    ? { title: 'Generating your report…', detail: 'Waiting for the report service to return a source-backed draft. Your current draft is preserved.' }
+    : operation === 'save'
+      ? { title: 'Saving shared report…', detail: 'Waiting for the shared copy to be saved. Your latest edits stay in this browser.' }
+      : { title: 'Loading saved report…', detail: 'Waiting for the saved report. Your current draft stays here until the loaded copy is ready.' }
+  return <div className="build-changes-note report-request-status" role="status" aria-live="polite" aria-atomic="true" data-report-operation={operation}><Icon name="loading" size={19} /><span><strong>{status.title}</strong><small>{status.detail}</small><small className="report-request-elapsed" aria-hidden="true">Waiting {waitingSeconds}s · No completion estimate is available.</small></span><button className="button secondary" onClick={onStop}>Stop waiting</button></div>
 }

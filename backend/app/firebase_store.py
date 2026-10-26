@@ -272,38 +272,65 @@ class FirebaseStore:
         return sorted(self.bundle(deal_id)['narrative_reports'], key=lambda x: (x.get('created_at', ''), x['id']), reverse=True)
 
     def report_drafts(self, deal_id):
-        records = [unpack(doc) for doc in self._collection(deal_id, 'report_drafts').stream(timeout=30)]
-        if any(record.get('deal_id') != deal_id for record in records):
-            raise ValueError('Stored report draft belongs to another company.')
+        from app.report_storage import record_for_listing, unavailable_record
+        from app.report_drafts import summary
+        records=[]
+        for doc in self._collection(deal_id, 'report_drafts').stream(timeout=30):
+            draft_id=getattr(doc,'id',None)
+            try:
+                records.append(summary(record_for_listing(unpack(doc),deal_id=deal_id,draft_id=draft_id)))
+            except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+                data=doc.to_dict()
+                stored=data.get('record') if isinstance(data,dict) else None
+                records.append(summary(unavailable_record(stored,deal_id=deal_id,draft_id=draft_id)))
         return sorted(records, key=lambda record: (record['updated_at'], record['id']), reverse=True)
 
     def report_draft(self, deal_id, draft_id):
-        record = unpack(self._collection(deal_id, 'report_drafts').document(identifier(draft_id)).get(timeout=30))
+        from app.report_storage import decode_scoped_record
+        try:
+            record = unpack(self._collection(deal_id, 'report_drafts').document(identifier(draft_id)).get(timeout=30))
+        except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+            raise ValueError('Shared report storage failed its envelope integrity check.') from None
         if record and record.get('deal_id') != deal_id:
             raise ValueError('Stored report draft belongs to another company.')
-        return record
+        return decode_scoped_record(record,deal_id=deal_id,draft_id=draft_id) if record is not None else None
 
     def create_report_draft(self, record):
-        from app.report_drafts import validate_record
-        validate_record(record)
-        self.save_record(record['deal_id'], 'report_drafts', record['id'], record)
+        from app.report_storage import encode_record, decode_scoped_record
+        stored=encode_record(record)
+        deal_id=record['deal_id']
+        if self.company(deal_id) is None:
+            raise ValueError('Shared report belongs to an unknown company.')
+        doc=self._collection(deal_id,'report_drafts').document(identifier(record['id']))
+        try:
+            doc.create(envelope(stored),timeout=30)
+        except AlreadyExists:
+            previous=decode_scoped_record(unpack(doc.get(timeout=30)),deal_id=deal_id,draft_id=record['id'])
+            if previous != record:
+                raise ValueError('Existing immutable shared report has different content.') from None
+        self._invalidate(deal_id)
         return record
 
     def update_report_draft(self, deal_id, draft_id, expected_version, workspace):
         from app.report_drafts import DraftVersionConflict, updated_record
+        from app.report_storage import decode_scoped_record, encode_record
         doc = self._collection(deal_id, 'report_drafts').document(identifier(draft_id))
         snapshot = doc.get(timeout=30)
-        record = unpack(snapshot)
+        try:
+            record = unpack(snapshot)
+        except (ValueError,TypeError,AttributeError,KeyError,RecursionError):
+            raise ValueError('Shared report storage failed its envelope integrity check.') from None
         if record is None:
             return None
         if record.get('deal_id') != deal_id:
             raise ValueError('Stored report draft belongs to another company.')
+        record = decode_scoped_record(record,deal_id=deal_id,draft_id=draft_id)
         if record['version'] != expected_version:
             raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.')
         updated = updated_record(record, workspace)
         try:
             # A document update precondition is atomic across server processes.
-            doc.update(envelope(updated), option=firestore.LastUpdateOption(snapshot.update_time), timeout=30)
+            doc.update(envelope(encode_record(updated)), option=firestore.LastUpdateOption(snapshot.update_time), timeout=30)
         except FailedPrecondition:
             raise DraftVersionConflict('Another browser saved this report. Reload the shared copy before saving again.') from None
         return updated

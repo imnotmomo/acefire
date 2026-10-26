@@ -31,9 +31,9 @@ if (!executablePath) {
   for (const candidate of candidates) if (await fs.access(candidate).then(() => true, () => false)) { executablePath = candidate; break }
 }
 const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless: true }).catch(error => { vite?.kill(); throw error })
-const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, acceptDownloads: true })
+const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, acceptDownloads: true, reducedMotion: 'no-preference' })
 const errors = [], writes = [], records = new Map(), results = []
-let mode = 'success', release = null, attempt = 0, waitingGate = null
+let mode = 'success', release = null, attempt = 0, waitingGate = null, showUnavailable = false
 async function requestGate(name) {
   waitingGate = name
   await waitForFixtureGate(name, () => release)
@@ -56,7 +56,7 @@ await context.route('**/api/**', async route => {
     records.set(draft.id, record(draft.id, null, draft))
     return route.fulfill({ json: draft }).catch(() => {})
   }
-  if (endpoint.endsWith('/report-drafts') && request.method() === 'GET') return route.fulfill({ json: { drafts: [...records.values()].map(summary) } })
+  if (endpoint.endsWith('/report-drafts') && request.method() === 'GET') return route.fulfill({ json: { drafts: [...records.values()].map(summary).concat(showUnavailable ? [{ id: 'unavailable-shared-report', version: 0, created_at: '', updated_at: '', based_on_report_id: '', model: null, section_count: 0, unavailable: true }] : []) } })
   if (endpoint.endsWith('/report-drafts') && request.method() === 'POST') {
     const body = request.postDataJSON(), id = `manual-${records.size + 1}`, saved = record(id, body.workspace)
     records.set(id, saved); return route.fulfill({ json: saved })
@@ -66,6 +66,7 @@ await context.route('**/api/**', async route => {
     const saved = records.get(id)
     if (request.method() === 'GET') { if (mode === 'delay-load') await new Promise(resolve => { release = resolve }); return route.fulfill({ json: saved }).catch(() => {}) }
     const body = request.postDataJSON()
+    if (mode === 'delay-save') await new Promise(resolve => { release = resolve })
     if (mode === 'save-failure') return route.fulfill({ status: 503, json: { detail: { message: 'Shared save temporarily unavailable. Your local copy is preserved.' } } })
     if (mode === 'conflict' || body.expected_version !== saved.version) return route.fulfill({ status: 409, json: { detail: { code: 'draft_version_conflict' } } })
     saved.workspace = body.workspace; saved.version++; return route.fulfill({ json: saved })
@@ -79,6 +80,16 @@ async function check(name, callback) { await callback(); results.push(name); con
 async function open() { await page.goto(`${base}/tests/report-workflow.html`, { waitUntil: 'networkidle' }); await page.getByRole('heading', { name: 'Report', exact: true }).waitFor() }
 async function build() { await page.getByRole('button', { name: /^1 Build/ }).click() }
 async function edit(text) { await page.getByRole('button', { name: 'Edit Company overview', exact: true }).click(); await page.getByLabel('Section content').fill(text); await page.getByRole('button', { name: 'Save revision', exact: true }).click() }
+const requestStatus = kind => page.locator(`[data-report-operation="${kind}"]`)
+async function rotatingLoader(kind) {
+  const loader = requestStatus(kind).locator('svg.loading-icon')
+  assert.equal(await loader.count(), 1)
+  const before = await loader.evaluate(element => getComputedStyle(element).transform)
+  const running = await loader.evaluate(element => element.getAnimations().some(animation => animation.animationName === 'ingenium-loading-spin' && animation.playState === 'running' && animation.effect.getTiming().iterations === Infinity))
+  assert.equal(running, true, 'the visible loading icon must have a running rotation effect')
+  await page.waitForFunction(({ kind, before }) => { const icon = document.querySelector(`[data-report-operation="${kind}"] svg.loading-icon`); return icon && getComputedStyle(icon).transform !== before }, { kind, before })
+}
+
 try {
   await open()
   await check('empty Review and Export stages provide working paths back to Build', async () => {
@@ -129,9 +140,32 @@ try {
     await page.getByLabel('Additional focus', { exact: false }).fill('Changed during the request')
     await page.waitForFunction(() => document.querySelector('[role=status]')?.textContent !== '')
     await requestGate('report generation request after settings edit')
+    await requestStatus('generate').getByText('Generating your report…', { exact: true }).waitFor()
+    assert.equal(writes.at(-1).endpoint.endsWith('/report/draft'), true)
+    await rotatingLoader('generate')
+    await requestStatus('generate').getByText(/Waiting [1-9]\d*s/).waitFor()
+    assert.equal(await page.getByRole('button', { name: 'Generating report…', exact: false }).isDisabled(), true)
+    await requestStatus('generate').scrollIntoViewIfNeeded()
+    await page.screenshot({ path: path.join(output, 'real-pending-generation.png') })
     release(); release = null
     await page.getByRole('alert').filter({ hasText: 'settings changed' }).waitFor()
     const w = await fixture(); assert.equal(w.sections.length, 0); assert.equal(w.configs.overview.focus, 'Changed during the request')
+    assert.equal(await page.locator('[data-report-operation]').count(), 0)
+  })
+  await check('reduced motion keeps a static icon and clear real-request status with working cancellation', async () => {
+    await page.emulateMedia({ reducedMotion: 'reduce' }); mode = 'delay'
+    await page.getByRole('button', { name: /^Generate report preview/ }).click()
+    await requestGate('reduced-motion generation request')
+    await requestStatus('generate').getByText('Generating your report…', { exact: true }).waitFor()
+    const loader = requestStatus('generate').locator('svg.loading-icon')
+    assert.equal(await loader.evaluate(element => getComputedStyle(element).animationName), 'none')
+    assert.equal(await loader.evaluate(element => element.getAnimations().length), 0)
+    assert.match(await requestStatus('generate').innerText(), /Waiting for the report service/)
+    await page.getByRole('button', { name: 'Stop waiting', exact: true }).click()
+    assert.equal(await page.locator('[data-report-operation]').count(), 0)
+    assert.equal(await page.getByRole('button', { name: /^Generate report preview/ }).isEnabled(), true)
+    mode = 'success'; release(); release = null
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
   })
   await check('stopping a request retains draft/settings and permits a new successful request', async () => {
     mode = 'delay'
@@ -142,6 +176,7 @@ try {
     await page.getByRole('button', { name: /^Generate report preview/ }).click()
     await page.locator('.report-paper').waitFor()
     assert.equal((await fixture()).sharedDraftVersion, 1)
+    assert.equal(await page.locator('[data-report-operation]').count(), 0)
   })
   await check('edits stay local until explicit versioned save; quotations remain traceable', async () => {
     const count = writes.length, original = (await fixture()).sections[0].content
@@ -162,6 +197,20 @@ try {
     await page.getByRole('button', { name: 'Inspect supporting evidence', exact: true }).click()
     assert.match(await page.getByLabel('Inspected evidence').innerText(), /field:fixture-source/)
   })
+  await check('saving a shared copy reports a real save request without claiming model generation', async () => {
+    mode = 'delay-save'
+    await page.getByRole('button', { name: 'Save changes', exact: true }).click()
+    await requestGate('shared save request')
+    await requestStatus('save').getByText('Saving shared report…', { exact: true }).waitFor()
+    assert.equal(writes.at(-1).method, 'PUT')
+    assert.equal(await page.getByRole('button', { name: 'Saving changes…', exact: true }).isDisabled(), true)
+    assert.equal(await requestStatus('generate').count(), 0)
+    await rotatingLoader('save')
+    mode = 'success'; release(); release = null
+    await page.getByRole('button', { name: 'Save changes', exact: true }).waitFor()
+    assert.equal(await page.locator('[data-report-operation]').count(), 0)
+    assert.equal((await fixture()).sharedDraftVersion, 3)
+  })
   await check('provider errors are visible at the Generate action and retain the editable saved draft', async () => {
     const before = await fixture()
     await build(); mode = 'failure'
@@ -170,6 +219,7 @@ try {
     await alert.waitFor()
     await page.waitForFunction(() => { const alert = [...document.querySelectorAll('[role="alert"]')].find(element => element.textContent?.includes('Fixture provider unavailable')); if (!alert) return false; const box = alert.getBoundingClientRect(); return box.top >= 0 && box.top < innerHeight })
     assert.deepEqual(await fixture(), before)
+    assert.equal(await page.locator('[data-report-operation]').count(), 0)
     assert.equal(await page.getByRole('button', { name: /^Regenerate preview/ }).isEnabled(), true)
     mode = 'success'
     await page.getByRole('button', { name: /^2 Review/ }).click()
@@ -293,6 +343,9 @@ try {
     await open(); mode = 'delay-load'
     await page.locator('.stored-report-row').first().getByRole('button', { name: 'Load shared report', exact: true }).click()
     await requestGate('shared report load request before settings edit')
+    await requestStatus('load').getByText('Loading saved report…', { exact: true }).waitFor()
+    assert.equal(await requestStatus('generate').count(), 0)
+    await rotatingLoader('load')
     await page.getByLabel('Additional focus', { exact: false }).fill('Keep my settings during the shared load')
     release(); release = null; mode = 'success'
     await page.getByRole('alert').filter({ hasText: 'settings changed' }).waitFor()
@@ -310,6 +363,24 @@ try {
     assert.deepEqual(loaded.configs.overview.topics, saved.draft.drafting_preferences[0].topics)
     assert.equal(loaded.backendReportId, saved.based_on_report_id)
     assert.equal(loaded.sections[0].sourceClaims[0].citations[0].source.sha256, 'a'.repeat(64))
+  })
+  await check('an integrity-failed shared record is visibly unavailable while valid reports and local edits remain usable', async () => {
+    const before = await fixture(), listing = page.locator('.shared-report-browser')
+    showUnavailable = true
+    const response = page.waitForResponse(response => response.url().endsWith('/report-drafts') && response.request().method() === 'GET')
+    await page.getByRole('button', { name: 'Refresh shared reports', exact: true }).click(); await response
+    if (!await listing.evaluate(element => element.open)) await listing.locator(':scope>summary').click()
+    const unavailable = page.locator('.stored-report-row').filter({ hasText: 'Unavailable · integrity check failed' })
+    await unavailable.waitFor()
+    assert.doesNotMatch(await unavailable.innerText(), /Invalid Date|Version 0/)
+    assert.equal(await unavailable.getByRole('button', { name: 'Load shared report', exact: true }).isDisabled(), true)
+    assert.ok(await page.locator('.stored-report-row button:not(:disabled)').count() > 0)
+    assert.deepEqual(await fixture(), before)
+    showUnavailable = false
+    const refreshed = page.waitForResponse(response => response.url().endsWith('/report-drafts') && response.request().method() === 'GET')
+    await page.getByRole('button', { name: 'Refresh shared reports', exact: true }).click(); await refreshed
+    await unavailable.waitFor({ state: 'detached' })
+    if (await listing.evaluate(element => element.open)) await listing.locator(':scope>summary').click()
   })
   await check('shared report controls and provenance remain reachable on a small screen', async () => {
     await page.setViewportSize({ width: 390, height: 844 })

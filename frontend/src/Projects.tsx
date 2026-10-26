@@ -4,6 +4,8 @@ import { emptyWorkspace, readLocal } from './domain'
 import { backendProjectId } from './backend'
 import { Badge, Empty, Icon } from './ui'
 import { usePageMotion } from './motion'
+import { CompanyLogoCover, CompanyLogoSetup, CompanyLogoCacheCheck } from './CompanyLogo'
+import type { CompanyLogo } from './companyLogoApi'
 
 type Props = { projects: Project[]; archivedIds: Set<string>; onCreate: () => void; onManage: (project: Project) => void; onConnect: (project: Project) => Promise<void>; connectingId: string | null }
 const shared = (project: Project) => Boolean(project.backendDealId ?? backendProjectId(project.id))
@@ -12,6 +14,7 @@ export default function Projects({ projects, archivedIds, onCreate, onManage, on
   const pageMotionRef = usePageMotion('projects')
   const [search, setSearch] = useState(''), [sector, setSector] = useState('All sectors'), [layout, setLayout] = useState('grid')
   const [view, setView] = useState('active')
+  const [logoOverrides, setLogoOverrides] = useState<Record<string, CompanyLogo>>({})
   const active = projects.filter(p => p.id !== 'enfuce' && !archivedIds.has(p.id))
   const scope = projects.filter(p => view === 'examples' ? p.id === 'enfuce' : p.id !== 'enfuce' && archivedIds.has(p.id) === (view === 'archived'))
   const shown = scope.filter(p => `${p.name} ${p.sector} ${p.geography}`.toLowerCase().includes(search.toLowerCase()) && (sector === 'All sectors' || p.sector === sector))
@@ -27,10 +30,15 @@ export default function Projects({ projects, archivedIds, onCreate, onManage, on
       const workspace = readLocal<Workspace>(`acefire:workspace:v1:${project.id}`, emptyWorkspace())
       const documents = readLocal<unknown[]>(`acefire:documents:v1:${project.id}`, [])
       const localCount = Array.isArray(documents) ? documents.length : 0
+      const logo = logoOverrides[project.id] ?? project.companyLogo
+      const dealId = project.backendDealId ?? backendProjectId(project.id)
+      const setLogo = (next: CompanyLogo) => setLogoOverrides(previous => ({ ...previous, [project.id]: next }))
       return <article className="project-card" key={project.id}>
-        <a href={`#/project/${project.id}/dashboard`} className={`project-cover cover-${index % 3}`} aria-label={`Open ${project.name} dashboard`}><ProjectCover project={project} /><span className="project-cover-number">{String(index + 1).padStart(2, '0')}</span><span className="cover-project-tag"><Icon name="folder" size={13} />{seeded ? 'Historical snapshot' : archived ? 'Archived workspace' : linked ? 'Shared company' : 'Browser workspace'}</span><span className="cover-open"><Icon name="outward" size={18} /></span></a>
+        <a href={`#/project/${project.id}/dashboard`} className={`project-cover cover-${index % 3}`} aria-label={`Open ${project.name} dashboard`}>{logo && dealId ? <CompanyLogoCover name={project.name} dealId={dealId} logo={logo} onStatus={setLogo} /> : <ProjectCover project={project} />}<span className="project-cover-number">{String(index + 1).padStart(2, '0')}</span><span className="cover-project-tag"><Icon name="folder" size={13} />{seeded ? 'Historical snapshot' : archived ? 'Archived workspace' : linked ? 'Shared company' : 'Browser workspace'}</span><span className="cover-open"><Icon name="outward" size={18} /></span></a>
         <div className="project-card-body"><div className="project-card-title"><div><h3><a href={`#/project/${project.id}/dashboard`}>{project.name}</a></h3><Badge tone={index % 2 === 0 ? 'blue' : 'purple'}>{project.sector}</Badge></div>{!seeded && <button className="icon-button" aria-label={`Manage ${project.name}`} onClick={() => onManage(project)}><Icon name="settings" size={18} /></button>}</div>
           <div className="project-owner"><span className="company-avatar tiny">{project.name.slice(0, 1).toLowerCase()}.</span><span><strong>{project.name}</strong><small>{project.geography}</small></span><span className="project-status"><span className={`status-dot ${linked ? '' : 'gray'}`} />{seeded ? 'Example' : archived ? 'Archived' : linked ? 'Connected' : 'Browser only'}</span></div>
+          {logo?.status === 'awaiting_website' && dealId && <CompanyLogoSetup name={project.name} dealId={dealId} onStatus={setLogo} />}
+          {logo?.status === 'fetching' && dealId && <CompanyLogoCacheCheck dealId={dealId} onStatus={setLogo} />}
           <div className="project-card-stats"><div><Icon name="document" size={17} /><span><strong>{linked ? 'View data room' : (seeded ? 3 : 0) + localCount}</strong><small>Sources</small></span></div><div><Icon name="layers" size={17} /><span><strong>{workspace?.sections?.length ?? 0}</strong><small>Draft sections here</small></span></div></div>
           <div className="project-card-actions">{!seeded && !linked && <button className="button secondary" disabled={Boolean(connectingId)} onClick={() => { void onConnect(project) }}><Icon name={connectingId === project.id ? 'loading' : 'link'} size={14} />{connectingId === project.id ? 'Connecting…' : 'Connect company workspace'}</button>}<a className="button secondary" href={`#/project/${project.id}/data-room`}>Data room<Icon name="folderOpen" size={14} /></a><a className="button secondary" href={`#/project/${project.id}/report/build`}>Build report<Icon name="document" size={14} /></a></div>
         </div></article>
