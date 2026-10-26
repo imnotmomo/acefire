@@ -32,7 +32,9 @@ async function workspace(view, routeApi) {
     unexpected.push(`${route.request().method()} ${new URL(route.request().url()).pathname}`)
     await route.fulfill({ status: 501, json: { detail: 'No live API permitted in this regression fixture.' } })
   })
-  const page = await context.newPage(); page.setDefaultTimeout(10_000); page.on('pageerror', error => { errors.push(error.message); console.error(error.message) })
+  const page = await context.newPage();
+  if (Number(process.env.INTAKE_TEST_CPU_RATE || 1) > 1) await (await context.newCDPSession(page)).send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.INTAKE_TEST_CPU_RATE) })
+  page.setDefaultTimeout(10_000); page.on('pageerror', error => { errors.push(error.message); console.error(error.message) })
   await page.goto(`${base}tests/intake-workflow.html?view=${view}`, { waitUntil: 'networkidle' })
   if (errors.length) throw new Error(`Fixture browser error: ${errors.join('; ')}`)
   return page
@@ -68,8 +70,10 @@ try {
   })
   await check('Dismissed shared receipts stay hidden across refresh and can be restored without deleting evidence', async () => {
     await upload.getByRole('button', { name: 'Dismiss finance.csv processing history', exact: true }).first().click()
+    const refreshed = upload.waitForResponse(response => new URL(response.url()).pathname === '/api/deals/fixture-company/uploads' && response.request().method() === 'GET')
     await upload.getByRole('button', { name: 'Refresh processing history', exact: true }).click()
-    await upload.getByRole('button', { name: 'Refresh processing history', exact: true }).isEnabled()
+    await refreshed
+    await upload.waitForFunction(() => { const button = [...document.querySelectorAll('button')].find(element => element.textContent.trim() === 'Refresh processing history'); return button && !button.disabled })
     assert.equal(await upload.locator('.upload-job').count(), 1)
     await upload.reload({ waitUntil: 'networkidle' }); assert.equal(await upload.locator('.upload-job').count(), 1)
     await upload.getByRole('button', { name: 'Show dismissed receipts', exact: true }).click()
@@ -126,6 +130,7 @@ try {
   })
   await check('Native originals have a working download control without an unnecessary preview fetch', async () => {
     await native.getByRole('button', { name: 'Download original', exact: true }).waitFor()
+    await native.getByText(/This file opens in its native application/).waitFor()
     assert.match(await native.locator('.source-preview').innerText(), /native application/)
     assert.equal(downloads, 0)
     const [download] = await Promise.all([native.waitForEvent('download'), native.getByRole('button', { name: 'Download original', exact: true }).click()])
@@ -160,9 +165,10 @@ try {
     const row = readingRoom.getByRole('row').filter({ has: readingRoom.getByText('overview.docx', { exact: true }) })
     await row.getByRole('button', { name: 'Open reading view of overview.docx', exact: true }).click()
     const view = readingRoom.getByRole('dialog', { name: 'Reading view', exact: true }); await view.getByRole('img', { name: /Original PDF page 1 of/ }).waitFor()
+    await view.getByRole('img', { name: /Original PDF page 1 of/ }).evaluate(image => image.decode())
     assert.match(await view.innerText(), /Reading view of overview.docx/); assert.match(await view.innerText(), /untouched original/); assert.equal(readingRequests.at(-1), 'native-reading')
     await readingRoom.keyboard.press('Escape'); await row.getByRole('button', { name: 'Open file', exact: true }).click()
-    const original = readingRoom.getByRole('dialog', { name: 'Original source file', exact: true }); assert.match(await original.innerText(), /native application/); assert.match(await original.innerText(), /overview.docx/)
+    const original = readingRoom.getByRole('dialog', { name: 'Original source file', exact: true }); await original.getByText(/This file opens in its native application/).waitFor(); assert.match(await original.innerText(), /native application/); assert.match(await original.innerText(), /overview.docx/)
     await readingRoom.keyboard.press('Escape')
     const [download] = await Promise.all([readingRoom.waitForEvent('download'), row.getByRole('button', { name: 'Download original', exact: true }).click()])
     assert.equal(download.suggestedFilename(), 'overview.docx'); assert.equal(await fs.readFile(await download.path(), 'utf8'), 'Native original fixture bytes.'); assert.equal(readingRequests.at(-1), 'native')
@@ -201,7 +207,7 @@ try {
   })
   assert.deepEqual(unexpected, []); assert.deepEqual(errors, [])
   const output = path.resolve('test-results/intake-workflow'); await fs.mkdir(output, { recursive: true })
-  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, real_browser: true, mocked_api: true, live_model_calls: 0, unexpected_api: unexpected, browser_errors: errors }, null, 2))
+  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, cpuRate: Number(process.env.INTAKE_TEST_CPU_RATE || 1), real_browser: true, mocked_api: true, live_model_calls: 0, unexpected_api: unexpected, browser_errors: errors }, null, 2))
 } finally {
   await Promise.all(contexts.map(context => context.close())); await browser.close(); await server.close()
 }

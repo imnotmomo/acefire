@@ -14,8 +14,10 @@ const browser = await chromium.launch({ ...(executablePath ? { executablePath } 
 const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, permissions: ['clipboard-read', 'clipboard-write'], acceptDownloads: true })
 const output = path.resolve('test-results/evidence-workflow'); await fs.mkdir(output, { recursive: true })
 const errors = [], unexpected = [], mutations = [], requests = [], findings = [], results = []
+const cpuRate = Math.max(1, Math.min(8, Number(process.env.EVIDENCE_TEST_CPU_RATE) || 1))
 let fileMode = 'okay'
 const page = await context.newPage(); page.setDefaultTimeout(10_000); page.on('pageerror', error => { errors.push(error.message); console.error(error.message) })
+if (cpuRate > 1) await (await context.newCDPSession(page)).send('Emulation.setCPUThrottlingRate', { rate: cpuRate })
 await context.route('**/api/**', async route => {
   const request = route.request(), url = new URL(request.url())
   requests.push({ path: url.pathname, auth: request.headers().authorization ?? null })
@@ -106,9 +108,10 @@ try {
   })
   await check('Source details copy the exact reference, record identity, source locator and SHA, and explain denied clipboard permission', async () => {
     const dialog = inspector(); await dialog.getByRole('tab', { name: 'Source details', exact: true }).click(); await dialog.getByRole('button', { name: 'Copy reference', exact: true }).click()
+    await page.getByLabel('Fixture notification').filter({ hasText: 'Source reference copied.' }).waitFor()
     const copied = await page.evaluate(() => navigator.clipboard.readText()); assert.match(copied, /calculation-primary/); assert.match(copied, /9,007,199,254,740,993\.1250 USD/); assert.match(copied, /SHA-256/); assert.match(copied, /Lines 1–1/)
     await page.evaluate(() => { window.evidenceFixture.clipboard = navigator.clipboard.writeText.bind(navigator.clipboard); navigator.clipboard.writeText = async () => { throw new DOMException('Fixture denied clipboard', 'NotAllowedError') } })
-    await dialog.getByRole('button', { name: 'Copy reference', exact: true }).click(); assert.match(await page.getByLabel('Fixture notification').innerText(), /Clipboard access was denied/)
+    await dialog.getByRole('button', { name: 'Copy reference', exact: true }).click(); await page.getByLabel('Fixture notification').filter({ hasText: 'Clipboard access was denied' }).waitFor(); assert.match(await page.getByLabel('Fixture notification').innerText(), /Clipboard access was denied/)
     await page.evaluate(() => { navigator.clipboard.writeText = window.evidenceFixture.clipboard })
     await dialog.locator('.connected-source-reference').last().getByText('Original locator details', { exact: true }).click(); assert.match(await dialog.locator('.connected-source-reference').last().innerText(), /Line start/)
   })
@@ -150,6 +153,7 @@ try {
   })
   await check('A changed or foreign premise original cannot become a clickable file action while the recorded quotation stays visible', async () => {
     const other = await context.newPage(); other.setDefaultTimeout(10_000); other.on('pageerror', error => errors.push(error.message))
+    if (cpuRate > 1) await (await context.newCDPSession(other)).send('Emulation.setCPUThrottlingRate', { rate: cpuRate })
     await other.goto(`${base}tests/evidence-workflow.html?premise=foreign`, { waitUntil: 'networkidle' })
     await other.getByRole('button', { name: 'Inspect Fixture exact replay', exact: true }).click()
     const premise = other.getByRole('dialog', { name: 'Evidence inspector', exact: true }).locator('.connected-quoted-premise')
@@ -159,7 +163,7 @@ try {
     assert.match(await premise.innerText(), /no matching supplied original/); await other.close()
   })
   assert.deepEqual(unexpected, []); assert.deepEqual(mutations, []); assert.deepEqual(errors, [])
-  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, findings, mocked_api: true, live_model_calls: 0, browser_errors: errors, unexpected_api: unexpected, mutations }, null, 2))
+  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, cpuRate, findings, mocked_api: true, live_model_calls: 0, browser_errors: errors, unexpected_api: unexpected, mutations }, null, 2))
 } catch (error) {
   await page.screenshot({ path: path.join(output, 'failure.png'), fullPage: true, animations: 'disabled' }).catch(() => {})
   await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ passed: results, findings, error: String(error), mocked_api: true, browser_errors: errors, unexpected_api: unexpected, mutations }, null, 2)); throw error
