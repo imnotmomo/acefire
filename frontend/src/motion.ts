@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 /** Animate navigation without replacing the workspace or its open editors. */
 export function usePageMotion(pathname: string) {
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const element = ref.current
@@ -12,9 +12,12 @@ export function usePageMotion(pathname: string) {
     const stop = () => { animation?.cancel(); animation = undefined }
 
     if (!preference.matches) {
-      // No transform here: fixed evidence/chat panels must stay viewport-sized.
-      animation = element.animate([{ opacity: 0.35 }, { opacity: 1 }], {
-        duration: 220, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+      // Only page content moves. Docks stay outside; dialogs portal to the body.
+      animation = element.animate([
+        { opacity: 0.2, transform: 'translateY(12px)' },
+        { opacity: 1, transform: 'none' },
+      ], {
+        duration: 320, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
       })
       animation.id = 'ingenium-page-enter'
     }

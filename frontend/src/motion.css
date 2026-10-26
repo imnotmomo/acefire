@@ -3,6 +3,15 @@
   --motion-enter: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+.page-transition {
+  min-width: 0;
+}
+
+.project-nav a,
+.report-subnav a {
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
 .ingenium-site {
   animation: ingenium-page-enter 220ms var(--motion-enter);
 }
