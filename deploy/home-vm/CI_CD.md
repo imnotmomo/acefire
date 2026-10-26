@@ -1,14 +1,23 @@
 # GitHub Actions deployment
 
-`CI` runs on pull requests, pushes to `main`, and manual dispatches. It installs
-the locked dependencies and real Office/OCR tools, runs backend, frontend, PDF,
-Roundtable and deployment tests, and builds a checksummed release artifact.
-PR tests have no production credentials and do not call the live providers.
+`CI` (`ci.yml`) handles pushes to `main`, PRs targeting `main`, and manual
+dispatches. `QA CI/CD` (`qa.yml`) separately handles pushes to `qa`, PRs targeting
+`qa`, and manual dispatches. Both call the secret-free reusable `checks.yml`,
+which installs locked dependencies and real Office/OCR tools, runs backend,
+frontend, PDF, Roundtable and deployment tests, and builds a checksummed artifact.
+PR tests have no runtime credentials and do not call live providers.
 
 After both CI jobs pass, a trusted `main` run calls `deploy.yml`. Automatic
 deployment is enabled only when the repository variable `HOME_CD_ENABLED` is
 `true`. Keep it false until the host bootstrap, secrets and SSH checks pass.
 The workflow can be run manually against `main` to retry a failed deployment.
+
+QA uses its own gate `QA_CD_ENABLED=true`, target, restricted SSH key and service.
+Every change starts on a new feature branch, enters `qa` through a PR, waits for
+QA publication and passes live QA validation before a short promotion PR to
+protected `main`. The human authorizes auto-merge after QA validation, respecting
+all protection conditions. See [QA staging and promotion](QA.md); never push
+directly to `main` or bypass its protection.
 
 ## Credentials
 
@@ -17,6 +26,7 @@ These are encrypted **repository Actions secrets**, never committed files:
 | Secret | Use |
 | --- | --- |
 | `ACEFIRE_DEPLOY_SSH_KEY` | Dedicated Ed25519 private key for `ingenium-deploy` |
+| `ACEFIRE_QA_DEPLOY_SSH_KEY` | Separate QA-only key for `ingenium-qa-deploy`; never falls back to the production key |
 | `ACEFIRE_DEPLOY_KNOWN_HOSTS` | Previously verified SSH host key; no first-use acceptance |
 | `NICRRON_API_KEY` | Existing C and B model calls |
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | Dedicated home identity, limited to the existing named database |
@@ -49,6 +59,11 @@ required. Missing or rejected tokens fail before activation with a sanitized
 diagnostic; the controller never falls back to anonymous requests or follows
 API redirects.
 
+QA uses the same transient-token protocol to verify `qa` instead of `main`.
+Only the QA key, pinned host and model credential are mapped into its reusable
+deployment; Firebase and PRISM credentials are not supplied to QA. Its runtime
+bundle contains only `backend.env` with fixed isolated DuckDB/file paths.
+
 ## One-time host bootstrap
 
 Generate a dedicated key outside the repository. Transfer only its `.pub` file
@@ -74,8 +89,11 @@ scripts, systemd units, Nginx or tunnel configuration by supplying them in its
 artifact.
 
 Install a protocol-changing controller update before dispatching its matching
-workflow. Older workflow revisions without the job-token bundle member must be
-replaced by a new run of current `main`, rather than rerun unchanged.
+workflow. The reviewed source set includes `apply_qa_release.py` alongside the
+shared controller, verifier and gateway. Use the installer's optional third
+argument `qa` only for the separate QA public key/account. Older workflow
+revisions without the job-token bundle member must be replaced by a new run
+of the current target branch, rather than rerun unchanged.
 
 ## Release behavior
 

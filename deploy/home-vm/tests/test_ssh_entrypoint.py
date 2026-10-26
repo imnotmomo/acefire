@@ -88,6 +88,39 @@ class SSHEntryPointTests(unittest.TestCase):
             self.assertEqual(gateway.main(), 64)
         execute.assert_not_called()
 
+    def test_installed_qa_gateway_can_only_invoke_qa_controller(self):
+        with patch.object(sys, 'argv', ['gateway', '--qa']), patch.dict(
+            os.environ, {'SSH_ORIGINAL_COMMAND': 'deploy ' + COMMIT, 'LD_PRELOAD': '/tmp/inject'}, clear=True,
+        ), patch.object(gateway.os, 'execve') as execute:
+            gateway.main()
+        execute.assert_called_once_with(
+            '/usr/bin/sudo', ['/usr/bin/sudo', '-n', '--', gateway.QA_CONTROLLER, COMMIT],
+            {'PATH': '/usr/sbin:/usr/bin:/sbin:/bin', 'LANG': 'C.UTF-8', 'HOME': '/var/lib/ingenium-qa-deploy'},
+        )
+
+    def test_remote_command_cannot_select_or_override_qa_target(self):
+        for args in (['gateway'], ['gateway', '--qa']):
+            for command in ('deploy --production ' + COMMIT, 'deploy --qa ' + COMMIT,
+                            'deploy-qa ' + COMMIT, 'deploy ' + COMMIT + ' main'):
+                with self.subTest(args=args, command=command), patch.object(sys, 'argv', args), patch.dict(
+                    os.environ, {'SSH_ORIGINAL_COMMAND': command}, clear=True,
+                ), patch.object(gateway.os, 'execve') as execute, redirect_stderr(io.StringIO()):
+                    self.assertEqual(gateway.main(), 64)
+                    execute.assert_not_called()
+
+    def test_qa_status_reads_only_qa_loopback(self):
+        responses = [io.BytesIO(b'{"status":"ok","storage":"duckdb"}'), io.BytesIO(b'{}')]
+        with patch.object(sys, 'argv', ['gateway', '--qa']), patch.dict(
+            os.environ, {'SSH_ORIGINAL_COMMAND': 'status'}, clear=True,
+        ), patch.object(gateway, 'urlopen', side_effect=responses) as fetch, patch.object(
+            gateway.os, 'execve',
+        ) as execute, redirect_stdout(io.StringIO()):
+            self.assertEqual(gateway.main(), 0)
+        self.assertEqual([call.args[0] for call in fetch.call_args_list], [
+            'http://127.0.0.1:8081/api/health', 'http://127.0.0.1:8081/release.json',
+        ])
+        execute.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

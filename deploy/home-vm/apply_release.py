@@ -32,6 +32,35 @@ REQUIRED_ENV = {
     'GOOGLE_APPLICATION_CREDENTIALS': '/etc/ingenium/firestore-runtime.json',
     'SOURCE_FILE_MANIFEST': '/etc/ingenium/source-files.json',
 }
+TARGET = 'production'
+BRANCH = 'main'
+APPLICATION_USER = 'ingenium'
+SERVICE = 'ingenium-backend'
+LOCK = '/run/ingenium-home-deploy.lock'
+LOOPBACK_URL = 'http://127.0.0.1:8080'
+PUBLIC_URL = 'https://acefire.linearproduct.co'
+
+
+def configure_target(target):
+    """Select only installed, fixed host profiles; never accept bundle paths."""
+    global STATE, APP, PUBLIC, ETC, RUNTIME_FILES, REQUIRED_ENV
+    global TARGET, BRANCH, APPLICATION_USER, SERVICE, LOCK, LOOPBACK_URL, PUBLIC_URL
+    if target != 'qa':
+        raise ValueError('Only the fixed QA wrapper can change the deployment target')
+    TARGET, BRANCH, APPLICATION_USER = 'qa', 'qa', 'ingenium-qa'
+    STATE = Path('/var/lib/ingenium-qa-cd')
+    APP, PUBLIC, ETC = Path('/srv/ingenium-qa'), Path('/var/www/ingenium-qa'), Path('/etc/ingenium-qa')
+    RUNTIME_FILES = ('backend.env',)
+    REQUIRED_ENV = {
+        'DATA_STORE': 'duckdb',
+        'DUCKDB_PATH': '/var/lib/ingenium-qa/acefire.duckdb',
+        'SOURCE_CACHE_DIR': '/var/lib/ingenium-qa/sources',
+        'UPLOAD_CACHE_ROOT': '/var/lib/ingenium-qa/uploads',
+        'DATA_ROOT': '/var/lib/ingenium-qa/fixtures/additional-cases',
+        'AKTA_DATA_ROOT': '/var/lib/ingenium-qa/fixtures/akta',
+    }
+    SERVICE, LOCK = 'ingenium-qa-backend', '/run/ingenium-qa-deploy.lock'
+    LOOPBACK_URL, PUBLIC_URL = 'http://127.0.0.1:8081', 'https://qa.linearproduct.co'
 
 
 def command(args, log, **kwargs):
@@ -42,7 +71,7 @@ def atomic_file(path, content, mode=0o600, group=None):
     temporary = path.with_name(path.name + '.new')
     temporary.write_bytes(content)
     temporary.chmod(mode)
-    os.chown(temporary, 0, pwd.getpwnam('ingenium').pw_gid if group else 0)
+    os.chown(temporary, 0, pwd.getpwnam(APPLICATION_USER).pw_gid if group else 0)
     os.replace(temporary, path)
 
 
@@ -62,13 +91,14 @@ def get(path, deadline=None):
 
 
 def ready(commit=None, release_id=None, files=None, public=False):
-    base = 'https://acefire.linearproduct.co' if public else 'http://127.0.0.1:8080'
+    base = PUBLIC_URL if public else LOOPBACK_URL
     deadline = time.monotonic() + (120 if public else 60)
     for attempt in range(30):
         try:
             health = json.loads(get(base + '/api/health', deadline))
-            assert health['status'] == 'ok' and health['storage'] == 'firestore'
-            assert health['project_id'] == 'acefire-50248' and health['database_id'] == 'acefire'
+            assert health['status'] == 'ok' and health['storage'] == REQUIRED_ENV['DATA_STORE']
+            if TARGET == 'production':
+                assert health['project_id'] == 'acefire-50248' and health['database_id'] == 'acefire'
             if commit:
                 metadata = json.loads(get(base + '/release.json', deadline))
                 assert metadata['commit'] == commit and metadata['release_id'] == release_id
@@ -100,12 +130,13 @@ def validate_runtime(bundle):
         raise ValueError('Runtime targets a different store or private path')
     if not values.get('NICRRON_API_KEY') or values.get('NICRRON_BASE_URL') != 'https://api.nicrron.ai/v1':
         raise ValueError('Missing configured model credential')
-    credential = json.loads(bundle['firestore-runtime.json'])
-    if (credential.get('type') != 'service_account' or credential.get('project_id') != 'acefire-50248' or
-            credential.get('client_email') != 'ingenium-home@acefire-50248.iam.gserviceaccount.com'):
-        raise ValueError('Unexpected Firestore runtime identity')
-    if len(bundle['prism.env']) > 20000 or b'PRISMTRACE_API_KEY=' not in bundle['prism.env']:
-        raise ValueError('Missing PRISM runtime configuration')
+    if TARGET == 'production':
+        credential = json.loads(bundle['firestore-runtime.json'])
+        if (credential.get('type') != 'service_account' or credential.get('project_id') != 'acefire-50248' or
+                credential.get('client_email') != 'ingenium-home@acefire-50248.iam.gserviceaccount.com'):
+            raise ValueError('Unexpected Firestore runtime identity')
+        if len(bundle['prism.env']) > 20000 or b'PRISMTRACE_API_KEY=' not in bundle['prism.env']:
+            raise ValueError('Missing PRISM runtime configuration')
 
 
 class BranchHeadError(RuntimeError):
@@ -132,7 +163,7 @@ def validate_github_token(value):
 def require_branch_head(commit, github_token):
     token = validate_github_token(github_token)
     request = urllib.request.Request(
-        'https://api.github.com/repos/imnotmomo/acefire/git/ref/heads/main',
+        'https://api.github.com/repos/imnotmomo/acefire/git/ref/heads/' + BRANCH,
         headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json',
                  'X-GitHub-Api-Version': '2026-03-10', 'User-Agent': 'Ingenium-Deployment'},
     )
@@ -160,11 +191,11 @@ def require_branch_head(commit, github_token):
     except (OSError, ValueError, KeyError, TypeError):
         raise BranchHeadError('GitHub branch verification could not complete. Live activation was not attempted.') from None
     if current != commit:
-        raise BranchHeadError('A newer main commit superseded this release; live activation was not attempted.')
+        raise BranchHeadError(f'A newer {BRANCH} commit superseded this release; live activation was not attempted.')
 
 
 def freeze_application(app):
-    group = pwd.getpwnam('ingenium').pw_gid
+    group = pwd.getpwnam(APPLICATION_USER).pw_gid
     root = os.open(app, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     try:
         for _, _, names, directory in os.fwalk('.', topdown=False, follow_symlinks=False, dir_fd=root):
@@ -205,7 +236,7 @@ def deploy(commit):
     if os.geteuid() != 0 or not SHA.fullmatch(commit):
         raise ValueError('Exact SHA and root controller are required')
     STATE.mkdir(mode=0o700, parents=True, exist_ok=True)
-    with open('/run/ingenium-home-deploy.lock', 'w') as lock:
+    with open(LOCK, 'w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         raw = sys.stdin.buffer.read(180 * 1024 * 1024 + 1)
         bundle = archive_files(raw, limit=180 * 1024 * 1024)
@@ -252,7 +283,13 @@ def deploy(commit):
             (backup / name).write_bytes(content)
         (backup / 'previous-links.json').write_text(json.dumps({'app': str(old_app), 'public': str(old_public)}))
         metadata = json.loads(files['public/release.json'])
-        metadata.update(release_id=release_id, backend_release_id=release_id, workflow_run_id=deployment['run_id'])
+        metadata.update(release_id=release_id, backend_release_id=release_id, workflow_run_id=deployment['run_id'],
+                        environment=TARGET, branch=BRANCH)
+        if TARGET == 'qa':
+            for key in ('firebase_project_id', 'database_id', 'firebase_database_edition'):
+                metadata.pop(key, None)
+            metadata.update(storage='duckdb', deployment_target='acefire-home-vm-qa',
+                            public_hostname='qa.linearproduct.co')
         files['public/release.json'] = (json.dumps(metadata, indent=2) + '\n').encode()
         switched, succeeded = False, False
         with (backup / 'deployment.log').open('ab') as log:
@@ -262,27 +299,27 @@ def deploy(commit):
                     write_files(files, scratch)
                     shutil.move(str(scratch / 'app'), app)
                     shutil.move(str(scratch / 'public'), public)
-                command(['/usr/bin/chown', '-R', 'ingenium:ingenium', str(app)], log)
+                command(['/usr/bin/chown', '-R', APPLICATION_USER + ':' + APPLICATION_USER, str(app)], log)
                 for directory in [public, *[p for p in public.rglob('*') if p.is_dir()]]:
                     directory.chmod(0o755)
                 for path in public.rglob('*'):
                     if path.is_file():
                         path.chmod(0o644)
-                command(['/usr/sbin/runuser', '-u', 'ingenium', '--', '/usr/bin/python3', '-m', 'venv', str(app / 'backend/.venv')], log)
+                command(['/usr/sbin/runuser', '-u', APPLICATION_USER, '--', '/usr/bin/python3', '-m', 'venv', str(app / 'backend/.venv')], log)
                 python = str(app / 'backend/.venv/bin/python')
-                command(['/usr/sbin/runuser', '-u', 'ingenium', '--', python, '-m', 'pip', 'install', '--disable-pip-version-check', '-r', str(app / 'backend/requirements.lock')], log, timeout=600)
-                command(['/usr/sbin/runuser', '-u', 'ingenium', '--', python, '-m', 'pip', 'check'], log)
+                command(['/usr/sbin/runuser', '-u', APPLICATION_USER, '--', python, '-m', 'pip', 'install', '--disable-pip-version-check', '-r', str(app / 'backend/requirements.lock')], log, timeout=600)
+                command(['/usr/sbin/runuser', '-u', APPLICATION_USER, '--', python, '-m', 'pip', 'check'], log)
                 freeze_application(app)
                 # No artifact-supplied scripts, units or Nginx configs run as root.
                 # Current systemd hardening, PRISM bootstrap and private file caches stay in place.
                 require_branch_head(commit, github_token)
                 switched = True
-                command(['/usr/bin/systemctl', 'stop', 'ingenium-backend'], log)
+                command(['/usr/bin/systemctl', 'stop', SERVICE], log)
                 for name in RUNTIME_FILES:
                     atomic_file(ETC / name, bundle[name], 0o600 if name == 'backend.env' else 0o640, name != 'backend.env')
                 atomic_link(APP / 'current', app)
                 atomic_link(PUBLIC / 'current', public)
-                command(['/usr/bin/systemctl', 'start', 'ingenium-backend'], log)
+                command(['/usr/bin/systemctl', 'start', SERVICE], log)
                 ready(commit, release_id, files)
                 ready(commit, release_id, files, public=True)
                 state = {**deployment, 'release_id': release_id, 'previous_app': str(old_app), 'previous_public': str(old_public)}
@@ -291,12 +328,12 @@ def deploy(commit):
             except BaseException as error:
                 log.write(traceback.format_exc().encode())
                 if switched and not succeeded:
-                    command(['/usr/bin/systemctl', 'stop', 'ingenium-backend'], log)
+                    command(['/usr/bin/systemctl', 'stop', SERVICE], log)
                     for name, content in old_runtime.items():
                         atomic_file(ETC / name, content, 0o600 if name == 'backend.env' else 0o640, name != 'backend.env')
                     atomic_link(APP / 'current', old_app)
                     atomic_link(PUBLIC / 'current', old_public)
-                    command(['/usr/bin/systemctl', 'start', 'ingenium-backend'], log)
+                    command(['/usr/bin/systemctl', 'start', SERVICE], log)
                     ready()
                 if app != (APP / 'current').resolve() and public != (PUBLIC / 'current').resolve():
                     shutil.rmtree(app, ignore_errors=True)
@@ -308,7 +345,7 @@ def deploy(commit):
         print(json.dumps({'status': 'deployed', 'commit': commit, 'release_id': release_id}))
 
 
-if __name__ == '__main__':
+def main():
     def interrupted(signum, frame):
         raise RuntimeError('Deployment interrupted')
     signal.signal(signal.SIGTERM, interrupted)
@@ -319,4 +356,9 @@ if __name__ == '__main__':
         deploy(sys.argv[1])
     except Exception as error:
         print(str(error) if isinstance(error, RuntimeError) else 'Deployment rejected; invalid input or preparation failed.', file=sys.stderr)
-        raise SystemExit(1)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

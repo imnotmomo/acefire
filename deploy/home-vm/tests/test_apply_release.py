@@ -34,7 +34,15 @@ def tar_bytes(files, mode='w'):
 
 
 class ApplyReleaseRollbackTests(unittest.TestCase):
+    target = 'production'
+
     def setUp(self):
+        if self.target == 'qa':
+            names = ('STATE', 'APP', 'PUBLIC', 'ETC', 'RUNTIME_FILES', 'REQUIRED_ENV',
+                     'TARGET', 'BRANCH', 'APPLICATION_USER', 'SERVICE', 'LOCK', 'LOOPBACK_URL', 'PUBLIC_URL')
+            old = {name: getattr(controller, name) for name in names}
+            self.addCleanup(lambda: [setattr(controller, name, value) for name, value in old.items()])
+            controller.configure_target('qa')
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name).resolve()
@@ -58,7 +66,10 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
             'app/backend/requirements.lock': b'# synthetic locked dependencies\n',
             'app/backend/app/main.py': b'# synthetic application\n',
             'public/index.html': b'<!doctype html><title>Synthetic release</title>',
-            'public/release.json': json.dumps({'commit': COMMIT}).encode(),
+            'public/release.json': json.dumps({'commit': COMMIT, 'storage': 'firestore',
+                                              'firebase_project_id': 'acefire-50248',
+                                              'database_id': 'acefire',
+                                              'firebase_database_edition': 'STANDARD'}).encode(),
         }
         release = tar_bytes(source, 'w:gz')
         manifest = {
@@ -78,12 +89,15 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         self.new_runtime = {
             'backend.env': ''.join(key + '=' + json.dumps(value) + '\n'
                                    for key, value in environment.items()).encode(),
-            'firestore-runtime.json': json.dumps({
+        }
+        if self.target == 'production':
+            self.new_runtime.update({
+                'firestore-runtime.json': json.dumps({
                 'type': 'service_account', 'project_id': 'acefire-50248',
                 'client_email': 'ingenium-home@acefire-50248.iam.gserviceaccount.com',
-            }).encode(),
-            'prism.env': b'PRISMTRACE_API_KEY="synthetic-test-key"\n',
-        }
+                }).encode(),
+                'prism.env': b'PRISMTRACE_API_KEY="synthetic-test-key"\n',
+            })
         self.bundle_files = {
             'release.tar.gz': release,
             'manifest.json': json.dumps(manifest).encode(),
@@ -101,7 +115,7 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         real_open = open
 
         def open_lock(path, *args, **kwargs):
-            if str(path) == '/run/ingenium-home-deploy.lock':
+            if str(path) == controller.LOCK:
                 path = self.root / 'deployment.lock'
             return real_open(path, *args, **kwargs)
 
@@ -157,10 +171,10 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         service_calls = [call.args[0] for call in commands.call_args_list
                          if call.args[0][0] == '/usr/bin/systemctl']
         self.assertEqual(service_calls, [
-            ['/usr/bin/systemctl', 'stop', 'ingenium-backend'],
-            ['/usr/bin/systemctl', 'start', 'ingenium-backend'],
-            ['/usr/bin/systemctl', 'stop', 'ingenium-backend'],
-            ['/usr/bin/systemctl', 'start', 'ingenium-backend'],
+            ['/usr/bin/systemctl', 'stop', controller.SERVICE],
+            ['/usr/bin/systemctl', 'start', controller.SERVICE],
+            ['/usr/bin/systemctl', 'stop', controller.SERVICE],
+            ['/usr/bin/systemctl', 'start', controller.SERVICE],
         ])
 
     def test_newer_branch_head_during_preparation_leaves_running_release_untouched(self):
@@ -211,8 +225,8 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
         service_calls = [call.args[0] for call in commands.call_args_list
                          if call.args[0][0] == '/usr/bin/systemctl']
         self.assertEqual(service_calls, [
-            ['/usr/bin/systemctl', 'stop', 'ingenium-backend'],
-            ['/usr/bin/systemctl', 'start', 'ingenium-backend'],
+            ['/usr/bin/systemctl', 'stop', controller.SERVICE],
+            ['/usr/bin/systemctl', 'start', controller.SERVICE],
         ])
 
     def test_missing_or_invalid_workflow_token_stops_before_network_and_preparation(self):
@@ -264,6 +278,42 @@ class ApplyReleaseRollbackTests(unittest.TestCase):
                              for call in commands.call_args_list))
         self.assert_previous_release_intact()
         self.assert_workflow_token_not_persisted()
+
+
+class QAReleaseRollbackTests(ApplyReleaseRollbackTests):
+    """The same real-file rollback boundary must hold for isolated QA state."""
+    target = 'qa'
+
+    def test_qa_activation_cannot_use_production_services_users_or_metadata(self):
+        stack, commands = self.patched_host(ready=lambda *args, **kwargs: None)
+        with stack, redirect_stdout(io.StringIO()):
+            controller.deploy(COMMIT)
+        metadata = json.loads(((self.public / 'current').resolve() / 'release.json').read_text())
+        self.assertEqual(metadata['environment'], 'qa')
+        self.assertEqual(metadata['branch'], 'qa')
+        self.assertEqual(metadata['storage'], 'duckdb')
+        self.assertEqual(metadata['public_hostname'], 'qa.linearproduct.co')
+        self.assertNotIn('firebase_project_id', metadata)
+        self.assertNotIn('database_id', metadata)
+        self.assertNotIn('firebase_database_edition', metadata)
+        self.assertEqual(set(self.new_runtime), {'backend.env'})
+        for invocation in commands.call_args_list:
+            args = invocation.args[0]
+            self.assertNotIn('ingenium', args)
+            self.assertNotIn('ingenium:ingenium', args)
+            self.assertNotIn('ingenium-backend', args)
+        self.assert_workflow_token_not_persisted()
+
+    def test_qa_rejects_production_credential_bundle_before_any_preparation(self):
+        for member in ('firestore-runtime.json', 'prism.env'):
+            with self.subTest(member=member):
+                self.bundle = tar_bytes({**self.bundle_files, member: b'synthetic forbidden production config'})
+                stack, commands = self.patched_host(ready=lambda *args, **kwargs: None)
+                with stack, self.assertRaisesRegex(ValueError, 'Unexpected deployment bundle'):
+                    controller.deploy(COMMIT)
+                self.head_checks.assert_not_called()
+                commands.assert_not_called()
+                self.assert_previous_release_intact()
 
 
 if __name__ == '__main__':

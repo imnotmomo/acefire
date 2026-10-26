@@ -1,0 +1,48 @@
+[Unit]
+Description=Ingenium QA API with isolated DuckDB and files
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=ingenium-qa
+Group=ingenium-qa
+WorkingDirectory=/srv/ingenium-qa/current/backend
+EnvironmentFile=/etc/ingenium-qa/backend.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONPATH=/srv/ingenium-qa/current:/srv/ingenium-qa/current/backend
+Environment=INGENIUM_ENGLISH_TRANSLATIONS=/etc/ingenium-qa/english-translations.json
+Environment=OCR_LANGUAGES=eng+chi_sim+chi_tra
+Environment=OMP_NUM_THREADS=1
+Environment=ROUNDTABLE_ENABLED=false
+StateDirectory=ingenium-qa
+StateDirectoryMode=0700
+ReadWritePaths=/var/lib/ingenium-qa
+InaccessiblePaths=-/etc/ingenium -/var/lib/ingenium -/srv/ingenium -/var/lib/ingenium-cd
+ExecStart=/srv/ingenium-qa/current/backend/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8018 --workers 1 --root-path /api --proxy-headers --forwarded-allow-ips 127.0.0.1 --limit-concurrency 8 --timeout-keep-alive 5
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=90
+TimeoutStopSec=30
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=yes
+LimitNOFILE=1024
+TasksMax=96
+MemoryMax=700M
+CPUQuota=100%
+
+[Install]
+WantedBy=multi-user.target

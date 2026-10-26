@@ -15,6 +15,7 @@ from urllib.request import urlopen
 
 DEPLOY_COMMAND = re.compile(r"deploy ([0-9a-f]{40})", re.ASCII)
 CONTROLLER = "/usr/local/sbin/ingenium-apply-release"
+QA_CONTROLLER = "/usr/local/sbin/ingenium-apply-qa-release"
 MAX_STATUS_BYTES = 65_536
 STATUS_FIELDS = {
     "health": ("status", "schema_version", "storage", "project_id", "database_id"),
@@ -34,10 +35,10 @@ def parse_command(command: str) -> tuple[str, str | None]:
     raise ValueError("Only 'status' and 'deploy <commit-sha>' are permitted.")
 
 
-def read_status() -> dict:
+def read_status(qa=False) -> dict:
     status = {}
     for key, path in (("health", "/api/health"), ("release", "/release.json")):
-        with urlopen("http://127.0.0.1:8080" + path, timeout=5) as response:
+        with urlopen(("http://127.0.0.1:8081" if qa else "http://127.0.0.1:8080") + path, timeout=5) as response:
             raw = response.read(MAX_STATUS_BYTES + 1)
         if len(raw) > MAX_STATUS_BYTES:
             raise ValueError("Status response exceeded its size limit.")
@@ -49,9 +50,12 @@ def read_status() -> dict:
 
 
 def main() -> int:
-    if len(sys.argv) != 1:
+    # Only root's installed forced-command argument chooses QA. The untrusted
+    # SSH_ORIGINAL_COMMAND remains the same bounded status/deploy protocol.
+    if sys.argv[1:] not in ([], ["--qa"]):
         print("Arguments are not accepted by the SSH gateway.", file=sys.stderr)
         return 64
+    qa = sys.argv[1:] == ["--qa"]
     try:
         operation, commit = parse_command(os.environ.get("SSH_ORIGINAL_COMMAND", ""))
     except ValueError as error:
@@ -59,7 +63,7 @@ def main() -> int:
         return 64
     if operation == "status":
         try:
-            print(json.dumps(read_status(), sort_keys=True))
+            print(json.dumps(read_status(qa=qa), sort_keys=True))
             return 0
         except (OSError, ValueError):
             print("Deployment status is unavailable.", file=sys.stderr)
@@ -67,11 +71,11 @@ def main() -> int:
     try:
         os.execve(
             "/usr/bin/sudo",
-            ["/usr/bin/sudo", "-n", "--", CONTROLLER, commit],
+            ["/usr/bin/sudo", "-n", "--", QA_CONTROLLER if qa else CONTROLLER, commit],
             {
                 "PATH": "/usr/sbin:/usr/bin:/sbin:/bin",
                 "LANG": "C.UTF-8",
-                "HOME": "/var/lib/ingenium-deploy",
+                "HOME": "/var/lib/ingenium-qa-deploy" if qa else "/var/lib/ingenium-deploy",
             },
         )
     except OSError:
