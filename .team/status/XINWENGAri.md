@@ -124,3 +124,9 @@ C has since implemented the Circle report/lineage connection described below; re
 - Additional styling request: frontend/src/styles.css changes only .assistant-spark background from green to white; chatbot behavior unchanged.
 
 - Completed: logo-shaped extruded SVG hero, three equal-level persona columns (stacked on mobile), refreshed 1440x1000 screenshots of current historical-demo Dashboard/Report Builder/Data room, reusable screenshot capture script, white chatbot mark background. Native screenshots are captured at refresh time, not live company-data feeds. Production build and all 10 landing browser flows passed, including four responsive widths, reduced motion, navigation and all three images; explicit white-background check and desktop visual inspection passed. Existing scheduled frontend sync published the primary source/assets as 09758e2; this handoff includes final CSS cleanup, test and refresh documentation. No backend/API or deployment code edits.
+
+## Hero annotation refinement — 2026-10-25
+
+- State: in_progress. Remove Source-linked by design badge and replace the bottom Data/Reasoning/Evidence caption with three elegant adjacent annotations. Paths: frontend/src/Landing.tsx, landing.css and this record. Scoped to decorative hero SVG; preserve logo geometry and all product behavior.
+
+- Completed: removed both old HTML captions and their responsive CSS; Data, Reasoning and Evidence now sit in the SVG beside the mark with thin lavender leader lines and small circular nodes. Screenshot visually reviewed. Production build and focused browser checks at 1440/768/390 passed; no horizontal overflow.
