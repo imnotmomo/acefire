@@ -60,14 +60,6 @@ function EvidenceSculpture() {
     <path d="m206 548 110-34 110 34-110 35-110-35Z" fill="#19203c" stroke="#6576b8" strokeOpacity=".4" />
     <path d="m240 548 76-23 76 23-76 24-76-24Z" fill="#334475" fillOpacity=".45" stroke="#8fa5ed" strokeOpacity=".4" />
     <path d="M93 584h447" stroke="url(#ig-base)" strokeWidth="2" />
-    <g className="ig-sculpture-annotations">
-      <path d="M452 244h24l16 16M465 340h27M396 457h65l31-31" stroke="#aab8ff" strokeOpacity=".38" strokeWidth="1" />
-      {[{ label: 'Data', y: 260 }, { label: 'Reasoning', y: 340 }, { label: 'Evidence', y: 426 }].map(({ label, y }) => <g key={label}>
-        <circle cx="492" cy={y} r="3" fill="#bbc6ff" />
-        <circle cx="492" cy={y} r="7" stroke="#bbc6ff" strokeOpacity=".2" />
-        <text x="508" y={y + 5} fill="#c7d0ed" fontSize="15" fontWeight="400" letterSpacing=".2">{label}</text>
-      </g>)}
-    </g>
   </svg></div>
 }
 
