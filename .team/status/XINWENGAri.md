@@ -130,3 +130,9 @@ C has since implemented the Circle report/lineage connection described below; re
 - State: in_progress. Remove Source-linked by design badge and replace the bottom Data/Reasoning/Evidence caption with three elegant adjacent annotations. Paths: frontend/src/Landing.tsx, landing.css and this record. Scoped to decorative hero SVG; preserve logo geometry and all product behavior.
 
 - Completed: removed both old HTML captions and their responsive CSS; Data, Reasoning and Evidence now sit in the SVG beside the mark with thin lavender leader lines and small circular nodes. Screenshot visually reviewed. Production build and focused browser checks at 1440/768/390 passed; no horizontal overflow.
+
+## Remove hero annotations - 2026-10-26
+
+- State: in_progress. Remove Data / Reasoning / Evidence labels, circular nodes and connector lines beside the landing sculpture.
+- Paths: frontend/src/Landing.tsx and this record. Preserve sculpture geometry, background and floor. No API/backend/data changes. Branch: codex/remove-hero-annotations from origin/qa. Respect existing QA-only motion hold.
+- Completed: removed the complete annotation group only. TypeScript/Vite production build passed. No live deployment claimed; existing QA-only promotion hold retained.
