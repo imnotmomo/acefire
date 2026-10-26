@@ -10,9 +10,9 @@ const teamEmail = configuredEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configure
 const CONTACT = `mailto:${teamEmail}?subject=${encodeURIComponent('Ingenium demo request')}`
 
 const WORKSPACES = [
-  { id: 'dashboard', label: 'Understand the numbers', icon: BarChart3, title: 'The number is just the beginning.', text: 'See the metric, its definition, and the inputs behind it. Follow the calculation all the way back to the source.', image: '/images/ingenium-dashboard.jpg', href: '#/project/enfuce/dashboard' },
-  { id: 'report', label: 'Build the bigger picture', icon: BookOpen, title: 'Your questions. Your report.', text: 'Choose the modules that matter, set the focus, and review each section alongside its evidence. Keep your own judgment in the loop.', image: '/images/ingenium-report.jpg', href: '#/project/enfuce/report/build' },
-  { id: 'sources', label: 'Keep the evidence close', icon: FolderOpen, title: 'One home for the whole story.', text: 'Keep documents, financial records, and source references in view. A useful answer should always come with somewhere to look.', image: '/images/ingenium-sources.jpg', href: '#/project/enfuce/data-room' },
+  { id: 'dashboard', label: 'Understand the numbers', icon: BarChart3, title: 'The number is just the beginning.', text: 'See the metric, its definition, and the inputs behind it. Follow the calculation all the way back to the source.', image: '/images/workspace-dashboard-current.jpg', href: '#/project/enfuce/dashboard' },
+  { id: 'report', label: 'Build the bigger picture', icon: BookOpen, title: 'Your questions. Your report.', text: 'Choose the modules that matter, set the focus, and review each section alongside its evidence. Keep your own judgment in the loop.', image: '/images/workspace-report-current.jpg', href: '#/project/enfuce/report/build' },
+  { id: 'sources', label: 'Keep the evidence close', icon: FolderOpen, title: 'One home for the whole story.', text: 'Keep documents, financial records, and source references in view. A useful answer should always come with somewhere to look.', image: '/images/workspace-sources-current.jpg', href: '#/project/enfuce/data-room' },
 ] as const
 
 const PERSONAS = [
@@ -30,6 +30,15 @@ const FAQS = [
 
 
 function EvidenceSculpture() {
+  // The same four facets as BrandMark, scaled into the existing hero scene.
+  const facets = [
+    [[35, 1], [60, 18], [44, 29], [25, 16], [25, 10]],
+    [[3, 36], [24, 23], [24, 52], [3, 65]],
+    [[40, 37], [61, 24], [61, 53], [40, 67]],
+    [[22, 61], [39, 72], [39, 85], [34, 88], [6, 70]],
+  ].map(points => points.map(([x, y]) => [130 + x * 5.3, 48 + y * 5.3]))
+  const coordinates = (points: number[][]) => points.map(point => point.join(',')).join(' ')
+
   return <div className="ig-sculpture" aria-hidden="true"><svg viewBox="0 0 620 620" fill="none"><defs>
     <linearGradient id="ig-front" x1="120" y1="70" x2="490" y2="570" gradientUnits="userSpaceOnUse"><stop stopColor="#cbd3ff" /><stop offset=".28" stopColor="#a2b1ff" /><stop offset=".7" stopColor="#646bda" /><stop offset="1" stopColor="#303774" /></linearGradient>
     <linearGradient id="ig-side" x1="220" y1="130" x2="560" y2="530" gradientUnits="userSpaceOnUse"><stop stopColor="#5961cc" /><stop offset=".56" stopColor="#303c9a" /><stop offset="1" stopColor="#151d50" /></linearGradient>
@@ -37,14 +46,20 @@ function EvidenceSculpture() {
     <radialGradient id="ig-light"><stop stopColor="#6272dc" stopOpacity=".17" /><stop offset="1" stopColor="#6272dc" stopOpacity="0" /></radialGradient>
     <filter id="ig-blur"><feGaussianBlur stdDeviation="13" /></filter>
   </defs><ellipse cx="337" cy="338" rx="285" ry="275" fill="url(#ig-light)" /><ellipse cx="330" cy="548" rx="210" ry="20" fill="#030713" fillOpacity=".6" filter="url(#ig-blur)" />
-    <path d="M342 54c107 0 194 87 194 194v242l-71 41V274c0-84-56-153-125-153-69 0-125 69-125 153v258l-71-40V250C144 142 232 54 342 54Z" fill="url(#ig-side)" />
-    <path d="M274 65c108 0 195 87 195 195v273h-76V260c0-66-53-119-119-119s-119 53-119 119v273H79V260C79 152 166 65 274 65Z" fill="url(#ig-front)" />
-    <path d="m469 533 67-43V248c0-92-64-170-150-190 51 35 83 95 83 162v313Z" fill="#26317d" fillOpacity=".8" />
-    <path d="M393 533V260c0-66-53-119-119-119-18 0-35 4-50 11 17-6 35-9 54-7 59 5 105 55 105 116v272h10Z" fill="#e5e9ff" fillOpacity=".5" />
-    <path d="M79 533h76V260c0-66 53-119 119-119 35 0 66 15 88 39-27-34-66-55-110-55-73 0-132 61-132 136v272H79Z" fill="#d1dbff" fillOpacity=".12" />
-    <path d="m174 458 148-85 148 85-148 86-148-86Z" fill="#19203c" stroke="#4a5389" /><path d="m194 449 128-73 128 73-128 74-128-74Z" fill="#232d55" stroke="#6576b8" strokeOpacity=".6" /><path d="m222 437 100-58 100 58-100 58-100-58Z" fill="#334475" stroke="#8fa5ed" strokeOpacity=".7" /><path d="m252 420 70-41 70 41-70 40-70-40Z" fill="#5368a5" stroke="#b4c5ff" strokeOpacity=".8" />
-    <path d="m322 379 0-112M322 320l68-39M322 349l-68-39" stroke="#bccbff" strokeOpacity=".8" strokeWidth="1.3" strokeDasharray="3 5" /><circle cx="322" cy="267" r="5" fill="#ccd8ff" /><circle cx="390" cy="281" r="4" fill="#9fb3ff" /><circle cx="254" cy="310" r="4" fill="#a3b6ff" />
-    <path d="M63 551h487" stroke="url(#ig-base)" strokeWidth="2" /><path d="M115 523h41M393 523h75" stroke="#d5dfff" strokeOpacity=".65" />
+    <g data-brand-sculpture="ingenium">
+      {facets.map((points, index) => <g key={index}>
+        <polygon points={coordinates(points.map(([x, y]) => [x + 28, y + 18]))} fill="url(#ig-side)" />
+        {points.map(([x, y], edge) => {
+          const [nextX, nextY] = points[(edge + 1) % points.length]
+          return <polygon key={edge} points={coordinates([[x, y], [nextX, nextY], [nextX + 28, nextY + 18], [x + 28, y + 18]])} fill="url(#ig-side)" />
+        })}
+        <polygon points={coordinates(points)} fill="url(#ig-front)" />
+        <polyline points={coordinates(points.slice(0, 3))} stroke="#d5ddff" strokeOpacity=".48" strokeWidth="1" />
+      </g>)}
+    </g>
+    <path d="m206 548 110-34 110 34-110 35-110-35Z" fill="#19203c" stroke="#6576b8" strokeOpacity=".4" />
+    <path d="m240 548 76-23 76 23-76 24-76-24Z" fill="#334475" fillOpacity=".45" stroke="#8fa5ed" strokeOpacity=".4" />
+    <path d="M93 584h447" stroke="url(#ig-base)" strokeWidth="2" />
   </svg><div className="ig-sculpture-label ig-sculpture-label-top"><span /> Source-linked by design</div><div className="ig-sculpture-label ig-sculpture-label-bottom"><Network size={13} /> Data. Reasoning. Evidence.</div></div>
 }
 
@@ -62,10 +77,8 @@ function EvidenceExample() {
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [workspace, setWorkspace] = useState(0)
-  const [persona, setPersona] = useState(0)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const selectedWorkspace = WORKSPACES[workspace]
-  const selectedPersona = PERSONAS[persona]
   const goToTop = () => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
 
   useEffect(() => {
@@ -100,7 +113,7 @@ export default function Landing() {
 
       <section className="ig-problem ig-container" id="why-ingenium"><div className="ig-section-intro"><p className="ig-eyebrow">The diligence gap</p><h2>Investment decisions are only as strong<br />as the evidence behind them.</h2><p>Diligence spans financial models, pitch decks, data rooms, management calls, and external research. Too much time goes into verifying numbers, reconciling conflicting information, and rebuilding the evidence behind a decision.</p></div><div className="ig-problem-grid"><article><div className="ig-fragment-visual"><span className="ig-fragment ig-fragment-one"><FileText size={22} />Pitch deck</span><span className="ig-fragment ig-fragment-two"><FileSpreadsheet size={22} />Financials</span><span className="ig-fragment ig-fragment-three"><Globe2 size={22} />Research</span></div><h3>Fragmented data</h3><p>Critical information lives across too many files, tools, and sources.</p></article><article><div className="ig-number-visual"><span>Reported revenue</span><strong>€3.45m <Search size={23} /></strong><small>Which definition? Which source?</small><div className="ig-question-line" /></div><h3>Hard-to-verify claims</h3><p>Where did this number come from? Which assumptions support it? The path from claim to source is too often unclear.</p></article><article><div className="ig-memo-visual"><Quote size={21} /><span /><span /><span /><div><span /> Evidence still missing</div></div><h3>Hidden contradictions</h3><p>Conflicting metrics and statements are easy to miss when the diligence process moves quickly.</p></article></div></section>
 
-      <section className="ig-teams ig-container" id="teams"><div className="ig-section-intro"><p className="ig-eyebrow">Who we serve</p><h2>Built for professional investment teams.</h2><p>From the first company screen to the final investment committee discussion.</p></div><div className="ig-persona-tabs" role="tablist" aria-label="Who Ingenium is for">{PERSONAS.map((item, index) => <button key={item.id} id={`ig-persona-tab-${index}`} role="tab" aria-selected={persona === index} aria-controls="ig-persona-panel" tabIndex={persona === index ? 0 : -1} onClick={() => setPersona(index)} onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : -1) + 3) % 3; setPersona(next); document.getElementById(`ig-persona-tab-${next}`)?.focus() } }}><item.icon size={17} />{item.role}</button>)}</div><div className="ig-persona-panel" id="ig-persona-panel" role="tabpanel" aria-labelledby={`ig-persona-tab-${persona}`}><div><h3>{selectedPersona.title}</h3><p>{selectedPersona.text}</p><a className="ig-text-link" href={DEMO}>Find your workflow <ArrowUpRight size={16} /></a></div><ul>{selectedPersona.items.map(item => <li key={item}><Check size={16} />{item}</li>)}</ul></div></section>
+      <section className="ig-teams ig-container" id="teams"><div className="ig-section-intro"><p className="ig-eyebrow">Who we serve</p><h2>Built for professional investment teams.</h2><p>From the first company screen to the final investment committee discussion.</p></div><div className="ig-persona-grid">{PERSONAS.map(item => <article className="ig-persona-card" key={item.id}><div className="ig-persona-role"><item.icon size={21} /><h3>{item.role}</h3></div><h4>{item.title}</h4><p>{item.text}</p><ul>{item.items.map(benefit => <li key={benefit}><Check size={16} />{benefit}</li>)}</ul><a className="ig-text-link" href={DEMO}>Find your workflow <ArrowUpRight size={16} /></a></article>)}</div></section>
 
       <section className="ig-workflow ig-container" id="workflow"><div className="ig-section-intro"><p className="ig-eyebrow">How Ingenium works</p><h2>From fragmented information<br />to investment conviction.</h2><p>Start with the sources. Ask the right questions.<br />Keep the evidence with you, all the way to the report.</p></div><div className="ig-workflow-grid">{[
         { num: '01', icon: FolderOpen, title: 'Ingest', text: 'Bring financials, pitch decks, notes, data room files, and external research into one project.', detail: 'Gather the context' },
@@ -123,7 +136,7 @@ export default function Landing() {
         <p className="ig-capability-note">The working demo includes source-linked financial evidence and report review. Automated ingestion and broader document checks are still being developed.</p>
       </section>
 
-      <section className="ig-product" id="product"><div className="ig-container"><div className="ig-section-heading"><div><p className="ig-eyebrow">Meet Ingenium</p><h2>The whole picture.<br />With the evidence attached.</h2></div><p>Three connected workspaces.<br />One clear line from source to understanding.</p></div><div className="ig-workspace-tabs" role="tablist" aria-label="Explore the Ingenium workspaces">{WORKSPACES.map((item, index) => <button key={item.id} id={`ig-workspace-tab-${index}`} role="tab" aria-selected={workspace === index} aria-controls="ig-workspace-panel" tabIndex={workspace === index ? 0 : -1} onClick={() => setWorkspace(index)} onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : -1) + 3) % 3; setWorkspace(next); document.getElementById(`ig-workspace-tab-${next}`)?.focus() } }}><item.icon size={19} /><span>{item.label}</span></button>)}</div><div className="ig-product-preview" id="ig-workspace-panel" role="tabpanel" aria-labelledby={`ig-workspace-tab-${workspace}`}><div className="ig-browser-bar"><div><i /><i /><i /></div><span><ShieldCheck size={11} /> Ingenium workspace</span><a href={selectedWorkspace.href} aria-label={`Open ${selectedWorkspace.label} demo`}><ArrowUpRight size={15} /></a></div><a className="ig-product-image-link" href={selectedWorkspace.href} aria-label={`Explore the ${selectedWorkspace.id} workspace`}><img key={selectedWorkspace.image} src={selectedWorkspace.image} alt={`Ingenium ${selectedWorkspace.id} workspace showing historical Enfuce evidence`} width="1440" height="900" loading="lazy" /></a></div><div className="ig-preview-description"><div><h3>{selectedWorkspace.title}</h3><p>{selectedWorkspace.text}</p></div><a className="ig-text-link" href={selectedWorkspace.href}>Explore this workspace <ArrowUpRight size={17} /></a></div><p className="ig-preview-caption">A look inside the working demo · Historical Enfuce evidence shown</p></div></section>
+      <section className="ig-product" id="product"><div className="ig-container"><div className="ig-section-heading"><div><p className="ig-eyebrow">Meet Ingenium</p><h2>The whole picture.<br />With the evidence attached.</h2></div><p>Three connected workspaces.<br />One clear line from source to understanding.</p></div><div className="ig-workspace-tabs" role="tablist" aria-label="Explore the Ingenium workspaces">{WORKSPACES.map((item, index) => <button key={item.id} id={`ig-workspace-tab-${index}`} role="tab" aria-selected={workspace === index} aria-controls="ig-workspace-panel" tabIndex={workspace === index ? 0 : -1} onClick={() => setWorkspace(index)} onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : -1) + 3) % 3; setWorkspace(next); document.getElementById(`ig-workspace-tab-${next}`)?.focus() } }}><item.icon size={19} /><span>{item.label}</span></button>)}</div><div className="ig-product-preview" id="ig-workspace-panel" role="tabpanel" aria-labelledby={`ig-workspace-tab-${workspace}`}><div className="ig-browser-bar"><div><i /><i /><i /></div><span><ShieldCheck size={11} /> Ingenium workspace</span><a href={selectedWorkspace.href} aria-label={`Open ${selectedWorkspace.label} demo`}><ArrowUpRight size={15} /></a></div><a className="ig-product-image-link" href={selectedWorkspace.href} aria-label={`Explore the ${selectedWorkspace.id} workspace`}><img key={selectedWorkspace.image} src={selectedWorkspace.image} alt={`Ingenium ${selectedWorkspace.id} workspace showing historical Enfuce evidence`} width="1440" height="1000" loading="lazy" /></a></div><div className="ig-preview-description"><div><h3>{selectedWorkspace.title}</h3><p>{selectedWorkspace.text}</p></div><a className="ig-text-link" href={selectedWorkspace.href}>Explore this workspace <ArrowUpRight size={17} /></a></div><p className="ig-preview-caption">A look inside the working demo · Historical Enfuce evidence shown</p></div></section>
 
 
 

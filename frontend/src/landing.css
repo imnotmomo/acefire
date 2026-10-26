@@ -529,3 +529,15 @@ html[data-screen='landing'] body { background: #111629; }
 @media (prefers-reduced-motion: reduce) {
   .ingenium-site *, .ingenium-site *::before, .ingenium-site *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* All three investment roles are visible together, without tab navigation. */
+.ig-persona-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:40px}
+.ig-persona-card{display:flex;flex-direction:column;border-top:1px solid #394360;padding:26px 0 0;min-width:0}
+.ig-persona-role{display:flex;align-items:flex-start;gap:12px;color:#b6c5ff;min-height:64px}
+.ig-persona-role>svg{flex-shrink:0;margin-top:3px}.ig-persona-role h3{font-size:15px;line-height:1.6;font-weight:500;margin:0}
+.ig-persona-card h4{font-size:25px;letter-spacing:-.7px;line-height:1.4;font-weight:430;margin:14px 0 20px;color:#f4f6ff}
+.ig-persona-card>p{font-size:13px;line-height:1.9;color:#a6b2cc;margin:0 0 24px}
+.ig-persona-card ul{list-style:none;padding:0;margin:0 0 28px}.ig-persona-card li{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.8;color:#b0bcd6;margin-bottom:14px}.ig-persona-card li svg{flex:none;margin-top:4px;color:#a6b6ed}
+.ig-persona-card>.ig-text-link{margin-top:auto}
+@media(max-width:1000px){.ig-persona-grid{gap:22px}.ig-persona-card h4{font-size:22px}}
+@media(max-width:700px){.ig-persona-grid{grid-template-columns:1fr;gap:30px;margin-top:28px}.ig-persona-role{min-height:0}.ig-persona-card h4{font-size:26px}.ig-persona-card li{font-size:13px}}

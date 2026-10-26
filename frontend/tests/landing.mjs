@@ -46,12 +46,12 @@ try {
     await page.keyboard.press('Home')
     assert.match(await page.locator('#ig-evidence-panel').innerText(), /3,452,682.81/)
   })
-  await check('Persona tabs and FAQ show distinct content and accurate demo limitations', async () => {
-    await page.getByRole('tab', { name: 'Senior Associates, VPs & Principals', exact: true }).click()
-    assert.match(await page.locator('#ig-persona-panel').innerText(), /Know what stands up/)
-    await page.getByRole('tab', { name: 'Partners & Investment Committees', exact: true }).click()
-    assert.match(await page.locator('#ig-persona-panel').innerText(), /decision you can explain/)
-    await page.getByRole('tab', { name: 'VC Analysts & Associates', exact: true }).click()
+  await check('All three personas are visible together and FAQ remains interactive', async () => {
+    assert.equal(await page.locator('#teams [role="tab"]').count(), 0)
+    assert.equal(await page.locator('.ig-persona-card').count(), 3)
+    for (const card of await page.locator('.ig-persona-card').all()) assert(await card.isVisible())
+    assert.match(await page.locator('.ig-persona-grid').innerText(), /Know what stands up/)
+    assert.match(await page.locator('.ig-persona-grid').innerText(), /decision you can explain/)
     const question = page.getByRole('button', { name: 'Can I upload my own documents?', exact: true })
     await question.click()
     assert.equal(await question.getAttribute('aria-expanded'), 'true')
