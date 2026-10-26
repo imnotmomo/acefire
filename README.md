@@ -4,7 +4,18 @@
 
 Ingenium is a company diligence workspace for uploaded documents, source-linked calculations and cited reports. Every reported value or supporting quotation retains its original file and location; generated analysis preserves its inputs, assumptions and evidence.
 
-The application runs at [ingenium.linearproduct.co](https://ingenium.linearproduct.co) and [acefire.linearproduct.co](https://acefire.linearproduct.co), on the home VM behind Cloudflare Tunnel. Firebase project `acefire-50248`, named Standard database `acefire`, stores shared records. Original files and processing jobs remain in private server storage.
+| Environment | Website | Deploys from |
+| --- | --- | --- |
+| Production | [ingenium.linearproduct.co](https://ingenium.linearproduct.co) ([alias](https://acefire.linearproduct.co)) | `main` via [CI](.github/workflows/ci.yml) |
+| QA / staging | [qa.linearproduct.co](https://qa.linearproduct.co) | `qa` via [QA CI/CD](.github/workflows/qa.yml) |
+
+Both environments run on the home VM behind Cloudflare Tunnel, with separate backend services, release directories and private storage. Production uses Firebase project `acefire-50248`, named Standard database `acefire`. QA uses an isolated DuckDB seeded from an offline snapshot; QA uploads, edits and test records never synchronize into production. API credentials and original files remain outside Git.
+
+## Test and promote changes
+
+Every change starts on a new feature branch from current `qa`, including docs and configuration. Commit and push that branch, then open a PR targeting `qa`. After its checks pass, merge into `qa`; the **QA CI/CD** workflow tests and publishes [the staging site](https://qa.linearproduct.co) automatically. Wait for deployment to finish before testing.
+
+Verify the release commit and affected features on QA. When they work, the agent opens a `qa` → `main` PR with a short change/validation description and enables auto-merge, respecting protected `main` and all required checks or reviews. The existing **CI** workflow then deploys `main` to production automatically. Never push directly to `main`. Feature branches and PR checks do not deploy; merging code does not copy QA's database or files into production. See [the staging runbook](deploy/home-vm/QA.md) and [agent instructions](AGENTS.md).
 
 ## What works
 

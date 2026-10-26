@@ -3,19 +3,33 @@
 set -euo pipefail
 umask 077
 [[ $(id -u) == 0 ]] || { echo 'Run this installer as root.' >&2; exit 1; }
-[[ $# == 2 ]] || { echo 'Usage: install-cd.sh PUBLIC_KEY_FILE SOURCE_DIRECTORY' >&2; exit 64; }
+[[ $# == 2 || ( $# == 3 && $3 == qa ) ]] || { echo 'Usage: install-cd.sh PUBLIC_KEY_FILE SOURCE_DIRECTORY [qa]' >&2; exit 64; }
 public_key_file=$1
 source_directory=$2
 deploy_user=ingenium-deploy
 deploy_home=/var/lib/ingenium-deploy
+application_user=ingenium
+application_root=/srv/ingenium
+controller_name=ingenium-apply-release
+forced_argument=
+if [[ ${3:-} == qa ]]; then
+  deploy_user=ingenium-qa-deploy
+  deploy_home=/var/lib/ingenium-qa-deploy
+  application_user=ingenium-qa
+  application_root=/srv/ingenium-qa
+  controller_name=ingenium-apply-qa-release
+  forced_argument=' --qa'
+fi
 library=/usr/local/libexec/ingenium-deploy
 marker="$deploy_home/.managed-by-ingenium"
 exec 9>/run/ingenium-home-deploy.lock
 flock -n 9 || { echo 'Another home deployment is active.' >&2; exit 1; }
+exec 8>/run/ingenium-qa-deploy.lock
+flock -n 8 || { echo 'Another QA deployment is active.' >&2; exit 1; }
 for command in python3 ssh-keygen useradd usermod install visudo; do
   command -v "$command" >/dev/null || { echo "Missing required command: $command" >&2; exit 1; }
 done
-for filename in ssh-entrypoint.py apply_release.py verify_release.py; do
+for filename in ssh-entrypoint.py apply_release.py apply_qa_release.py verify_release.py; do
   [[ -f "$source_directory/$filename" && ! -L "$source_directory/$filename" ]] || {
     echo "Missing regular deployment source: $filename" >&2; exit 1;
   }
@@ -35,7 +49,7 @@ blob = base64.b64decode(parts[1], validate=True)
 assert len(blob) == 51 and blob[:4] == struct.pack('>I', 11)
 assert blob[4:15] == b'ssh-ed25519' and blob[15:19] == struct.pack('>I', 32)
 (work / 'public-key').write_text('ssh-ed25519 ' + parts[1] + ' github-actions-ingenium\n')
-for filename in ('ssh-entrypoint.py', 'apply_release.py', 'verify_release.py'):
+for filename in ('ssh-entrypoint.py', 'apply_release.py', 'apply_qa_release.py', 'verify_release.py'):
     compile((source / filename).read_text(), str(source / filename), 'exec')
 assert (source / 'apply_release.py').read_text().splitlines()[0] in (
     '#!/usr/bin/python3', '#!/usr/bin/python3 -I',
@@ -64,24 +78,30 @@ usermod --lock "$deploy_user"
 install -d -m 0755 -o root -g root "$deploy_home" "$deploy_home/.ssh"
 printf '%s\n' imnotmomo/acefire > "$marker"
 chmod 0600 "$marker"
-printf 'restrict,command="/usr/local/libexec/ingenium-deploy-ssh" %s\n' "$(cat "$work/public-key")" > "$work/authorized_keys"
+printf 'restrict,command="/usr/local/libexec/ingenium-deploy-ssh%s" %s\n' "$forced_argument" "$(cat "$work/public-key")" > "$work/authorized_keys"
 install -m 0644 -o root -g root "$work/authorized_keys" "$deploy_home/.ssh/authorized_keys"
 
 install -d -m 0755 -o root -g root /usr/local/libexec /usr/local/sbin
 # Only the controller can create/switch releases; the running app cannot race it.
-install -d -m 0750 -o root -g ingenium /srv/ingenium /srv/ingenium/releases
+install -d -m 0750 -o root -g "$application_user" "$application_root" "$application_root/releases"
 install -d -m 0750 -o root -g root "$library"
-install -m 0755 -o root -g root "$source_directory/ssh-entrypoint.py" /usr/local/libexec/ingenium-deploy-ssh
-install -m 0750 -o root -g root "$source_directory/apply_release.py" "$library/apply_release.py"
-install -m 0640 -o root -g root "$source_directory/verify_release.py" "$library/verify_release.py"
+install -m 0755 -o root -g root "$source_directory/ssh-entrypoint.py" /usr/local/libexec/ingenium-deploy-ssh.new
+mv -f /usr/local/libexec/ingenium-deploy-ssh.new /usr/local/libexec/ingenium-deploy-ssh
+for filename in apply_release.py apply_qa_release.py verify_release.py; do
+  mode=0640
+  [[ $filename == verify_release.py ]] || mode=0750
+  install -m "$mode" -o root -g root "$source_directory/$filename" "$library/$filename.new"
+  mv -f "$library/$filename.new" "$library/$filename"
+done
 ln -sfn "$library/apply_release.py" /usr/local/sbin/ingenium-apply-release
+ln -sfn "$library/apply_qa_release.py" /usr/local/sbin/ingenium-apply-qa-release
 
-cat > "$work/sudoers" <<'SUDOERS'
-Defaults:ingenium-deploy env_reset
-Defaults:ingenium-deploy secure_path="/usr/sbin:/usr/bin:/sbin:/bin"
-ingenium-deploy ALL=(root) NOPASSWD: NOSETENV: /usr/local/sbin/ingenium-apply-release ^[a-f0-9]{40}$
+cat > "$work/sudoers" <<SUDOERS
+Defaults:$deploy_user env_reset
+Defaults:$deploy_user secure_path="/usr/sbin:/usr/bin:/sbin:/bin"
+$deploy_user ALL=(root) NOPASSWD: NOSETENV: /usr/local/sbin/$controller_name ^[a-f0-9]{40}$
 SUDOERS
 visudo -cf "$work/sudoers"
-install -m 0440 -o root -g root "$work/sudoers" /etc/sudoers.d/ingenium-deploy
+install -m 0440 -o root -g root "$work/sudoers" "/etc/sudoers.d/$deploy_user"
 visudo -c
 echo 'Dedicated restricted deployment SSH access installed; manual SSH access unchanged.'

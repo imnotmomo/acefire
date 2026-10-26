@@ -1,0 +1,36 @@
+name: QA CI/CD
+
+on:
+  pull_request:
+    branches: [qa]
+  push:
+    branches: [qa]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# QA has an independent queue; do not interrupt an activating deployment.
+concurrency:
+  group: qa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    name: Application checks
+    uses: ./.github/workflows/checks.yml
+
+  deploy:
+    name: Publish QA server
+    needs: checks
+    if: vars.QA_CD_ENABLED == 'true' && github.repository == 'imnotmomo/acefire' && github.ref == 'refs/heads/qa' && github.event_name != 'pull_request'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      target: qa
+    permissions:
+      contents: read
+      actions: read
+    secrets:
+      ACEFIRE_QA_DEPLOY_SSH_KEY: ${{ secrets.ACEFIRE_QA_DEPLOY_SSH_KEY }}
+      ACEFIRE_DEPLOY_KNOWN_HOSTS: ${{ secrets.ACEFIRE_DEPLOY_KNOWN_HOSTS }}
+      NICRRON_API_KEY: ${{ secrets.NICRRON_API_KEY }}
