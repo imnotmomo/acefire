@@ -66,6 +66,21 @@ jobs:
           node-version: '24.22.1'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+      - name: Install browser test dependencies
+        timeout-minutes: 12
+        working-directory: frontend
+        run: |
+          npm ci
+          if command -v google-chrome >/dev/null; then
+            browser_path=$(command -v google-chrome)
+          elif command -v chromium >/dev/null; then
+            browser_path=$(command -v chromium)
+          else
+            npx playwright install --with-deps chromium
+            browser_path=$(node --input-type=module -e 'import { chromium } from "playwright"; process.stdout.write(chromium.executablePath())')
+          fi
+          "$browser_path" --version
+          echo "PLAYWRIGHT_BROWSER_PATH=$browser_path" >> "$GITHUB_ENV"
       - name: Test and build the frontend
         run: bash scripts/ci/frontend.sh
       - name: Retain failed browser workflow evidence
