@@ -62,10 +62,6 @@ html[data-screen='landing'] body { background: #111629; }
 .ig-hero-footnote svg { color: #9caad2; }
 .ig-sculpture { position: relative; margin: -35px -90px -20px -25px; }
 .ig-sculpture > svg { display: block; width: 100%; height: auto; }
-.ig-sculpture-label { position: absolute; display: inline-flex; align-items: center; gap: 7px; color: #9eabd0; font-size: 10px; font-weight: 400; letter-spacing: .3px; }
-.ig-sculpture-label-top { top: 23%; right: 4%; border: 1px solid #8498f72b; background: #141b36a6; border-radius: 4px; padding: 8px 11px; backdrop-filter: blur(9px); }
-.ig-sculpture-label-top > span { width: 5px; height: 5px; background: #b6c5ff; border-radius: 50%; }
-.ig-sculpture-label-bottom { bottom: 4%; left: 28%; font-size: 9px; color: #7e8cb6; }
 .ig-scroll-cue { position: absolute; bottom: 29px; left: 0; display: flex; align-items: center; gap: 12px; font-size: 10px; color: #8d99b6; }
 .ig-principles-strip { border-top: 1px solid var(--ig-line); border-bottom: 1px solid var(--ig-line); background: #151a2d; }
 .ig-principles-strip > div { min-height: 94px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
@@ -245,7 +241,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-hero { min-height: 650px; grid-template-columns: 1.25fr 1fr; }
   .ingenium-site .ig-hero h1 { font-size: 59px; letter-spacing: -2.8px; }
   .ig-sculpture { margin-left: -30px; margin-right: -65px; }
-  .ig-sculpture-label-top { top: 16%; right: 8%; font-size: 8px; }
   .ig-hero-copy > p { font-size: 13px; }
   .ig-principles-strip span { font-size: 10px; gap: 8px; }
   .ig-principles-strip span:first-child { max-width: 115px; font-size: 9px; }
@@ -300,8 +295,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-hero-actions .ig-button { font-size: 11px; padding-inline: 14px; min-height: 47px; gap: 12px; }
   .ig-hero-footnote { font-size: 8px; gap: 6px; }
   .ig-sculpture { margin-right: -65px; margin-left: -32px; }
-  .ig-sculpture-label-top { font-size: 7px; padding: 6px 8px; top: 8%; right: 13%; }
-  .ig-sculpture-label-bottom { font-size: 7px; left: 22%; }
   .ig-principles-strip > div { flex-wrap: wrap; justify-content: center; padding-block: 19px; gap: 14px 25px; }
   .ig-principles-strip span:first-child { width: 100%; max-width: none; justify-content: center; font-size: 9px; }
   .ig-principles-strip span { font-size: 10px; }
@@ -403,8 +396,6 @@ html[data-screen='landing'] body { background: #111629; }
   .ig-hero-actions .ig-button { min-height: 47px; padding-inline: 15px; font-size: 11px; }
   .ig-hero-footnote { font-size: 8px; margin-top: 23px; }
   .ig-sculpture { width: min(420px, 100%); margin: -5px auto -18px; }
-  .ig-sculpture-label-top { right: 0; top: 24%; font-size: 8px; }
-  .ig-sculpture-label-bottom { bottom: 5%; left: 29%; font-size: 8px; }
   .ig-scroll-cue { position: relative; bottom: 0; margin-top: 24px; justify-self: start; font-size: 9px; }
   .ig-principles-strip > div { padding-block: 19px; gap: 15px 23px; justify-content: flex-start; }
   .ig-principles-strip span { width: calc(50% - 14px); font-size: 10px; gap: 7px; }
