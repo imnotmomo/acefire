@@ -136,3 +136,13 @@ C has since implemented the Circle report/lineage connection described below; re
 - State: in_progress. Remove Data / Reasoning / Evidence labels, circular nodes and connector lines beside the landing sculpture.
 - Paths: frontend/src/Landing.tsx and this record. Preserve sculpture geometry, background and floor. No API/backend/data changes. Branch: codex/remove-hero-annotations from origin/qa. Respect existing QA-only motion hold.
 - Completed: removed the complete annotation group only. TypeScript/Vite production build passed. No live deployment claimed; existing QA-only promotion hold retained.
+
+## Landing chat sample - 2026-10-26
+
+- State: in_progress; human requests local deployment/testing only. Branch codex/landing-chat-sample from current qa.
+- Paths: frontend/src/Landing.tsx, LandingChatSample.tsx, landing-chat-sample.css, focused browser check and this record. Add an explicitly labeled scripted demo with typing, question selection, pause/replay and platform entry. Existing historical evidence only; no invented citations or live chat/API changes.
+- Acefire-AutoPush paused to honor local-only scope. Re-enable only when publication is requested.
+
+- Completed locally: hero-right chat sample with historical financial context, three selectable prompts, one-shot typing, pause/resume/replay, source/workflow links, reduced-motion handling and polite screen-reader completion. Original sculpture retained as a subdued background mark. No backend calls or data writes.
+- Validation: TypeScript/Vite production build and tests/landing-chat-sample.mjs passed (typing progression, pause/resume, completion, rapid sample changes, reduced motion, links, 1440/1024/768/390 layout, zero API requests/runtime errors). Desktop screenshot visually reviewed. Local Vite remains available on http://127.0.0.1:5173/. No commit, push or hosted deployment; auto-push remains disabled for local-only review.
+- Publication authorized by human after local testing. Proceed through feature PR, deployed QA validation and production promotion. Automatic scheduled pushing stays disabled; this release uses the repository QA-first workflow.
