@@ -12,3 +12,6 @@
 .ig-footer .ig-wordmark .ingenium-logo{width:205px;height:48px}
 @media(max-width:1200px){.sidebar .ingenium-logo{width:139px;gap:7px}.sidebar .ingenium-logo>.ingenium-mark{width:22px}.sidebar .ingenium-logo>.ingenium-wordmark{width:110px}}
 @media(max-width:650px){.ig-wordmark .ingenium-logo{width:145px}.paper-brand .ingenium-logo{width:116px}}
+
+.app-shell .new-project-button{height:44px;min-width:160px;padding:0 18px;font-size:13px}.app-shell .new-project-button span{display:inline}
+@media(max-width:650px){.app-shell .new-project-button{min-width:135px;height:42px;padding:0 10px;font-size:12px}}

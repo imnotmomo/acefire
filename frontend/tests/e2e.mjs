@@ -24,7 +24,7 @@ async function screenshot(name) {
 try {
   await page.goto('http://127.0.0.1:5173/#/projects', { waitUntil: 'networkidle' })
   await check('Projects: reference-inspired layout, search and sector filters', async () => {
-    assert.equal(await page.locator('.project-card').count(), 4)
+    assert.equal(await page.locator('.project-card').count(), 3)
     await screenshot('projects-desktop')
     await page.getByLabel('Search projects').fill('enfuce')
     assert.equal(await page.locator('.project-card').count(), 2)

@@ -99,3 +99,10 @@ C has since implemented the Circle report/lineage connection described below; re
 - Scope: three visual demo entry cards; two presentation-only scenario dialogs; existing actual Enfuce route; enlarged Create Project header and removed duplicate black action. Formal logo already active. Existing company list, storage IDs, reports, evidence, backend/API, credentials and deployment configuration remain unchanged. No restoration of archived report/data adapters. Use existing approved CI/CD on main.
 
 - Validation: locked dependency installation, production build, all 93 unit tests and focused Playwright showcase check passed at desktop/tablet/mobile sizes. Covers decode, both dialogs work, one Create Project header remains, formal logo renders, no API writes and no project-storage changes during scenario interaction. No backend, report/API, schema or deploy code changed. Ready for GitHub CI/CD publication.
+
+## Simplify Projects cards — 2026-10-25
+
+- State: in_progress. User requests hiding the third Enfuce card (enfuce-documents), removing the three showcase cards and their heading/tagline, and remapping remaining covers in explicit order: enfuce=claims.jpg, circle=narrative.jpg, backerkit=numbers.jpg.
+- Paths: frontend/src/App.tsx, Brand CSS, removed DemoShowcase files, updated focused browser check; this record. Display-only filtering retains all stored project identities, data, reports and direct routes. No backend/API/deploy edits.
+
+- Completed: showcase component/styles removed; larger Create Project styles retained in brand.css. All projects and sidebar counts exclude only enfuce-documents; existing stored record and direct route retained. Cover order is claims/narrative/numbers for enfuce/circle/backerkit. Production build and focused browser check passed, including three responsive sizes, decoded covers, retained project record and no API writes. Existing browser count expectations updated.
