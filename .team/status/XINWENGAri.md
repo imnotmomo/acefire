@@ -91,3 +91,11 @@ C has since implemented the Circle report/lineage connection described below; re
 - Validation: 93 unit tests, production build and six scenario browser flows passed, including retention of all historical/custom cards and saved report bytes. Backend, database-design and deploy trees match the pre-UI baseline 97658f4 exactly.
 - Human supplied a replacement Firebase credential. Updated only ignored backend/.env to point to the new external file; checked JSON type/project without exposing secrets. No tracked backend code, cloud data, IAM keys or server runtime changed. Old credential is no longer referenced by that config.
 - State: ready_for_review; GitHub publication requested; deployment remains the teammate responsibility.
+
+## UI-only showcase publication — 2026-10-25
+
+- State: in_progress. Latest human asks to finish UI publication. Base is current approved live main 49b443f.
+- Paths: frontend/src/App.tsx, DemoShowcase.tsx, demo-showcase.css, supplied public photographs, focused browser test, this record.
+- Scope: three visual demo entry cards; two presentation-only scenario dialogs; existing actual Enfuce route; enlarged Create Project header and removed duplicate black action. Formal logo already active. Existing company list, storage IDs, reports, evidence, backend/API, credentials and deployment configuration remain unchanged. No restoration of archived report/data adapters. Use existing approved CI/CD on main.
+
+- Validation: locked dependency installation, production build, all 93 unit tests and focused Playwright showcase check passed at desktop/tablet/mobile sizes. Covers decode, both dialogs work, one Create Project header remains, formal logo renders, no API writes and no project-storage changes during scenario interaction. No backend, report/API, schema or deploy code changed. Ready for GitHub CI/CD publication.
