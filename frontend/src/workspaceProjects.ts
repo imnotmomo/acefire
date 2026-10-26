@@ -9,7 +9,7 @@ export const pendingConnectionKey = (projectId: string) => `ingenium:pending-com
 
 export function companyProject(company: WorkspaceCompany): Project {
   return { id: aliases.get(company.deal_id) ?? company.deal_id, backendDealId: company.deal_id,
-    name: company.legal_name,
+    name: text(company.identifiers?.workspace_display_name, company.legal_name),
     sector: text(company.identifiers?.workspace_sector ?? company.sector, 'Other'),
     geography: text(company.identifiers?.workspace_geography ?? company.geography ?? company.country, 'Unknown'),
     created: text(company.identifiers?.workspace_created_at ?? company.created_at, '') }
@@ -26,8 +26,9 @@ export function mergeCompanyProjects(projects: Project[], companies: WorkspaceCo
     else {
       const existing = result[index]
       result[index] = { ...canonical, ...existing, backendDealId: company.deal_id,
-        name: text(existing.name, canonical.name), sector: text(existing.sector, canonical.sector),
-        geography: text(existing.geography, canonical.geography), created: text(existing.created, canonical.created) }
+        name: company.identifiers?.workspace_display_name ? canonical.name : text(existing.name, canonical.name),
+        sector: company.identifiers?.workspace_display_name ? canonical.sector : text(existing.sector, canonical.sector),
+        geography: company.identifiers?.workspace_display_name ? canonical.geography : text(existing.geography, canonical.geography), created: text(existing.created, canonical.created) }
     }
   }
   return result

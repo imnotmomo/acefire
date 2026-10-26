@@ -34,6 +34,7 @@ export type BackendObservation = {
   id: string; deal_id: string; snapshot_id: string; metric_key: string; raw_label: string;
   raw_value: string | null; value: string | null; unit: string | null; currency: string | null;
   scale_multiplier: string | null; normalization_status: string; normalization_basis: string | null;
+  reviewed_from_id?: string;
   definition_key: string | null; scope: string | null; accounting_basis: string | null;
   period_kind: string; period_label: string | null; period_start: string | null; period_end: string | null;
   scenario: string; verification_status: string; locator: Locator; quarantined: boolean; notes: string[];
@@ -438,12 +439,16 @@ export function useCompanyReport(dealId: string | null) {
     const controller = new AbortController()
     if (!dealId) { setResult({ dealId, report: null, loading: false, error: null, loadedAt: null }); return () => controller.abort() }
     setResult(previous => ({ dealId, report: previous.dealId === dealId ? previous.report : null, loading: true, error: null, loadedAt: previous.dealId === dealId ? previous.loadedAt : null }))
+    const timer = setTimeout(() => {
+      controller.abort()
+      setResult(previous => ({ dealId, report: previous.dealId === dealId ? previous.report : null, loading: false, error: 'The company report took too long. Retry when the connection is available.', loadedAt: previous.dealId === dealId ? previous.loadedAt : null }))
+    }, 30_000)
     fetchCompanyReport(dealId, controller.signal).then(report => {
       if (!controller.signal.aborted) setResult({ dealId, report, loading: false, error: null, loadedAt: new Date().toISOString() })
     }).catch(error => {
       if (!controller.signal.aborted) setResult(previous => ({ dealId, report: previous.dealId === dealId ? previous.report : null, loading: false, error: error instanceof Error ? error.message : 'The report could not be loaded.', loadedAt: previous.dealId === dealId ? previous.loadedAt : null }))
-    })
-    return () => controller.abort()
+    }).finally(() => clearTimeout(timer))
+    return () => { clearTimeout(timer); controller.abort() }
   }, [dealId, attempt])
   // Mask previous-company state during the render before the effect runs.
   const current = result.dealId === dealId ? result : { report: null, loading: Boolean(dealId), error: null, loadedAt: null }

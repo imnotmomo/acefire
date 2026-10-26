@@ -17,7 +17,7 @@ from app.akta_saved import ingest_saved_akta_circle
 from app.config import akta_data_root, cache_root, data_root, database_path
 from app.financial import calculate, compare_observations
 from app.local_sources import ingest_local_circle
-from app.schemas import CIRCLE, Contract
+from app.schemas import CIRCLE, Contract, IngestionResult
 from app.store import Store
 from app.uploads import ingest_upload
 from app.lineage import build_calculation_lineage, build_profile_lineage
@@ -36,6 +36,8 @@ from app.stored_narratives import source_claims as stored_source_claims, summari
 from app.document_routes import document_router
 from app.chat import chat_router
 from app.workspace_routes import workspace_router
+from app.normalization_review import NormalizationReview, reviewed_observation
+from app.report_drafts import DraftWorkspaceCreate, DraftWorkspaceUpdate, DraftVersionConflict, new_record, summary as draft_summary
 
 
 class CompareRequest(Contract):
@@ -336,9 +338,65 @@ def create_app(store: Store | None = None, source_root: Path | None = None, akta
             raise HTTPException(409, {'code': 'stale_report', 'message': 'The company evidence changed. Refresh the stored report before generating a draft.'})
         try:
             engine = narrative_factory() if narrative_factory else NarrativeGenerator(AgentSettings.from_environment())
-            return engine.generate(deal_id, request, report['narrative_evidence'])
+            draft = engine.generate(deal_id, request, report['narrative_evidence'])
+            draft.setdefault('drafting_preferences', [section.model_dump(mode='json') for section in request.sections])
+            record = new_record(deal_id, request.based_on_report_id, draft=draft)
+            ledger.create_report_draft(record)
+            return {**draft, 'persisted_version': record['version']}
         except NarrativeError as error:
             raise HTTPException(error.status_code, {'code': error.code, 'message': error.message}) from None
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.get('/deals/{deal_id}/report-drafts')
+    def list_report_drafts(deal_id: str):
+        company(deal_id)
+        return {'drafts': [draft_summary(record) for record in ledger.report_drafts(deal_id)]}
+
+    @app.get('/deals/{deal_id}/report-drafts/{draft_id}')
+    def load_report_draft(deal_id: str, draft_id: str):
+        company(deal_id)
+        record = ledger.report_draft(deal_id, draft_id)
+        if record is None:
+            raise HTTPException(404, 'Shared report draft not found in this company.')
+        return {**record, **draft_summary(record)}
+
+    @app.post('/deals/{deal_id}/report-drafts', status_code=201)
+    def create_report_workspace(deal_id: str, request: DraftWorkspaceCreate):
+        report = company_report(deal_id)
+        if report['report_id'] != request.based_on_report_id:
+            raise HTTPException(409, {'code': 'stale_report', 'message': 'The company evidence changed. Refresh before saving this as a new shared report.'})
+        try:
+            record = ledger.create_report_draft(new_record(deal_id, request.based_on_report_id, workspace=request.workspace))
+            return {**record, **draft_summary(record)}
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.put('/deals/{deal_id}/report-drafts/{draft_id}')
+    def save_report_workspace(deal_id: str, draft_id: str, request: DraftWorkspaceUpdate):
+        company(deal_id)
+        try:
+            record = ledger.update_report_draft(deal_id, draft_id, request.expected_version, request.workspace)
+        except DraftVersionConflict as error:
+            raise HTTPException(409, {'code': 'draft_version_conflict', 'message': str(error)}) from None
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+        if record is None:
+            raise HTTPException(404, 'Shared report draft not found in this company.')
+        return {**record, **draft_summary(record)}
+
+    @app.post('/deals/{deal_id}/observations/{observation_id}/normalize')
+    def normalize_observation(deal_id: str, observation_id: str, request: NormalizationReview):
+        selected = company(deal_id)
+        original = observation(deal_id, observation_id)
+        try:
+            reviewed = reviewed_observation(selected, original, ledger.snapshots(deal_id), request)
+            existing = ledger.observation(reviewed.id)
+            ledger.ingest(IngestionResult(
+                company=selected, snapshots=[], observations=[reviewed]))
+        except ValueError as error:
+            raise HTTPException(422, str(error)) from None
+        return {'observation': reviewed, 'reviewed_from_id': original.id, 'created': existing is None}
 
     @app.post('/deals/{deal_id}/chat')
     def company_chat(deal_id: str, request: CompanyChatRequest):

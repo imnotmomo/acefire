@@ -31,6 +31,8 @@ companies/{deal_id}                              Company
   narrative_reports/{report_id}                  B's original report payload
   calculations/{calculation_id}                  Calculation + execution audit
   comparisons/{comparison_id}                    Comparison
+  report_drafts/{draft_id}                        Shared generated draft + mutable editor state/revision
+  workspace_settings/current                     Mutable display labels and reversible archive state
 imports/{original_database_sha256}               Import provenance
 ```
 
@@ -38,7 +40,11 @@ Every document uses `{schema_version: 1, record_sha256, record}`. The digest is
 SHA-256 of sorted, compact UTF-8 JSON for `record`. Financial amounts are decimal
 strings or null. Original IDs remain unchanged. Writes are create-only; an
 existing ID with different content fails rather than overwriting evidence.
-Reports are assembled by the API from these individual records, not saved as
+Source records remain create-only. The two application-workspace collections
+above are separate mutable state with atomic update preconditions; they never
+replace imported reports or legal/source identities. See `SHARED_REPORTS.md`
+and `WORKSPACE_UPLOADS.md` for API contracts.
+Company reports are assembled by the API from individual evidence records, not saved as
 one oversized aggregate document.
 
 Migration:

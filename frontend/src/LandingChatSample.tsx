@@ -61,7 +61,7 @@ export default function LandingChatSample() {
       <div className="ig-chat-answer"><span><BrandMark size={18} /> Ingenium</span><p>{answering ? sample.answer.slice(0, position - sample.question.length) : 'Let’s follow the evidence.'}{answering && !complete && !paused && <i className="ig-chat-cursor" />}</p></div>
     </div>
     <div className="ig-chat-sr" role="status" aria-live="polite" aria-atomic="true">{complete ? `${sample.question} ${sample.answer}` : 'Playing a sample conversation.'}</div>
-    <a className={`ig-chat-source ${complete ? 'is-ready' : ''}`} href={sample.href} aria-disabled={!complete} tabIndex={complete ? 0 : -1} onClick={event => { if (!complete) event.preventDefault() }}>
+    <a className="ig-chat-source is-ready" href={sample.href}>
       <FileText size={19} /><span><strong>{sample.source}</strong><small>{sample.locator}</small></span><ArrowUpRight size={16} />
     </a>
     <div className="ig-chat-prompts" role="group" aria-label="Sample questions">{samples.map((item, index) => <button key={item.label} aria-pressed={selected === index} onClick={() => start(index)}>{item.label}</button>)}</div>

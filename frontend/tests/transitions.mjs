@@ -17,6 +17,8 @@ if (!executablePath) {
 const browser = await chromium.launch({ ...(executablePath ? { executablePath } : {}), headless: true })
 const contexts = [], results = [], errors = [], mutations = [], unexpectedApi = []
 const pageAnimationId = 'ingenium-page-enter'
+const observationDelay = Math.max(0, Math.min(2000, Number(process.env.TRANSITION_TEST_OBSERVE_DELAY_MS) || 0))
+const cpuRate = Math.max(1, Math.min(8, Number(process.env.TRANSITION_TEST_CPU_RATE) || 1))
 const config = { topics: ['Company profile'], depth: 'Standard', geography: 'Global', horizon: 'Source period', scope: 'Internal only', focus: 'Preserve these review preferences.' }
 const workspace = {
   order: ['overview', 'market'], configs: { overview: config, market: config }, revisions: [], generatedAt: '2026-10-24T12:00:00Z',
@@ -39,13 +41,50 @@ async function createPage(options = {}) {
   await context.addInitScript(({ workspace }) => {
     localStorage.setItem('acefire:workspace:v1:enfuce', JSON.stringify(workspace))
     window.__motionAnimations = []
+    window.__dialogAnimations = []
+    const sample = (element, animation) => {
+      const style = getComputedStyle(element), transform = style.transform
+      return { connected: element.isConnected, transform, translateY: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42,
+        opacity: Number(style.opacity), duration: Number(animation.effect.getTiming().duration), progress: animation.effect.getComputedTiming().progress,
+        currentTime: Number(animation.currentTime), state: animation.playState, keyframes: animation.effect.getKeyframes() }
+    }
     const animate = Element.prototype.animate
     Element.prototype.animate = function (...args) {
       const animation = Reflect.apply(animate, this, args)
       const phase = this.matches('.backend-loading') || this.querySelector('.backend-loading') ? 'loading' : this.querySelector('.calculation-lab') ? 'company-ready' : 'content'
-      window.__motionAnimations.push({ animation, element: this, phase, startedAt: performance.now() })
+      const entry = { animation, element: this, phase, startedAt: performance.now(), sample: null, timer: null }
+      if (this.matches('.page-transition')) {
+        // Test-side clock control: observe the real effect at its midpoint even
+        // when the runner cannot schedule another command inside its 320ms life.
+        animation.pause(); animation.currentTime = Number(animation.effect.getTiming().duration) / 4
+        entry.sample = sample(this, animation)
+        entry.timer = setTimeout(() => { if (animation.playState === 'paused') animation.play() }, 15_000)
+      }
+      window.__motionAnimations.push(entry)
       return animation
     }
+    window.__releasePageMotion = () => {
+      for (const entry of window.__motionAnimations) {
+        clearTimeout(entry.timer)
+        if (entry.animation.playState === 'paused') entry.animation.play()
+      }
+    }
+    // CSS animations do not call Element.animate. Capture their actual rendered
+    // midpoint in the commit microtask, then let each original effect continue.
+    const captured = new WeakSet()
+    new MutationObserver(records => {
+      for (const record of records) for (const node of record.addedNodes) {
+        if (!(node instanceof Element)) continue
+        const elements = [...(node.matches('.dialog,.modal-backdrop,.sidebar-overlay') ? [node] : []), ...node.querySelectorAll('.dialog,.modal-backdrop,.sidebar-overlay')]
+        for (const element of elements) for (const animation of element.getAnimations()) {
+          if (!(animation instanceof CSSAnimation) || captured.has(animation)) continue
+          captured.add(animation)
+          animation.pause(); animation.currentTime = Number(animation.effect.getTiming().duration) / 4
+          window.__dialogAnimations.push({ element, name: animation.animationName, sample: sample(element, animation) })
+          animation.play()
+        }
+      }
+    }).observe(document, { childList: true, subtree: true })
   }, { workspace })
   await context.route('**/*', async route => {
     const request = route.request(), url = new URL(request.url())
@@ -55,13 +94,14 @@ async function createPage(options = {}) {
       mutations.push(`${request.method()} ${url.pathname}`)
       await route.fulfill({ status: 405, json: { detail: 'Motion tests never write to the backend.' } }); return
     }
-    if (url.pathname === '/api/deals') { await route.fulfill({ json: { companies: [] } }); return }
+    if (url.pathname === '/api/deals') { await route.fulfill({ json: { companies: [{ deal_id: 'circle-2025-ipo', entity_key: 'circle', legal_name: 'Circle', domain: 'circle.com', country: 'USA', identifiers: { workspace_sector: 'Fintech', workspace_geography: 'United States' } }] } }); return }
     if (url.pathname === '/api/deals/circle-2025-ipo/report') {
       await new Promise(resolve => setTimeout(resolve, 350))
       await route.fulfill({ json: report }).catch(() => {})
       return
     }
     if (url.pathname === '/api/deals/circle-2025-ipo/uploads') { await route.fulfill({ json: { uploads: [] } }); return }
+    if (url.pathname === '/api/deals/circle-2025-ipo/report-drafts') { await route.fulfill({ json: { drafts: [] } }); return }
     if (url.pathname === '/api/calculation-runtime') {
       await route.fulfill({ json: { mode: 'llm_local', configured: false, model: 'motion-ui-fixture', executor: 'local_python', generation_provider: 'fixture', missing: ['UI-only fixture'], maximum_inputs: 100 } }); return
     }
@@ -69,27 +109,39 @@ async function createPage(options = {}) {
     await route.fulfill({ status: 501, json: { detail: 'No live API is used by this motion fixture.' } })
   })
   const page = await context.newPage()
+  if (cpuRate > 1) await (await context.newCDPSession(page)).send('Emulation.setCPUThrottlingRate', { rate: cpuRate })
   page.on('pageerror', error => errors.push(error.message))
   await page.goto(`${base}/#/projects`, { waitUntil: 'networkidle' })
   await page.locator('.project-card').first().waitFor()
   return { page, context }
 }
 async function runningPageMotion(page) {
-  await page.waitForFunction(id => Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running')), pageAnimationId)
+  if (observationDelay) await new Promise(resolve => setTimeout(resolve, observationDelay))
+  await page.waitForFunction(id => Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && ['running', 'paused'].includes(animation.playState))), pageAnimationId)
   const state = await page.locator('.page-transition').first().evaluate((region, id) => {
     const animation = region.getAnimations().find(item => item.id === id)
     const transform = getComputedStyle(region).transform
-    return { transform, translateY: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42, opacity: Number(getComputedStyle(region).opacity), duration: animation?.effect?.getTiming().duration }
+    return { connected: region.isConnected, transform, translateY: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42, opacity: Number(getComputedStyle(region).opacity), duration: animation?.effect?.getTiming().duration,
+      progress: animation?.effect?.getComputedTiming().progress, currentTime: Number(animation?.currentTime), state: animation?.playState, keyframes: animation?.effect?.getKeyframes() }
   }, pageAnimationId)
-  assert.notEqual(state.transform, 'none', 'Visible route content should move during its entrance.')
-  assert.ok(state.translateY >= 0 && state.translateY <= 13, 'Route motion stays small and vertical.')
-  assert.ok(state.opacity > 0 && state.opacity <= 1, 'Visible content must remain readable while entering.')
-  assert.ok(Number(state.duration) > 0 && Number(state.duration) <= 400, 'Page transition should be brief.')
+  assertPageMotionSample(state)
   assert.equal(await page.locator('#main-content').evaluate(main => getComputedStyle(main).transform), 'none', 'The fixed-overlay ancestor must never move.')
   assert.equal(await page.locator('.assistant-dock').evaluateAll(docks => docks.every(dock => !dock.closest('.page-transition'))), true, 'The fixed assistant dock must stay outside the moving content.')
+  return state
+}
+function assertPageMotionSample(state) {
+  assert.equal(state.connected, true, 'Motion must be sampled while its actual route element is connected.')
+  assert.notEqual(state.transform, 'none', 'Visible route content should move during its entrance.')
+  assert.ok(state.translateY > 0 && state.translateY <= 13, 'Route motion stays small and vertical.')
+  assert.ok(state.opacity > 0 && state.opacity < 1, 'Visible content must remain readable during the actual entrance effect.')
+  assert.ok(Number(state.duration) > 0 && Number(state.duration) <= 400, 'Page transition should be brief.')
+  assert.ok(state.progress > 0 && state.progress < 1 && state.currentTime > 0 && state.currentTime < Number(state.duration), 'The observed effect must be between its original start and end.')
+  assert.ok(Number(state.keyframes?.[0]?.opacity) < Number(state.keyframes?.at(-1)?.opacity), 'The original route keyframes must fade into view.')
+  assert.notEqual(state.keyframes?.[0]?.transform, state.keyframes?.at(-1)?.transform, 'The original route keyframes must contain translation.')
 }
 async function settled(page) {
-  await page.waitForFunction(id => !Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running')), pageAnimationId)
+  await page.evaluate(() => window.__releasePageMotion())
+  await page.waitForFunction(id => !Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && ['running', 'paused'].includes(animation.playState))), pageAnimationId)
   assert.equal(await page.locator('.page-transition').first().evaluate(region => getComputedStyle(region).opacity), '1')
   assert.equal(await page.locator('.page-transition').first().evaluate(region => getComputedStyle(region).transform), 'none')
   assert.equal(await page.locator('#main-content').evaluate(main => getComputedStyle(main).transform), 'none')
@@ -121,9 +173,14 @@ async function assertOverlayOnTop(page) {
   assert.equal(intercepted, true, 'Modal backdrop must cover navigation even while page opacity is animating.')
 }
 async function assertOpeningMotion(dialog) {
-  const animations = await dialog.evaluate(element => element.getAnimations().map(animation => ({ duration: animation.effect?.getTiming().duration, state: animation.playState })))
+  const animations = await dialog.evaluate(element => window.__dialogAnimations.filter(entry => entry.element === element).map(entry => ({ name: entry.name, ...entry.sample })))
   assert.ok(animations.length > 0, 'Opening a dialog should start its own entrance motion.')
-  assert.ok(animations.some(animation => Number(animation.duration) > 0 && Number(animation.duration) <= 350))
+  assert.ok(animations.some(animation => Number(animation.duration) > 0 && Number(animation.duration) <= 350 && animation.connected
+    && animation.progress > 0 && animation.progress < 1 && animation.opacity > 0 && animation.opacity < 1
+    && animation.currentTime > 0 && animation.currentTime < Number(animation.duration)
+    && ['ingenium-dialog-enter', 'ingenium-drawer-enter'].includes(animation.name)
+    && Number(animation.keyframes[0].opacity) < Number(animation.keyframes.at(-1).opacity)
+    && animation.transform !== 'none' && animation.keyframes[0].transform !== animation.keyframes.at(-1).transform), 'A real dialog/drawer effect must visibly move and fade before its original duration ends.')
 }
 
 try {
@@ -141,9 +198,10 @@ try {
     await runningPageMotion(page)
     await page.locator('.calculation-lab').waitFor()
     await runningPageMotion(page)
-    const phases = await page.evaluate(start => window.__motionAnimations.slice(start).filter(item => item.element.classList.contains('page-transition')).map(item => ({ phase: item.phase, startedAt: item.startedAt })), before)
+    const phases = await page.evaluate(start => window.__motionAnimations.slice(start).filter(item => item.element.classList.contains('page-transition')).map(item => ({ phase: item.phase, startedAt: item.startedAt, sample: item.sample })), before)
     assert.ok(phases.some(item => item.phase === 'loading'), 'Company-card navigation must animate the loading region.')
     assert.ok(phases.some(item => item.phase === 'company-ready'), 'Loaded company content needs a fresh entrance after the delayed report arrives.')
+    for (const phase of ['loading', 'company-ready']) for (const entry of phases.filter(item => item.phase === phase)) assertPageMotionSample(entry.sample)
     assert.ok(phases.find(item => item.phase === 'company-ready').startedAt - phases.find(item => item.phase === 'loading').startedAt >= 300, 'The fixture must exercise a real asynchronous company load.')
     await settled(page)
     const navigation = page.getByRole('navigation', { name: 'Project workspace', exact: true })
@@ -224,10 +282,15 @@ try {
     const stillEntering = await page.locator('.metric-card').filter({ hasText: '2019 gross profit' }).evaluate(async (button, id) => {
       button.click()
       await new Promise(resolve => requestAnimationFrame(resolve))
-      return Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && animation.playState === 'running'))
+      return Array.from(document.querySelectorAll('.page-transition')).some(region => region.getAnimations().some(animation => animation.id === id && ['running', 'paused'].includes(animation.playState)
+        && animation.effect.getComputedTiming().progress > 0 && animation.effect.getComputedTiming().progress < 1))
     }, pageAnimationId)
     assert.equal(stillEntering, true, 'The overlay check must run during the page transition.')
     await assertOverlayBounds(page); await assertOverlayOnTop(page)
+    const state = await runningPageMotion(page)
+    await page.getByRole('dialog', { name: '2019 gross profit', exact: true }).evaluate(element => Promise.all([...element.getAnimations(), ...element.parentElement.getAnimations()].map(animation => animation.finished.catch(() => {}))))
+    await page.screenshot({ path: path.join(output, 'overlay-during-page-motion.png'), fullPage: false, animations: 'allow' })
+    await fs.writeFile(path.join(output, 'overlay-during-page-motion.json'), JSON.stringify(state, null, 2))
     await page.keyboard.press('Escape'); await settled(page)
   })
   await check('Company and source drawers open independently without a live backend or model call', async () => {
@@ -280,11 +343,20 @@ try {
   assert.deepEqual(mutations, [], 'The motion suite must never write company records or call a model.')
   assert.deepEqual(unexpectedApi, [], 'Every API read is an explicit local fixture.')
   assert.deepEqual(errors, [], 'Navigation and motion must not introduce browser runtime errors.')
-  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ base, passed: results, errors, mutations, unexpectedApi }, null, 2))
+  await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ base, passed: results, observationDelay, cpuRate, errors, mutations, unexpectedApi }, null, 2))
   console.log(`PASS ${results.length} transition checks; no API writes or model calls.`)
 } catch (error) {
   for (const [index, context] of contexts.entries()) {
-    for (const page of context.pages()) await page.screenshot({ path: path.join(output, `failure-${index}.png`), fullPage: true }).catch(() => {})
+    for (const [pageIndex, page] of context.pages().entries()) {
+      await page.screenshot({ path: path.join(output, `failure-${index}-${pageIndex}.png`), fullPage: true, animations: 'allow' }).catch(() => {})
+      const state = await page.evaluate(() => ({ hash: location.hash,
+        regions: [...document.querySelectorAll('.page-transition')].map(element => ({ page: element.getAttribute('data-page'), opacity: getComputedStyle(element).opacity, transform: getComputedStyle(element).transform,
+          animations: element.getAnimations().map(animation => ({ id: animation.id, state: animation.playState, currentTime: animation.currentTime, timing: animation.effect?.getComputedTiming() })) })),
+        captured: window.__motionAnimations?.map(entry => ({ id: entry.animation.id, phase: entry.phase, startedAt: entry.startedAt, sample: entry.sample, state: entry.animation.playState })),
+        dialogs: window.__dialogAnimations?.map(entry => ({ name: entry.name, sample: entry.sample })),
+      })).catch(reason => ({ diagnosticError: String(reason) }))
+      await fs.writeFile(path.join(output, `failure-${index}-${pageIndex}.json`), JSON.stringify(state, null, 2))
+    }
   }
   await fs.writeFile(path.join(output, 'results.json'), JSON.stringify({ base, passed: results, error: String(error), errors, mutations, unexpectedApi }, null, 2))
   throw error

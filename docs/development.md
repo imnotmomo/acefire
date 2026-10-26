@@ -75,8 +75,11 @@ From the repository root, run frontend checks and the disabled-by-default Roundt
 ```bash
 npm --prefix frontend test
 npm --prefix frontend run build
+npm --prefix frontend run test:workflows
 npm --prefix roundtable test
 ```
+
+`test:workflows` starts isolated Vite servers and intercepts API requests. It covers actual file selection, retry/reload, company management, number review, reports, chat, downloads, mobile behavior and motion without a database or model credential. Set `PLAYWRIGHT_BROWSER_PATH` to an installed Chrome/Chromium executable, or install Playwright Chromium (`cd frontend && npx playwright install chromium`). CI installs its own browser and runs these suites before packaging.
 
 Office/OCR checks need their native tools. Real original files and committed company fixtures are used by some source-provenance tests; keep their registered bytes intact. The frontend also provides explicit browser integration commands in [`frontend/package.json`](../frontend/package.json). Run only the suites appropriate to an authorized environment; some expect a running backend or live data.
 
