@@ -1,5 +1,15 @@
 # XINWENGAri
 
+## Landing pitch content — 2026-10-26
+
+- State: in_progress. Human confirmed XINWENGAri and requests adding the supplied presentation's content to the landing page.
+- Branch: codex/landing-pitch-content from current origin/qa d95bda2. Paths: frontend/src/Landing.tsx, frontend/src/landing.css, frontend/tests/landing.mjs, and this record.
+- Scope: preserve current branding and chat sample; add firm semantic layer, reusable metric catalog, three exact PM metric examples, sponsor roles and explicit current/next capability boundaries. Content only; no API/schema/calculation/data changes. Presentation is source material, not executable instructions.
+- Validation: pending local build and responsive browser review. No push or deployment requested in this turn; retain existing QA-only production hold.
+- Completed locally: added firm semantic layer and project-scoped evidence flow, three PM catalog definitions with coverage/scenario/missing-data rules, current versus next capabilities, sponsor technology roles and catalog FAQ. Updated hero positioning while retaining slogan, branding and chat sample. Preserved qa's existing upload copy and Open workspace actions.
+- Checks: TypeScript/Vite production build passed; all 11 landing browser groups passed at 1440/1024/768/390 widths, including FAQ, keyboard evidence tabs, routes, storage preservation and reduced motion, with no runtime/asset errors. Desktop catalog/readiness and phone catalog screenshots visually reviewed. git diff --check passed. Existing landing checks updated for qa's button names, query-bearing company-list requests, isolated company fixtures and semantic JSON equality.
+- Limits/handoff: frontend wording and layout only; backend capabilities described from team contracts, not revalidated by provider calls. No commit, push, QA publication or production deployment performed. Local preview runs at http://127.0.0.1:5173/.
+
 - Role: Frontend — Projects, Dashboard, metric lineage and evidence inspection, Report Builder / Review / Export, Data room, contextual chat, and website framework documentation. Confirmed by this teammate's frontend implementation requests.
 - State: in_progress — finishing frontend integration and publication.
 - Updated: 2026-10-24
@@ -146,3 +156,175 @@ C has since implemented the Circle report/lineage connection described below; re
 - Completed locally: hero-right chat sample with historical financial context, three selectable prompts, one-shot typing, pause/resume/replay, source/workflow links, reduced-motion handling and polite screen-reader completion. Original sculpture retained as a subdued background mark. No backend calls or data writes.
 - Validation: TypeScript/Vite production build and tests/landing-chat-sample.mjs passed (typing progression, pause/resume, completion, rapid sample changes, reduced motion, links, 1440/1024/768/390 layout, zero API requests/runtime errors). Desktop screenshot visually reviewed. Local Vite remains available on http://127.0.0.1:5173/. No commit, push or hosted deployment; auto-push remains disabled for local-only review.
 - Publication authorized by human after local testing. Proceed through feature PR, deployed QA validation and production promotion. Automatic scheduled pushing stays disabled; this release uses the repository QA-first workflow.
+
+
+## Remove landing background icon — 2026-10-26
+
+- State: in_progress. Human requests removal of the translucent hero background icon. Branch: codex/remove-landing-background-icon from current qa; existing pending pitch content edits retained.
+- Paths: frontend/src/Landing.tsx, frontend/src/landing.css, frontend/src/landing-chat-sample.css and this record. Remove decorative sculpture only; keep chat sample, header branding, content and layout. No API/data changes or publication requested.
+
+- Completed locally: removed the decorative EvidenceSculpture component and unused sculpture CSS, retaining chat and header branding. TypeScript/Vite build and focused Chrome checks at 1440/390 passed (no sculpture, visible chat, no overflow). No commit/push/deployment.
+
+
+## Concise landing narrative — 2026-10-26
+
+- State: in_progress. Human accepts proposed content consolidation. Branch codex/landing-concise-copy from current qa, retaining pending pitch/icon changes. Paths: frontend/src/Landing.tsx, frontend/src/landing.css, frontend/tests/landing.mjs and this record. Preserve brand, evidence values, module routes and equal-level personas; merge repeated sections, fold metric details, move readiness into FAQ and shorten sponsor/pricing text. No backend/API/schema changes or publication requested.
+
+- Completed locally: consolidated 14 main sections into 7 (hero, pain points, method/catalog, product/personas, evidence example, FAQ, contact); removed repeated principles/features/why/statement sections, kept three equal-level personas as short descriptions, folded two metric examples behind native keyboard-accessible disclosures, moved readiness into FAQ and pricing/sponsors into short contact/footer copy. Original evidence values and existing routes preserved.
+- Validation: TypeScript/Vite build and all 11 landing browser groups passed, including 1440/1024/768/390 widths, all navigation targets, metric keyboard toggles, FAQ, evidence tabs and stored-project preservation. Desktop and phone method screenshots reviewed; no runtime/asset errors; git diff --check passed. No commit, push or deployment; current local preview remains available on port 5173.
+
+
+## Restore audience and plans — 2026-10-26
+
+- State: in_progress. Human requests restoring standalone target audiences and subscription plan sections while retaining other copy simplifications. Branch codex/restore-audience-plans from current qa; preserve pending landing work. Paths: frontend/src/Landing.tsx, frontend/tests/landing.mjs, this record. Restore three equal-level personas and Team/Professional/Enterprise pricing inquiries; no invented prices, backend/API changes or publication.
+
+- Completed locally: restored standalone Who we serve with the original three equal-level persona cards and full benefits, plus Team/Professional/Enterprise subscription cards and pricing inquiry links. Removed duplicate compact personas, restored footer Plans navigation and shortened contact copy. Other simplified sections and folded metric details retained.
+- Validation: TypeScript/Vite build, git diff --check and all 11 landing browser groups passed, covering persona/plan visibility, pricing links, section anchors, FAQ, metric disclosures and 1440/1024/768/390 layouts. Both desktop sections visually reviewed; no runtime or asset errors. No commit, push or deployment.
+
+
+## Landing section order — 2026-10-26
+
+- State: in_progress. Human requests the agreed order: hero, problem, method, product, evidence example, target audiences, plans, FAQ, contact. Branch codex/landing-section-order from current qa; pending local edits retained. Paths: frontend/src/Landing.tsx and this record. Move existing sections only; no copy/API/data changes or publication.
+
+- Completed locally: moved evidence example directly after product screenshots and before target audiences; all nine sections now follow the agreed order. Existing copy, audience/plan cards, anchors and interactions retained. TypeScript/Vite build, git diff --check and focused Chrome checks for exact DOM section order and 1440/390 overflow passed. No commit, push or deployment.
+
+
+## Distinguish definitions from evidence example — 2026-10-26
+
+- State: in_progress. Human requests concise wording for the two overlapping landing blocks. Branch codex/landing-definition-example-copy from current qa; retain earlier local edits. Paths: frontend/src/Landing.tsx and this record. Focus dark section on reusable definitions/versions; light section on the concrete revenue example; remove repeated principle strip. Preserve metric rules, evidence values/locators, audience/plans and capability limits. No publication or API/data changes.
+
+- Completed locally: dark block now emphasizes reusable firm definitions and explicit versions/scope; light block opens with the concrete revenue-versus-other-income question. Shortened explanatory sentences and removed the repeated three-principle strip. Metric selection rules, historical values and source locators unchanged. TypeScript/Vite build, all 11 landing browser groups (1440/1024/768/390) and git diff --check passed; no runtime/asset errors. No commit, push or deployment.
+
+
+## Actual connected product narrative — 2026-10-26
+
+- State: in_progress. Human requests replacing simplistic arithmetic marketing with actual linked enfuce-documents behavior. Branch codex/landing-real-product-workflow from qa, preserving pending work. Paths: frontend/src/Landing.tsx, LandingChatSample.tsx, landing.css, frontend/tests/landing.mjs, landing-chat-sample.mjs and this record. No backend/API/schema changes, company writes or publication.
+- Read-only live findings: source observation selection, question-driven model/Python execution, exact source/period/scenario context, review states; zero stored calculations for this company. Report builder exposes 12 modules, configurable scope and cited drafts. Data room retains hashes and explicitly reports absent original PDF. No calculation/report generation/uploads/edits performed. No fabricated financial outputs; public historical preview images remain labeled separately.
+
+- Completed locally: replaced worksheet-addition example with source selection → generated Python/execution records → 12-module cited report overview. Updated hero, workspace descriptions/connected links, scripted chat prompts, demo FAQ and ambiguous numeric decoration. Retained firm catalog boundaries, audience/plans/order and labeled historical interface previews; no production customer screenshots or source payloads added to public assets.
+- Validation: read production dashboard/report-builder/data-room without mutations. TypeScript/Vite build, all 11 landing browser groups (1440/1024/768/390), landing-chat-sample browser check (typing/pause/switch/reduced-motion/links, zero API calls) and git diff --check passed. New workflow desktop screenshot visually reviewed. No generated calculation/report or model/provider call is claimed; source links require the connected backend. No commit, push or deployment.
+
+
+## Actual intake and analysis flow — 2026-10-26
+
+- State: in_progress. Human requests concise, accurate, professional explanation of the current product chain. Branch codex/landing-actual-input-flow from qa; pending work preserved. Paths: frontend/src/Landing.tsx, frontend/tests/landing.mjs and this record. Replace aspirational catalog block with project/upload → evidence review → calculation question; retain old section anchor for compatibility, replace obsolete catalog FAQ and avoid repeating input selection in following execution/report block. No API/data changes or publication.
+
+- Completed locally: replaced firm semantic-layer/catalog block with three concise current steps (Create a project → Review the evidence → Define the calculation). Removed metric definitions and formulas, replaced obsolete catalog FAQ, retained existing anchors. Following block now distinguishes execution records, evidence review states and reporting rather than repeating input selection. TypeScript/Vite build and all 11 landing browser groups passed (1440/1024/768/390, keyboard tabs, anchors, FAQ and storage preservation); desktop intake screenshot reviewed. No runtime/asset errors or backend writes, commit/push/deployment.
+
+
+## ARR diligence chat sample — 2026-10-26
+
+- State: in_progress. Human approves replacing the default scripted chat with the proposed Enfuce ARR diligence question. Branch codex/landing-arr-chat-example from qa, preserving pending local edits. Paths: frontend/src/LandingChatSample.tsx, landing-chat-sample.css, frontend/tests/landing-chat-sample.mjs and this record. Preserve forecast/actual distinction, April2020 p30/p4 provenance, human-review boundary and scripted/no-live-request labeling. No API calls, company data changes or publication.
+
+- Completed locally: default Assess ARR sample now asks whether the €22m estimate supports the recurring-revenue story, distinguishes forecast from achieved ARR, cites April2020 deck p30/p4 and lists required diligence evidence. Added paragraph spacing; preserved other samples, scripted/no-live-AI disclosure and connected evidence link. TypeScript/Vite build, focused browser checks for typing/pause/completion/switching/reduced motion, source locators/routes and desktop/tablet/mobile overflow, plus git diff --check passed; zero API requests/runtime errors. Phone ARR screenshot reviewed. No commit, push or deployment.
+
+
+## Short diligence prompts — 2026-10-26
+
+- State: in_progress. Human asks for a simpler question and reconsideration of the two other sample tags. Branch codex/landing-chat-diligence-prompts from qa; retain pending local edits. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs and this record. Shorten default ARR question; replace generic scenario/workflow samples with assumption checks and a source-qualified memo draft. Preserve scripted labeling, citations and no backend writes/publication.
+
+
+## VC questions mapped to product functions — 2026-10-26
+
+- State: in_progress. Human requests professional VC prompts and three functional tags. Branch codex/vc-chat-functional-examples from qa; pending edits preserved. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs and this record. Map tags to evidence review, financial analysis and investment memo; keep source-qualified answers and explicitly label scenario assumptions and scripted execution. No model calls, API/data changes or publication.
+
+- Completed locally: functional tags are Evidence review / Financial analysis / Investment memo. Prompts now cover contracted-ARR underwriting, downside realization sensitivity with explicit analyst assumptions, and a source-qualified regional-expansion IC assessment. April2020 p30/p4/p16 locators remain explicit; scenario outputs and memo wording are illustrative, not actual company results or executed live requests. Existing scripted disclosure and relevant dashboard/report links retained.
+- Validation: TypeScript/Vite build, git diff --check and focused chat browser test passed (all three examples, source links, assumptions, typing/pause/switching/reduced motion, 1440/1024/768/390 layout; zero API requests/runtime errors). Financial-analysis desktop screenshot reviewed. Local preview restarted on port5173. No commit, push or deployment.
+
+
+## Shorter VC chat samples — 2026-10-26
+
+- State: in_progress. Human requests shorter questions and answers in all three examples. Branch codex/shorten-vc-chat-samples from qa; pending local changes retained. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs and this record. Preserve functional tags, source page references, forecast/scenario distinctions and scripted labeling; no API/data changes or publication.
+
+- Completed locally: reduced each question to one sentence and each answer to roughly35–40 words; shortened source locators. Functional tags, forecast/actual caveats, scenario assumptions, cited pages and scripted disclosure retained. TypeScript/Vite build, chat browser checks (all examples, controls, links and responsive layouts, no API requests/runtime errors) and git diff --check passed. No commit, push or deployment.
+
+
+## Mathematical Markdown for landing formulas — 2026-10-26
+
+- State: in_progress. Human requests professional Markdown formula rendering in the current landing/chat examples. Branch codex/landing-math-formatting from qa; earlier pending edits preserved. Paths: frontend/src/LandingChatSample.tsx, a scoped mathematical-Markdown renderer, landing-chat-sample.css, frontend/package.json and package-lock.json, frontend/tests/landing-chat-sample.mjs and this record. Use local KaTeX rendering, preserve static scenario values, provenance, scripted labeling and no calculation/API/model behavior changes. Do not rewrite original workbook formulas or teammates’ normalization UI.
+
+- Completed locally: authored all landing-sample equations as $$ mathematical Markdown, rendered locally by KaTeX with subscripts, multiplication and aligned scenario rows. Added MathMarkdown.tsx (React-escaped text, untrusted TeX options, bounded expansion, complete-delimiter rendering during typing), bundled CSS/fonts and accessible plain-language formula announcements. Static values and scenario assumptions unchanged.
+- Validation: dependency/lockfile update completed; TypeScript/Vite build and focused chat browser checks passed (2 rendered equations/MathML, no KaTeX errors or raw delimiters, formulas fit390px, controls/links/reduced motion and no API requests/runtime errors). Phone formula screenshot reviewed; git diff --check passed. Changes are limited to current landing formulas; original workbook formulas and normalization UI untouched. No commit, push or deployment.
+
+
+## Company research, evidence review and IC prompts — 2026-10-26
+
+- State: in_progress. Human approves the proposed three company-context questions. Branch codex/company-chat-research-prompts from current qa, retaining pending work. Paths: frontend/src/CompanyChat.tsx, LandingChatSample.tsx, shared companyChatPrompts.ts, frontend/tests/company-chat.mjs, landing-chat-sample.mjs and this record. Align live recommendations and scripted homepage samples; replace new-arithmetic sample with company research, evidence gaps and IC briefing. Preserve entire_company scope, citations, request/persistence logic, scripted disclosure and read-only boundaries. No backend changes, live model calls or publication.
+
+- Completed locally: shared companyChatPrompts supplies Company research / Evidence review / IC briefing questions to both CompanyChat recommendations and the scripted landing sample. Added source-qualified short sample replies across customer/platform claims, forecast-validation gaps and an IC business/market/product/team-risk brief; removed new-arithmetic scenario. Live button still submits through unchanged entire_company handler; welcome copy matches. Existing mathematical renderer retained for formula-capable copy.
+- Validation: TypeScript/Vite build, focused landing-chat browser checks and all 12 Company chat mocked browser groups passed. Live suggestion click verified with company-aware question and entire_company payload; citations, retries/history, fail-closed responses and mobile behavior retained. Fixed stale test fixtures for company discovery and the current preserved-question retry text. git diff --check passed; homepage performs zero API calls; company tests use mocked responses and no live models. No commit, push or deployment.
+
+
+## Short research question and chat-scope explanation — 2026-10-26
+
+- State: in_progress. Human requests removing the sentence “Cite the evidence and flag unsupported claims.” and an explanation of actual chat contexts. Branch codex/short-company-research-question from qa, pending edits preserved. Paths: frontend/src/companyChatPrompts.ts and this record. Shared prompt deletion affects homepage and live Company chat; citation enforcement and service behavior remain unchanged. Read-only inspection of CompanyChat/DocumentChat/App/Report to explain scope accurately. No API/data changes or publication.
+
+- Completed locally: removed the requested sentence from the shared research question, affecting homepage and Company chat recommendations. Build, landing-chat browser controls/links/responsive checks (zero API requests/runtime errors) and git diff --check passed. No commit, push or deployment.
+- Read-only scope findings: CompanyChat submits entire_company plus history and an explicitly unverified working draft across Dashboard/Report/Data room. DocumentChat submits only the current question to bounded source retrieval and exposes excerpts, locators and coverage gaps; displayed past turns are not request context. Report.tsx has no independent report-only chat. Unconnected/historical Chat is a connection/redirect dialog, not simulated live answers. New arithmetic is handled by the calculation workbench; chat explains stored outputs.
+
+
+## Page-specific homepage chat examples — 2026-10-26
+
+- State: in_progress. Human requests one short pain-point example for each page, shown in the main product presentation. Branch codex/landing-page-chat-scenarios from qa, pending edits preserved. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs and this record. Homepage tags Dashboard/Report/Data room demonstrate income interpretation, IC evidence gaps and original-source lookup; explicitly distinguish Company chat versus Source search. Actual product chat handlers and teammate-owned App remain unchanged. No API/data writes or publication.
+
+- Completed locally: homepage sample now groups one concise pain point per page: Dashboard asks how much ARR is contract-backed; Report asks what needs verification before IC; Data room asks for the AIS/PIS licence evidence. Header distinguishes Company chat and Source search; replies retain citations, forecast/actual boundaries and company-claim versus independent-validation distinctions. Each action links to the relevant connected page. Product-internal handlers/prompts unchanged in this step.
+- Validation: TypeScript/Vite build, git diff --check and chat browser checks passed (all page labels/modes, relevant links, typing/pause/replay/switching, reduced motion, 1440/1024/768/390 layout; zero API calls/runtime errors). No commit, push or deployment.
+
+
+## Restore action-based sample framework — 2026-10-26
+
+- State: in_progress. Human requests original Trace a number / Challenge a claim / Build a report labels mapped to the latest three questions. Branch codex/restore-chat-framework-labels from qa; pending work preserved. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs and this record. Preserve answers, sources, page/mode context and links; change label/order only. No API/data changes or publication.
+
+- Completed locally: restored tag order Trace a number (contract-backed ARR), Challenge a claim (AIS/PIS source), Build a report (IC diligence gaps). Questions/answers/source references/page-mode labels/links retained; removed unused shared-prompt import. TypeScript/Vite build, focused sample browser controls/mapping/links and responsive checks plus git diff --check passed; zero API calls/runtime errors. No commit, push or deployment.
+
+
+## Distinct sample source cards — 2026-10-26
+
+- State: in_progress. Human likes distinct context-specific cards beneath each sample. Branch codex/distinct-chat-source-cards from qa; existing work retained. Paths: frontend/src/LandingChatSample.tsx, frontend/tests/landing-chat-sample.mjs, this record. Differentiate financial evidence, licence passage and report workflow without inventing separate files; first two retain actual same deck filename/page. No source/API/data changes or publication.
+
+- Completed locally: bottom cards now show ARR forecast evidence (actual deck p30), AIS/PIS licence statement (same actual deck p22), and Explore the report workflow (Build/Review/Export with source pages4/16/22). Report uses a book icon; document references retain file icons. No invented source files or generated report file. Build, git diff --check and browser controls/source-card/route/responsive checks passed with zero API requests/runtime errors. No commit, push or deployment.
+
+
+## Landing-only scope correction and contact sculpture — 2026-10-26
+
+- State: in_progress. Human explicitly limits chatbot edits to the product landing page and requests the previous large dimensional brand mark in the bottom contact section. Branch codex/landing-contact-brand-sculpture from qa; pending landing work retained. Paths: frontend/src/Landing.tsx, landing.css, frontend/tests/landing.mjs and this record; restore only this chat’s CompanyChat.tsx/company-chat.mjs edits and remove its unused untracked prompt helper. No backend changes were made in this chat and none are authorized. Preserve all handlers/API/data contracts.
+
+- Completed locally: replaced contact-section orbit/small mark with the exact prior extruded four-facet SVG sculpture, using scoped SVG IDs, desktop two-column composition and mobile stacked layout. Hero remains chat-only. Restored this chat’s live CompanyChat.tsx/company-chat.mjs changes to the current branch baseline and removed unused untracked companyChatPrompts.ts. Backend and product chat files have zero content diff.
+- Validation: TypeScript/Vite build, all11 landing browser groups and git diff --check passed. Tests confirm contact sculpture exists and orbit/hero sculpture do not; 1440/1024/768/390 layouts have no overflow. Desktop/mobile contact screenshots visually reviewed. Source/backend scope diff check passes. No model/API writes, commit/push or deployment.
+
+
+## Keep contact rings and original height — 2026-10-26
+
+- State: in_progress. Human clarifies to preserve original contact section height/concentric rings and replace only the central mark with the dimensional sculpture. Branch codex/contact-orbits-large-mark from current qa; pending landing changes retained. Paths: frontend/src/Landing.tsx, landing.css, frontend/tests/landing.mjs and this record. Restore baseline contact sizing/responsive positioning; large sculpture is decorative and absolutely contained within rings. No product chatbot/backend/API changes or publication.
+
+- Completed locally: restored original three concentric rings, absolute positioning, contact flex layout, padding/min-height and responsive offsets. Only the center mark is replaced by the larger 3D sculpture, contained within the original orbit so it adds no layout height. Hero and product chatbot/backend unchanged. Build, git diff --check and all11 landing browser groups passed; contact checks assert three rings and original desktop min-height/layout. Desktop ring/sculpture screenshot reviewed; all four tested widths have no overflow. No commit, push or deployment.
+
+
+## Raised geometric contact plinth — 2026-10-26
+
+- State: in_progress. Human requests lifting the flat diamond into a dimensional base behind the 3D logo, preserving simple geometry. Branch codex/contact-raised-geometric-base from qa; earlier local edits retained. Paths: frontend/src/Landing.tsx and this record. SVG-only top plane/two side faces painted before logo; preserve contact sizing/rings/chat/backend. No publication or data changes.
+
+- Completed locally: flat diamond is now a raised plinth with a top plane and two shaded side faces, plus a restrained inset outline/shadow. SVG plinth paints before the logo so the mark sits in front of it. Rings, section height, logo geometry and all product chat/backend files retained. TypeScript/Vite build, git diff --check and focused desktop/mobile browser checks passed; desktop screenshot visually reviewed. No commit, push or deployment.
+
+
+## Layered geometric contact base — 2026-10-26
+
+- State: in_progress. Human requests multiple stacked diamond layers as shown in the reference. Branch codex/contact-layered-geometric-base from qa; pending edits retained. Paths: frontend/src/Landing.tsx and this record. Four separated extruded layers beneath/behind the existing logo, maintaining original ring/contact sizing and simple blue geometry. Landing visual only; no backend/chat/API changes or publication.
+
+- Completed locally: base now has four separated diamond slabs with narrow side faces, increasing width downward and restrained blue shading. All layers paint behind the original logo; floor shadow/line moved beneath stack. Contact/rings/layout untouched. Build, git diff --check and focused browser checks passed for layer count/order, retained rings and 1440/390 overflow. Desktop screenshot reviewed. No commit, push or deployment.
+
+
+## Airier three-layer contact base — 2026-10-26
+
+- State: in_progress. Human requests three layers with larger gaps. Branch codex/contact-three-airy-layers from qa; prior local edits retained. Paths: frontend/src/Landing.tsx and this record. Reduce four slabs to three, increase vertical step15→25 and thin slab depth6→4; retain logo/rings/contact height/backend. No publication.
+
+- Completed locally: three diamond slabs now have25-unit vertical steps and4-unit side depth (previously15/6), creating larger visible gaps and a lighter stack. Logo/rings/contact dimensions unchanged. Build and desktop/mobile browser layer-count/overflow checks passed; desktop screenshot reviewed; git diff --check passed. No commit, push or deployment.
+
+## Publish approved local landing UI — 2026-11-02
+
+- State: in_progress. Human explicitly requests publishing the latest local UI to the cloud after reviewing the local preview; authorizes this UI production release after deployed QA validation. Historical holds for other tasks remain scoped to their owners.
+- Branch: codex/publish-landing-ui-20261102 from current origin/qa 5d2ebc8. Current main 2a4549d contains the same application tree; preserve all teammate changes.
+- Paths: frontend/package.json, frontend/package-lock.json, frontend/src/{Landing.tsx,LandingChatSample.tsx,MathMarkdown.tsx,landing.css,landing-chat-sample.css}, frontend/tests/{landing.mjs,landing-chat-sample.mjs}, and this record.
+- Shared contracts: landing presentation only; no backend/API/schema/data changes. Preserve original source references, scripted-demo labels, routes, browser identities and product chat handlers.
+- Validation/publication: pending locked install, frontend checks, browser checks, feature PR into QA, deployed QA verification, then protected promotion and production verification.
+- Local gate: locked npm ci passed (0 audit vulnerabilities); all 129 frontend unit/SSR tests passed; TypeScript/Vite production build passed; all 11 landing browser groups and scripted-chat controls/source links/reduced-motion/layout checks passed at 1440/1024/768/390 widths. No runtime/asset errors or scripted-demo API requests. Desktop screenshot visually reviewed; git diff --check passed. QA and both production baseline health/release identities verified; pending publication.

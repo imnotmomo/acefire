@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react'
-import { ArrowUpRight, FileText, Pause, Play, RotateCcw } from 'lucide-react'
+import { ArrowUpRight, BookOpen, FileText, Pause, Play, RotateCcw } from 'lucide-react'
 import { BrandMark } from './Brand'
+import MathMarkdown from './MathMarkdown'
 import './landing-chat-sample.css'
 
 const samples = [
   {
-    label: 'Trace a number', question: 'Where does Enfuce’s operating income come from?',
-    answer: 'The historical H1 2020 worksheet records €3,452,682.81 in operating income. Its recorded inputs are €3,417,663.76 in revenue and €35,019.05 in other income. Inspect the original cells and calculation before using this figure.',
-    source: 'June 2020 Financials.xlsx', locator: 'P&L - Group!I6 · Historical snapshot',
-    href: '#/project/enfuce/dashboard', action: 'Inspect the evidence',
+    label: 'Trace a number', context: 'Company chat · Dashboard',
+    question: 'How much of Enfuce’s €22m ARR is backed by contracts?',
+    answer: 'The deck gives a €22m Top 50 forecast (p.30), not contracted revenue. The cited evidence does not establish a signed ARR amount. Request contracts and recognized revenue before using it as actual performance.',
+    source: 'ARR forecast evidence', sourceIcon: FileText, locator: 'Enfuce Summary - April 2020.pdf · p.30',
+    href: '#/project/enfuce-documents/dashboard', action: 'Explore the dashboard',
   },
   {
-    label: 'Challenge a claim', question: 'Can I treat operating income as revenue?',
-    answer: 'Check the definition first. In this historical example, operating income includes other income. The summary labels the total as revenue. Review the source definitions and period before treating these labels as equivalent.',
-    source: 'Five-year financial summary', locator: 'F4 · Compare with P&L - Group!B4:I6',
-    href: '#/project/enfuce/dashboard', action: 'Review the source context',
+    label: 'Challenge a claim', context: 'Source search · Data room',
+    question: 'Where is the evidence for Enfuce’s AIS/PIS licence?',
+    answer: 'The deck states that Enfuce holds an AIS/PIS licence (p.22). Inspect the stored passage and page reference. This is a company claim; request the licence number, issuing authority and permitted markets for independent validation.',
+    source: 'AIS/PIS licence statement', sourceIcon: FileText, locator: 'Enfuce Summary - April 2020.pdf · p.22',
+    href: '#/project/enfuce-documents/data-room', action: 'Explore the data room',
   },
   {
-    label: 'Build a report', question: 'How do I turn this evidence into a report?',
-    answer: 'Open Report Builder, select the modules your team needs, and set the scope. In Review, select a cited passage to inspect its supporting evidence. Record your edits before exporting the report.',
-    source: 'Explore the report workflow', locator: 'Build → Review → Export',
-    href: '#/project/enfuce/report/build', action: 'Open Report Builder',
+    label: 'Build a report', context: 'Company chat · Report',
+    question: 'What must we verify before taking this case to IC?',
+    answer: 'Prioritize customer retention, revenue-target assumptions and licensing scope. The deck provides a customer count (p.4), expansion targets (p.16) and a licence claim (p.22). Record supporting contracts, customer references and regulatory documents as open diligence requests.',
+    source: 'Explore the report workflow', sourceIcon: BookOpen, locator: 'Build → Review → Export · Sources pp.4, 16, 22',
+    href: '#/project/enfuce-documents/report/build', action: 'Open Report Builder',
   },
+
 ]
 
 export default function LandingChatSample() {
@@ -53,16 +58,16 @@ export default function LandingChatSample() {
   return <section className="ig-chat-sample" aria-label="Ingenium chat demo">
     <header className="ig-chat-header">
       <span className="ig-chat-brand"><BrandMark size={27} /></span>
-      <div><strong>Ask Ingenium</strong><span>Follow the answer to its evidence.</span></div>
+      <div><strong>Ask Ingenium</strong><span>{sample.context}</span></div>
       <span className="ig-chat-badge">Sample</span>
     </header>
     <div className="ig-chat-conversation" aria-hidden="true">
       <div className="ig-chat-question"><span>You</span><p>{sample.question.slice(0, Math.min(position, sample.question.length)) || '\u00a0'}{!answering && !paused && <i className="ig-chat-cursor" />}</p></div>
-      <div className="ig-chat-answer"><span><BrandMark size={18} /> Ingenium</span><p>{answering ? sample.answer.slice(0, position - sample.question.length) : 'Let’s follow the evidence.'}{answering && !complete && !paused && <i className="ig-chat-cursor" />}</p></div>
+      <div className="ig-chat-answer"><span><BrandMark size={18} /> Ingenium</span><div className="ig-chat-answer-body"><MathMarkdown text={answering ? sample.answer.slice(0, position - sample.question.length) : 'Let’s follow the evidence.'} />{answering && !complete && !paused && <i className="ig-chat-cursor" />}</div></div>
     </div>
     <div className="ig-chat-sr" role="status" aria-live="polite" aria-atomic="true">{complete ? `${sample.question} ${sample.answer}` : 'Playing a sample conversation.'}</div>
     <a className="ig-chat-source is-ready" href={sample.href}>
-      <FileText size={19} /><span><strong>{sample.source}</strong><small>{sample.locator}</small></span><ArrowUpRight size={16} />
+      <sample.sourceIcon size={19} /><span><strong>{sample.source}</strong><small>{sample.locator}</small></span><ArrowUpRight size={16} />
     </a>
     <div className="ig-chat-prompts" role="group" aria-label="Sample questions">{samples.map((item, index) => <button key={item.label} aria-pressed={selected === index} onClick={() => start(index)}>{item.label}</button>)}</div>
     <footer className="ig-chat-footer"><span>Scripted demo · No live AI request</span><div>{!complete && !reduced && <button aria-label={paused ? 'Resume demo' : 'Pause demo'} onClick={() => setPaused(value => !value)}>{paused ? <Play size={15} /> : <Pause size={15} />}</button>}<button aria-label="Replay demo" onClick={() => start(selected)}><RotateCcw size={15} /></button></div></footer>
